@@ -4,4 +4,14 @@ const hashPassword = async (password: string) => {
 	return await bcrypt.hash(password, salt);
 };
 
-export { hashPassword };
+const comparePassword = async (password: string, hash: string) => {
+	try {
+		if (await bcrypt.compare(password, hash)) {
+			return true;
+		}
+		return false;
+	} catch (error) {
+		console.log(error);
+	}
+};
+export { hashPassword, comparePassword };

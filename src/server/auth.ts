@@ -2,10 +2,18 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import { getServerSession, type NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { z } from "zod";
+import { string, z } from "zod";
 import { prisma } from "~/server/db";
+import { comparePassword } from "~/utils/passwords";
 import Tokens from "~/utils/tokenHandler";
 
+declare module "next-auth" {
+	interface User {
+		email: string;
+		name: string;
+		userID: string;
+	}
+}
 export const authOptions: NextAuthOptions = {
 	session: {
 		strategy: "jwt",
@@ -29,7 +37,7 @@ export const authOptions: NextAuthOptions = {
 					placeholder: "password",
 				},
 			},
-			async authorize(credentials, req): Promise<any> {
+			async authorize(credentials, req) {
 				const user = await prisma.user.findUnique({
 					where: {
 						email: z.string().parse(credentials?.email),
@@ -38,13 +46,19 @@ export const authOptions: NextAuthOptions = {
 						name: true,
 						email: true,
 						id: true,
+						password: true,
 					},
 				});
-				if (user) {
+				if (
+					await comparePassword(
+						z.string().parse(credentials?.password),
+						z.string().parse(user?.password)
+					)
+				) {
 					return {
-						email: z.string().parse(user.email),
-						name: user.name,
-						userID: z.string().parse(user.id),
+						email: z.string().parse(user?.email),
+						name: user?.name,
+						userID: z.string().parse(user?.id),
 					};
 				}
 				return null;
