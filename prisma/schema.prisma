@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model RefreshToken {
+  id          String   @id @unique @default(uuid())
+  hashedToken String   @db.Text
+  userId      String 
+  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  id        String           @id @unique @default(cuid())
+  userId    String 
+  User      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked   Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  type      VerificationType @default(EMAIL_VERIFICATION)
+
+  @@index([userId])
+}
+
+model User {
+  id                String @id @default(cuid())
+  name              String
+  email             String              @unique
+  role              Role                @default(USER)
+  isVerified        Boolean             @default(false)
+  password          String              @db.Text
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  collegeId         String?
+  College           College?            @relation(fields: [collegeId], references: [id], onDelete: SetNull)
+  phoneNumber       String?
+  VerificationToken VerificationToken[]
+  RefreshTokens     RefreshToken[]
+  PaymentOrders     PaymentOrder[]
+  team				Team?				@relation(fields: [teamId], references: [id], onDelete: Cascade) 
+  isLead			Boolean				@default(false)
+  teamId			String?	
+  Judges            Judge[]
+
+  @@index([collegeId])
+  @@index([teamId])
+}
+
+model College {
+  id        String @id @default(cuid())
+  name      String
+  details   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Users     User[]
+}
+
+model Team {
+  id           String    @id @default(cuid())
+  name	       String			@unique
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  confirmed    Boolean      @default(false)
+  attended     Boolean      @default(false)
+  members	   User[]
+  leaderId     String? 
+}
+
+model PaymentOrder {
+  id          String      @id @default(cuid())
+  orderId     String      @unique
+  status      Status      @default(PENDING)
+  amount      Int         @default(250)
+  paymentData Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  type        PaymentType @default(FEST_REGISTRATION)
+  User        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String 
+
+  @@index([userId])
+}
+
+// n-n relations
+
+
+
+model Judge {
+  userId  String @id
+  User    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId Int
+	
+  @@index([userId])
+}
+
+// Enums
+enum PaymentType {
+  FEST_REGISTRATION
+  EVENT_REGISTRATION
+}
+
+enum Role {
+  USER
+  PARTICIPANT
+  ADMIN
+  BRANCH_REP
+  ORGANIZER
+  JUDGE
+  JURY
+}
+
+enum Status {
+  PENDING
+  SUCCESS
+  FAILED
+}
+
+enum VerificationType {
+  RESET_PASSWORD
+  EMAIL_VERIFICATION
+}
+
+enum EventType {
+  INDIVIDUAL
+  TEAM
+  INDIVIDUAL_MULTIPLE_ENTRY
+  TEAM_MULTIPLE_ENTRY
+}
