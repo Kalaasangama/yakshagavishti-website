@@ -12,6 +12,22 @@ class Tokens {
 	static async getAccessToken(token: string | undefined, user: User) {
 		if (token) {
 			try {
+				const RefreshTokens = await prisma.user.findUnique({
+					where: {
+						email: user.email,
+					},
+					select: {
+						RefreshTokens: {
+							select: {
+								hashedToken: true,
+								revoked: true,
+							},
+						},
+					},
+				});
+				if (RefreshTokens?.RefreshTokens[0]?.revoked) {
+					throw "Revoked Token";
+				}
 				jwt.verify(z.string().parse(token), env.NEXTAUTH_SECRET);
 				return token;
 			} catch (accessTokenError) {
@@ -55,7 +71,7 @@ class Tokens {
 					name: user.name,
 					email: user.email,
 				},
-				"n/BpJwxCJJfa7iyfw2tMxOYByFG8",
+				env.NEXTAUTH_SECRET,
 				{ expiresIn: "5h" }
 			);
 		}

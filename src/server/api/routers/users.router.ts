@@ -49,13 +49,18 @@ export const UserRouter = createTRPCRouter({
 							create: {
 								hashedToken: jwt.sign(
 									{ email: input.email },
-									env.NEXTAUTH_SECRET
+									env.NEXTAUTH_SECRET,
+									{ expiresIn: "7d" }
 								),
 							},
 						},
 					},
 				});
 
+				/*Todo:
+					Create verification link with verification token
+					Send this link via email 
+				*/
 				const team = new Team(input.team.teamName, input.team.members);
 				try {
 					if (!(await team.isTeamExists())) {
