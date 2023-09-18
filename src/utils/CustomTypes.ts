@@ -5,18 +5,17 @@ interface Session {
 }
 
 interface User {
-	name: string | null;
+	name: string | undefined;
 	email: string;
-	picture: string | null;
-	userID: string | null;
+	id: string;
+	token: { refreshToken: string | undefined; revoked: boolean } | undefined;
 }
 
 interface AdapterUser {
-	data: {
-		access: string;
-		refresh: string;
-	};
-	accessToken: string;
+	name: string | undefined;
+	email: string;
+	id: string;
+	token: { refreshToken: string | undefined; revoked: boolean } | undefined;
 }
 
 interface UserInput {
@@ -28,10 +27,21 @@ interface UserInput {
 	isLead: boolean;
 }
 
+interface UserCreateInput {
+	email: string;
+	phone_number: string;
+	blocked: false;
+	email_verified: false;
+	phone_verified: false;
+	name: string;
+	password: string;
+	verify_email: false;
+}
+
 interface JWT {
 	iat: number;
 	exp: number;
 	accessToken: string;
 }
 
-export type { Session, JWT, User, AdapterUser, UserInput };
+export type { Session, JWT, User, AdapterUser, UserInput, UserCreateInput };

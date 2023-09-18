@@ -1,62 +1,59 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
-model RefreshToken {
-  id          String   @id @unique @default(uuid())
-  hashedToken String   @db.Text
-  userId      String 
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked     Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@index([userId])
+generator client {
+  provider        = "prisma-client-js"
 }
 
-model VerificationToken {
-  id        String           @id @unique @default(cuid())
-  userId    String 
-  User      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked   Boolean          @default(false)
-  createdAt DateTime         @default(now())
-  type      VerificationType @default(EMAIL_VERIFICATION)
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
 
-  @@index([userId])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-  id                String @id @default(cuid())
-  name              String
-  email             String              @unique
-  role              Role                @default(USER)
-  isVerified        Boolean             @default(false)
-  password          String              @db.Text
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  collegeId         String?
-  College           College?            @relation(fields: [collegeId], references: [id], onDelete: SetNull)
-  phoneNumber       String?
-  VerificationToken VerificationToken[]
-  RefreshTokens     RefreshToken[]
-  PaymentOrders     PaymentOrder[]
-  team				Team?				@relation(fields: [teamId], references: [id], onDelete: Cascade) 
-  isLead			Boolean				@default(false)
-  teamId			String?	
-  Judges            Judge[]
-
-  @@index([collegeId])
-  @@index([teamId])
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  collegeId		String?
+  college		College?	  @relation(fields: [collegeId], references: [id])
+  role			Role		@default(PARTICIPANT)
+  teamId		String?	    
+  team			Team?	@relation(fields: [teamId], references: [id])
+  characterPlayed CharacterOnUser?
+  leaderOf		Team?	@relation(fields: [teamId2], references: [id],name: "TeamLead")
+  teamId2		String?	@unique
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model College {
-  id        String @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   details   String?
   createdAt DateTime @default(now())
@@ -65,73 +62,45 @@ model College {
 }
 
 model Team {
-  id           String    @id @default(cuid())
-  name	       String			@unique
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  confirmed    Boolean      @default(false)
-  attended     Boolean      @default(false)
-  members	   User[]
-  leaderId     String? 
+  id        String      @id @default(cuid())
+  name      String      @unique
+  confirmed Boolean     @default(false)
+  attended  Boolean     @default(false)
+  members   User[]
+  leader    User?     @relation(name: "TeamLead")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
 }
 
-model PaymentOrder {
-  id          String      @id @default(cuid())
-  orderId     String      @unique
-  status      Status      @default(PENDING)
-  amount      Int         @default(250)
-  paymentData Json?
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  type        PaymentType @default(FEST_REGISTRATION)
-  User        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String 
-
-  @@index([userId])
+model CharacterOnUser{
+	id	String	@id	@default(cuid())
+	character	Characters
+	playedBy	User @relation(fields: [id], references: [id], onDelete: Cascade)
+	score		Int
 }
 
-// n-n relations
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-
-
-model Judge {
-  userId  String @id
-  User    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  eventId Int
-	
-  @@index([userId])
+  @@unique([identifier, token])
 }
 
-// Enums
-enum PaymentType {
-  FEST_REGISTRATION
-  EVENT_REGISTRATION
+
+enum Characters {
+  UNDEFINED
+  CHARACTER_1
+  CHARACTER_2
+  CHARACTER_3
+  CHARACTER_4
 }
 
 enum Role {
-  USER
   PARTICIPANT
   ADMIN
-  BRANCH_REP
   ORGANIZER
   JUDGE
-  JURY
 }
 
-enum Status {
-  PENDING
-  SUCCESS
-  FAILED
-}
-
-enum VerificationType {
-  RESET_PASSWORD
-  EMAIL_VERIFICATION
-}
-
-enum EventType {
-  INDIVIDUAL
-  TEAM
-  INDIVIDUAL_MULTIPLE_ENTRY
-  TEAM_MULTIPLE_ENTRY
-}

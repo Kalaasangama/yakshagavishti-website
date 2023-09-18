@@ -1,39 +1,41 @@
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import jwt from "jsonwebtoken";
+import Team from "~/utils/teams.services";
 
-export const UserRouter = createTRPCRouter({
-	register: publicProcedure
+export const TeamRouter = createTRPCRouter({
+	register: protectedProcedure
 		.input(
 			z.object({
 				teamName: z.string(),
-				teamSize: z.string(),
-				members: z.string(),
+				leadId: z.string(),
+				members: z.array(
+					z.object({
+						name: z.string(),
+						email: z.string(),
+						password: z.string(),
+						collegeId: z.string(),
+						isLead: z.boolean(),
+						phone_number: z.string(),
+						blocked: z.literal(false),
+						email_verified: z.literal(false),
+						phone_verified: z.literal(false),
+						verify_email: z.literal(false),
+					})
+				),
 			})
 		)
-		.mutation(async ({ ctx, input }) => {
-			const user = await ctx.prisma.team.findUnique({
-				where: { name:input.teamName },
-			});
-			if () {
-				return "Team already exists!";
-			}
+		.mutation(async ({ctx, input }) => {
+			const team = new Team(input.teamName, input.members, ctx);
 			try {
-				await ctx.prisma.team.create({
-					data:{
-						name:input.teamName,
-						members:{
-							connectOrCreate:{
-								create:{
-									name: 
-								}
-							}
-						}
-					}
-				})
+				if (!(await team.isTeamExists())) {
+					await team.createTeam();
+					await team.addMembers();
+				}
 			} catch (error) {
 				console.log(error);
-				return "An error occurred!!";
+				return "Error";
 			}
 		}),
-}
+});
+
+export default TeamRouter;

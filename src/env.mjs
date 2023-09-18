@@ -23,6 +23,7 @@ export const env = createEnv({
 		// Add `.min(1) on ID and SECRET if you want to make sure they're not empty
 		DISCORD_CLIENT_ID: z.string(),
 		DISCORD_CLIENT_SECRET: z.string(),
+		AUTH0_API_URL:z.string()
 	},
 
 	/**
@@ -44,7 +45,8 @@ export const env = createEnv({
 		NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
 		NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 		DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-		DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,	
+		DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+		AUTH0_API_URL:process.env.AUTH0_API_URL
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

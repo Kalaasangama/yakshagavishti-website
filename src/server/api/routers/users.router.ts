@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { hashPassword } from "~/utils/passwords";
 import { env } from "~/env.mjs";
 import Team from "~/utils/teams.services";
+import Tokens from "~/utils/tokenHandler";
 
 export const UserRouter = createTRPCRouter({
 	register: publicProcedure
@@ -15,19 +16,6 @@ export const UserRouter = createTRPCRouter({
 				collegeId: z.string(),
 				phoneNumber: z.string(),
 				isLead: z.boolean(),
-				team: z.object({
-					teamName: z.string(),
-					members: z.array(
-						z.object({
-							name: z.string(),
-							email: z.string(),
-							password: z.string(),
-							collegeId: z.string(),
-							phoneNumber: z.string(),
-							isLead: z.boolean(),
-						})
-					),
-				}),
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -47,11 +35,9 @@ export const UserRouter = createTRPCRouter({
 						phoneNumber: input.phoneNumber,
 						RefreshTokens: {
 							create: {
-								hashedToken: jwt.sign(
-									{ email: input.email },
-									env.NEXTAUTH_SECRET,
-									{ expiresIn: "7d" }
-								),
+								hashedToken: Tokens.generateRefreshToken({
+									email: input.email,
+								}),
 							},
 						},
 					},
@@ -61,16 +47,6 @@ export const UserRouter = createTRPCRouter({
 					Create verification link with verification token
 					Send this link via email 
 				*/
-				const team = new Team(input.team.teamName, input.team.members);
-				try {
-					if (!(await team.isTeamExists())) {
-						await team.createTeam();
-						await team.addMembers();
-					}
-				} catch (error) {
-					console.log(error);
-					return "Error";
-				}
 			} catch (error) {
 				console.log(error);
 				return "An error occurred!!";

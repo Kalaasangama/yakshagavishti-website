@@ -11,6 +11,9 @@ export const CollegeRouter = createTRPCRouter({
 				},
 			});
 		}),
+	getAllUser: publicProcedure.input(z.string()).query(async function(){
+		return "hello"
+	})
 });
 
 export default CollegeRouter;
