@@ -2,8 +2,6 @@ import { prisma } from "~/server/db";
 import type { AdapterUser, UserCreateInput } from "./CustomTypes";
 import { z } from "zod";
 import type { PrismaClient } from "@prisma/client";
-import management from "./auth0";
-import { AuthenticationClient } from "auth0";
 
 interface ctx {
 	prisma: PrismaClient;
@@ -15,7 +13,7 @@ class Team {
 	private name;
 	private members;
 	private ctx;
-	constructor(teamName: string, members: UserCreateInput[], ctx: ctx) {
+	constructor(teamName: string, members: addScoresInput[], ctx: ctx) {
 		this.name = teamName;
 		this.members = members;
 		this.ctx = ctx;
@@ -56,49 +54,26 @@ class Team {
 			await Promise.all(
 				this.members.map(async (user) => {
 					try {
-						const auth = new AuthenticationClient({
-							clientId: "XjZEVZsAtmKONjtm2ECtkc5Vywd6WBjP",
-							clientSecret:
-								"jVhPt29kCAqqZ-J_QVuqKmcwtakFLwn5cYUioLkCYuVr5wQYCis9UbCyKbSTW7vf",
-							domain: "srivatsa.au.auth0.com",
-						});
-						console.log(
-							await auth.oauth.clientCredentialsGrant({
-								audience: "srivatsa.au.auth0.com",
-								client_id: "CTmYjYA8ZywP6iK6AI1wk4HJfHt4Q8Mr",
-								client_secret:
-									"jVhPt29kCAqqZ-J_QVuqKmcwtakFLwn5cYUioLkCYuVr5wQYCis9UbCyKbSTW7vf",
-							})
-						);
-						console.log(this.ctx.session.user.id);
-						const result = await this.ctx.prisma.user.findUnique({
-							where: {
-								id: this.ctx.session.user.id,
-							},
-							select: {
-								accounts: {
-									select: {
-										refresh_token: true,
+						await prisma.user.create({
+							data: {
+								email: user.email,
+								name: user.name,
+								college: {
+									connect: {
+										id: user.college_id,
+									},
+								},
+								characterPlayed: {
+									connect: {
+										id: user.character_id,
+									},
+								},
+								team: {
+									connect: {
+										name: this.name,
 									},
 								},
 							},
-						});
-						console.log(result?.accounts[0]);
-						await auth.oauth.refreshTokenGrant({
-							refresh_token: z
-								.string()
-								.parse(result?.accounts[0]?.refresh_token),
-						});
-						await management.users.create({
-							email: user.email,
-							phone_number: user.phone_number,
-							name: user.name,
-							password: user.password,
-							blocked: false,
-							email_verified: false,
-							phone_verified: false,
-							verify_email: false,
-							connection: "Username-Password-Authentication",
 						});
 					} catch (mapError: unknown) {
 						console.log(mapError);
