@@ -19,7 +19,7 @@ function Achievement2({
       {/* background image */}
       <Image
         src={bg}
-        className="absolute h-full w-screen  object-cover opacity-30 sm:h-screen "
+        className="absolute h-full w-screen  object-contain opacity-30 sm:h-screen "
         alt="Error loading"
       ></Image>
 

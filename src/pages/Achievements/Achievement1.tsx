@@ -10,14 +10,14 @@ function Achievement1({
   text,
   achieveImg,
 }: {
-  bg: string;
-  hidden: string|StaticImageData;
+  bg: string|StaticImageData;
+  hidden: string;
   head: string;
   text: string;
   achieveImg: string|StaticImageData;
 }) {
   return (
-    <main className="from-primary-100 via-primary-transparent-25 to-primary-100  relative flex h-screen   flex-col bg-gradient-to-t ">
+    <main className="from-primary-100 via-primary-transparent-25 to-secondary-100  relative flex h-screen   flex-col bg-gradient-to-b ">
       {/* Background image */}
       <Image
         src={bg}
