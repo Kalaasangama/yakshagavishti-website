@@ -16,7 +16,7 @@ export default function Home() {
       </Head>
       <main>
         <section>
-
+<Achievement/>
         </section>
       </main>
     </>
