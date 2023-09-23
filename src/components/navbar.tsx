@@ -37,8 +37,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="relative z-50 bg-transparent">
-      <div className="mx-4 flex flex-col border-b-[1px] py-4 text-white sm:mx-8 lg:mx-32">
+    <nav className="sticky top-2 z-50 font-medium">
+      <div className="flex flex-col backdrop-blur-md border-[1px] rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between">
           <div className="flex items-center justify-center">
             <Image
@@ -49,7 +49,7 @@ const Navbar = () => {
               className="object-contain object-center"
             />
           </div>
-          <div className="hidden space-x-7 lg:flex">
+          <div className="hidden space-x-7 lg:flex 2xl:text-2xl">
             {links.map((link) => {
               return (
                 <Link
@@ -61,7 +61,7 @@ const Navbar = () => {
                     className={
                       activePath?.label === link.label
                         ? "text-secondary-100"
-                        : ""
+                        : "hover:text-secondary-200 tranition ease-linear duration-150"
                     }
                   >
                     {link.label}
@@ -86,7 +86,7 @@ const Navbar = () => {
 const MobileNav = ({ links, activePath }: Props) => {
   return (
     <div className="">
-      <div className="flex flex-col space-y-3 py-3 md:hidden">
+      <div className="flex flex-col space-y-3 pt-0 pb-3 lg:hidden">
         {links.map((link) => {
           return (
             <Link

@@ -6,14 +6,17 @@ import Navbar from "~/components/navbar";
 import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
+import { useRouter } from "next/router";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
+  const path = useRouter()
+
   return (
     <SessionProvider session={session}>
-      <Navbar />
+      {path.pathname !== "/_error" && <Navbar />}
       <Component {...pageProps} />
     </SessionProvider>
   );

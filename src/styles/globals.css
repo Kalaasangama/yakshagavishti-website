@@ -1,3 +1,7 @@
+@import url('/fonts/Samarkan/stylesheet.css');
+@import url('/fonts/BalooChettan2/stylesheet.css');
+@import url('https://fonts.googleapis.com/css2?family=Tourney:wght@100;400;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,5 +9,7 @@
 @layer base {
   body {
     @apply bg-primary-100;
+    @apply text-white;
+    @apply overflow-x-hidden
   }
 }
