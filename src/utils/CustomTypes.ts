@@ -23,22 +23,9 @@ interface UserInput {
 	name: string;
 	email: string;
 	password: string;
-	collegeId: string;
-	phoneNumber: string;
-	isLead: boolean;
-}
-
-interface UserCreateInput {
-	email: string;
-	phone_number: string;
 	college_id: string;
-	blocked: false;
-	email_verified: false;
-	phone_verified: false;
-	name: string;
-	password: string;
-	verify_email: false;
 	character_id: string;
+	isLead: boolean;
 }
 
 interface addScoresInput {
@@ -56,12 +43,4 @@ interface JWT {
 	accessToken: string;
 }
 
-export type {
-	Session,
-	JWT,
-	User,
-	AdapterUser,
-	UserInput,
-	UserCreateInput,
-	addScoresInput,
-};
+export type { Session, JWT, User, AdapterUser, UserInput, addScoresInput };

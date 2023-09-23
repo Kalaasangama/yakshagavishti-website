@@ -13,14 +13,9 @@ export const TeamRouter = createTRPCRouter({
 						name: z.string(),
 						email: z.string(),
 						password: z.string(),
-						collegeId: z.string(),
-						isLead: z.boolean(),
-						phone_number: z.string(),
-						blocked: z.literal(false),
-						email_verified: z.literal(false),
-						phone_verified: z.literal(false),
-						verify_email: z.literal(false),
+						college_id: z.string(),
 						character_id: z.string(),
+						isLead: z.boolean(),
 					})
 				),
 			})

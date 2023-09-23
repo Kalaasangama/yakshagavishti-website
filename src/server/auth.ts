@@ -1,7 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { type GetServerSidePropsContext } from "next";
 import {
-	DefaultSession,
+	type DefaultSession,
 	getServerSession,
 	type NextAuthOptions,
 } from "next-auth";
@@ -22,13 +22,13 @@ export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		Auth0Provider({
-			clientId: env.DISCORD_CLIENT_ID,
-			clientSecret: env.DISCORD_CLIENT_SECRET,
-			issuer: "https://srivatsa.au.auth0.com",
+			clientId: env.AUTH0_CLIENT_ID,
+			clientSecret: env.AUTH0_CLIENT_SECRET,
+			issuer: env.AUTH0_ISSUER,
 		}),
 	],
 	callbacks: {
-		session: ({ session, user}) => {
+		session: ({ session, user }) => {
 			if (session?.user) {
 				session.user.id = z.string().parse(user.id);
 			}
