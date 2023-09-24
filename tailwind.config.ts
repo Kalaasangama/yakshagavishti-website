@@ -31,16 +31,17 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
-        'primary-50': '#292f52',
+        'bg-gradient-50': 'rgba(48, 21, 75, 0.5)',
+        'primary-50': 'rgba(41,47,82, 0.5)',
         'primary-100': '#080b1e',
-        'primary-transparent-50': 'rgba(8,11,30, 0.5)',
+        'primary-transparent-50': 'rgba(8,11,30, 0.75)',
         'secondary-100': '#df8b2b',
         'secondary-200': '#f76502'
       },
       fontFamily: {
-        hindi: 'Samarkan',
-        tourney: ['Tourney', 'cursive'],
-        sans: ['Baloo', 'Arial'],
+        hindi: 'var(--font-hindi)',
+        tourney: ['var(--font-tourney)', 'cursive'],
+        sans: ['var(--font-baloo)', 'Arial'],
       }
     },
   },
