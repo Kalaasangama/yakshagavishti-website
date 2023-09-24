@@ -1,0 +1,136 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id              String           @id @default(cuid())
+  name            String?
+  email           String?          @unique
+  emailVerified   Boolean?			@default(false)
+  image           String?
+  collegeId       String?
+  college         College?         @relation(fields: [collegeId], references: [id])
+  role            Role             @default(PARTICIPANT)
+  teamId          String?
+  team            Team?            @relation(fields: [teamId], references: [id])
+  characterPlayed CharacterOnUser?
+  leaderOf        Team?            @relation(fields: [teamId2], references: [id], name: "TeamLead")
+  teamId2         String?          @unique
+  isIdVerified      Boolean          @default(false)
+  accounts        Account[]
+  sessions        Session[]
+}
+
+model TeamMembers {
+  id     String @id @default(cuid())
+  email  String
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model College {
+  id        String   @id @default(cuid())
+  name      String
+  details   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Users     User[]
+}
+
+model Team {
+  id            String          @id @default(cuid())
+  name          String          @unique
+  confirmed     Boolean         @default(false)
+  attended      Boolean         @default(false)
+  members       User[]
+  leader        User?           @relation(name: "TeamLead")
+  teamScore     Int             @default(0)
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  criteria      criteria[]
+  criteriaScore criteriaScore[]
+  TeamMembers   TeamMembers[]
+}
+
+model CharacterOnUser {
+  id        String     @id @default(cuid())
+  character Characters
+  playedBy  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId	String		@unique
+  score     Int
+}
+
+model criteria {
+  id            String          @id @default(cuid())
+  name          String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Team          Team?           @relation(fields: [teamId], references: [id])
+  teamId        String?
+  criteriaScore criteriaScore[]
+}
+
+model criteriaScore {
+  id        String   @id @default(cuid())
+  criteria  criteria @relation(fields: [id], references: [id], onDelete: Cascade)
+  team      Team     @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  teamID    String
+  score     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Characters {
+  UNDEFINED
+  CHARACTER_1
+  CHARACTER_2
+  CHARACTER_3
+  CHARACTER_4
+}
+
+enum Role {
+  PARTICIPANT
+  ADMIN
+  ORGANIZER
+  JUDGE
+}
