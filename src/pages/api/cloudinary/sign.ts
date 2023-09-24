@@ -1,6 +1,6 @@
 import {v2 as cloudinary} from "cloudinary"
 import { NextApiRequest, NextApiResponse } from "next";
-// import { env } from "~/env.mjs";
+import { env } from "~/env.mjs";
 
 export default async function handler(req:NextApiRequest,
 res:NextApiResponse){
@@ -9,9 +9,9 @@ res.status(200).json({timestamp,signature});
 }
 
 const cloudinaryConfig = cloudinary.config({
-cloud_name:"dh1bowbbe",
-api_key:"692272739484127",
-api_secret:"K_uL_rAnk82GEECmZw5zbGSjwUY",
+cloud_name:env.CLOUDINARY_CLOUD_NAME,
+api_key:env.CLOUDINARY_API_KEY,
+api_secret:env.CLOUDINARY_API_SECRET,
 secure:true
 })
 
