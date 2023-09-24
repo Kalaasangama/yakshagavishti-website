@@ -1,9 +1,12 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "~/components/ui/accordion"
+import Reveal from "./reveal"
 
 const Faq = () => {
   return (
     <Accordion type="single" collapsible className="w-full  text-xs sm:text-sm md:text-base xl:text-lg">
-      <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">FAQ</p>
+      <Reveal classes="">
+        <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">FAQ</p>
+      </Reveal>
       <AccordionItem value="item-1">
         <AccordionTrigger className="py-3 sm:py-4">Is it accessible?</AccordionTrigger>
         <AccordionContent className="text-xs sm:text-sm md:text-base xl:text-lg text-gray-400">

@@ -31,10 +31,10 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       colors: {
-        'bg-gradient-50': 'rgba(48, 21, 75, 0.5)',
+        'bg-gradient-50': 'rgba(48, 21, 75, 0.75)',
         'primary-50': 'rgba(41,47,82, 0.5)',
         'primary-100': '#080b1e',
-        'primary-transparent-50': 'rgba(8,11,30, 0.75)',
+        'primary-transparent-50': 'rgba(8,11,30, 0.15)',
         'secondary-100': '#df8b2b',
         'secondary-200': '#f76502'
       },

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Timer from "~/components/timer";
 import Faq from "~/components/faq";
 import Footer from "~/components/footer";
+import Reveal from "~/components/reveal";
 import Prizes from "~/components/prizes";
 import { Button, InactiveButton } from "~/components/button";
 import Link from "next/link";
@@ -11,7 +12,9 @@ import { GiPaperArrow } from "react-icons/gi"
 
 import { api } from "~/utils/api";
 import next from "next";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useScroll, motion, useTransform } from "framer-motion";
+import ScrollLag from "~/components/scrollLag";
 
 export default function Home() {
 
@@ -25,35 +28,44 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col ">
+
+        <div className="h-72 bg-primary-100 absolute top-0 left-0 w-full -z-50"></div>
         
         {/* Hero Section */}
 
-        <section className="relative h-[80vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50 via-30% to-primary-100 mt-1">
-          <Image src={'/Group 2.png'} alt="Banner" className="object-cover object-center -z-10" fill/>
+        <section className="relative h-[80vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50 via-35% to-primary-100 mt-1">
+          <Image src={'/Banner-cropped.jpg'} alt="Banner" className="object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
           <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-28 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
             
             {/* Contents - Hero Section */}
-
-            <div className="flex flex-col items-center pb-16 sm:pb-8 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
-              <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Kalasangama</div>
-              <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
-            </div>
-            <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
-              {isRegistrationActive ? <Button buttonString="Register" url="#" /> : <InactiveButton buttonString="Register" url="" />}
-            </div>
+            <Reveal classes="">
+              <div className="flex flex-col items-center pb-16 sm:pb-8 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
+                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">Kalasangama</div>
+                <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
+              </div>
+            </Reveal>
+            <Reveal classes="">
+              <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
+                {isRegistrationActive ? <Button buttonString="Register" url="#" /> : <InactiveButton buttonString="Register" url="" />}
+              </div>
+            </Reveal>
           </div>
         </section>
 
         <div className="flex flex-col gap-10 md:gap-20 pt-20 bg-gradient-to-t from-primary-50 via-transparent via-75% to-primary-100  overflow-x-hidden">
 
-          <section className="relative h-[25vh] max-h-40 flex items-center mx-4 sm:mx-8 lg:mx-32 justify-center">
-            <div className="">
-              {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
-            </div>
+          <section className="relative h-[25vh] max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
+            <Reveal classes="">
+              <ScrollLag classes="" speed={300}>
+                <div className="">
+                  {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
+                </div>
+              </ScrollLag>
+            </Reveal>
 
-            <div className="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 top-[75%] -translate-y-[50%] right-0 translate-x-[50%] opacity-50">
+            <ScrollLag speed={100} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50">
               <Image src={'/mandala.png'} fill alt='' className="opacity-70 bg-blend-luminosity" />
-            </div>
+            </ScrollLag>
           </section>
 
           {/* About the Competition */}
@@ -66,32 +78,55 @@ export default function Home() {
             <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16">
               <div className="flex flex-col md:flex-row items-center gap-10">
                 <div className="flex flex-col gap-3">
-                  <div className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
-                    About <span className="text-secondary-100">competition</span>
-                  </div>
-                  <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-left">
-                    <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
-                  </div>
+                  <Reveal classes="">
+                    <div className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                      About <span className="text-secondary-100">competition</span>
+                    </div>
+                  </Reveal>
+                  <Reveal classes="">
+                    <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-left">
+                      <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
+                    </div>
+                  </Reveal>
                 </div>
-                <div className="h-40 w-40 sm:h-48 sm:w-48 lg:h-60 lg:w-60 relative shrink-0">
-                  <Image src={'/about.png'} alt="Yakshagana" fill className="object-contain object-center rounded-xl border-2 shadow-[0px_0px_12px_#df8b2b] grayscale-[0.5] hover:grayscale-0 border-secondary-100 hover:scale-105 transition duration-200 ease-linear" />
-                </div>
+                <Reveal classes="shrink-0">
+                  <div className="group h-40 w-40 sm:h-48 sm:w-48 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
+                    <Image src={'/about.png'} alt="Yakshagana" fill className="object-contain object-center rounded-xl hover:grayscale-0  transition duration-700 ease-linear" />
+                    <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-700 ease-linear bg-gradient-to-r from-secondary-200 from-20% to-transparent opacity-35 relative z-10"></div>
+                  </div>
+                </Reveal>
               </div>
 
               {/* Rules and regulation section */}
 
               <div className="flex flex-col gap-3 max-w-2xl">
-                <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
-                  Rules & <span className="text-secondary-100">regulations</span>
-                </p>
+                <Reveal classes="">
+                  <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                    Rules & <span className="text-secondary-100">regulations</span>
+                  </p>
+                </Reveal>
                 <ul className="text-xs sm:text-sm md:text-base xl:text-lg">
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> LExplicabo ullam quasi similique deserunt ad voluptas consectetur dolorem</li>
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam oprepr enderit</li>
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam optio reprehenderit</li>
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                  </Reveal>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> LExplicabo ullam quasi similique deserunt ad voluptas consectetur dolorem</li>
+                  </Reveal>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam oprepr enderit</li>
+                  </Reveal>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam optio reprehenderit</li>
+                  </Reveal>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                  </Reveal>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                  </Reveal>
+                  <Reveal classes="">
+                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                  </Reveal>
                 </ul>
               </div>
             </div>
@@ -100,18 +135,22 @@ export default function Home() {
           {/* Prizes */}
 
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
-            <div className="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[50%] right-full translate-x-[45%] lg:hidden opacity-50">
-              <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
-            </div> 
+            <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 bottom-[60%] -left-28 lg:hidden opacity-50">
+              <div className="">
+                <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
+              </div> 
+            </ScrollLag>
             <Prizes />
           </section>
 
           {/* FAQ */}
 
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 items-center relative">
-            <div className="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-full right-full hidden lg:block translate-x-[50%] lg:translate-x-0 opacity-50">
-              <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
-            </div> 
+            <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
+              <div className="">
+                <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
+              </div> 
+            </ScrollLag>
             <Faq />
           </section>
           

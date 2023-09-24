@@ -8,7 +8,6 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { useRouter } from "next/router";
 import localFont from 'next/font/local'
-import local from "next/font/local";
 import { Tourney } from "next/font/google"
 
 const tourney = Tourney({
