@@ -72,6 +72,7 @@ const FormSchema = z.object({
 	College: z.string({
 		required_error: "Please select a college.",
 	}),
+	islead: z.string().default("false").optional(),
 });
 
 const FormSchema1 = z.object({
@@ -114,9 +115,14 @@ export function CreateTeamDialog() {
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setteamPassword] = useState("");
 	const [MembersArray, setMembersArray] = useState<Members[]>([])
+	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+	const [leademail, setleademail] = useState("");
 	const { toast } = useToast();
 	const form1 = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
+		defaultValues: {
+			islead: "false",
+		},
 	});
 	const form2 = useForm<z.infer<typeof FormSchema1>>({
 		resolver: zodResolver(FormSchema1),
@@ -163,6 +169,23 @@ export function CreateTeamDialog() {
 		setSelectedRole("");
 
 	};
+	const isMemberValid = () => {
+		const array = MembersArray
+		var Indicator: boolean = true
+		console.log(array)
+		console.log("running")
+		array.some((obj) => {
+			if (obj.name == teammateName) {
+				console.log("running1")
+				Indicator = false
+			}
+			if (obj.email == teammateEmail) {
+				console.log("running2")
+				Indicator = false
+			}
+		})
+		return Indicator
+	}
 
 	return (
 		<Dialog>
@@ -275,7 +298,7 @@ export function CreateTeamDialog() {
 							<Button
 								onClick={(e) => {
 									e.preventDefault();
-									setTeamMember()
+									{ isMemberValid() ? setTeamMember() : console.log(Error) }
 									form2.reset()
 									console.log(MembersArray)
 								}}
@@ -384,11 +407,36 @@ export function CreateTeamDialog() {
 											<FormDescription>
 												Select the College your Team Belongs
 											</FormDescription>
-											<div className="space-y-1 leading-none">
-												<FormLabel>
-													Use different settings for my mobile devices
-												</FormLabel>
+											<div className="flex flex-cols gap-2">
+												<div className="mt-1">
+													<Checkbox
+														checked={isCheckboxChecked}
+														onClick={() => {
+															console.log("Checkbox clicked");
+															setIsCheckboxChecked(!isCheckboxChecked);
+														}
+														}
+													/>
+												</div>
+												<div className="mt-3" >
+													<FormDescription>
+														Do you have a role in the play
+													</FormDescription>
+
+												</div>
+
 											</div>
+											{isCheckboxChecked && <React.Fragment>
+												<FormLabel className="mt-4">Enter Your Email.</FormLabel>
+												<Input
+													id="Lead_Email"
+													placeholder="Email"
+													className="col-span-3"
+													type="email"
+													onChange={(e) => setleademail(e.target.value)}
+												/>
+												<FormDescription>Please provide your email address. All future communications will be sent to this email.</FormDescription></React.Fragment>}
+
 											<FormMessage />
 										</FormItem>
 									)}
@@ -411,3 +459,5 @@ export function CreateTeamDialog() {
 		</Dialog>
 	);
 }
+
+
