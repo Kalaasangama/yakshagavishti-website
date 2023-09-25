@@ -34,6 +34,7 @@
     "react-hook-form": "^7.46.2",
     "react-icons": "^4.11.0",
     "react-timer-hook": "^3.0.7",
+    "react-router-dom": "^6.16.0",
     "superjson": "^1.13.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
