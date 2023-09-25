@@ -2,6 +2,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import Navbar from "~/components/navbar";
+import Footer from "~/components/footer";
 
 import { api } from "~/utils/api";
 
@@ -66,6 +67,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans`}>
         {path.pathname !== "/_error" && <Navbar />}
         <Component {...pageProps} />
+        <Footer />
       </main>
     </SessionProvider>
   );

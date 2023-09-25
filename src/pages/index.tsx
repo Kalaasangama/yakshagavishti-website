@@ -33,7 +33,7 @@ export default function Home() {
         
         {/* Hero Section */}
 
-        <section className="relative h-[80vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50 via-35% to-primary-100 mt-1">
+        <section className="relative h-[80vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
           <Image src={'/Banner-cropped.jpg'} alt="Banner" className="object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
           <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-28 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
             
@@ -52,7 +52,7 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="flex flex-col gap-10 md:gap-20 pt-20 bg-gradient-to-t from-primary-50 via-transparent via-75% to-primary-100  overflow-x-hidden">
+        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-x-hidden">
 
           <section className="relative h-[25vh] max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
             <Reveal classes="">
@@ -91,8 +91,8 @@ export default function Home() {
                 </div>
                 <Reveal classes="shrink-0">
                   <div className="group h-40 w-40 sm:h-48 sm:w-48 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                    <Image src={'/about.png'} alt="Yakshagana" fill className="object-contain object-center rounded-xl hover:grayscale-0  transition duration-700 ease-linear" />
-                    <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-700 ease-linear bg-gradient-to-r from-secondary-200 from-20% to-transparent opacity-35 relative z-10"></div>
+                    <Image src={'/about.png'} alt="Yakshagana" fill className="object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                    <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
                   </div>
                 </Reveal>
               </div>
@@ -154,8 +154,6 @@ export default function Home() {
             <Faq />
           </section>
           
-          <Footer />
-
         </div>
 
       </main>

@@ -73,9 +73,9 @@ const Navbar = () => {
             })}
           </div>
           <div className="flex gap-5">
-            <div className="hidden lg:block">
+            <Reveal classes="hidden lg:block">
               <Button buttonString="Register" url="/" />
-            </div>
+            </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
               onClick={toggleMenu}
@@ -93,7 +93,7 @@ const Navbar = () => {
 const MobileNav = ({ links, activePath }: Props) => {
   return (
     <div className="">
-      <div className="flex flex-col space-y-3 pt-0 pb-3 lg:hidden items-start">
+      <div className="flex flex-col items-end space-y-3 pt-0 pb-3 lg:hidden">
         {links.map((link, idx) => {
           return (
             <Reveal key={idx} classes="">

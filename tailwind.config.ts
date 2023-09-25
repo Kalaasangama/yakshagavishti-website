@@ -36,6 +36,7 @@ module.exports = {
         'primary-100': '#080b1e',
         'primary-transparent-50': 'rgba(8,11,30, 0.15)',
         'secondary-100': '#df8b2b',
+        'secondary-transparent-0.5': 'rgba(247, 101, 2, 0.5)',
         'secondary-200': '#f76502'
       },
       fontFamily: {

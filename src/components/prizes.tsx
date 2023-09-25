@@ -7,7 +7,7 @@ const Prizes = () => {
     <div className="w-full justify-between flex flex-col items-center gap-3">
 
       <Reveal classes="">
-        <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left md:self-start">Prizes</p>
+        <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left md:self-start mb-2">Prizes</p>
       </Reveal>
 
       <div className="flex flex-col md:flex-row gap-7 md:gap-24 lg:gap-32 text-sm sm:text-lg md:text-xl 2xl:text-4xl max-w-fit">
