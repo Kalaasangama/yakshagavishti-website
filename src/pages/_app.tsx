@@ -5,7 +5,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import "~/styles/dropzone.css"
 import Navbar from "~/components/navbar";
-
+import { Toaster } from "@/components/ui/toaster"
 
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -16,6 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <Navbar />
       <Component {...pageProps} />
+      <Toaster />
     </SessionProvider>
   );
 };

@@ -24,8 +24,7 @@ export const TeamRouter = createTRPCRouter({
 			const team = new Team(input.teamName, input.members, ctx);
 			try {
 				if (!(await team.isTeamExists())) {
-					await team.createTeam();
-					await team.addMembers();
+					await ctx.prisma.$transaction([...team.addMembers, team.createTeam]);
 				}
 			} catch (error) {
 				console.log(error);
