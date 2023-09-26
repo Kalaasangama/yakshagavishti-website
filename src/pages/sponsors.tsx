@@ -1,62 +1,62 @@
 import React from 'react'
 import { motion, useTransform, useScroll } from "framer-motion";
 import { useRef } from "react";
+import { useWindowSize } from '~/components/customHooks';
 
 const Sponsors = () => {
   return (
-    <div className="bg-primary-100">
+    <div className="">
+      <div className="h-screen mx-4 sm:mx-8 lg:mx-32">
         <div className="flex h-40 items-center justify-center">
-            <h1 className="font-serif font-bold uppercase text-neutral-500 md:text-6xl sm:text-5xl text-4xl">
-            Sponsors
-            </h1><br />
+          <h1 className="font-serif font-bold uppercase text-neutral-500 md:text-6xl sm:text-5xl text-4xl">Sponsors</h1>
+        </div>
+        <p className='flex items-center justify-center text-base text-neutral-500'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
       </div>
-      <p className='flex items-center justify-center text-base text-neutral-500 px-8'>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
       <HorizontalScrollCarousel />
-      <div className="flex h-48 items-center justify-center sm:mx-8 lg:mx-32">
-        <span className="font-semibold uppercase text-neutral-500">
-          Scroll up
-        </span>
+      <div className="flex h-48 items-center justify-center">
+        <span className="font-semibold uppercase text-neutral-500">Scroll up</span>
       </div>
     </div>
   );
 };
+
 const HorizontalScrollCarousel = () => {
     const targetRef = useRef<HTMLDivElement | null>(null);
-    const { scrollYProgress } = useScroll({
+    const horScroll = useScroll({
       target: targetRef,
     });
-  
-    const x = useTransform(scrollYProgress, [0, 1], ["1%", "-63%"]);
+    const growScroll = useScroll({
+      target: targetRef,
+      offset: ["start 101vh", "start start"]
+    })
+
+    const {width, height}: {width: number, height: number} = useWindowSize()
+    const unit = (height > width)? "vh" : "vw"
+
+    const grow = useTransform(growScroll.scrollYProgress, [0, 1], [`0${unit}`, `250${unit}`]) 
+    const x = useTransform(horScroll.scrollYProgress, [0, 1], ["1%", "-100%"]);
   
     return (
-      <section ref={targetRef} 
-      className="relative h-[300vh] lg:px-20 px-0"
-      // bg-gray-900 bg-opacity-75 
-      style={{
-        backgroundImage: `url(${"/gradient.png"})`, 
-        // backgroundImage:`url(${"https://i.pinimg.com/originals/76/f0/bb/76f0bbaee282cc0042cd53a4c047532f.jpg"})`,
-        backgroundRepeat:'no-repeat',
-        backgroundSize:'cover',
-        backgroundBlendMode:'darken',
-        }}
-        >
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden">
-          <motion.div style={{ x }} className="flex gap-8">
-            {cards.map((card) => {
-              return <Card card={card} key={card.id} />;
-            })}
-          </motion.div>
+      <section ref={targetRef} className="relative h-[300vh]">
+        <motion.div style={{height: grow, width: grow}} className="fixed rounded-full top-full left-[50%] -translate-x-[50%] -translate-y-[50%] h-10 w-10 bg-gradient-to-r from-gray-700 via-gray-900 to-black -z-20"></motion.div>
+        <div className="sticky top-0 flex h-screen items-center overflow-hidden mx-4 sm:mx-8 lg:mx-32">
+            <motion.div style={{ x }} className={`flex gap-8 pl-[100vw]`}>
+              {cards.map((card) => {
+                return <Card card={card} key={card.id} />;
+              })}
+            </motion.div>
         </div>
       </section>
     );
   };
+
   const Card = ({ card }: { card: CardType }) => {
   
 
     return (
       <div
         key={card.id}
-        className="group relative lg:h-[350px] lg:w-[350px] h-[250px] w-[250px] overflow-hidden bg-neutral-200 rounded-2xl "
+        className="group relative lg:h-[350px] lg:w-[350px] h-[250px] w-[250px] overflow-hidden bg-neutral-200 rounded-2xl"
         onClick={event =>  window.location.href=card.link}
       >
         <div

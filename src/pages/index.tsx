@@ -1,7 +1,9 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import Timer from "~/components/timer";
+// import Timer from "~/components/timer";
+import dynamic from "next/dynamic.js";
+const Timer = dynamic(() => import('~/components/timer'), { ssr: false })
 import Faq from "~/components/faq";
 import Footer from "~/components/footer";
 import Reveal from "~/components/reveal";
@@ -33,13 +35,13 @@ export default function Home() {
         
         {/* Hero Section */}
 
-        <section className="relative h-[80vh] sm:h-[70vh] md:h-[80vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
+        <section className="relative h-[83vh] sm:h-[80vh] md:h-[87vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
           <Image src={'/Banner-cropped.jpg'} alt="Banner" className="object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
-          <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-28 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
+          <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-36 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
             
             {/* Contents - Hero Section */}
             <Reveal classes="">
-              <div className="flex flex-col items-center pb-16 sm:pb-8 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
+              <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
                 <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">Kalasangama</div>
                 <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
               </div>
@@ -54,10 +56,10 @@ export default function Home() {
 
         <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-x-hidden">
 
-          <section className="relative h-[25vh] max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
+          <section className="relative h-[25vh] sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
             <Reveal classes="">
-              <ScrollLag classes="" speed={300}>
-                <div className="">
+              <ScrollLag classes="" speed={500}>
+                <div className="h-full -m-4 md:-m-16">
                   {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
                 </div>
               </ScrollLag>

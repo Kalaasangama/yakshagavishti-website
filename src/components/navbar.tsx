@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { Button } from "./button";
+import { SmallButton } from "./button";
 import Reveal from "./reveal";
 
 type Link = {
@@ -36,6 +36,17 @@ const Navbar = () => {
   const toggleMenu = () => {
     setIsMenuActive(!isMenuActive);
   };
+
+  const closeMenu = () => {
+    if (isMenuActive) setIsMenuActive(!isMenuActive);
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', closeMenu);
+    return () => {
+      document.removeEventListener('mousedown', closeMenu);
+    };
+  });
 
   return (
     <nav className="sticky top-2 z-50 font-medium overflow-hidden">
@@ -74,7 +85,7 @@ const Navbar = () => {
           </div>
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
-              <Button buttonString="Register" url="/" />
+              <SmallButton buttonString="Log In" url="/" />
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -114,7 +125,7 @@ const MobileNav = ({ links, activePath }: Props) => {
           );
         })}
         <Reveal classes="">
-          <Button buttonString="Register" url="/" />
+          <SmallButton buttonString="Log In" url="/" />
         </Reveal>
       </div>
     </div>
