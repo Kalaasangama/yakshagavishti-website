@@ -2,6 +2,7 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import management from "~/utils/auth0";
 import kalasangamaError from "~/utils/customError";
+import { checkLeaderStatus, getCollegeById, setLeader } from "~/utils/helpers";
 
 export const TeamRouter = createTRPCRouter({
 	register: protectedProcedure
@@ -21,42 +22,15 @@ export const TeamRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			try {
-				//Get college by ID
-				const collegeById = await ctx.prisma.college.findUnique({
-					where: {
-						id: input.college_id,
-					},
-				});
-
-				if (!collegeById) {
-					throw new kalasangamaError(
-						"Create team error",
-						"College not found"
-					);
-				} else {
-					console.log(collegeById);
-				}
+				const collegeById = await getCollegeById(input.college_id);
 				//Create team
+				await checkLeaderStatus(ctx.session.user.id);
 				const newTeam = await ctx.prisma.team.create({
 					data: { name: collegeById.name },
 				});
 
-				await ctx.prisma.user.update({
-					where: { id: ctx.session.user.id },
-					data: {
-						team: {
-							connect: {
-								name: newTeam.name,
-							},
-						},
-						leaderOf: {
-							connect: {
-								name: newTeam.name,
-							},
-						},
-					},
-				});
-
+				//Set team leader
+				await setLeader(ctx.session.user.id, newTeam.name);
 				//Create accounts in auth0
 				await Promise.all(
 					input.members.map(async (user) => {
@@ -161,8 +135,12 @@ export const TeamRouter = createTRPCRouter({
 						.catch((error) => console.log(error));
 				});
 			} catch (error) {
-				console.log(error);
-				throw "An error occurred!";
+				if (typeof error === typeof kalasangamaError) {
+					throw { type: error.type, message: error.message };
+				} else {
+					console.log(error);
+					throw "An error occurred!";
+				}
 			}
 		}),
 });

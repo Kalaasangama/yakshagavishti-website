@@ -52,19 +52,19 @@ function AuthShowcase() {
 				<button
 					onClick={() =>
 						createTeam.mutate({
-							college_id: "clmvm9how0004x93tht0gemlt",
+							college_id: "cln20p3gc0001x9l5kkjxxg7z",
 							members: [
 								{
 									password: "Test@123",
 									name: "menber",
-									email: "test20@gmail.com",
+									email: "test0@gmail.com",
 									character_id: "cln1zwuly0000x9l5okcmhlte",
 									phone: "9449414199",
 								},
 								{
 									password: "Test@123",
 									name: "menber",
-									email: "test21@gmail.com",
+									email: "test1@gmail.com",
 									character_id: "cln1zwuly0000x9l5okcmhlte",
 									phone: "9449414199",
 								},
