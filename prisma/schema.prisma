@@ -38,7 +38,7 @@ model User {
   id              String           @id @default(cuid())
   name            String?
   email           String?          @unique
-  emailVerified   Boolean?			@default(false)
+  emailVerified   Boolean?         @default(false)
   image           String?
   collegeId       String?
   college         College?         @relation(fields: [collegeId], references: [id])
@@ -48,7 +48,7 @@ model User {
   characterPlayed CharacterOnUser?
   leaderOf        Team?            @relation(fields: [teamId2], references: [id], name: "TeamLead")
   teamId2         String?          @unique
-  isIdVerified      Boolean          @default(false)
+  isIdVerified    Boolean          @default(false)
   accounts        Account[]
   sessions        Session[]
 }
@@ -67,6 +67,7 @@ model College {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Users     User[]
+  Team      Team[]
 }
 
 model Team {
@@ -74,6 +75,8 @@ model Team {
   name          String          @unique
   confirmed     Boolean         @default(false)
   attended      Boolean         @default(false)
+  college       College?        @relation(fields: [college_id], references: [id])
+  college_id    String?
   members       User[]
   leader        User?           @relation(name: "TeamLead")
   teamScore     Int             @default(0)
@@ -88,7 +91,7 @@ model CharacterOnUser {
   id        String     @id @default(cuid())
   character Characters
   playedBy  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId	String		@unique
+  userId    String     @unique
   score     Int
 }
 

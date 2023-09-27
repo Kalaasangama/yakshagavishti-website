@@ -120,7 +120,7 @@ class Team {
 
 				} catch (mapError) {
 					if (mapError.error === "Conflict") {
-						throw "A member from your team already exists in another team!";
+						throw "Looks like a member from your team already exists in another team!";
 					}
 					console.log(mapError.error);
 					throw mapError;
