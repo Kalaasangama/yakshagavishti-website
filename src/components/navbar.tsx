@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
+import { SmallButton } from "./button";
+import Reveal from "./reveal";
 
 type Link = {
   label: string;
@@ -17,7 +19,6 @@ type Props = {
 const Navbar = () => {
   const links = [
     { label: "Home", url: "/" },
-    { label: "Register", url: "/register" },
     { label: "Sponsors", url: "/sponsors" },
     { label: "Achievements", url: "/achievements" },
     { label: "About Us", url: "/about" },
@@ -36,10 +37,21 @@ const Navbar = () => {
     setIsMenuActive(!isMenuActive);
   };
 
+  const closeMenu = () => {
+    if (isMenuActive) setIsMenuActive(!isMenuActive);
+  }
+
+  useEffect(() => {
+    document.addEventListener('mousedown', closeMenu);
+    return () => {
+      document.removeEventListener('mousedown', closeMenu);
+    };
+  });
+
   return (
-    <nav className="relative z-50 bg-transparent">
-      <div className="mx-4 flex flex-col border-b-[1px] py-4 text-white sm:mx-8 lg:mx-32">
-        <div className="flex justify-between">
+    <nav className="sticky top-2 z-50 font-medium overflow-hidden">
+      <div className="flex flex-col backdrop-blur-md border-[1px] rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
+        <div className="flex justify-between items-center">
           <div className="flex items-center justify-center">
             <Image
               src={"/"}
@@ -49,32 +61,38 @@ const Navbar = () => {
               className="object-contain object-center"
             />
           </div>
-          <div className="hidden space-x-7 lg:flex">
-            {links.map((link) => {
+          <div className="hidden space-x-7 lg:flex 2xl:text-2xl">
+            {links.map((link, idx) => {
               return (
-                <Link
-                  className="flex items-center"
-                  key={link.label}
-                  href={link.url}
-                >
-                  <div
-                    className={
-                      activePath?.label === link.label
-                        ? "text-secondary-100"
-                        : ""
-                    }
+                <Reveal key={idx} classes="">
+                  <Link
+                    className="flex items-center"
+                    href={link.url}
                   >
-                    {link.label}
-                  </div>
-                </Link>
+                    <div
+                      className={
+                        activePath?.label === link.label
+                          ? "text-secondary-100"
+                          : "hover:text-secondary-200 tranition ease-linear duration-150"
+                      }
+                    >
+                      {link.label}
+                    </div>
+                  </Link>
+                </Reveal>
               );
             })}
           </div>
-          <div
-            className="flex items-center text-2xl lg:hidden"
-            onClick={toggleMenu}
-          >
-            {!isMenuActive ? <BiMenuAltRight /> : <BiX />}
+          <div className="flex gap-5">
+            <Reveal classes="hidden lg:block">
+              <SmallButton buttonString="Log In" url="/" />
+            </Reveal>
+            <div
+              className="flex items-center text-2xl lg:hidden"
+              onClick={toggleMenu}
+            >
+              {!isMenuActive ? <BiMenuAltRight /> : <BiX />}
+            </div>
           </div>
         </div>
         {isMenuActive && <MobileNav links={links} activePath={activePath} />}
@@ -86,24 +104,29 @@ const Navbar = () => {
 const MobileNav = ({ links, activePath }: Props) => {
   return (
     <div className="">
-      <div className="flex flex-col space-y-3 py-3 md:hidden">
-        {links.map((link) => {
+      <div className="flex flex-col items-end space-y-3 pt-0 pb-3 lg:hidden">
+        {links.map((link, idx) => {
           return (
-            <Link
-              className="flex items-center"
-              key={link.label}
-              href={link.url}
-            >
-              <div
-                className={
-                  activePath?.label === link.label ? "text-secondary-100" : ""
-                }
+            <Reveal key={idx} classes="">
+              <Link
+                className="flex items-center"
+                key={link.label}
+                href={link.url}
               >
-                {link.label}
-              </div>
-            </Link>
+                <div
+                  className={
+                    activePath?.label === link.label ? "text-secondary-100" : ""
+                  }
+                >
+                  {link.label}
+                </div>
+              </Link>
+            </Reveal>
           );
         })}
+        <Reveal classes="">
+          <SmallButton buttonString="Log In" url="/" />
+        </Reveal>
       </div>
     </div>
   );
