@@ -1,8 +1,17 @@
+import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import management from "~/utils/auth0";
 import kalasangamaError from "~/utils/customError";
-import { checkLeaderStatus, getCollegeById, setLeader } from "~/utils/helpers";
+import {
+	checkLeaderStatus,
+	createAccount,
+	createAuth0User,
+	createTeam,
+	getCollegeById,
+	setLeader,
+	setTeamCompleteStatus,
+} from "~/utils/helpers";
 
 export const TeamRouter = createTRPCRouter({
 	register: protectedProcedure
@@ -22,121 +31,41 @@ export const TeamRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			try {
-				const collegeById = await getCollegeById(input.college_id);
-				//Create team
-				await checkLeaderStatus(ctx.session.user.id);
-				const newTeam = await ctx.prisma.team.create({
-					data: { name: collegeById.name },
-				});
-
-				//Set team leader
-				await setLeader(ctx.session.user.id, newTeam.name);
+				//Create or return team
+				const { team, college } = await createTeam(
+					input.college_id,
+					ctx.session
+				);
 				//Create accounts in auth0
 				await Promise.all(
 					input.members.map(async (user) => {
-						const auth0User =
-							await management.usersByEmail.getByEmail({
-								email: user.email,
-							});
-
-						//If auth0 user already exists, link the user to a team if he is not already in a team
-						if (auth0User.data.length > 0) {
-							const userTeam = await ctx.prisma.user.findFirst({
-								where: {
-									email: auth0User.data[0]?.email,
-								},
-								select: {
-									team: {
-										select: {
-											id: true,
-										},
-									},
-								},
-							});
-
-							if (userTeam?.team) {
-								throw new kalasangamaError(
-									"Add member error",
-									"User you are trying to add is already in a team"
-								);
-							}
-
-							await ctx.prisma.user.update({
-								where: {
-									email: auth0User.data[0]?.email,
-								},
-								data: {
-									team: {
-										connect: {
-											name: collegeById?.name,
-										},
-									},
-								},
-							});
-						}
-						//If auth0 user does not exist create an account
-						else {
-							const newUser = await management.users.create({
-								name: user.name,
-								email: user.email,
-								password: user.password,
-								connection: "Username-Password-Authentication",
-							});
-							return {
-								auth0Data: newUser.data,
-								memberDetails: user,
-							};
-						}
+						return createAuth0User(user);
 					})
-				).then((res) => {
+				).then(async (res) => {
 					//Create an array of prisma promises for transaction
-					console.log(collegeById);
 					const addUsersTransaction = res.map((user) => {
-						return ctx.prisma.account.create({
-							data: {
-								type: "oauth",
-								provider: "auth0",
-								providerAccountId: z
-									.string()
-									.parse(user?.auth0Data.user_id),
-								scope: "openid profile email",
-								token_type: "Bearer",
-								user: {
-									create: {
-										id: user?.auth0Data.identities[0]
-											?.user_id,
-										name: user?.memberDetails.name,
-										email: user?.memberDetails.email,
-										characterPlayed: {
-											connect: {
-												id: user?.memberDetails
-													.character_id,
-											},
-										},
-										team: {
-											connect: {
-												name: collegeById.name,
-											},
-										},
-										college: {
-											connect: {
-												id: input.college_id,
-											},
-										},
-									},
-								},
-							},
-						});
+						return createAccount(user, college.name, college.id);
 					});
 
+					//Create user accounts in transaction
 					return ctx.prisma
 						.$transaction(addUsersTransaction)
-						.then(() => "success")
-						.catch((error) => console.log(error));
+						.then(async () => {
+							await setTeamCompleteStatus(team.id, true);
+							return "success";
+						})
+						.catch((error) => {
+							throw error;
+						});
+
+					//Set team complete status to true to prevent edits
 				});
 			} catch (error) {
-				if (typeof error === typeof kalasangamaError) {
-					throw { type: error.type, message: error.message };
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "CONFLICT",
+					});
 				} else {
 					console.log(error);
 					throw "An error occurred!";
