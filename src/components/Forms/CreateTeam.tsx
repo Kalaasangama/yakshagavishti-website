@@ -1,13 +1,19 @@
-import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "../TeamTable";
+import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useForm, Controller } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
 import * as z from "zod";
 import { api } from "~/utils/api";
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@/components/ui/accordion";
 import {
 	Form,
 	FormControl,
@@ -43,36 +49,23 @@ import { Input } from "@/components/ui/input";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 
-const colleges: {
-	label: string,
-	value: string
-}[] = [
-		{ label: "Nitte", value: "en" },
-		{ label: "Carnara", value: "fr" },
-		{ label: "MITE", value: "de" },
-		{ label: "NITK", value: "es" },
-		{ label: "NITC", value: "pt" },
-		{ label: "SMS", value: "ru" },
-		{ label: "St Josep", value: "ja" },
-	]
+const colleges = [
+	{ label: "Nitte", value: "clmvm9how0004x93tht0gemlt" },
+];
 
-const roles: {
-	label: string,
-	value: string
-}[] = [
-		{ label: "Ram", value: "en" },
-		{ label: "Sitha", value: "fr" },
-		{ label: "Laksman", value: "de" },
-		{ label: "Hanuman", value: "es" },
-		{ label: "Garuda", value: "pt" },
-		{ label: "Ravan", value: "ru" },
-	]
+const roles = [
+	{ label: "Ram", value: "cln0iguh70003x9dozn0p8q3v" },
+	{ label: "Sham", value: "cln0iguh70003x9dozn0p8q3v" },
+];
 
 const FormSchema = z.object({
 	College: z.string({
 		required_error: "Please select a college.",
 	}),
 	islead: z.string().default("false").optional(),
+	Role: z.string({
+		required_error: "Please select a role.",
+	}),
 });
 
 const FormSchema1 = z.object({
@@ -82,17 +75,18 @@ const FormSchema1 = z.object({
 });
 
 type Members = {
-	name: string,
-	email: string,
-	password: string,
-	college_id: string,
-	character_id: string,
-	isLead: boolean,
+	name: string;
+	email: string;
+	password: string;
+	college_id: string;
+	character_id: string;
+	isLead: boolean;
+	phone: string;
 };
 
 export const columns: ColumnDef<Members>[] = [
 	{
-		accessorKey: "Name",
+		accessorKey: "name",
 		header: "Name",
 	},
 	{
@@ -100,65 +94,61 @@ export const columns: ColumnDef<Members>[] = [
 		header: "Email",
 	},
 	{
-		accessorKey: "Role",
+		accessorKey: "character_id",
 		header: "Role",
 	},
 ];
 
 export function CreateTeamDialog() {
 	const createTeam = api.team.register.useMutation();
-	const [StateForm, setStateForm] = useState(false);
-	const [teamName, setTeamName] = useState("");
+	const [StateForm, setStateForm] = useState("firstform");
 	const [selectedCollege, setSelectedCollege] = useState("");
 	const [selectedRole, setSelectedRole] = useState("");
 	const [teammateName, setTeammateName] = useState("");
 	const [teammateEmail, setTeammateEmail] = useState("");
-	const [teamPassword, setteamPassword] = useState("");
-	const [MembersArray, setMembersArray] = useState<Members[]>([])
+	const [teamPassword, setTeamPassword] = useState("");
+	const [TeammatePhone, setTeammatePhone] = useState("");
+	const [MembersArray, setMembersArray] = useState<Members[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-	const [leademail, setleademail] = useState("");
+	const [leademail, setLeadEmail] = useState("");
 	const { toast } = useToast();
 	const form1 = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
-		defaultValues: {
-			islead: "false",
-		},
 	});
 	const form2 = useForm<z.infer<typeof FormSchema1>>({
 		resolver: zodResolver(FormSchema1),
 	});
-	const Submitdata = () => {
+
+	const SubmitData = () => {
 		const MemberInfo = {
-			teamName: teamName,
-			leadId: "sdfsdfsdf",
-			members:
-				MembersArray
-		}
-		console.log(MemberInfo)
-		createTeam.mutate(MemberInfo)
-		toast({
+			teamName: teammateName,
+			leadId: leademail,
+			members: MembersArray,
+		};
+		console.log(MemberInfo);
+		createTeam.mutate(MemberInfo);
+		createTeam.data && toast({
 			variant: "default",
 			title: "Team has been Created",
-			description:
-				`Team has been Created. Continue to fill in the details of your Teammates.${teamName}, ${selectedCollege},${teamPassword}`,
-
+			description: `Team has been Created. Continue to fill in the details of your Teammates, ${selectedCollege}, ${teamPassword}`,
 			action: <ToastAction altText="Undo">Undo</ToastAction>,
 		});
-	}
-	const setTeamMember = () => {
+	};
+
+	const setTeamMember = (character_id: string) => {
 		const data: Members = {
-			character_id: selectedRole,
+			character_id: character_id,
 			college_id: selectedCollege,
 			email: teammateEmail,
 			isLead: false,
 			name: teammateName,
-			password: teamPassword
-
+			password: teamPassword,
+			phone: TeammatePhone
 		};
 
-		const array = MembersArray
-		array.push(data)
-		setMembersArray(array)
+		const array = [...MembersArray];
+		array.push(data);
+		setMembersArray(array);
 		toast({
 			variant: "default",
 			title: "Teammate Added",
@@ -167,158 +157,60 @@ export function CreateTeamDialog() {
 		setTeammateName("");
 		setTeammateEmail("");
 		setSelectedRole("");
-
+		setTeammatePhone("")
+		console.log(MembersArray)
 	};
-	const isMemberValid = () => {
-		const array = MembersArray
-		var Indicator: boolean = true
-		console.log(array)
-		console.log("running")
+
+	const isMemberValid = (character_id: string) => {
+		const array = MembersArray;
+		let flags = true;
+		console.log(array);
+		console.log("running");
 		array.some((obj) => {
-			if (obj.name == teammateName) {
-				console.log("running1")
-				Indicator = false
+			if (obj.name === teammateName || obj.email === teammateEmail || obj.phone === TeammatePhone) {
+				console.log("running1");
+				toast({
+					variant: "destructive",
+					title: "Repeated Teammate",
+					description: "Repeated Teammate",
+				});
+				flags = false;
 			}
-			if (obj.email == teammateEmail) {
-				console.log("running2")
-				Indicator = false
-			}
-		})
-		return Indicator
-	}
+		});
+		if (flags) {
+			setTeamMember(character_id);
+		}
+	};
+
+	const Passwordpattern = () => {
+		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+		if (teamPassword.match(passwordRegex)) {
+			toast({
+				variant: "default",
+				title: "Details",
+				description: `Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.`,
+			});
+
+			setStateForm("secondform");
+		} else {
+			toast({
+				variant: "destructive",
+				title:
+					"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number",
+				description:
+					"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number",
+			});
+			return false;
+		}
+	};
 
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-[425px]">
-				{StateForm ? (
-					<React.Fragment>
-						<DialogHeader>
-							<DialogTitle>ADD MEMBERS</DialogTitle>
-							<DialogDescription>
-								Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.
-							</DialogDescription>
-						</DialogHeader>
-						<Form {...form2}>
-							<form className="space-y-4">
-								<Controller
-									name="Role"
-									control={form2.control}
-									render={({ field }) => (
-										<FormItem className="flex flex-col">
-											<FormLabel className="mt-4">Name of the team member</FormLabel>
-											<Input
-												id="Teammate_Name"
-												placeholder="Teammate_Name"
-												className="col-span-3"
-												type="text"
-												value={teammateName}
-												onChange={(e) => setTeammateName(e.target.value)}
-											/>
-											<FormDescription>
-												Input the Name of your teammate.
-											</FormDescription>
-											<FormLabel className="mt-4">Email address of the team member</FormLabel>
-											<Input
-												id="Teammate_EmailID"
-												placeholder="Teammate_EmailID"
-												className="col-span-3"
-												type="email"
-												value={teammateEmail}
-												onChange={(e) => setTeammateEmail(e.target.value)}
-											/>
-											<FormDescription>
-												Input the email addresses of your teammates.
-											</FormDescription>
-											<FormLabel className="mt-4">Choose their role</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															variant="ghost"
-															role="combobox"
-															className={cn(
-																" justify-between",
-																!field.value && "text-muted-foreground"
-															)}
-														>
-															{field.value
-																? roles.find(
-																	(role) => role.value === field.value
-																)?.label
-																: "Select Role"}
-															<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className="w-[200px] p-0">
-													<Command>
-														<CommandInput
-															placeholder="Search framework..."
-															className="h-9"
-														/>
-														<CommandEmpty>No roles found.</CommandEmpty>
-														<CommandGroup>
-															{roles.map((role) => (
-																<CommandItem
-																	value={role.label}
-																	key={role.value}
-																	onSelect={() => {
-																		form2.setValue("Role", role.value);
-																		setSelectedRole(role.value);
-																	}}
-																>
-																	{role.label}
-																	<CheckIcon
-																		className={cn(
-																			"ml-auto h-4 w-4",
-																			role.value === field.value
-																				? "opacity-100"
-																				: "opacity-0"
-																		)}
-																	/>
-																</CommandItem>
-															))}
-														</CommandGroup>
-													</Command>
-												</PopoverContent>
-											</Popover>
-											<FormDescription>
-												Choose the role for your teammate.
-											</FormDescription>
-											<FormMessage />
-										</FormItem>
-									)}
-								/>
-							</form>
-						</Form>
-						<DialogFooter>
-							<Button
-								onClick={(e) => {
-									e.preventDefault();
-									{ isMemberValid() ? setTeamMember() : console.log(Error) }
-									form2.reset()
-									console.log(MembersArray)
-								}}
-							>
-								Add Teammate
-							</Button>
-							<Button
-								onClick={(e) => {
-									e.preventDefault();
-									Submitdata()
-								}}
-							>
-								Submit
-							</Button>
-						</DialogFooter>
-						{MembersArray.length > 0 && <div className="container mx-auto py-10">
-							<DataTable columns={columns} data={MembersArray} />
-						</div>}
-					</React.Fragment>
-				) : (
+			<DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-screen no-scrollbar">
+				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
 							<DialogTitle>Create Team</DialogTitle>
@@ -327,30 +219,12 @@ export function CreateTeamDialog() {
 							</DialogDescription>
 						</DialogHeader>
 						<Form {...form1}>
-							<form className="space-y-6">
+							<form className="space-y-3">
 								<FormField
 									control={form1.control}
 									name="College"
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
-											<FormLabel className="mt-4">Team Name</FormLabel>
-											<Input
-												id="Team_name"
-												placeholder="TeamName"
-												className="col-span-3"
-												type="text"
-												onChange={(e) => setTeamName(e.target.value)}
-											/>
-											<FormDescription>Please provide the name of the team in the following field.</FormDescription>
-											<FormLabel className="mt-4">Create a team password.</FormLabel>
-											<Input
-												id="Team_Password"
-												placeholder="TeamPassword"
-												className="col-span-3"
-												type="text"
-												onChange={(e) => setteamPassword(e.target.value)}
-											/>
-											<FormDescription>Generate a password for your team.</FormDescription>
 											<FormLabel className="mt-5">Choose your college</FormLabel>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -404,40 +278,85 @@ export function CreateTeamDialog() {
 													</Command>
 												</PopoverContent>
 											</Popover>
-											<FormDescription>
-												Select the College your Team Belongs
-											</FormDescription>
+											<FormDescription>Select the College your Team Belongs</FormDescription>
+											<FormLabel className="mt-4">Create a team password.</FormLabel>
+											<Input
+												id="Team_Password"
+												placeholder="TeamPassword"
+												className="col-span-3"
+												type="text"
+												onChange={(e) => {
+													setTeamPassword(e.target.value);
+												}}
+												value={teamPassword}
+											/>
+											<FormDescription>Generate a password for your team.</FormDescription>
 											<div className="flex flex-cols gap-2">
-												<div className="mt-1">
+												<div className="mt-2">
 													<Checkbox
 														checked={isCheckboxChecked}
 														onClick={() => {
 															console.log("Checkbox clicked");
 															setIsCheckboxChecked(!isCheckboxChecked);
-														}
-														}
+														}}
 													/>
 												</div>
-												<div className="mt-3" >
-													<FormDescription>
-														Do you have a role in the play
-													</FormDescription>
-
+												<div className="mt-2">
+													<FormDescription>Do you have a Character in the play</FormDescription>
 												</div>
-
 											</div>
-											{isCheckboxChecked && <React.Fragment>
-												<FormLabel className="mt-4">Enter Your Email.</FormLabel>
-												<Input
-													id="Lead_Email"
-													placeholder="Email"
-													className="col-span-3"
-													type="email"
-													onChange={(e) => setleademail(e.target.value)}
-												/>
-												<FormDescription>Please provide your email address. All future communications will be sent to this email.</FormDescription></React.Fragment>}
-
-											<FormMessage />
+											{isCheckboxChecked && (
+												<React.Fragment>
+													<FormLabel className="mt-4">Choose your Character</FormLabel>
+													<Popover>
+														<PopoverTrigger asChild>
+															<FormControl>
+																<Button
+																	variant="ghost"
+																	role="combobox"
+																	className={cn(
+																		" justify-between",
+																		!field.value && "text-muted-foreground"
+																	)}
+																>
+																	{field.value
+																		? roles.find((role) => role.value === field.value)?.label
+																		: "Select Role"}
+																	<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+																</Button>
+															</FormControl>
+														</PopoverTrigger>
+														<PopoverContent className="w-[200px] p-0">
+															<Command>
+																<CommandInput placeholder="Search Character..." className="h-9" />
+																<CommandEmpty>No Character found.</CommandEmpty>
+																<CommandGroup>
+																	{roles.map((role) => (
+																		<CommandItem
+																			value={role.label}
+																			key={role.value}
+																			onSelect={() => {
+																				field.onChange(role.value);
+																				setSelectedRole(role.value);
+																			}}
+																		>
+																			{role.label}
+																			<CheckIcon
+																				className={cn(
+																					"ml-auto h-4 w-4",
+																					role.value === field.value ? "opacity-100" : "opacity-0"
+																				)}
+																			/>
+																		</CommandItem>
+																	))}
+																</CommandGroup>
+															</Command>
+														</PopoverContent>
+													</Popover>
+													<FormDescription>Choose the Character you are Playing.</FormDescription>
+													<FormMessage />
+												</React.Fragment>
+											)}
 										</FormItem>
 									)}
 								/>
@@ -447,7 +366,7 @@ export function CreateTeamDialog() {
 							<Button
 								onClick={(e) => {
 									e.preventDefault();
-									setStateForm(true);
+									Passwordpattern();
 								}}
 							>
 								Next
@@ -455,9 +374,95 @@ export function CreateTeamDialog() {
 						</DialogFooter>
 					</React.Fragment>
 				)}
+				{StateForm === "secondform" && (
+					<React.Fragment>
+						<DialogTitle>Character Details</DialogTitle>
+						<DialogDescription>
+							Enter Details of the Teammates Who will play recpective Characters
+						</DialogDescription>
+						<div>
+							{roles.map((role, index) => (
+								<Accordion key={index} type="single" collapsible>
+									<AccordionItem value={`item-${index}`}>
+										<AccordionTrigger>{role.label}</AccordionTrigger>
+										<AccordionContent>
+											<Form {...form2}>
+												<form className="space-y-1">
+													<FormField
+														control={form2.control}
+														name="Role"
+														render={({ field }) => (
+															<div className="flex flex-col">
+																<FormLabel className="my-4">Name of the team member</FormLabel>
+																<Input
+																	id="Teammate_Name"
+																	placeholder="Teammate Name"
+																	className="col-span-3"
+																	type="text"
+																	value={teammateName}
+																	onChange={(e) => setTeammateName(e.target.value)}
+																/>
+																<FormDescription>
+																	Input the Name of your teammate.
+																</FormDescription>
+																<FormLabel className="my-4">Email address of the team member</FormLabel>
+																<Input
+																	id="Teammate_EmailID"
+																	placeholder="Teammate EmailID"
+																	className="col-span-3"
+																	type="email"
+																	value={teammateEmail}
+																	onChange={(e) => setTeammateEmail(e.target.value)}
+																/>
+																<FormDescription>
+																	Input the email addresses of your teammates.
+																</FormDescription>
+																<FormLabel className="my-4">Phone of the team member</FormLabel>
+																<Input
+																	id="Teammate_Phone"
+																	placeholder="Teammate Phone"
+																	className="col-span-3"
+																	type="tel"
+																	value={TeammatePhone}
+																	onChange={(e) => {
+																		setTeammatePhone(e.target.value)
+																		setSelectedRole(role.label)
+																	}}
+
+																/>
+																<FormDescription>
+																	Input the Name of your teammate.
+																</FormDescription>
+															</div>
+														)}
+													/>
+													<Button
+														onClick={(e) => {
+															let Characterid: string = role.value
+															e.preventDefault();
+															isMemberValid(Characterid);
+														}}
+													>
+														Save
+													</Button>
+												</form>
+											</Form>
+										</AccordionContent>
+									</AccordionItem>
+								</Accordion>
+							))}
+						</div>
+						<Button
+							onClick={(e) => {
+								e.preventDefault();
+								SubmitData()
+							}}
+						>
+							Submit
+						</Button>
+					</React.Fragment>
+				)}
 			</DialogContent>
 		</Dialog>
 	);
 }
-
-
