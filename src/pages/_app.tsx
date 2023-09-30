@@ -1,11 +1,12 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import Navbar from "~/components/navbar";
-
 import { api } from "~/utils/api";
-
 import "~/styles/globals.css";
+import "~/styles/dropzone.css"
+import Navbar from "~/components/navbar";
+import { Toaster } from "@/components/ui/toaster"
+
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -15,6 +16,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
     <SessionProvider session={session}>
       <Navbar />
       <Component {...pageProps} />
+      <Toaster />
     </SessionProvider>
   );
 };

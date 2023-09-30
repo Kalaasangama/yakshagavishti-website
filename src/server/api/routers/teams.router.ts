@@ -1,35 +1,72 @@
+import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import Team from "~/utils/teams.services";
+import kalasangamaError from "~/utils/customError";
+import {
+	createAccount,
+	createAuth0User,
+	createTeam,
+	setTeamCompleteStatus,
+} from "~/utils/helpers";
 
 export const TeamRouter = createTRPCRouter({
 	register: protectedProcedure
 		.input(
 			z.object({
-				teamName: z.string(),
-				leadId: z.string(),
+				college_id: z.string(),
 				members: z.array(
 					z.object({
 						name: z.string(),
 						email: z.string(),
 						password: z.string(),
-						college_id: z.string(),
+						phone: z.string(),
 						character_id: z.string(),
-						isLead: z.boolean(),
+						id_url: z.string(),
 					})
 				),
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			const team = new Team(input.teamName, input.members, ctx);
 			try {
-				if (!(await team.isTeamExists())) {
-					await team.createTeam();
-					await team.addMembers();
-				}
+				//Create or return team
+				const { team, college } = await createTeam(
+					input.college_id,
+					ctx.session
+				);
+				//Create accounts in auth0
+				await Promise.all(
+					input.members.map(async (user) => {
+						return createAuth0User(user);
+					})
+				).then(async (res) => {
+					//Create an array of prisma promises for transaction
+					const addUsersTransaction = res.map((user) => {
+						return createAccount(user, college.name, college.id);
+					});
+
+					//Create user accounts in transaction
+					return ctx.prisma
+						.$transaction(addUsersTransaction)
+						.then(async () => {
+							await setTeamCompleteStatus(team.id, true);
+							return "success";
+						})
+						.catch((error) => {
+							throw error;
+						});
+
+					//Set team complete status to true to prevent edits
+				});
 			} catch (error) {
-				console.log(error);
-				return "Error";
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "CONFLICT",
+					});
+				} else {
+					console.log(error);
+					throw "An error occurred!";
+				}
 			}
 		}),
 });

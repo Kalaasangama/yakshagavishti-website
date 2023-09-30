@@ -1,5 +1,4 @@
-import type { Role } from "@prisma/client";
-import { z } from "zod";
+import { GetUsers200ResponseOneOfInner } from "auth0";
 
 interface Session {
 	accessToken: string;
@@ -23,9 +22,14 @@ interface UserInput {
 	name: string;
 	email: string;
 	password: string;
-	college_id: string;
+	phone: string;
 	character_id: string;
-	isLead: boolean;
+	id_url: string;
+}
+
+interface createAccountParm {
+	auth0Data: GetUsers200ResponseOneOfInner | undefined;
+	memberDetails: UserInput;
 }
 
 interface addScoresInput {
@@ -43,4 +47,12 @@ interface JWT {
 	accessToken: string;
 }
 
-export type { Session, JWT, User, AdapterUser, UserInput, addScoresInput };
+export type {
+	Session,
+	JWT,
+	User,
+	AdapterUser,
+	UserInput,
+	addScoresInput,
+	createAccountParm,
+};

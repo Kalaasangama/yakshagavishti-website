@@ -1,9 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import Dropzone from "~/components/Dropzone";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
-
+import { useState } from "react";
 export default function Home() {
+	const [files, setFiles] = useState<File[]>([]);
+
 	const hello = api.example.hello.useQuery({ text: "from tRPC" });
 	const addCollege = api.college.register.useMutation();
 	return (
@@ -20,12 +23,11 @@ export default function Home() {
 							? hello.data.greeting
 							: "Loading tRPC query..."}
 					</p>
-					<button
-						onClick={() => addCollege.mutate({ name: "test" })}
-					>
+					<button onClick={() => addCollege.mutate({ name: "test" })}>
 						add college
 					</button>
 					<CreateTeamDialog />
+					<Dropzone files={files} setFiles={setFiles} />
 					<AuthShowcase />
 				</div>
 			</main>
@@ -54,16 +56,23 @@ function AuthShowcase() {
 				<button
 					onClick={() =>
 						createTeam.mutate({
-							teamName: "test5",
-							leadId: "sdfsdfsdf",
+							college_id: "clmvm9how0004x93tht0gemlt",
 							members: [
 								{
 									password: "Test@123",
 									name: "menber",
-									college_id: "clmvm9how0004x93tht0gemlt",
-									email: "test4@gmail.com",
-									isLead: false,
-									character_id: "clmvme5kc0000x96gsiwxki1p",
+									email: "test0@gmail.com",
+									character_id: "cln321uw60000x9ylk0drlfq6",
+									phone: "9449414199",
+									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
+								},
+								{
+									password: "Test@123",
+									name: "menber",
+									email: "test1@gmail.com",
+									character_id: "cln321uw60000x9ylk0drlfq6",
+									phone: "9449414199",
+									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
 								},
 							],
 						})

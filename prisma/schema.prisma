@@ -38,17 +38,19 @@ model User {
   id              String           @id @default(cuid())
   name            String?
   email           String?          @unique
-  emailVerified   Boolean?			@default(false)
+  emailVerified   Boolean?         @default(false)
   image           String?
   collegeId       String?
+  idURL           String?
   college         College?         @relation(fields: [collegeId], references: [id])
   role            Role             @default(PARTICIPANT)
   teamId          String?
   team            Team?            @relation(fields: [teamId], references: [id])
-  characterPlayed CharacterOnUser?
-  leaderOf        Team?            @relation(fields: [teamId2], references: [id], name: "TeamLead")
-  teamId2         String?          @unique
-  isIdVerified      Boolean          @default(false)
+  characterPlayed CharacterOnUser? @relation(fields: [characterId], references: [character])
+  characterId     Characters?
+  leaderOf        Team?            @relation(fields: [leaderId], references: [id], name: "TeamLead")
+  leaderId        String?          @unique
+  isIdVerified    Boolean          @default(false)
   accounts        Account[]
   sessions        Session[]
 }
@@ -67,13 +69,16 @@ model College {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Users     User[]
+  Team      Team[]
 }
 
 model Team {
   id            String          @id @default(cuid())
   name          String          @unique
-  confirmed     Boolean         @default(false)
+  isComplete    Boolean         @default(false)
   attended      Boolean         @default(false)
+  college       College?        @relation(fields: [college_id], references: [id])
+  college_id    String?
   members       User[]
   leader        User?           @relation(name: "TeamLead")
   teamScore     Int             @default(0)
@@ -86,9 +91,9 @@ model Team {
 
 model CharacterOnUser {
   id        String     @id @default(cuid())
-  character Characters
-  playedBy  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId	String		@unique
+  character Characters @unique
+  playedBy  User[]
+  userId    String?    @unique
   score     Int
 }
 
