@@ -1,5 +1,5 @@
 import React from "react";
-import AllCards from "~/components/CardsSection";
+import  MyComponent from "~/components/CardsSection";
 
 const Index = () => {
   return (
@@ -7,13 +7,12 @@ const Index = () => {
       <div className="m-10 py-6">
         <div className="container m-auto px-6 text-white md:px-12 xl:px-6">
           <div className="space-y-6 md:flex md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
-            <div className="md:w-5/12 lg:w-5/12">
+            <div className="md:w-5/12 lg:w-5/12 mx-10 lg:mx-15">
               <img
-
                 src="/1.png"
                 alt="image"
                 loading="lazy"
-                className="h-auto max-w-full rounded-2xl md:w-auto"
+                className=" h-96 max-w-full rounded-2xl md:w-auto md:mx-0 sm: mx-0"
               />
             </div>
             <div className="md:w-6/12 lg:w-6/12">
@@ -36,8 +35,8 @@ const Index = () => {
         </div>
       </div>
       <div>
-        <div className="px-6 text-4xl font-bold text-white pt-4">Our Members</div>
-        <AllCards />
+        <div className="flex justify-center items-center px-6 text-4xl font-bold text-white pt-4">Our Members</div>
+        <MyComponent />
       </div>
     </>
   );
