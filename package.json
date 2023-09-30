@@ -33,6 +33,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.46.2",
     "react-icons": "^4.11.0",
+    "react-transition-group": "^4.4.5",
     "react-timer-hook": "^3.0.7",
     "react-router-dom": "^6.16.0",
     "superjson": "^1.13.1",
@@ -43,7 +44,7 @@
   "devDependencies": {
     "@types/eslint": "^8.44.2",
     "@types/node": "^18.16.0",
-    "@types/react": "^18.2.20",
+    "@types/react": "^18.2.23",
     "@types/react-dom": "^18.2.7",
     "@typescript-eslint/eslint-plugin": "^6.3.0",
     "@typescript-eslint/parser": "^6.3.0",

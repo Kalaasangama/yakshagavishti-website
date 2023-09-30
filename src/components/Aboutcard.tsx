@@ -1,31 +1,30 @@
 import React from "react";
 
 interface CardProps {
+  name: string;
   title: string;
-  copy: string;
-  image: string;
+  description: string;
+  imageUrl: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, copy, image }) => {
+const Card: React.FC<CardProps> = ({ name, title, description, imageUrl }) => {
   return (
-    <div className="card mx-auto max-w-2xl p-4">
-      <div className="max-w-sm rounded-2xl border border-gray-200 bg-white shadow-md hover:scale-105 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800">
-        <a href="#">
+    <div className="group h-96 w-80 [perspective:1000px]">
+      <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+        <div className="absolute inset-0">
           <img
-            className="h-3/4 rounded-t-lg object-contain"
-            src={image}
-            alt={title}
+            className="h-full w-full rounded-xl object-cover shadow-xl shadow-black/40"
+            src={imageUrl}
+            alt=""
           />
-        </a>
-        <div className="content visibility-hidden z-index-1 position-absolute width-full height-full left-0 top-0 p-5 opacity-0">
-          <a href="#">
-            <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {title}
-            </h5>
-          </a>
-          <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-            {copy}
-          </p>
+        </div>
+        <div className="absolute inset-0 h-full w-full rounded-xl bg-black/80 px-12 text-center text-slate-200 [backface-visibility:hidden] [transform:rotateY(180deg)]">
+          <div className="flex min-h-full flex-col items-center justify-center">
+            <h1 className="text-3xl font-bold">{name}</h1>
+            <p className="text-lg">{title}</p>
+            <p className="text-base">{description}</p>
+            
+          </div>
         </div>
       </div>
     </div>
