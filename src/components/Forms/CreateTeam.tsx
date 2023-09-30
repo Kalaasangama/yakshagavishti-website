@@ -287,7 +287,11 @@ export function CreateTeamDialog() {
 															</SelectTrigger>
 														</FormControl>
 														<SelectContent>
-															{roles.map((role, index) => (<SelectItem value="m@exa">{role.label}</SelectItem>))}
+															<SelectItem value="m@example.com">d</SelectItem>
+															<SelectItem value="m@google.com">dd</SelectItem>
+															<SelectItem value="m@support.com">d</SelectItem>
+															<SelectItem value="m@support.com">s</SelectItem>
+															<SelectItem value="m@support.com">s</SelectItem>
 														</SelectContent>
 													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
