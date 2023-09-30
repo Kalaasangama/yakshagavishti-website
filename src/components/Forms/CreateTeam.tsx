@@ -1,19 +1,35 @@
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "../TeamTable";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import * as z from "zod";
 import { api } from "~/utils/api";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select"
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
 } from "@/components/ui/accordion";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import {
 	Form,
 	FormControl,
@@ -23,7 +39,7 @@ import {
 	FormLabel,
 	FormMessage,
 } from "@/components/ui/form";
-import { cn } from "@/lib/utils";
+
 import {
 	Dialog,
 	DialogContent,
@@ -33,29 +49,18 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-} from "@/components/ui/command";
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "@/components/ui/popover";
 import { Input } from "@/components/ui/input";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-
-const colleges = [
-	{ label: "Nitte", value: "clmvm9how0004x93tht0gemlt" },
-];
-
 const roles = [
-	{ label: "Ram", value: "cln0iguh70003x9dozn0p8q3v" },
-	{ label: "Sham", value: "cln0iguh70003x9dozn0p8q3v" },
+	{ label: "Bheema", value: "cln0iguh70003x9dozn0p8q3v" },
+	{ label: "Arjuna", value: "cln0iguh70003x9dozn0p8q3z" },
+	{ label: "Yudhishtira", value: "cln0iguh70003x9dozn0p8q3s" },
+	{ label: "Nakula", value: "cln0iguh70003x9dozn0p8q3er" },
+	{ label: "Sahadeva", value: "cln0iguh70003x9dozn0p8q39" },
+	{ label: "Panchali", value: "cln0iguh70003x9dozn0p8q3p" },
+	{ label: "Duriyodhana", value: "cln0iguh70003x9dozn0p8q37" }
+
 ];
 
 const FormSchema = z.object({
@@ -66,6 +71,11 @@ const FormSchema = z.object({
 	Role: z.string({
 		required_error: "Please select a role.",
 	}),
+	colleges: z
+		.string({
+			required_error: "Please select an college to display.",
+		})
+
 });
 
 const FormSchema1 = z.object({
@@ -78,9 +88,7 @@ type Members = {
 	name: string;
 	email: string;
 	password: string;
-	college_id: string;
 	character_id: string;
-	isLead: boolean;
 	phone: string;
 };
 
@@ -110,7 +118,6 @@ export function CreateTeamDialog() {
 	const [TeammatePhone, setTeammatePhone] = useState("");
 	const [MembersArray, setMembersArray] = useState<Members[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-	const [leademail, setLeadEmail] = useState("");
 	const { toast } = useToast();
 	const form1 = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -121,8 +128,7 @@ export function CreateTeamDialog() {
 
 	const SubmitData = () => {
 		const MemberInfo = {
-			teamName: teammateName,
-			leadId: leademail,
+			college_id: selectedCollege,
 			members: MembersArray,
 		};
 		console.log(MemberInfo);
@@ -135,19 +141,17 @@ export function CreateTeamDialog() {
 		});
 	};
 
-	const setTeamMember = (character_id: string) => {
+	const setTeamMember = (character_id: string, character_index: number) => {
 		const data: Members = {
-			character_id: character_id,
-			college_id: selectedCollege,
-			email: teammateEmail,
-			isLead: false,
 			name: teammateName,
+			email: teammateEmail,
 			password: teamPassword,
-			phone: TeammatePhone
+			phone: TeammatePhone,
+			character_id: character_id
 		};
 
 		const array = [...MembersArray];
-		array.push(data);
+		array[character_index] = (data);
 		setMembersArray(array);
 		toast({
 			variant: "default",
@@ -161,7 +165,7 @@ export function CreateTeamDialog() {
 		console.log(MembersArray)
 	};
 
-	const isMemberValid = (character_id: string) => {
+	const isMemberValid = (character_id: string, character_index: number) => {
 		const array = MembersArray;
 		let flags = true;
 		console.log(array);
@@ -178,7 +182,7 @@ export function CreateTeamDialog() {
 			}
 		});
 		if (flags) {
-			setTeamMember(character_id);
+			setTeamMember(character_id, character_index);
 		}
 	};
 
@@ -226,58 +230,23 @@ export function CreateTeamDialog() {
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
 											<FormLabel className="mt-5">Choose your college</FormLabel>
-											<Popover>
-												<PopoverTrigger asChild>
-													<FormControl>
-														<Button
-															variant="ghost"
-															role="combobox"
-															className={cn(
-																" justify-between",
-																!field.value && "text-muted-foreground"
-															)}
-														>
-															{field.value
-																? colleges.find(
-																	(college) => college.value === field.value
-																)?.label
-																: "Select College"}
-															<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-														</Button>
-													</FormControl>
-												</PopoverTrigger>
-												<PopoverContent className="w-[200px] p-0">
-													<Command>
-														<CommandInput
-															placeholder="Search framework..."
-															className="h-9"
-														/>
-														<CommandEmpty>No college found.</CommandEmpty>
-														<CommandGroup>
-															{colleges.map((college) => (
-																<CommandItem
-																	value={college.label}
-																	key={college.value}
-																	onSelect={() => {
-																		form1.setValue("College", college.value);
-																		setSelectedCollege(college.value);
-																	}}
-																>
-																	{college.label}
-																	<CheckIcon
-																		className={cn(
-																			"ml-auto h-4 w-4",
-																			college.value === field.value
-																				? "opacity-100"
-																				: "opacity-0"
-																		)}
-																	/>
-																</CommandItem>
-															))}
-														</CommandGroup>
-													</Command>
-												</PopoverContent>
-											</Popover>
+											<Select onValueChange={() => {
+												setSelectedCollege(field.value)
+												console.log(selectedCollege)
+											}} defaultValue={field.value}>
+												<FormControl>
+													<SelectTrigger>
+														<SelectValue placeholder="Select the College your Team Belongs" />
+													</SelectTrigger>
+												</FormControl>
+												<SelectContent>
+													<SelectItem value="m@example.com">Canara College, Mangalore</SelectItem>
+													<SelectItem value="m@google.com">SDPT First Grade College, Kateel</SelectItem>
+													<SelectItem value="m@support.com">Alvas College, Moodabidri</SelectItem>
+													<SelectItem value="m@support.com">Govinda Dasa Degree College, Suratkal</SelectItem>
+													<SelectItem value="m@support.com">SDM Law College, Mangalore</SelectItem>
+												</SelectContent>
+											</Select>
 											<FormDescription>Select the College your Team Belongs</FormDescription>
 											<FormLabel className="mt-4">Create a team password.</FormLabel>
 											<Input
@@ -308,51 +277,19 @@ export function CreateTeamDialog() {
 											{isCheckboxChecked && (
 												<React.Fragment>
 													<FormLabel className="mt-4">Choose your Character</FormLabel>
-													<Popover>
-														<PopoverTrigger asChild>
-															<FormControl>
-																<Button
-																	variant="ghost"
-																	role="combobox"
-																	className={cn(
-																		" justify-between",
-																		!field.value && "text-muted-foreground"
-																	)}
-																>
-																	{field.value
-																		? roles.find((role) => role.value === field.value)?.label
-																		: "Select Role"}
-																	<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-																</Button>
-															</FormControl>
-														</PopoverTrigger>
-														<PopoverContent className="w-[200px] p-0">
-															<Command>
-																<CommandInput placeholder="Search Character..." className="h-9" />
-																<CommandEmpty>No Character found.</CommandEmpty>
-																<CommandGroup>
-																	{roles.map((role) => (
-																		<CommandItem
-																			value={role.label}
-																			key={role.value}
-																			onSelect={() => {
-																				field.onChange(role.value);
-																				setSelectedRole(role.value);
-																			}}
-																		>
-																			{role.label}
-																			<CheckIcon
-																				className={cn(
-																					"ml-auto h-4 w-4",
-																					role.value === field.value ? "opacity-100" : "opacity-0"
-																				)}
-																			/>
-																		</CommandItem>
-																	))}
-																</CommandGroup>
-															</Command>
-														</PopoverContent>
-													</Popover>
+													<Select onValueChange={() => {
+														setSelectedCollege(field.value)
+														console.log(selectedCollege)
+													}} defaultValue={field.value}>
+														<FormControl>
+															<SelectTrigger>
+																<SelectValue placeholder="Select the College your Team Belongs" />
+															</SelectTrigger>
+														</FormControl>
+														<SelectContent>
+															{roles.map((role, index) => (<SelectItem value="m@exa">{role.label}</SelectItem>))}
+														</SelectContent>
+													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
 													<FormMessage />
 												</React.Fragment>
@@ -381,10 +318,17 @@ export function CreateTeamDialog() {
 							Enter Details of the Teammates Who will play recpective Characters
 						</DialogDescription>
 						<div>
-							{roles.map((role, index) => (
-								<Accordion key={index} type="single" collapsible>
-									<AccordionItem value={`item-${index}`}>
-										<AccordionTrigger>{role.label}</AccordionTrigger>
+							<Accordion type="single" collapsible>
+								{roles.map((role, index) => (
+									<AccordionItem key={index} value={`item-${index}`}>
+										<AccordionTrigger onClick={() => {
+											const member = MembersArray[index]
+											if (member) {
+												setTeammateName(member.name)
+												setTeammateEmail(member.email)
+												setTeammatePhone(member.phone)
+											}
+										}}>{role.label}</AccordionTrigger>
 										<AccordionContent>
 											<Form {...form2}>
 												<form className="space-y-1">
@@ -399,8 +343,10 @@ export function CreateTeamDialog() {
 																	placeholder="Teammate Name"
 																	className="col-span-3"
 																	type="text"
-																	value={teammateName}
-																	onChange={(e) => setTeammateName(e.target.value)}
+																	defaultValue={teammateName}
+																	onChange={(e) => {
+																		setTeammateName(e.target.value)
+																	}}
 																/>
 																<FormDescription>
 																	Input the Name of your teammate.
@@ -411,8 +357,11 @@ export function CreateTeamDialog() {
 																	placeholder="Teammate EmailID"
 																	className="col-span-3"
 																	type="email"
-																	value={teammateEmail}
-																	onChange={(e) => setTeammateEmail(e.target.value)}
+																	defaultValue={teammateEmail}
+																	onChange={(e) => {
+																		if (e)
+																			setTeammateEmail(e.target.value)
+																	}}
 																/>
 																<FormDescription>
 																	Input the email addresses of your teammates.
@@ -423,46 +372,67 @@ export function CreateTeamDialog() {
 																	placeholder="Teammate Phone"
 																	className="col-span-3"
 																	type="tel"
-																	value={TeammatePhone}
+																	defaultValue={TeammatePhone}
 																	onChange={(e) => {
 																		setTeammatePhone(e.target.value)
-																		setSelectedRole(role.label)
 																	}}
 
 																/>
 																<FormDescription>
-																	Input the Name of your teammate.
+																	Input the Phone number of your teammate.
 																</FormDescription>
 															</div>
 														)}
 													/>
-													<Button
+													{MembersArray[index] === undefined ? <Button
 														onClick={(e) => {
+															let character_index = index
+															console.log(character_index)
 															let Characterid: string = role.value
 															e.preventDefault();
-															isMemberValid(Characterid);
+															isMemberValid(Characterid, character_index);
 														}}
 													>
 														Save
-													</Button>
+													</Button> :
+														<Button onClick={(e) => {
+															let character_index = index
+															console.log(character_index)
+															let Characterid: string = role.value
+															e.preventDefault();
+															setTeamMember(Characterid, character_index);
+														}}
+														>
+															Update
+														</Button>}
 												</form>
 											</Form>
 										</AccordionContent>
 									</AccordionItem>
-								</Accordion>
-							))}
+								))}
+							</Accordion>
 						</div>
-						<Button
-							onClick={(e) => {
-								e.preventDefault();
-								SubmitData()
-							}}
-						>
-							Submit
-						</Button>
+						<AlertDialog>
+							<AlertDialogTrigger><Button>Submit</Button></AlertDialogTrigger>
+							<AlertDialogContent>
+								<AlertDialogHeader>
+									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+									<AlertDialogDescription>
+										This action will register your team
+									</AlertDialogDescription>
+								</AlertDialogHeader>
+								<AlertDialogFooter>
+									<AlertDialogCancel>Cancel</AlertDialogCancel>
+									<AlertDialogAction onClick={(e) => {
+										e.preventDefault();
+										SubmitData()
+									}}>Continue</AlertDialogAction>
+								</AlertDialogFooter>
+							</AlertDialogContent>
+						</AlertDialog>
 					</React.Fragment>
 				)}
 			</DialogContent>
-		</Dialog>
+		</Dialog >
 	);
 }

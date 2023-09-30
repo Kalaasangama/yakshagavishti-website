@@ -14,6 +14,15 @@ declare module "next-auth" {
 	interface Session {
 		user: {
 			id: string;
+			team:
+				| {
+						id: string;
+						name: string;
+						isComplete: boolean;
+				  }
+				| null
+				| undefined;
+			leaderOf: string | undefined;
 		} & DefaultSession["user"];
 	}
 }
@@ -28,8 +37,23 @@ export const authOptions: NextAuthOptions = {
 		}),
 	],
 	callbacks: {
-		session: ({ session, user }) => {
+		session: async ({ session, user }) => {
 			if (session?.user) {
+				const data = await prisma.user.findUnique({
+					where: { id: user.id },
+					select: {
+						team: {
+							select: {
+								id: true,
+								name: true,
+								isComplete: true,
+							},
+						},
+						leaderOf: { select: { id: true } },
+					},
+				});
+				session.user.team = data?.team;
+				session.user.leaderOf = data?.leaderOf?.id;
 				session.user.id = z.string().parse(user.id);
 			}
 			return session;

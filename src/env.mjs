@@ -27,6 +27,9 @@ export const env = createEnv({
 		AUTH0_ISSUER: z.string(),
 		AUTH0_MANAGEMENT_API_CLIENT_SECRET: z.string(),
 		AUTH0_MANAGEMENT_API_DOMAIN: z.string(),
+    CLOUDINARY_API_KEY: z.string(),
+    CLOUDINARY_CLOUD_NAME: z.string(),
+    CLOUDINARY_API_SECRET: z.string() 
 	},
 
 	/**
@@ -56,6 +59,9 @@ export const env = createEnv({
 		AUTH0_MANAGEMENT_API_CLIENT_SECRET:
 			process.env.AUTH0_MANAGEMENT_API_CLIENT_SECRET,
 		AUTH0_MANAGEMENT_API_DOMAIN: process.env.AUTH0_MANAGEMENT_API_DOMAIN,
+    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
+    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
+    CLOUDINARY_CLOUD_NAME: process.env.CLOUDINARY_CLOUD_NAME
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation.

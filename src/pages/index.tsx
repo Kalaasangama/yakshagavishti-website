@@ -20,9 +20,7 @@ export default function Home() {
 							? hello.data.greeting
 							: "Loading tRPC query..."}
 					</p>
-					<button
-						onClick={() => addCollege.mutate({ name: "test" })}
-					>
+					<button onClick={() => addCollege.mutate({ name: "test" })}>
 						add college
 					</button>
 					<CreateTeamDialog />
@@ -54,16 +52,21 @@ function AuthShowcase() {
 				<button
 					onClick={() =>
 						createTeam.mutate({
-							teamName: "test5",
-							leadId: "sdfsdfsdf",
+							college_id: "clmvm9how0004x93tht0gemlt",
 							members: [
 								{
 									password: "Test@123",
 									name: "menber",
-									college_id: "clmvm9how0004x93tht0gemlt",
-									email: "test4@gmail.com",
-									isLead: false,
-									character_id: "clmvme5kc0000x96gsiwxki1p",
+									email: "test0@gmail.com",
+									character_id: "cln321uw60000x9ylk0drlfq6",
+									phone: "9449414199",
+								},
+								{
+									password: "Test@123",
+									name: "menber",
+									email: "test1@gmail.com",
+									character_id: "cln321uw60000x9ylk0drlfq6",
+									phone: "9449414199",
 								},
 							],
 						})
