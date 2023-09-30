@@ -1,15 +1,11 @@
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 import { z } from "zod";
-import management from "~/utils/auth0";
 import kalasangamaError from "~/utils/customError";
 import {
-	checkLeaderStatus,
 	createAccount,
 	createAuth0User,
 	createTeam,
-	getCollegeById,
-	setLeader,
 	setTeamCompleteStatus,
 } from "~/utils/helpers";
 
@@ -25,6 +21,7 @@ export const TeamRouter = createTRPCRouter({
 						password: z.string(),
 						phone: z.string(),
 						character_id: z.string(),
+						id_url: z.string(),
 					})
 				),
 			})
