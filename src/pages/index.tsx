@@ -1,9 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import Dropzone from "~/components/Dropzone";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
-
+import { useState } from "react";
 export default function Home() {
+	const [files,setFiles] = useState<File[]>([]);
+ 
 	const hello = api.example.hello.useQuery({ text: "from tRPC" });
 	const addCollege = api.college.register.useMutation();
 	return (
@@ -24,6 +27,7 @@ export default function Home() {
 						add college
 					</button>
 					<CreateTeamDialog />
+					<Dropzone files={files} setFiles={setFiles} />
 					<AuthShowcase />
 				</div>
 			</main>

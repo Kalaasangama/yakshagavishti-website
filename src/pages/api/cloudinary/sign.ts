@@ -9,9 +9,9 @@ res.status(200).json({timestamp,signature});
 }
 
 const cloudinaryConfig = cloudinary.config({
-cloud_name:env.CLOUDINARY_CLOUD_NAME,
-api_key:env.CLOUDINARY_API_KEY,
-api_secret:env.CLOUDINARY_API_SECRET,
+cloud_name:env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+api_key:env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+api_secret:env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
 secure:true
 })
 
