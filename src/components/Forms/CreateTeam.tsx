@@ -120,8 +120,8 @@ export function CreateTeamDialog() {
 	const [files, setFiles] = useState<File[]>([])
 	const createTeam = api.team.register.useMutation();
 	const [StateForm, setStateForm] = useState("firstform");
-	const [selectedCollege, setSelectedCollege] = useState("");
-	const [selectedRole, setSelectedRole] = useState("");
+	const [selectedCollege, setSelectedCollege] = useState<string>('');
+	const [selectedRole, setSelectedRole] = useState<string>('');
 	const [teammateName, setTeammateName] = useState("");
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setTeamPassword] = useState("");
@@ -238,8 +238,14 @@ export function CreateTeamDialog() {
 		}
 
 	}
-
-
+	const handleCollegeChange = (value: string) => {
+		setSelectedCollege(value);
+		console.log(value);
+	};
+	const handleRoleChange = (value: string) => {
+		setSelectedRole(value);
+		console.log(value);
+	};
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -262,10 +268,7 @@ export function CreateTeamDialog() {
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
 											<FormLabel className="mt-5">Choose your college</FormLabel>
-											<Select onValueChange={() => {
-												setSelectedCollege(field.value)
-												console.log(selectedCollege)
-											}} defaultValue={field.value}>
+											<Select onValueChange={handleCollegeChange} defaultValue={selectedCollege}>
 												<FormControl>
 													<SelectTrigger>
 														<SelectValue placeholder="Select the College your Team Belongs" />
@@ -274,9 +277,9 @@ export function CreateTeamDialog() {
 												<SelectContent>
 													<SelectItem value="m@example.com">Canara College, Mangalore</SelectItem>
 													<SelectItem value="m@google.com">SDPT First Grade College, Kateel</SelectItem>
-													<SelectItem value="m@support.com">Alvas College, Moodabidri</SelectItem>
-													<SelectItem value="m@support.com">Govinda Dasa Degree College, Suratkal</SelectItem>
-													<SelectItem value="m@support.com">SDM Law College, Mangalore</SelectItem>
+													<SelectItem value="m@support.com1">Alvas College, Moodabidri</SelectItem>
+													<SelectItem value="m@support.com13">Govinda Dasa Degree College,Suratkal</SelectItem>
+													<SelectItem value="m@support.com12">SDM Law College, Mangalore</SelectItem>
 												</SelectContent>
 											</Select>
 											<FormDescription>Select the College your Team Belongs</FormDescription>
@@ -309,10 +312,7 @@ export function CreateTeamDialog() {
 											{isCheckboxChecked && (
 												<React.Fragment>
 													<FormLabel className="mt-4">Choose your Character</FormLabel>
-													<Select onValueChange={() => {
-														setSelectedRole(field.value)
-														console.log(selectedRole)
-													}} defaultValue={field.value}>
+													<Select onValueChange={handleRoleChange} defaultValue={selectedRole}>
 														<FormControl>
 															<SelectTrigger>
 																<SelectValue placeholder="Select the Character" />
@@ -321,9 +321,9 @@ export function CreateTeamDialog() {
 														<SelectContent>
 															<SelectItem value="m@example.com">d</SelectItem>
 															<SelectItem value="m@google.com">dd</SelectItem>
-															<SelectItem value="m@support.com">d</SelectItem>
-															<SelectItem value="m@support.com">s</SelectItem>
-															<SelectItem value="m@support.com">s</SelectItem>
+															<SelectItem value="m@support2.com">d</SelectItem>
+															<SelectItem value="m@support.1com">s</SelectItem>
+															<SelectItem value="m@suppor3t.com">s</SelectItem>
 														</SelectContent>
 													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
