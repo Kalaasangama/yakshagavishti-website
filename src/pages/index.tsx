@@ -36,7 +36,7 @@ export default function Home() {
         {/* Hero Section */}
 
         <section className="relative h-[83vh] sm:h-[80vh] md:h-[87vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
-          <Image src={'/Banner-cropped.jpg'} alt="Banner" className="object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
+          <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
           <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-36 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
             
             {/* Contents - Hero Section */}
@@ -66,7 +66,7 @@ export default function Home() {
             </Reveal>
 
             <ScrollLag speed={100} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50">
-              <Image src={'/mandala.png'} fill alt='' className="opacity-70 bg-blend-luminosity" />
+              <Image src={'/mandala.png'} fill alt='' className="opacity-70 select-none  bg-blend-luminosity" />
             </ScrollLag>
           </section>
 
@@ -93,7 +93,7 @@ export default function Home() {
                 </div>
                 <Reveal classes="shrink-0">
                   <div className="group h-40 w-40 sm:h-48 sm:w-48 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                    <Image src={'/about.png'} alt="Yakshagana" fill className="object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                    <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
                     <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
                   </div>
                 </Reveal>
@@ -139,7 +139,7 @@ export default function Home() {
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 bottom-[60%] -left-28 lg:hidden opacity-50">
               <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
+                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div> 
             </ScrollLag>
             <Prizes />
@@ -150,7 +150,7 @@ export default function Home() {
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 items-center relative">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
+                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div> 
             </ScrollLag>
             <Faq />

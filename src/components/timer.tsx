@@ -2,11 +2,11 @@ import { Dispatch, SetStateAction } from "react";
 import { useTimer } from "react-timer-hook";
 import { string } from "zod";
 
-interface IProps {
+interface Props {
   setIsRegistrationActive?: Dispatch<boolean>;
 }
 
-const Timer = ({setIsRegistrationActive}: IProps) => {
+const Timer = ({setIsRegistrationActive}: Props) => {
   const expiryTimestamp = new Date("2023-10-23 9:30");
   const { seconds, minutes, hours, days } = useTimer({
     expiryTimestamp,

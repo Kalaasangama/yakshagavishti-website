@@ -38,13 +38,13 @@ const Navbar = () => {
   };
 
   const closeMenu = () => {
-    if (isMenuActive) setIsMenuActive(!isMenuActive);
+    if (isMenuActive) setTimeout(() => {setIsMenuActive(!isMenuActive)}, 100)
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', closeMenu);
+    document.addEventListener('touchstart', closeMenu);
     return () => {
-      document.removeEventListener('mousedown', closeMenu);
+      document.removeEventListener('touchstart', closeMenu);
     };
   });
 
