@@ -36,8 +36,8 @@ const Mycomponent: React.FC = () => {
   return (
     <div className="flex my-8 items-center justify-center">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {cardProps.map((cardProp) => (
-          <Card key={cardProp.name} {...cardProp} />
+        {cardProps.map((cardProp, idx) => (
+          <Card key={idx} {...cardProp} />
         ))}
       </div>
     </div>

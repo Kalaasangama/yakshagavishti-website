@@ -85,7 +85,7 @@ const Navbar = () => {
           </div>
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
-              <SmallButton buttonString="Log In" url="/" />
+              <SmallButton>Log In</SmallButton>
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -125,7 +125,7 @@ const MobileNav = ({ links, activePath }: Props) => {
           );
         })}
         <Reveal classes="">
-          <SmallButton buttonString="Log In" url="/" />
+          <SmallButton>Log In</SmallButton>
         </Reveal>
       </div>
     </div>

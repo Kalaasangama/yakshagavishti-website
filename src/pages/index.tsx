@@ -6,8 +6,9 @@ const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
 import Faq from "~/components/Home/faq";
 import Reveal from "~/components/Animations/reveal";
 import Prizes from "~/components/Home/prizes";
-import { Button, InactiveButton } from "~/components/button";
+import { Button, InactiveButton, OutlineButton } from "~/components/button";
 import { GiPaperArrow } from "react-icons/gi"
+import { BiDownload } from "react-icons/bi"
 import Reel from "~/components/Home/reel";
 
 import { api } from "~/utils/api";
@@ -26,6 +27,21 @@ const reelImags = [
 export default function Home() {
 
   const [isRegistrationActive, setIsRegistrationActive] = useState<Boolean>(true)
+
+  const handleDownload = (path: string, name: string) => {
+    // fallback to window.open if the browser doesn't support the download attribute
+    const fileUrl = path;
+    const fileName = name;
+
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+  };
 
   return (
     <>
@@ -47,13 +63,13 @@ export default function Home() {
             {/* Contents - Hero Section */}
             <Reveal classes="">
               <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
-                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">Kalasangama</div>
+                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">kalasangama</div>
                 <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
               </div>
             </Reveal>
             <Reveal classes="">
               <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
-                {isRegistrationActive ? <Button buttonString="Register" url="#" /> : <InactiveButton buttonString="Register" url="" />}
+                {isRegistrationActive ? <Button>Register</Button>: <InactiveButton>Register</InactiveButton>}
               </div>
             </Reveal>
           </div>
@@ -91,17 +107,27 @@ export default function Home() {
                     </div>
                   </Reveal>
                   <Reveal classes="">
-                    <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-left">
+                    <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
                       <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
                     </div>
                   </Reveal>
                 </div>
-                <Reveal classes="shrink-0">
-                  <div className="group h-40 w-40 sm:h-48 sm:w-48 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                    <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
-                    <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
-                  </div>
-                </Reveal>
+                <div className="shrink-0 flex flex-col gap-3 items-center">
+                  <Reveal classes="">
+                    <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
+                      <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                      <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
+                    </div>
+                  </Reveal>
+                  <a onClick={() => handleDownload("/1.png", "1.png")} className="w-fit">
+                    <OutlineButton>
+                      <div className="flex gap-2 items-center justify-center">
+                        <BiDownload />
+                        <span>Rule Book</span>
+                      </div>
+                    </OutlineButton>
+                  </a>
+                </div>
               </div>
 
               {/* Rules and regulation section */}
