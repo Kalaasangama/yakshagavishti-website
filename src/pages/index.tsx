@@ -1,22 +1,27 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-// import Timer from "~/components/timer";
 import dynamic from "next/dynamic.js";
-const Timer = dynamic(() => import('~/components/timer'), { ssr: false })
-import Faq from "~/components/faq";
-import Footer from "~/components/footer";
-import Reveal from "~/components/reveal";
-import Prizes from "~/components/prizes";
+const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
+import Faq from "~/components/Home/faq";
+import Reveal from "~/components/Animations/reveal";
+import Prizes from "~/components/Home/prizes";
 import { Button, InactiveButton } from "~/components/button";
-import Link from "next/link";
 import { GiPaperArrow } from "react-icons/gi"
+import Reel from "~/components/Home/reel";
 
 import { api } from "~/utils/api";
-import next from "next";
-import { useState, useRef } from "react";
-import { useScroll, motion, useTransform } from "framer-motion";
-import ScrollLag from "~/components/scrollLag";
+import { useState } from "react";
+import ScrollLag from "~/components/Animations/scrollLag";
+
+const reelImags = [
+  {src: "/banner.jpeg"},
+  {src: "/performing Yakshagana_.jpg"},
+  {src: "/1.png"},
+  {src: "/banner.jpeg"},
+  {src: "/performing Yakshagana_.jpg"},
+  {src: "/1.png"},
+]
 
 export default function Home() {
 
@@ -54,7 +59,7 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-x-hidden">
+        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-hidden">
 
           <section className="relative h-[25vh] sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
             <Reveal classes="">
@@ -72,8 +77,8 @@ export default function Home() {
 
           {/* About the Competition */}
 
-          <section className="relative min-h-max  flex items-center">
-            <Image className="object-contain mix-blend-luminosity opacity-25 py-16 sm:py-28 md:py-16 -z-10" src={'/canva.png'} fill alt="mandala"></Image>
+          <section className="relative min-h-max  flex items-center md:pb-10">
+            <Image className="object-contain mix-blend-luminosity opacity-25 py-16 sm:py-28 md:py-0 -z-10" src={'/canva.png'} fill alt="mandala"></Image>
 
             {/* Competition Contents section */}
 
@@ -101,7 +106,7 @@ export default function Home() {
 
               {/* Rules and regulation section */}
 
-              <div className="flex flex-col gap-3 max-w-2xl">
+              {/* <div className="flex flex-col gap-3 max-w-2xl">
                 <Reveal classes="">
                   <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
                     Rules & <span className="text-secondary-100">regulations</span>
@@ -130,20 +135,30 @@ export default function Home() {
                     <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
                   </Reveal>
                 </ul>
-              </div>
+              </div> */}
             </div>
           </section>
 
+          {/* Achievements Reel Section */}
+
+          <section className="w-full flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72">
+            <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={1} angle={12} reelImg={reelImags} />
+            <Reel classes="" baseVelocity={-1.5} angle={-12} reelImg={reelImags} />
+          </section>
+          {/* <section className="w-full justify-center hidden md:flex">
+            <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
+          </section> */}
+
           {/* Prizes */}
 
-          <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
+          {/* <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 bottom-[60%] -left-28 lg:hidden opacity-50">
               <div className="">
                 <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div> 
             </ScrollLag>
             <Prizes />
-          </section>
+          </section> */}
 
           {/* FAQ */}
 

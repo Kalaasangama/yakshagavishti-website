@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Reveal from "./reveal"
+import Reveal from "../Animations/reveal"
 
 const Prizes = () => {
   return (

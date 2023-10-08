@@ -1,5 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "~/components/ui/accordion"
-import Reveal from "./reveal"
+import Reveal from "../Animations/reveal"
 
 const Faq = () => {
   return (

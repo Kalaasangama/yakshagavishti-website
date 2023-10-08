@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react"
 
 import { cn } from "src/lib/utils"
 
-import Reveal from "../reveal"
+import Reveal from "../Animations/reveal"
 
 const Accordion = AccordionPrimitive.Root
 

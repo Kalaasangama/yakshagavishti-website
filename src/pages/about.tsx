@@ -1,5 +1,5 @@
 import React from "react";
-import AllCards from "~/components/CardsSection";
+import AllCards from "~/components/About/CardsSection";
 
 const Index = () => {
   return (
