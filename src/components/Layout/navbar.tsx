@@ -50,7 +50,7 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-2 z-50 font-medium overflow-hidden">
-      <div className="flex flex-col backdrop-blur-md border-[1px] border-secondary-100 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
+      <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center justify-center">
             <Image
