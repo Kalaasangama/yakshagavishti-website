@@ -1,26 +1,47 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-// import Timer from "~/components/timer";
 import dynamic from "next/dynamic.js";
-const Timer = dynamic(() => import('~/components/timer'), { ssr: false })
-import Faq from "~/components/faq";
-import Footer from "~/components/footer";
-import Reveal from "~/components/reveal";
-import Prizes from "~/components/prizes";
-import { Button, InactiveButton } from "~/components/button";
-import Link from "next/link";
+const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
+import Faq from "~/components/Home/faq";
+import Reveal from "~/components/Animations/reveal";
+import Prizes from "~/components/Home/prizes";
+import { Button, InactiveButton, OutlineButton } from "~/components/button";
 import { GiPaperArrow } from "react-icons/gi"
+import { BiDownload } from "react-icons/bi"
+import Reel from "~/components/Home/reel";
 
 import { api } from "~/utils/api";
-import next from "next";
-import { useState, useRef } from "react";
-import { useScroll, motion, useTransform } from "framer-motion";
-import ScrollLag from "~/components/scrollLag";
+import { useState } from "react";
+import ScrollLag from "~/components/Animations/scrollLag";
+
+const reelImags = [
+  {src: "/banner.jpeg"},
+  {src: "/performing Yakshagana_.jpg"},
+  {src: "/1.png"},
+  {src: "/banner.jpeg"},
+  {src: "/performing Yakshagana_.jpg"},
+  {src: "/1.png"},
+]
 
 export default function Home() {
 
   const [isRegistrationActive, setIsRegistrationActive] = useState<Boolean>(true)
+
+  const handleDownload = (path: string, name: string) => {
+    // fallback to window.open if the browser doesn't support the download attribute
+    const fileUrl = path;
+    const fileName = name;
+
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+  };
 
   return (
     <>
@@ -36,25 +57,25 @@ export default function Home() {
         {/* Hero Section */}
 
         <section className="relative h-[83vh] sm:h-[80vh] md:h-[87vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
-          <Image src={'/Banner-cropped.jpg'} alt="Banner" className="object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
+          <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
           <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-36 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
             
             {/* Contents - Hero Section */}
             <Reveal classes="">
               <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
-                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">Kalasangama</div>
+                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">kalasangama</div>
                 <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
               </div>
             </Reveal>
             <Reveal classes="">
               <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
-                {isRegistrationActive ? <Button buttonString="Register" url="#" /> : <InactiveButton buttonString="Register" url="" />}
+                {isRegistrationActive ? <Button>Register</Button>: <InactiveButton>Register</InactiveButton>}
               </div>
             </Reveal>
           </div>
         </section>
 
-        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-x-hidden">
+        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-hidden">
 
           <section className="relative h-[25vh] sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
             <Reveal classes="">
@@ -66,14 +87,14 @@ export default function Home() {
             </Reveal>
 
             <ScrollLag speed={100} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50">
-              <Image src={'/mandala.png'} fill alt='' className="opacity-70 bg-blend-luminosity" />
+              <Image src={'/mandala.png'} fill alt='' className="opacity-70 select-none  bg-blend-luminosity" />
             </ScrollLag>
           </section>
 
           {/* About the Competition */}
 
-          <section className="relative min-h-max  flex items-center">
-            <Image className="object-contain mix-blend-luminosity opacity-25 py-16 sm:py-28 md:py-16 -z-10" src={'/canva.png'} fill alt="mandala"></Image>
+          <section className="relative min-h-max  flex items-center md:pb-10">
+            <Image className="object-contain mix-blend-luminosity opacity-25 py-16 sm:py-28 md:py-0 -z-10" src={'/canva.png'} fill alt="mandala"></Image>
 
             {/* Competition Contents section */}
 
@@ -86,22 +107,32 @@ export default function Home() {
                     </div>
                   </Reveal>
                   <Reveal classes="">
-                    <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-left">
+                    <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
                       <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
                     </div>
                   </Reveal>
                 </div>
-                <Reveal classes="shrink-0">
-                  <div className="group h-40 w-40 sm:h-48 sm:w-48 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                    <Image src={'/about.png'} alt="Yakshagana" fill className="object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
-                    <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
-                  </div>
-                </Reveal>
+                <div className="shrink-0 flex flex-col gap-3 items-center">
+                  <Reveal classes="">
+                    <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
+                      <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                      <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
+                    </div>
+                  </Reveal>
+                  <a onClick={() => handleDownload("/1.png", "1.png")} className="w-fit">
+                    <OutlineButton>
+                      <div className="flex gap-2 items-center justify-center">
+                        <BiDownload />
+                        <span>Rule Book</span>
+                      </div>
+                    </OutlineButton>
+                  </a>
+                </div>
               </div>
 
               {/* Rules and regulation section */}
 
-              <div className="flex flex-col gap-3 max-w-2xl">
+              {/* <div className="flex flex-col gap-3 max-w-2xl">
                 <Reveal classes="">
                   <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
                     Rules & <span className="text-secondary-100">regulations</span>
@@ -130,27 +161,37 @@ export default function Home() {
                     <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
                   </Reveal>
                 </ul>
-              </div>
+              </div> */}
             </div>
           </section>
 
+          {/* Achievements Reel Section */}
+
+          <section className="w-full flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72">
+            <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={1} angle={12} reelImg={reelImags} />
+            <Reel classes="" baseVelocity={-1.5} angle={-12} reelImg={reelImags} />
+          </section>
+          {/* <section className="w-full justify-center hidden md:flex">
+            <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
+          </section> */}
+
           {/* Prizes */}
 
-          <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
+          {/* <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 bottom-[60%] -left-28 lg:hidden opacity-50">
               <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
+                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div> 
             </ScrollLag>
             <Prizes />
-          </section>
+          </section> */}
 
           {/* FAQ */}
 
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 items-center relative">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain opacity-70 bg-blend-luminosity" />
+                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div> 
             </ScrollLag>
             <Faq />

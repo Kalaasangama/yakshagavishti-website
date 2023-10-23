@@ -1,8 +1,8 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
-import Navbar from "~/components/navbar";
-import Footer from "~/components/footer";
+import Navbar from "~/components/Layout/navbar";
+import Footer from "~/components/Layout/footer";
 
 import { api } from "~/utils/api";
 

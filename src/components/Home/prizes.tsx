@@ -1,5 +1,5 @@
 import Image from "next/image"
-import Reveal from "./reveal"
+import Reveal from "../Animations/reveal"
 
 const Prizes = () => {
   return (
@@ -17,7 +17,7 @@ const Prizes = () => {
           <div className="flex flex-col items-center justify-center gap-2 md:gap-3 hover:scale-110 transition duration-300 ease-linear">
             <p className="font-semibold">Second</p>
             <div className="relative h-32 w-32 sm:h-36 sm:w-36 md:h-44 md:w-44 ">
-              <Image src={'/Silver.png'} alt="Silver" fill className="" />
+              <Image src={'/Silver.png'} alt="Silver" fill className="select-none" />
             </div>
             <p className="font-tourney font-black">YTA</p>
           </div>
@@ -28,7 +28,7 @@ const Prizes = () => {
           <div className="flex flex-col items-center justify-center gap-2 md:gap-3 hover:scale-110 transition duration-300 ease-linear">
             <p className="font-semibold">First</p>
             <div className="relative h-36 w-36 sm:h-40 sm:w-40 md:h-52 md:w-52">
-              <Image src={'/Gold.png'} alt="Gold" fill className="" />
+              <Image src={'/Gold.png'} alt="Gold" fill className="select-none" />
             </div>
             <p className="font-tourney font-black">YTA</p>
           </div>
@@ -39,7 +39,7 @@ const Prizes = () => {
           <div className="flex flex-col items-center justify-center gap-2 md:gap-3 hover:scale-110 transition duration-300 ease-linear">
             <p className="font-semibold">Third</p>
             <div className="relative h-28 w-28 sm:h-32 sm:w-32 md:h-40 md:w-40">
-              <Image src={'/Bronze.png'} alt="Bronze" fill className="" />
+              <Image src={'/Bronze.png'} alt="Bronze" fill className="select-none" />
             </div>
             <p className="font-tourney font-black">YTA</p>
           </div>

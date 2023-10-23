@@ -8,7 +8,27 @@ const Achievements = () => {
         {img: "/banner.jpeg", content: "first"},
         {img: "/performing Yakshagana_.jpg", content:"second"},
         {img: "/yakshagana-showing-character-of-lord-krishna.jpg", content:"third"}
-        ]} />
+        ]} direction="" />
+        <Expandable cards={[
+        {img: "/banner.jpeg", content: "first"},
+        {img: "/performing Yakshagana_.jpg", content:"second"},
+        {img: "/yakshagana-showing-character-of-lord-krishna.jpg", content:"third"}
+        ]} direction="-" />
+        <Expandable cards={[
+        {img: "/banner.jpeg", content: "first"},
+        {img: "/performing Yakshagana_.jpg", content:"second"},
+        {img: "/yakshagana-showing-character-of-lord-krishna.jpg", content:"third"}
+        ]} direction="" />
+        <Expandable cards={[
+        {img: "/banner.jpeg", content: "first"},
+        {img: "/performing Yakshagana_.jpg", content:"second"},
+        {img: "/yakshagana-showing-character-of-lord-krishna.jpg", content:"third"}
+        ]} direction="-" />
+        <Expandable cards={[
+        {img: "/banner.jpeg", content: "first"},
+        {img: "/performing Yakshagana_.jpg", content:"second"},
+        {img: "/yakshagana-showing-character-of-lord-krishna.jpg", content:"third"}
+        ]} direction="" />
     </section>
   )
 }

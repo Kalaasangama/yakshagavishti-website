@@ -8,7 +8,6 @@ const Reveal = ({ children, classes }: {children: JSX.Element, classes: undefine
 
   useEffect(() => {
     isInView && control.start("visible")
-    console.log(isInView)
   }, [isInView])
 
   return (

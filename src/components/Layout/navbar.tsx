@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { SmallButton } from "./button";
-import Reveal from "./reveal";
+import { SmallButton } from "../button";
+import Reveal from "../Animations/reveal";
 
 type Link = {
   label: string;
@@ -38,19 +38,19 @@ const Navbar = () => {
   };
 
   const closeMenu = () => {
-    if (isMenuActive) setIsMenuActive(!isMenuActive);
+    if (isMenuActive) setTimeout(() => {setIsMenuActive(!isMenuActive)}, 100)
   }
 
   useEffect(() => {
-    document.addEventListener('mousedown', closeMenu);
+    document.addEventListener('touchstart', closeMenu);
     return () => {
-      document.removeEventListener('mousedown', closeMenu);
+      document.removeEventListener('touchstart', closeMenu);
     };
   });
 
   return (
     <nav className="sticky top-2 z-50 font-medium overflow-hidden">
-      <div className="flex flex-col backdrop-blur-md border-[1px] rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
+      <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center justify-center">
             <Image
@@ -85,7 +85,7 @@ const Navbar = () => {
           </div>
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
-              <SmallButton buttonString="Log In" url="/" />
+              <SmallButton>Log In</SmallButton>
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -125,7 +125,7 @@ const MobileNav = ({ links, activePath }: Props) => {
           );
         })}
         <Reveal classes="">
-          <SmallButton buttonString="Log In" url="/" />
+          <SmallButton>Log In</SmallButton>
         </Reveal>
       </div>
     </div>
