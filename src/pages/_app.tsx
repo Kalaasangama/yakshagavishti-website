@@ -64,7 +64,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <SessionProvider session={session}>
-      <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans`}>
+      <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans  max-w-screen-2xl mx-auto`}>
         {path.pathname !== "/_error" && <Navbar />}
         <Component {...pageProps} />
         <Footer />

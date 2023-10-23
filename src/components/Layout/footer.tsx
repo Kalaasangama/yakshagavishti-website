@@ -29,7 +29,7 @@ const Footer = () => {
       <div className="flex flex-row justify-center gap-10 md:gap-20">
 
         <div className="flex flex-col justify-start gap-1 md:gap-2">
-          <div className="text-xs sm:text-sm md:text-base xl:text-lg mb-1 md:mb-2 text-center">Quik Links</div>
+          <div className="text-xs sm:text-sm md:text-base xl:text-lg mb-1 md:mb-2 text-center">Quick Links</div>
           <div className="flex flex-col md:flex-row gap-1 md:gap-5">
             {links.map((link, idx) => {
               return (
