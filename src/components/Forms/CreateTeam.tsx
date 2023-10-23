@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
+import Dropzone from "../Dropzone";
+import { uploadFile } from '~/utils/file';
+import { FileRejection, useDropzone } from 'react-dropzone'
 import * as z from "zod";
 import { api } from "~/utils/api";
 import {
@@ -63,15 +66,21 @@ const roles = [
 
 ];
 
+interface DropzoneProps {
+	// className: string;
+	files: any[];
+	setFiles: React.Dispatch<React.SetStateAction<any[]>>;
+	// disabled: boolean;
+}
 const FormSchema = z.object({
-	College: z.string({
-		required_error: "Please select a college.",
-	}),
+	// College: z.string({
+	// 	required_error: "Please select a college.",
+	// }),
 	islead: z.string().default("false").optional(),
 	Role: z.string({
 		required_error: "Please select a role.",
 	}),
-	colleges: z
+	college: z
 		.string({
 			required_error: "Please select an college to display.",
 		})
@@ -108,16 +117,19 @@ export const columns: ColumnDef<Members>[] = [
 ];
 
 export function CreateTeamDialog() {
+	const [files, setFiles] = useState<File[]>([])
 	const createTeam = api.team.register.useMutation();
 	const [StateForm, setStateForm] = useState("firstform");
-	const [selectedCollege, setSelectedCollege] = useState("");
-	const [selectedRole, setSelectedRole] = useState("");
+	const [selectedCollege, setSelectedCollege] = useState<string>('');
+	const [selectedRole, setSelectedRole] = useState<string>('');
 	const [teammateName, setTeammateName] = useState("");
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setTeamPassword] = useState("");
 	const [TeammatePhone, setTeammatePhone] = useState("");
 	const [MembersArray, setMembersArray] = useState<Members[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+	const [rejected, setRejectedFiles] = useState<FileRejection[]>([]);
+	const [uploadStatus, setUploadStatus] = useState("")
 	const { toast } = useToast();
 	const form1 = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -208,6 +220,32 @@ export function CreateTeamDialog() {
 		}
 	};
 
+	const handleDelete = (index: any) => {
+		setFiles((image) => image.filter((_, id) => id !== index))
+	}
+
+
+	const handleUpload = async () => {
+		setUploadStatus("Uploading....")
+		try {
+			files.forEach((file) => {
+				console.log(uploadFile(file));
+			})
+			setUploadStatus("Upload Succesful");
+		} catch (error) {
+			console.log("imageUpload" + error)
+			setUploadStatus("Upload Failed...");
+		}
+
+	}
+	const handleCollegeChange = (value: string) => {
+		setSelectedCollege(value);
+		console.log(value);
+	};
+	const handleRoleChange = (value: string) => {
+		setSelectedRole(value);
+		console.log(value);
+	};
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -226,14 +264,11 @@ export function CreateTeamDialog() {
 							<form className="space-y-3">
 								<FormField
 									control={form1.control}
-									name="College"
+									name="college"
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
 											<FormLabel className="mt-5">Choose your college</FormLabel>
-											<Select onValueChange={() => {
-												setSelectedCollege(field.value)
-												console.log(selectedCollege)
-											}} defaultValue={field.value}>
+											<Select onValueChange={handleCollegeChange} defaultValue={selectedCollege}>
 												<FormControl>
 													<SelectTrigger>
 														<SelectValue placeholder="Select the College your Team Belongs" />
@@ -242,9 +277,9 @@ export function CreateTeamDialog() {
 												<SelectContent>
 													<SelectItem value="m@example.com">Canara College, Mangalore</SelectItem>
 													<SelectItem value="m@google.com">SDPT First Grade College, Kateel</SelectItem>
-													<SelectItem value="m@support.com">Alvas College, Moodabidri</SelectItem>
-													<SelectItem value="m@support.com">Govinda Dasa Degree College, Suratkal</SelectItem>
-													<SelectItem value="m@support.com">SDM Law College, Mangalore</SelectItem>
+													<SelectItem value="m@support.com1">Alvas College, Moodabidri</SelectItem>
+													<SelectItem value="m@support.com13">Govinda Dasa Degree College,Suratkal</SelectItem>
+													<SelectItem value="m@support.com12">SDM Law College, Mangalore</SelectItem>
 												</SelectContent>
 											</Select>
 											<FormDescription>Select the College your Team Belongs</FormDescription>
@@ -277,17 +312,18 @@ export function CreateTeamDialog() {
 											{isCheckboxChecked && (
 												<React.Fragment>
 													<FormLabel className="mt-4">Choose your Character</FormLabel>
-													<Select onValueChange={() => {
-														setSelectedCollege(field.value)
-														console.log(selectedCollege)
-													}} defaultValue={field.value}>
+													<Select onValueChange={handleRoleChange} defaultValue={selectedRole}>
 														<FormControl>
 															<SelectTrigger>
-																<SelectValue placeholder="Select the College your Team Belongs" />
+																<SelectValue placeholder="Select the Character" />
 															</SelectTrigger>
 														</FormControl>
 														<SelectContent>
-															{roles.map((role, index) => (<SelectItem value="m@exa">{role.label}</SelectItem>))}
+															<SelectItem value="m@example.com">d</SelectItem>
+															<SelectItem value="m@google.com">dd</SelectItem>
+															<SelectItem value="m@support2.com">d</SelectItem>
+															<SelectItem value="m@support.1com">s</SelectItem>
+															<SelectItem value="m@suppor3t.com">s</SelectItem>
 														</SelectContent>
 													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
@@ -381,6 +417,11 @@ export function CreateTeamDialog() {
 																<FormDescription>
 																	Input the Phone number of your teammate.
 																</FormDescription>
+
+																<div className="grid grid-cols-3">
+																	<div className="col-span-3"><Dropzone files={files} setFiles={setFiles} /></div>
+																</div>
+
 															</div>
 														)}
 													/>
@@ -401,6 +442,7 @@ export function CreateTeamDialog() {
 															let Characterid: string = role.value
 															e.preventDefault();
 															setTeamMember(Characterid, character_index);
+															handleUpload()
 														}}
 														>
 															Update
