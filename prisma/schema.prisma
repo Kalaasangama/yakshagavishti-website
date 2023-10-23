@@ -1,10 +1,13 @@
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 generator client {
   provider = "prisma-client-js"
+ 
+
 }
 
 model Account {
@@ -24,6 +27,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -32,6 +36,7 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@index([userId])
 }
 
 model User {
@@ -52,6 +57,9 @@ model User {
   isIdVerified    Boolean          @default(false)
   accounts        Account[]
   sessions        Session[]
+  @@index([collegeId])
+  @@index([teamId])
+  @@index([characterId])
 }
 
 model TeamMembers {
@@ -59,6 +67,7 @@ model TeamMembers {
   email  String
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  @@index([teamId])
 }
 
 model College {
@@ -86,6 +95,7 @@ model Team {
   criteria      criteria[]
   criteriaScore criteriaScore[]
   TeamMembers   TeamMembers[]
+  @@index([college_id])
 }
 
 model CharacterOnUser {
@@ -104,6 +114,7 @@ model criteria {
   Team          Team?           @relation(fields: [teamId], references: [id])
   teamId        String?
   criteriaScore criteriaScore[]
+  @@index([teamId])
 }
 
 model criteriaScore {
@@ -114,6 +125,9 @@ model criteriaScore {
   score     Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([teamID])
+  @@index([id])
 }
 
 model VerificationToken {
