@@ -46,14 +46,15 @@ model User {
   emailVerified   Boolean?         @default(false)
   image           String?
   collegeId       String?
+  idURL           String?
   college         College?         @relation(fields: [collegeId], references: [id])
   role            Role             @default(PARTICIPANT)
   teamId          String?
   team            Team?            @relation(fields: [teamId], references: [id])
-  characterPlayed CharacterOnUser? @relation(fields: [characterId], references: [character]) 
-  characterId	  Characters?
+  characterPlayed CharacterOnUser? @relation(fields: [characterId], references: [character])
+  characterId     Characters?
   leaderOf        Team?            @relation(fields: [leaderId], references: [id], name: "TeamLead")
-  leaderId         String?          @unique
+  leaderId        String?          @unique
   isIdVerified    Boolean          @default(false)
   accounts        Account[]
   sessions        Session[]
@@ -83,7 +84,7 @@ model College {
 model Team {
   id            String          @id @default(cuid())
   name          String          @unique
-  isComplete	Boolean         @default(false)
+  isComplete    Boolean         @default(false)
   attended      Boolean         @default(false)
   college       College?        @relation(fields: [college_id], references: [id])
   college_id    String?
@@ -101,8 +102,8 @@ model Team {
 model CharacterOnUser {
   id        String     @id @default(cuid())
   character Characters @unique
-  playedBy  User[]       
-  userId    String?     @unique
+  playedBy  User[]
+  userId    String?    @unique
   score     Int
 }
 

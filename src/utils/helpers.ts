@@ -170,6 +170,7 @@ const createAccount = (
 							id: user?.memberDetails.character_id,
 						},
 					},
+					idURL: user?.memberDetails.id_url,
 					team: {
 						connect: {
 							name: college_name,

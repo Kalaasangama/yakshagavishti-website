@@ -24,6 +24,7 @@ interface UserInput {
 	password: string;
 	phone: string;
 	character_id: string;
+	id_url: string;
 }
 
 interface createAccountParm {

@@ -1,9 +1,12 @@
 import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
+import Dropzone from "~/components/Dropzone";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
-
+import { useState } from "react";
 export default function Home() {
+	const [files, setFiles] = useState<File[]>([]);
+
 	const hello = api.example.hello.useQuery({ text: "from tRPC" });
 	const addCollege = api.college.register.useMutation();
 	return (
@@ -24,6 +27,7 @@ export default function Home() {
 						add college
 					</button>
 					<CreateTeamDialog />
+					<Dropzone files={files} setFiles={setFiles} />
 					<AuthShowcase />
 				</div>
 			</main>
@@ -60,6 +64,7 @@ function AuthShowcase() {
 									email: "test0@gmail.com",
 									character_id: "cln321uw60000x9ylk0drlfq6",
 									phone: "9449414199",
+									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
 								},
 								{
 									password: "Test@123",
@@ -67,6 +72,7 @@ function AuthShowcase() {
 									email: "test1@gmail.com",
 									character_id: "cln321uw60000x9ylk0drlfq6",
 									phone: "9449414199",
+									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
 								},
 							],
 						})
