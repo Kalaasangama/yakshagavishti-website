@@ -6,7 +6,7 @@ const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
 import Faq from "~/components/Home/faq";
 import Reveal from "~/components/Animations/reveal";
 import Prizes from "~/components/Home/prizes";
-import { Button, InactiveButton, OutlineButton } from "~/components/button";
+import { Button, InactiveButton, OutlineButton } from "~/components/Button";
 import { GiPaperArrow } from "react-icons/gi"
 import { BiDownload } from "react-icons/bi"
 import Reel from "~/components/Home/reel";

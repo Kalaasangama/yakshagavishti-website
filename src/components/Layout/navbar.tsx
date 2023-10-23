@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { SmallButton } from "../button";
+import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
 
 type Link = {
