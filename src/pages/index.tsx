@@ -10,7 +10,8 @@ import { Button, InactiveButton, OutlineButton } from "~/components/button";
 import { GiPaperArrow } from "react-icons/gi"
 import { BiDownload } from "react-icons/bi"
 import Reel from "~/components/Home/reel";
-
+import Dropzone from "~/components/Dropzone";
+import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
 import { useState } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
@@ -23,9 +24,8 @@ const reelImags = [
   {src: "/performing Yakshagana_.jpg"},
   {src: "/1.png"},
 ]
-
 export default function Home() {
-
+  
   const [isRegistrationActive, setIsRegistrationActive] = useState<Boolean>(true)
 
   const handleDownload = (path: string, name: string) => {
@@ -42,6 +42,7 @@ export default function Home() {
 
     document.body.removeChild(link);
   };
+	const [files, setFiles] = useState<File[]>([]);
 
   return (
     <>
@@ -51,7 +52,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col">
-
+        <AuthShowcase />
         <div className="h-72 bg-primary-100 absolute top-0 left-0 w-full -z-50 inline-block min-[1536px]:left-1/2 min-[1536px]:-translate-x-1/2 max-w-[1536px]"></div>
         
         {/* Hero Section */}
@@ -204,26 +205,61 @@ export default function Home() {
   );
 }
 
-// function AuthShowcase() {
-//   const { data: sessionData } = useSession();
+function AuthShowcase() {
+	const { data: sessionData } = useSession();
+	const createTeam = api.team.register.useMutation();
+	const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+		undefined, // no input
+		{ enabled: sessionData?.user !== undefined }
+	);
 
-//   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-//     undefined, // no input
-//     { enabled: sessionData?.user !== undefined }
-//   );
+	return (
+		<div className="flex flex-col items-center justify-center gap-4">
+      <CreateTeamDialog></CreateTeamDialog>
+			<p className="text-center text-2xl ">
+				{sessionData && (
+					<span>Logged in as {sessionData.user?.name}</span>
+				)}
+				{secretMessage && <span> - {secretMessage}</span>}
+			</p>
 
-//   return (
-//     <div className="flex flex-col items-center justify-center gap-4">
-//       <p className="text-center text-2xl text-white">
-//         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-//         {secretMessage && <span> - {secretMessage}</span>}
-//       </p>
-//       <button
-//         className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-//         onClick={sessionData ? () => void signOut() : () => void signIn()}
-//       >
-//         {sessionData ? "Sign out" : "Sign in"}
-//       </button>
-//     </div>
-//   );
-// }
+			{sessionData && (
+				<button
+					onClick={() =>
+						createTeam.mutate({
+							college_id: "clmvm9how0004x93tht0gemlt",
+							members: [
+								{
+									password: "Test@123",
+									name: "menber",
+									email: "test0@gmail.com",
+									character_id: "cln321uw60000x9ylk0drlfq6",
+									phone: "9449414199",
+									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
+								},
+								{
+									password: "Test@123",
+									name: "menber",
+									email: "test1@gmail.com",
+									character_id: "cln321uw60000x9ylk0drlfq6",
+									phone: "9449414199",
+									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
+								},
+							],
+						})
+					}
+				>
+					Create Team
+				</button>
+			)}
+			<button
+				className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+				onClick={
+					sessionData ? () => void signOut() : () => void signIn()
+				}
+			>
+				{sessionData ? "Sign out" : "Sign in"}
+			</button>
+		</div>
+	);
+}
