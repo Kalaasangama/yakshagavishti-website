@@ -3,7 +3,7 @@ module.exports = {
   darkMode: ["class"],
   content: [
     './pages/**/*.{ts,tsx}',
-    '@/components/**/*.{ts,tsx}',
+    './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
 	],
@@ -30,10 +30,19 @@ module.exports = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-	  colors: {
-        'primary-100': '#0c1331',
-        'primary-transparent-25': 'rgb(12, 28, 49, 0.5)',
-        'secondary-100': '#f58b00'
+      colors: {
+        'bg-gradient-50': 'rgba(48, 21, 75, 0.75)',
+        'primary-50': 'rgba(41,47,82, 0.5)',
+        'primary-100': '#080b1e',
+        'primary-transparent-50': 'rgba(8,11,30, 0.15)',
+        'secondary-100': '#df8b2b',
+        'secondary-transparent-0.5': 'rgba(247, 101, 2, 0.5)',
+        'secondary-200': '#f76502'
+      },
+      fontFamily: {
+        hindi: 'var(--font-hindi)',
+        tourney: ['var(--font-tourney)', 'cursive'],
+        sans: ['var(--font-baloo)', 'Arial'],
       }
     },
   },
