@@ -56,8 +56,8 @@ import { Input } from "src/components/ui/input";
 import { ToastAction } from "src/components/ui/toast";
 import { useToast } from "src/components/ui/use-toast";
 var roles = [
-	{ label: "Bheema", value: "clo37yupl0001sh64avly34gud" },
-	{ label: "Arjuna", value: "clo37yupl0001sh64avly34gudds" },
+	{ label: "Bheema", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Arjuna", value: "clo4llljw0000vjjshsy7w8e8" },
 	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gusd" },
 	{ label: "Nakula", value: "clo37yupl0001sh64avly34guddf" },
 	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gudfgg" },
@@ -132,6 +132,7 @@ export function CreateTeamDialog() {
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setTeamPassword] = useState("");
 	const [TeammatePhone, setTeammatePhone] = useState("");
+	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
 	const [MembersArray, setMembersArray] = useState<Members[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 	const [rejected, setRejectedFiles] = useState<FileRejection[]>([]);
@@ -147,6 +148,7 @@ export function CreateTeamDialog() {
 	const SubmitData = () => {
 		const MemberInfo = {
 			college_id: selectedCollege,
+			leader_character: LeaderCharacter,
 			members: MembersArray,
 		};
 		console.log(MemberInfo);
@@ -214,7 +216,7 @@ export function CreateTeamDialog() {
 					title: "Details",
 					description: `Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.`,
 				});
-				availableRoles = roles.filter(roles => roles.value !== selectedRole)
+				availableRoles = roles.filter(roles => roles.value !== LeaderCharacter)
 
 				setStateForm("secondform");
 			} else {
@@ -263,8 +265,7 @@ export function CreateTeamDialog() {
 		console.log(value);
 	};
 	const handleRoleChange = (value: string) => {
-
-		setSelectedRole(value);
+		setLeaderCharacter(value);
 		console.log(roles)
 		console.log(value);
 	};
@@ -298,7 +299,7 @@ export function CreateTeamDialog() {
 												</FormControl>
 												<SelectContent>
 													<SelectItem value="clo37witw0000sh64c9n62www">nmamit</SelectItem>
-													<SelectItem value="m@google.com">SDPT First Grade College, Kateel</SelectItem>
+													<SelectItem value="clo4ms7s30002vjjs7r9r9on1">SDPT First Grade College, Kateel</SelectItem>
 													<SelectItem value="m@support.com1">Alvas College, Moodabidri</SelectItem>
 													<SelectItem value="m@support.com13">Govinda Dasa Degree College,Suratkal</SelectItem>
 													<SelectItem value="m@support.com12">SDM Law College, Mangalore</SelectItem>
@@ -337,7 +338,7 @@ export function CreateTeamDialog() {
 											{isCheckboxChecked && (
 												<React.Fragment>
 													<FormLabel className="mt-4">Choose your Character</FormLabel>
-													<Select onValueChange={handleRoleChange} defaultValue={selectedRole}>
+													<Select onValueChange={handleRoleChange} defaultValue={LeaderCharacter ? LeaderCharacter : undefined}>
 														<FormControl>
 															<SelectTrigger>
 																<SelectValue placeholder="Select the Character" />
@@ -483,8 +484,8 @@ export function CreateTeamDialog() {
 						<div className="flex gap-2 m-auto">
 							<Button onClick={() => setStateForm("firstform")}>Back</Button>
 							<AlertDialog>
-								<AlertDialogTrigger disabled={MembersArray.length < availableRoles.length ? true : false}>
-									<Button disabled={MembersArray.length < availableRoles.length ? true : false} onClick={() => {
+								<AlertDialogTrigger  disabled={MembersArray.length < availableRoles.length ? true : false}>
+									<Button  disabled={MembersArray.length < availableRoles.length ? true : false} onClick={() => {
 										if (MembersArray.length < availableRoles.length) {
 											toast({
 												variant: "destructive",
