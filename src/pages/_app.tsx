@@ -55,7 +55,6 @@ const samarkan = localFont({
   variable: '--font-hindi'
 })
 import "~/styles/dropzone.css"
-import Navbar from "~/components/navbar";
 import { Toaster } from "@/components/ui/toaster"
 
 

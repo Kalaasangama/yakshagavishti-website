@@ -3,7 +3,6 @@ import Head from "next/head";
 import Dropzone from "~/components/Dropzone";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
-import { useState } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic.js";
 const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
