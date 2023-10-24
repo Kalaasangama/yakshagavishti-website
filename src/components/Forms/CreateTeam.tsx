@@ -55,16 +55,21 @@ import {
 import { Input } from "src/components/ui/input";
 import { ToastAction } from "src/components/ui/toast";
 import { useToast } from "src/components/ui/use-toast";
-const roles = [
-	{ label: "Bheema", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Arjuna", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Nakula", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Panchali", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Duriyodhana", value: "clo37yupl0001sh64avly34gu" }
+var roles = [
+	{ label: "Bheema", value: "clo37yupl0001sh64avly34gud" },
+	{ label: "Arjuna", value: "clo37yupl0001sh64avly34gudds" },
+	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gusd" },
+	{ label: "Nakula", value: "clo37yupl0001sh64avly34guddf" },
+	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gudfgg" },
+	{ label: "Panchali", value: "clo37yupl0001sh64avly34gusdsgdg" },
+	{ label: "Duriyodhana", value: "clo37yupl0001sh64avly34guxcxcx" }
 
 ];
+
+var availableRoles: {
+	label: string,
+	value: string
+}[] = roles;
 
 interface DropzoneProps {
 	// className: string;
@@ -201,22 +206,35 @@ export function CreateTeamDialog() {
 	};
 
 	const Passwordpattern = () => {
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		if (teamPassword.match(passwordRegex)) {
-			toast({
-				variant: "default",
-				title: "Details",
-				description: `Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.`,
-			});
+		const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+		if (selectedCollege) {
+			if (teamPassword.match(passwordRegex)) {
+				toast({
+					variant: "default",
+					title: "Details",
+					description: `Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.`,
+				});
+				availableRoles = roles.filter(roles => roles.value !== selectedRole)
 
-			setStateForm("secondform");
-		} else {
+				setStateForm("secondform");
+			} else {
+				toast({
+					variant: "destructive",
+					title:
+						"Weak Password",
+					description:
+						"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number and atleast 1 special character ",
+				});
+			}
+
+		}
+		else {
 			toast({
 				variant: "destructive",
 				title:
-					"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number",
+					"No college selected",
 				description:
-					"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number",
+					"Please select a college!",
 			});
 			return false;
 		}
@@ -245,7 +263,9 @@ export function CreateTeamDialog() {
 		console.log(value);
 	};
 	const handleRoleChange = (value: string) => {
+
 		setSelectedRole(value);
+		console.log(roles)
 		console.log(value);
 	};
 	return (
@@ -303,6 +323,9 @@ export function CreateTeamDialog() {
 														checked={isCheckboxChecked}
 														onClick={() => {
 															console.log("Checkbox clicked");
+															if (isCheckboxChecked) {
+																setSelectedRole("")
+															}
 															setIsCheckboxChecked(!isCheckboxChecked);
 														}}
 													/>
@@ -321,11 +344,9 @@ export function CreateTeamDialog() {
 															</SelectTrigger>
 														</FormControl>
 														<SelectContent>
-															<SelectItem value="m@example.com">d</SelectItem>
-															<SelectItem value="m@google.com">dd</SelectItem>
-															<SelectItem value="m@support2.com">d</SelectItem>
-															<SelectItem value="m@support.1com">s</SelectItem>
-															<SelectItem value="m@suppor3t.com">s</SelectItem>
+															{roles.map((item) => {
+																return <SelectItem value={item.value}>{item.label}</SelectItem>
+															})}
 														</SelectContent>
 													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
@@ -357,7 +378,7 @@ export function CreateTeamDialog() {
 						</DialogDescription>
 						<div>
 							<Accordion type="single" collapsible>
-								{roles.map((role, index) => (
+								{availableRoles.map((role, index) => (
 									<AccordionItem key={index} value={`item-${index}`}>
 										<AccordionTrigger onClick={() => {
 											const member = MembersArray[index]
@@ -381,7 +402,7 @@ export function CreateTeamDialog() {
 																	placeholder="Teammate Name"
 																	className="col-span-3"
 																	type="text"
-																	defaultValue={teammateName}
+																	defaultValue={MembersArray[index]?.name}
 																	onChange={(e) => {
 																		setTeammateName(e.target.value)
 																	}}
@@ -395,7 +416,7 @@ export function CreateTeamDialog() {
 																	placeholder="Teammate EmailID"
 																	className="col-span-3"
 																	type="email"
-																	defaultValue={teammateEmail}
+																	defaultValue={MembersArray[index]?.email}
 																	onChange={(e) => {
 																		if (e)
 																			setTeammateEmail(e.target.value)
@@ -409,8 +430,10 @@ export function CreateTeamDialog() {
 																	id="Teammate_Phone"
 																	placeholder="Teammate Phone"
 																	className="col-span-3"
-																	type="tel"
-																	defaultValue={TeammatePhone}
+																	type="number"
+																	maxLength={10}
+																	minLength={10}
+																	defaultValue={MembersArray[index]?.phone}
 																	onChange={(e) => {
 																		setTeammatePhone(e.target.value)
 																	}}
@@ -435,10 +458,11 @@ export function CreateTeamDialog() {
 															e.preventDefault();
 															isMemberValid(Characterid, character_index);
 														}}
+														type="submit"
 													>
 														Save
 													</Button> :
-														<Button onClick={(e) => {
+														<Button type="submit" onClick={(e) => {
 															let character_index = index
 															console.log(character_index)
 															let Characterid: string = role.value
@@ -456,24 +480,39 @@ export function CreateTeamDialog() {
 								))}
 							</Accordion>
 						</div>
-						<AlertDialog>
-							<AlertDialogTrigger><Button>Submit</Button></AlertDialogTrigger>
-							<AlertDialogContent>
-								<AlertDialogHeader>
-									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-									<AlertDialogDescription>
-										This action will register your team
-									</AlertDialogDescription>
-								</AlertDialogHeader>
-								<AlertDialogFooter>
-									<AlertDialogCancel>Cancel</AlertDialogCancel>
-									<AlertDialogAction onClick={(e) => {
-										e.preventDefault();
-										SubmitData()
-									}}>Continue</AlertDialogAction>
-								</AlertDialogFooter>
-							</AlertDialogContent>
-						</AlertDialog>
+						<div className="flex gap-2 m-auto">
+							<Button onClick={() => setStateForm("firstform")}>Back</Button>
+							<AlertDialog>
+								<AlertDialogTrigger disabled={MembersArray.length < availableRoles.length ? true : false}>
+									<Button disabled={MembersArray.length < availableRoles.length ? true : false} onClick={() => {
+										if (MembersArray.length < availableRoles.length) {
+											toast({
+												variant: "destructive",
+												title:
+													"Team Incomplete",
+												description:
+													"Please fill in details of all characters in your team",
+											});
+										}
+									}}>Submit</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action will register your team
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction onClick={(e) => {
+											e.preventDefault();
+											SubmitData()
+										}}>Continue</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						</div>
 					</React.Fragment>
 				)}
 			</DialogContent>
