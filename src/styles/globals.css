@@ -5,7 +5,7 @@
 @layer base {
   body {
     @apply bg-primary-100;
-    @apply text-white;
+    /* @apply text-white; */
     @apply overflow-x-hidden;
     @apply bg-gradient-to-tl from-bg-gradient-50 to-transparent bg-no-repeat;
   }

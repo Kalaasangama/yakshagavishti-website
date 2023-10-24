@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
+import { Button } from "src/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "src/components/ui/checkbox";
 import Dropzone from "../Dropzone";
 import { uploadFile } from '~/utils/file';
 import { FileRejection, useDropzone } from 'react-dropzone'
@@ -15,13 +15,13 @@ import {
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
+} from "src/components/ui/select"
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "@/components/ui/accordion";
+} from "src/components/ui/accordion";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -32,7 +32,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "src/components/ui/alert-dialog"
 import {
 	Form,
 	FormControl,
@@ -41,7 +41,7 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
+} from "src/components/ui/form";
 
 import {
 	Dialog,
@@ -51,18 +51,18 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { ToastAction } from "@/components/ui/toast";
-import { useToast } from "@/components/ui/use-toast";
+} from "src/components/ui/dialog";
+import { Input } from "src/components/ui/input";
+import { ToastAction } from "src/components/ui/toast";
+import { useToast } from "src/components/ui/use-toast";
 const roles = [
-	{ label: "Bheema", value: "cln0iguh70003x9dozn0p8q3v" },
-	{ label: "Arjuna", value: "cln0iguh70003x9dozn0p8q3z" },
-	{ label: "Yudhishtira", value: "cln0iguh70003x9dozn0p8q3s" },
-	{ label: "Nakula", value: "cln0iguh70003x9dozn0p8q3er" },
-	{ label: "Sahadeva", value: "cln0iguh70003x9dozn0p8q39" },
-	{ label: "Panchali", value: "cln0iguh70003x9dozn0p8q3p" },
-	{ label: "Duriyodhana", value: "cln0iguh70003x9dozn0p8q37" }
+	{ label: "Bheema", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Arjuna", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Nakula", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Panchali", value: "clo37yupl0001sh64avly34gu" },
+	{ label: "Duriyodhana", value: "clo37yupl0001sh64avly34gu" }
 
 ];
 
@@ -99,6 +99,7 @@ type Members = {
 	password: string;
 	character_id: string;
 	phone: string;
+	id_url: string
 };
 
 export const columns: ColumnDef<Members>[] = [
@@ -159,7 +160,8 @@ export function CreateTeamDialog() {
 			email: teammateEmail,
 			password: teamPassword,
 			phone: TeammatePhone,
-			character_id: character_id
+			character_id: character_id,
+			id_url: "kjnkjn"
 		};
 
 		const array = [...MembersArray];
@@ -275,7 +277,7 @@ export function CreateTeamDialog() {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													<SelectItem value="m@example.com">Canara College, Mangalore</SelectItem>
+													<SelectItem value="clo37witw0000sh64c9n62www">nmamit</SelectItem>
 													<SelectItem value="m@google.com">SDPT First Grade College, Kateel</SelectItem>
 													<SelectItem value="m@support.com1">Alvas College, Moodabidri</SelectItem>
 													<SelectItem value="m@support.com13">Govinda Dasa Degree College,Suratkal</SelectItem>
