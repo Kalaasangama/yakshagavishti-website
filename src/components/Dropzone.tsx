@@ -46,7 +46,7 @@ const Dropzone = ({files,setFiles}: DropzoneProps) =>{
 
 
   // Function for uploading the image
-  const handleUpload = async()=>{
+  const handleUpload = ()=>{
     setUploadStatus("Uploading....")
     try {
       files.forEach((file)=>{

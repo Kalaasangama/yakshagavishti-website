@@ -5,12 +5,9 @@ import dynamic from "next/dynamic.js";
 const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
 import Faq from "~/components/Home/faq";
 import Reveal from "~/components/Animations/reveal";
-import Prizes from "~/components/Home/prizes";
 import { Button, InactiveButton, OutlineButton } from "~/components/button";
-import { GiPaperArrow } from "react-icons/gi"
 import { BiDownload } from "react-icons/bi"
 import Reel from "~/components/Home/reel";
-import Dropzone from "~/components/Dropzone";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
 import { useState } from "react";
