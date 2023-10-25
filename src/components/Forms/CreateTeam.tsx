@@ -195,7 +195,6 @@ export function CreateTeamDialog() {
 		console.log("running");
 		array.some((obj) => {
 			if (obj.name === teammateName || obj.email === teammateEmail || obj.phone === TeammatePhone) {
-				console.log("running1");
 				toast({
 					variant: "destructive",
 					title: "Repeated Teammate",
@@ -259,7 +258,6 @@ export function CreateTeamDialog() {
 			console.log("imageUpload" + error)
 			setUploadStatus("Upload Failed...");
 		}
-
 	}
 	const handleCollegeChange = (value: string) => {
 		setSelectedCollege(value);
@@ -275,7 +273,7 @@ export function CreateTeamDialog() {
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-screen no-scrollbar">
+			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-red-900 via-neutral-900 to-purple-900 text-white font-mono lg:max-w-screen-lg overflow-y-scroll max-h-screen no-scrollbar">
 				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
@@ -290,9 +288,9 @@ export function CreateTeamDialog() {
 									control={form1.control}
 									name="college"
 									render={({ field }) => (
-										<FormItem className="flex flex-col">
-											<FormLabel className="mt-5">Choose your college</FormLabel>
-											<Select onValueChange={handleCollegeChange} defaultValue={selectedCollege}>
+										<FormItem className="flex flex-col text-black">
+											<FormLabel className="mt-5 text-white">Choose your college</FormLabel>
+											<Select onValueChange={handleCollegeChange} defaultValue={selectedCollege} >
 												<FormControl>
 													<SelectTrigger>
 														<SelectValue placeholder="Select the College your Team Belongs" />
@@ -307,7 +305,7 @@ export function CreateTeamDialog() {
 												</SelectContent>
 											</Select>
 											<FormDescription>Select the College your Team Belongs</FormDescription>
-											<FormLabel className="mt-4">Create a team password.</FormLabel>
+											<FormLabel className="mt-4 text-white">Create a team password.</FormLabel>
 											<Input
 												id="Team_Password"
 												placeholder="TeamPassword"
@@ -318,10 +316,11 @@ export function CreateTeamDialog() {
 												}}
 												value={teamPassword}
 											/>
-											<FormDescription>Generate a password for your team.</FormDescription>
+											<FormDescription >Generate a password for your team.</FormDescription>
 											<div className="flex flex-cols gap-2">
 												<div className="mt-2">
 													<Checkbox
+													className="bg-white"
 														checked={isCheckboxChecked}
 														onClick={() => {
 															console.log("Checkbox clicked");
@@ -333,12 +332,12 @@ export function CreateTeamDialog() {
 													/>
 												</div>
 												<div className="mt-2">
-													<FormDescription>Do you have a Character in the play</FormDescription>
+													<FormDescription className="text-white" >Do you have a Character in the play</FormDescription>
 												</div>
 											</div>
 											{isCheckboxChecked && (
 												<React.Fragment>
-													<FormLabel className="mt-4">Choose your Character</FormLabel>
+													<FormLabel className="mt-4 text-white">Choose your Character</FormLabel>
 													<Select onValueChange={handleRoleChange} defaultValue={LeaderCharacter ? LeaderCharacter : undefined}>
 														<FormControl>
 															<SelectTrigger>
@@ -362,6 +361,7 @@ export function CreateTeamDialog() {
 						</Form>
 						<DialogFooter>
 							<Button
+							variant={"default"}
 								onClick={(e) => {
 									e.preventDefault();
 									Passwordpattern();
@@ -392,13 +392,13 @@ export function CreateTeamDialog() {
 										}}>{role.label}</AccordionTrigger>
 										<AccordionContent>
 											<Form {...form2}>
-												<form className="space-y-1">
+												<form className="space-y-1" >
 													<FormField
 														control={form2.control}
 														name="Role"
 														render={({ field }) => (
 															<div className="flex flex-col">
-																<FormLabel className="my-4">Name of the team member</FormLabel>
+																<FormLabel className="my-4 text-white">Name of the team member</FormLabel>
 																<Input
 																	id="Teammate_Name"
 																	placeholder="Teammate Name"
@@ -412,7 +412,7 @@ export function CreateTeamDialog() {
 																<FormDescription>
 																	Input the Name of your teammate.
 																</FormDescription>
-																<FormLabel className="my-4">Email address of the team member</FormLabel>
+																<FormLabel className="my-4 text-white">Email address of the team member</FormLabel>
 																<Input
 																	id="Teammate_EmailID"
 																	placeholder="Teammate EmailID"
@@ -427,7 +427,7 @@ export function CreateTeamDialog() {
 																<FormDescription>
 																	Input the email addresses of your teammates.
 																</FormDescription>
-																<FormLabel className="my-4">Phone of the team member</FormLabel>
+																<FormLabel className="my-4 text-white">Phone of the team member</FormLabel>
 																<Input
 																	id="Teammate_Phone"
 																	placeholder="Teammate Phone"
@@ -460,11 +460,10 @@ export function CreateTeamDialog() {
 															e.preventDefault();
 															isMemberValid(Characterid, character_index);
 														}}
-														type="submit"
 													>
 														Save
 													</Button> :
-														<Button type="submit" onClick={(e) => {
+														<Button onClick={(e) => {
 															let character_index = index
 															console.log(character_index)
 															let Characterid: string = role.value
