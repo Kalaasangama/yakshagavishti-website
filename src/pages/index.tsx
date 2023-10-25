@@ -14,16 +14,16 @@ import { useState } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
 
 const reelImags = [
-  {src: "/banner.jpeg"},
-  {src: "/performing Yakshagana_.jpg"},
-  {src: "/1.png"},
-  {src: "/banner.jpeg"},
-  {src: "/performing Yakshagana_.jpg"},
-  {src: "/1.png"},
+  { src: "/banner.jpeg" },
+  { src: "/performing Yakshagana_.jpg" },
+  { src: "/1.png" },
+  { src: "/banner.jpeg" },
+  { src: "/performing Yakshagana_.jpg" },
+  { src: "/1.png" },
 ]
 
 export default function Home() {
-	const [files, setFiles] = useState<File[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
 
   const [isRegistrationActive, setIsRegistrationActive] = useState<Boolean>(true)
 
@@ -52,23 +52,24 @@ export default function Home() {
       <main className="flex flex-col">
         <AuthShowcase />
         <div className="h-72 bg-primary-100 absolute top-0 left-0 w-full -z-50 inline-block min-[1536px]:left-1/2 min-[1536px]:-translate-x-1/2 max-w-[1536px]"></div>
-        
+
         {/* Hero Section */}
 
         <section className="relative h-[83vh] sm:h-[80vh] md:h-[87vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
-          <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill/>
+          <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
           <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-36 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
-            
+
             {/* Contents - Hero Section */}
             <Reveal classes="">
               <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
                 <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">kalasangama</div>
                 <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
               </div>
+
             </Reveal>
             <Reveal classes="">
               <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
-                {isRegistrationActive ? <Button>Register</Button>: <InactiveButton>Register</InactiveButton>}
+                {isRegistrationActive ? <Button>Register</Button> : <InactiveButton>Register</InactiveButton>}
               </div>
             </Reveal>
           </div>
@@ -191,11 +192,11 @@ export default function Home() {
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
                 <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
-              </div> 
+              </div>
             </ScrollLag>
             <Faq />
           </section>
-          
+
         </div>
 
       </main>
@@ -204,60 +205,34 @@ export default function Home() {
 }
 
 function AuthShowcase() {
-	const { data: sessionData } = useSession();
-	const createTeam = api.team.register.useMutation();
-	const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-		undefined, // no input
-		{ enabled: sessionData?.user !== undefined }
-	);
+  const { data: sessionData } = useSession();
+  const createTeam = api.team.register.useMutation();
+  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
+    undefined, // no input
+    { enabled: sessionData?.user !== undefined }
+  );
 
-	return (
-		<div className="flex flex-col items-center justify-center gap-4">
-      <CreateTeamDialog></CreateTeamDialog>
-			<p className="text-center text-2xl ">
-				{sessionData && (
-					<span>Logged in as {sessionData.user?.name}</span>
-				)}
-				{secretMessage && <span> - {secretMessage}</span>}
-			</p>
+  return (
+    <div className="flex flex-col items-center justify-center gap-4">
+      <p className="text-center text-2xl ">
+        {sessionData && (
+          <span>Logged in as {sessionData.user?.name}</span>
+        )}
+        {secretMessage && <span> - {secretMessage}</span>}
+      </p>
 
-			{sessionData && (
-				<button
-					onClick={() =>
-						createTeam.mutate({
-							college_id: "clmvm9how0004x93tht0gemlt",
-							members: [
-								{
-									password: "Test@123",
-									name: "menber",
-									email: "test0@gmail.com",
-									character_id: "cln321uw60000x9ylk0drlfq6",
-									phone: "9449414199",
-									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
-								},
-								{
-									password: "Test@123",
-									name: "menber",
-									email: "test1@gmail.com",
-									character_id: "cln321uw60000x9ylk0drlfq6",
-									phone: "9449414199",
-									id_url: "http://res.cloudinary.com/dh1bowbbe/image/upload/v1696092518/next/wubnfxkvpzr92plhorbg.png"
-								},
-							],
-						})
-					}
-				>
-					Create Team
-				</button>
-			)}
-			<button
-				className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-				onClick={
-					sessionData ? () => void signOut() : () => void signIn()
-				}
-			>
-				{sessionData ? "Sign out" : "Sign in"}
-			</button>
-		</div>
-	);
+      {sessionData && (
+
+        <CreateTeamDialog></CreateTeamDialog>
+      )}
+      <button
+        className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+        onClick={
+          sessionData ? () => void signOut() : () => void signIn()
+        }
+      >
+        {sessionData ? "Sign out" : "Sign in"}
+      </button>
+    </div>
+  );
 }

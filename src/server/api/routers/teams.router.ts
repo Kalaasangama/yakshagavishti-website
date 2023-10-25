@@ -14,6 +14,7 @@ export const TeamRouter = createTRPCRouter({
 		.input(
 			z.object({
 				college_id: z.string(),
+				leader_character: z.string().nullable(),
 				members: z.array(
 					z.object({
 						name: z.string(),
@@ -31,7 +32,8 @@ export const TeamRouter = createTRPCRouter({
 				//Create or return team
 				const { team, college } = await createTeam(
 					input.college_id,
-					ctx.session
+					ctx.session,
+					input.leader_character
 				);
 				//Create accounts in auth0
 				await Promise.all(
