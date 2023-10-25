@@ -46,7 +46,8 @@ const Dropzone = ({files,setFiles}: DropzoneProps) =>{
 
 
   // Function for uploading the image
-  const handleUpload = async()=>{
+  const handleUpload = async(e:any)=>{
+    e.preventDefault();
     setUploadStatus("Uploading....")
     try {
       files.forEach((file)=>{
@@ -84,10 +85,8 @@ const Dropzone = ({files,setFiles}: DropzoneProps) =>{
       )}
 
     
-    {files.length>0 && 
 
     //Upload Button
-    <button onClick={handleUpload} className='text-center bg-slate-500 rounded-md px-4 py-2 mt-4'>Upload to Cloudinary</button>}
     <p>{uploadStatus}</p>
       </div>}
     </div>

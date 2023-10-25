@@ -161,14 +161,16 @@ export function CreateTeamDialog() {
 		});
 	};
 
-	const setTeamMember = (character_id: string, character_index: number) => {
+	const setTeamMember = async (character_id: string, character_index: number) => {
+		const id_url = await handleUpload(character_index)
+		console.log(id_url)
 		const data: Members = {
 			name: teammateName,
 			email: teammateEmail,
 			password: teamPassword,
 			phone: TeammatePhone,
 			character_id: character_id,
-			id_url: "kjnkjn"
+			id_url:id_url
 		};
 
 		const array = [...MembersArray];
@@ -247,13 +249,12 @@ export function CreateTeamDialog() {
 	}
 
 
-	const handleUpload = async () => {
+	const handleUpload= async (index:number) => {
 		setUploadStatus("Uploading....")
 		try {
-			files.forEach((file) => {
-				console.log(uploadFile(file));
-			})
+			const result =await uploadFile(files[0])
 			setUploadStatus("Upload Succesful");
+			return result
 		} catch (error) {
 			console.log("imageUpload" + error)
 			setUploadStatus("Upload Failed...");
@@ -469,7 +470,6 @@ export function CreateTeamDialog() {
 															let Characterid: string = role.value
 															e.preventDefault();
 															setTeamMember(Characterid, character_index);
-															handleUpload()
 														}}
 														>
 															Update
