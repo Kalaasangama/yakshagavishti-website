@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { Button } from "../ui/button";
+import { Button, SmallButton } from "../Button"
 import Reveal from "../Animations/reveal";
 
 type Link = {
@@ -87,7 +87,7 @@ const Navbar = () => {
           </div>
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
-              <Button>Log In</Button>
+              <SmallButton>Log In</SmallButton>
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -127,7 +127,7 @@ const MobileNav = ({ links, activePath }: Props) => {
           );
         })}
         <Reveal classes="">
-          <Button>Log In</Button>
+          <SmallButton>Log In</SmallButton>
         </Reveal>
       </div>
     </div>

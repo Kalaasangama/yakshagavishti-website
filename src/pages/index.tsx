@@ -69,7 +69,7 @@ export default function Home() {
             </Reveal>
             <Reveal classes="">
               <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
-                {isRegistrationActive ? <Button>Register</Button> : <Button disabled>Register</Button>}
+                {isRegistrationActive ? <Button>Register</Button> : <InactiveButton>Register</InactiveButton>}
               </div>
             </Reveal>
           </div>
@@ -120,12 +120,12 @@ export default function Home() {
                     </div>
                   </Reveal>
                   <a onClick={() => handleDownload("/1.png", "1.png")} className="w-fit">
-                    <Button variant={"outline"}>
+                    <OutlineButton>
                       <div className="flex gap-2 items-center justify-center">
                         <BiDownload />
                         <span>Rule Book</span>
                       </div>
-                    </Button>
+                    </OutlineButton>
                   </a>
                 </div>
               </div>
