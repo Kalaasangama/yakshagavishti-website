@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Timer = ({setIsRegistrationActive}: Props) => {
-  const expiryTimestamp = new Date("2023-10-23 9:30");
+  const expiryTimestamp = new Date("2023-11-23 9:30");
   const { seconds, minutes, hours, days } = useTimer({
     expiryTimestamp,
     onExpire: () => {

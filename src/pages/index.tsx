@@ -15,6 +15,9 @@ import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
 import { api } from "~/utils/api";
 import { useState } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
+import { Router, useRouter } from "next/router";
+import kn from "~/locale/kn";
+import en from "~/locale/en";
 
 const reelImags = [
   {src: "/banner.jpeg"},
@@ -44,6 +47,9 @@ export default function Home() {
   };
 	const [files, setFiles] = useState<File[]>([]);
 
+  const router = useRouter()
+  const t = router.locale === "en" ? en : kn
+
   return (
     <>
       <Head>
@@ -64,7 +70,7 @@ export default function Home() {
             {/* Contents - Hero Section */}
             <Reveal classes="">
               <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
-                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">kalasangama</div>
+                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
                 <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
               </div>
             </Reveal>
