@@ -54,7 +54,7 @@ export default function Home() {
         <div className="h-72 bg-primary-100 absolute top-0 left-0 w-full -z-50 inline-block min-[1536px]:left-1/2 min-[1536px]:-translate-x-1/2 max-w-[1536px]"></div>
 
         {/* Hero Section */}
-
+        <CreateTeamDialog></CreateTeamDialog>
         <section className="relative h-[83vh] sm:h-[80vh] md:h-[87vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
           <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
           <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-36 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center">
@@ -69,7 +69,7 @@ export default function Home() {
             </Reveal>
             <Reveal classes="">
               <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24">
-                {isRegistrationActive ? <Button>Register</Button> : <InactiveButton>Register</InactiveButton>}
+                {isRegistrationActive ? <Button>Register</Button> : <Button disabled>Register</Button>}
               </div>
             </Reveal>
           </div>
@@ -120,12 +120,12 @@ export default function Home() {
                     </div>
                   </Reveal>
                   <a onClick={() => handleDownload("/1.png", "1.png")} className="w-fit">
-                    <OutlineButton>
+                    <Button variant={"outline"}>
                       <div className="flex gap-2 items-center justify-center">
                         <BiDownload />
                         <span>Rule Book</span>
                       </div>
-                    </OutlineButton>
+                    </Button>
                   </a>
                 </div>
               </div>
