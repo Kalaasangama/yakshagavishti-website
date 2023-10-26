@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Checkbox } from "src/components/ui/checkbox";
 import Dropzone from "../Dropzone";
 import { uploadFile } from '~/utils/file';
-import { FileRejection, useDropzone } from 'react-dropzone'
+import { FileRejection } from 'react-dropzone'
 import * as z from "zod";
 import { api } from "~/utils/api";
 import {
@@ -55,6 +55,7 @@ import {
 import { Input } from "src/components/ui/input";
 import { ToastAction } from "src/components/ui/toast";
 import { useToast } from "src/components/ui/use-toast";
+import Email from "next-auth/providers/email";
 var roles = [
 	{ label: "Bheema", value: "clo37yupl0001sh64avly34gu" },
 	{ label: "Arjuna", value: "clo4llljw0000vjjshsy7w8e8" },
@@ -160,6 +161,42 @@ export function CreateTeamDialog() {
 			action: <ToastAction altText="Undo">Undo</ToastAction>,
 		});
 	};
+	const FieldValidation = () => {
+		let emailregx = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+		let phoneregx = "^[6-9][0-9]{9}$"
+		if (teammateName === "" || TeammatePhone === "" || teammateEmail === "") {
+			toast({
+				variant: "destructive",
+				title:
+					"Fill All the details",
+				description:
+					"Fill All the fields",
+			});
+			return false
+
+		}
+		else if (!teammateEmail.match(emailregx)) {
+			toast({
+				variant: "destructive",
+				title:
+					"Invalid Email ID",
+				description:
+					"Invalid Email ID ",
+			});
+			return false
+		}
+		else if (!TeammatePhone.match(phoneregx)) {
+			toast({
+				variant: "destructive",
+				title:
+					"Invalid Phone number",
+				description:
+					"Check the Enter phone Number",
+			});
+			return false
+		}
+		return true
+	}
 
 	const setTeamMember = (character_id: string, character_index: number) => {
 		const data: Members = {
@@ -318,9 +355,9 @@ export function CreateTeamDialog() {
 											/>
 											<FormDescription >Generate a password for your team.</FormDescription>
 											<div className="flex flex-cols gap-2">
-												<div className="mt-2">
+												<div className="mt-1">
 													<Checkbox
-													className="bg-white"
+														className="bg-white"
 														checked={isCheckboxChecked}
 														onClick={() => {
 															console.log("Checkbox clicked");
@@ -332,7 +369,7 @@ export function CreateTeamDialog() {
 													/>
 												</div>
 												<div className="mt-2">
-													<FormDescription className="text-white" >Do you have a Character in the play</FormDescription>
+													<FormDescription className="text-white mt-1" >Do you have a Character in the play</FormDescription>
 												</div>
 											</div>
 											{isCheckboxChecked && (
@@ -361,7 +398,7 @@ export function CreateTeamDialog() {
 						</Form>
 						<DialogFooter>
 							<Button
-							variant={"default"}
+								variant={"default"}
 								onClick={(e) => {
 									e.preventDefault();
 									Passwordpattern();
@@ -454,11 +491,16 @@ export function CreateTeamDialog() {
 													/>
 													{MembersArray[index] === undefined ? <Button
 														onClick={(e) => {
-															let character_index = index
-															console.log(character_index)
-															let Characterid: string = role.value
 															e.preventDefault();
-															isMemberValid(Characterid, character_index);
+															if (FieldValidation()) {
+																let character_index = index
+																console.log(character_index)
+																let Characterid: string = role.value
+																e.preventDefault();
+																isMemberValid(Characterid, character_index);
+
+
+															}
 														}}
 													>
 														Save
@@ -469,6 +511,7 @@ export function CreateTeamDialog() {
 															let Characterid: string = role.value
 															e.preventDefault();
 															setTeamMember(Characterid, character_index);
+
 														}}
 														>
 															Update
@@ -483,8 +526,8 @@ export function CreateTeamDialog() {
 						<div className="flex gap-2 m-auto">
 							<Button onClick={() => setStateForm("firstform")}>Back</Button>
 							<AlertDialog>
-								<AlertDialogTrigger  disabled={MembersArray.length < availableRoles.length ? true : false}>
-									<Button  disabled={MembersArray.length < availableRoles.length ? true : false} onClick={() => {
+								<AlertDialogTrigger disabled={MembersArray.length < availableRoles.length ? true : false}>
+									<Button disabled={MembersArray.length < availableRoles.length ? true : false} onClick={() => {
 										if (MembersArray.length < availableRoles.length) {
 											toast({
 												variant: "destructive",
