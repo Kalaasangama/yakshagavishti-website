@@ -170,7 +170,7 @@ export function CreateTeamDialog() {
 			password: teamPassword,
 			phone: TeammatePhone,
 			character_id: character_id,
-			id_url:id_url
+			id_url: id_url
 		};
 
 		const array = [...MembersArray];
