@@ -5,22 +5,10 @@ import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
 import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
-// import {
-//   NavigationMenu,
-//   NavigationMenuContent,
-//   NavigationMenuIndicator,
-//   NavigationMenuItem,
-//   NavigationMenuLink,
-//   NavigationMenuList,
-//   NavigationMenuTrigger,
-//   NavigationMenuViewport,
-// } from "src/components/ui/navigation-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu"
 
@@ -56,29 +44,18 @@ const Navbar = () => {
     setIsMenuActive(!isMenuActive);
   };
 
-  const closeMenu = () => {
-    if (isMenuActive) setTimeout(() => {setIsMenuActive(!isMenuActive)}, 100)
-  }
-
-  useEffect(() => {
-    document.addEventListener('touchstart', closeMenu);
-    return () => {
-      document.removeEventListener('touchstart', closeMenu);
-    };
-  });
-
   return (
     <nav className="sticky top-2 z-50 font-medium overflow-hidden">
       <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between items-center">
           <Reveal classes="">
-            <div  className="flex items-center justify-center w-[5rem] h-[1rem] md:w-[8rem] md:h-[5rem]">
+            <div  className="flex items-center justify-start">
               <Image
                 src={"/logo-copy.png"}
                 alt="Logo"
-                width={200}
-                height={200}
-                className="object-contain object-center relative"
+                width={100}
+                height={100}
+                className="object-contain object-left relative w-[4.5rem] md:w-20 lg:w-[5.25rem] 2xl:w-36"
               />
             </div>
           </Reveal>
@@ -103,28 +80,16 @@ const Navbar = () => {
                 </Reveal>
               );
             })}
+            <Reveal classes="">
+              <DropdownMenu>
+                <DropdownMenuTrigger>Lang</DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="kn">Kannada</Link></DropdownMenuItem>
+                  <DropdownMenuItem ><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="en">English</Link></DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </Reveal>
           </div>
-          {/* <NavigationMenu>
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Lang</NavigationMenuTrigger>
-                <NavigationMenuContent className="flex flex-col gap-2">
-                  <NavigationMenuLink>Link</NavigationMenuLink>
-                  <NavigationMenuLink>Link</NavigationMenuLink>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu> */}
-          <DropdownMenu>
-            <DropdownMenuTrigger>Lang</DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Languages</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem><Link href={router.pathname} locale="kn">Kannada</Link></DropdownMenuItem>
-              <DropdownMenuItem><Link href={router.pathname} locale="en">English</Link></DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
               <SmallButton>Log In</SmallButton>
@@ -144,6 +109,7 @@ const Navbar = () => {
 };
 
 const MobileNav = ({ links, activePath }: Props) => {
+  const router = useRouter()
   return (
     <div className="">
       <div className="flex flex-col items-end space-y-3 pt-0 pb-3 lg:hidden">
@@ -166,6 +132,15 @@ const MobileNav = ({ links, activePath }: Props) => {
             </Reveal>
           );
         })}
+        <Reveal classes="">
+          <DropdownMenu>
+            <DropdownMenuTrigger>Lang</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="kn">Kannada</Link></DropdownMenuItem>
+              <DropdownMenuItem ><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="en">English</Link></DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </Reveal>
         <Reveal classes="">
           <SmallButton>Log In</SmallButton>
         </Reveal>

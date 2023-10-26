@@ -10,7 +10,7 @@ const Index = () => {
     const banner2Photos = "/collegeAbout.webp";
     const banner2Text = "Team Yakshasangama";
   return (
-    <>
+    <section className="pt-2">
       <Banner photo={banner1Photos} text={banner1Text}/>
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
@@ -106,7 +106,7 @@ const Index = () => {
         </div>
         <MyComponent />
       </div>
-    </>
+    </section>
   );
 };
 
