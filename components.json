@@ -14,19 +14,3 @@
     "utils": "src/lib/utils"
   }
 }
-=========
-  "style": "new-york",
-  "rsc": false,
-  "tsx": true,
-  "tailwind": {
-    "config": "tailwind.config.ts",
-    "css": "styles/globals.css",
-    "baseColor": "slate",
-    "cssVariables": false
-  },
-  "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils"
-  }
-}
->>>>>>>>> Temporary merge branch 2

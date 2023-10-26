@@ -3,8 +3,27 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { Button, SmallButton } from "../Button"
+import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
+// import {
+//   NavigationMenu,
+//   NavigationMenuContent,
+//   NavigationMenuIndicator,
+//   NavigationMenuItem,
+//   NavigationMenuLink,
+//   NavigationMenuList,
+//   NavigationMenuTrigger,
+//   NavigationMenuViewport,
+// } from "src/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "src/components/ui/dropdown-menu"
+
 
 type Link = {
   label: string;
@@ -85,6 +104,27 @@ const Navbar = () => {
               );
             })}
           </div>
+          {/* <NavigationMenu>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Lang</NavigationMenuTrigger>
+                <NavigationMenuContent className="flex flex-col gap-2">
+                  <NavigationMenuLink>Link</NavigationMenuLink>
+                  <NavigationMenuLink>Link</NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu> */}
+          <DropdownMenu>
+            <DropdownMenuTrigger>Lang</DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Languages</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem><Link href={router.pathname} locale="kn">Kannada</Link></DropdownMenuItem>
+              <DropdownMenuItem><Link href={router.pathname} locale="en">English</Link></DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
               <SmallButton>Log In</SmallButton>

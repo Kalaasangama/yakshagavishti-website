@@ -69,7 +69,7 @@ export default function Home() {
             <Reveal classes="">
               <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
                 <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
-                <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis sint cupiditate aut animi sed, impedit explicabo sunt, expedita error numquam ratione, quod esse ea. Animi!</div>
+                <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">{t.subTitle}</div>
               </div>
 
             </Reveal>
@@ -114,7 +114,7 @@ export default function Home() {
                   </Reveal>
                   <Reveal classes="">
                     <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
-                      <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
+                      <p>{t.about}</p>
                     </div>
                   </Reveal>
                 </div>
