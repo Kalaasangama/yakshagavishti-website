@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { Checkbox } from "src/components/ui/checkbox";
 import Dropzone from "../Dropzone";
 import { uploadFile } from '~/utils/file';
-import { FileRejection, useDropzone } from 'react-dropzone'
+import { FileRejection } from 'react-dropzone'
 import * as z from "zod";
 import { api } from "~/utils/api";
 import {
@@ -55,16 +55,22 @@ import {
 import { Input } from "src/components/ui/input";
 import { ToastAction } from "src/components/ui/toast";
 import { useToast } from "src/components/ui/use-toast";
-const roles = [
+import Email from "next-auth/providers/email";
+var roles = [
 	{ label: "Bheema", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Arjuna", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Nakula", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Panchali", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Duriyodhana", value: "clo37yupl0001sh64avly34gu" }
+	{ label: "Arjuna", value: "clo4llljw0000vjjshsy7w8e8" },
+	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gusd" },
+	{ label: "Nakula", value: "clo37yupl0001sh64avly34guddf" },
+	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gudfgg" },
+	{ label: "Panchali", value: "clo37yupl0001sh64avly34gusdsgdg" },
+	{ label: "Duriyodhana", value: "clo37yupl0001sh64avly34guxcxcx" }
 
 ];
+
+var availableRoles: {
+	label: string,
+	value: string
+}[] = roles;
 
 interface DropzoneProps {
 	// className: string;
@@ -127,6 +133,7 @@ export function CreateTeamDialog() {
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setTeamPassword] = useState("");
 	const [TeammatePhone, setTeammatePhone] = useState("");
+	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
 	const [MembersArray, setMembersArray] = useState<Members[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 	const [rejected, setRejectedFiles] = useState<FileRejection[]>([]);
@@ -142,6 +149,7 @@ export function CreateTeamDialog() {
 	const SubmitData = () => {
 		const MemberInfo = {
 			college_id: selectedCollege,
+			leader_character: LeaderCharacter,
 			members: MembersArray,
 		};
 		console.log(MemberInfo);
@@ -153,15 +161,53 @@ export function CreateTeamDialog() {
 			action: <ToastAction altText="Undo">Undo</ToastAction>,
 		});
 	};
+	const FieldValidation = () => {
+		let emailregx = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+		let phoneregx = "^[6-9][0-9]{9}$"
+		if (teammateName === "" || TeammatePhone === "" || teammateEmail === "") {
+			toast({
+				variant: "destructive",
+				title:
+					"Fill All the details",
+				description:
+					"Fill All the fields",
+			});
+			return false
 
-	const setTeamMember = (character_id: string, character_index: number) => {
+		}
+		else if (!teammateEmail.match(emailregx)) {
+			toast({
+				variant: "destructive",
+				title:
+					"Invalid Email ID",
+				description:
+					"Invalid Email ID ",
+			});
+			return false
+		}
+		else if (!TeammatePhone.match(phoneregx)) {
+			toast({
+				variant: "destructive",
+				title:
+					"Invalid Phone number",
+				description:
+					"Check the Enter phone Number",
+			});
+			return false
+		}
+		return true
+	}
+
+	const setTeamMember = async (character_id: string, character_index: number) => {
+		const id_url = await handleUpload(character_index)
+		console.log(id_url)
 		const data: Members = {
 			name: teammateName,
 			email: teammateEmail,
 			password: teamPassword,
 			phone: TeammatePhone,
 			character_id: character_id,
-			id_url: "kjnkjn"
+			id_url: "id_url"
 		};
 
 		const array = [...MembersArray];
@@ -186,7 +232,6 @@ export function CreateTeamDialog() {
 		console.log("running");
 		array.some((obj) => {
 			if (obj.name === teammateName || obj.email === teammateEmail || obj.phone === TeammatePhone) {
-				console.log("running1");
 				toast({
 					variant: "destructive",
 					title: "Repeated Teammate",
@@ -201,22 +246,35 @@ export function CreateTeamDialog() {
 	};
 
 	const Passwordpattern = () => {
-		const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
-		if (teamPassword.match(passwordRegex)) {
-			toast({
-				variant: "default",
-				title: "Details",
-				description: `Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.`,
-			});
+		const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+		if (selectedCollege) {
+			if (teamPassword.match(passwordRegex)) {
+				toast({
+					variant: "default",
+					title: "Details",
+					description: `Please provide information about your teammates by clicking "Add" for each teammate and click "Add Teammate" when you have finished adding all the team members.`,
+				});
+				availableRoles = roles.filter(roles => roles.value !== LeaderCharacter)
 
-			setStateForm("secondform");
-		} else {
+				setStateForm("secondform");
+			} else {
+				toast({
+					variant: "destructive",
+					title:
+						"Weak Password",
+					description:
+						"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number and atleast 1 special character ",
+				});
+			}
+
+		}
+		else {
 			toast({
 				variant: "destructive",
 				title:
-					"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number",
+					"No college selected",
 				description:
-					"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number",
+					"Please select a college!",
 			});
 			return false;
 		}
@@ -227,25 +285,24 @@ export function CreateTeamDialog() {
 	}
 
 
-	const handleUpload = async () => {
+	const handleUpload= async (index:number) => {
 		setUploadStatus("Uploading....")
 		try {
-			files.forEach((file) => {
-				console.log(uploadFile(file));
-			})
+			const result =await uploadFile(files[0])
 			setUploadStatus("Upload Succesful");
+			return result
 		} catch (error) {
 			console.log("imageUpload" + error)
 			setUploadStatus("Upload Failed...");
 		}
-
 	}
 	const handleCollegeChange = (value: string) => {
 		setSelectedCollege(value);
 		console.log(value);
 	};
 	const handleRoleChange = (value: string) => {
-		setSelectedRole(value);
+		setLeaderCharacter(value);
+		console.log(roles)
 		console.log(value);
 	};
 	return (
@@ -253,7 +310,7 @@ export function CreateTeamDialog() {
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="lg:max-w-screen-lg overflow-y-scroll max-h-screen no-scrollbar">
+			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-red-900 via-neutral-900 to-purple-900 text-white font-mono lg:max-w-screen-lg overflow-y-scroll max-h-screen no-scrollbar">
 				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
@@ -268,9 +325,9 @@ export function CreateTeamDialog() {
 									control={form1.control}
 									name="college"
 									render={({ field }) => (
-										<FormItem className="flex flex-col">
-											<FormLabel className="mt-5">Choose your college</FormLabel>
-											<Select onValueChange={handleCollegeChange} defaultValue={selectedCollege}>
+										<FormItem className="flex flex-col text-black">
+											<FormLabel className="mt-5 text-white">Choose your college</FormLabel>
+											<Select onValueChange={handleCollegeChange} defaultValue={selectedCollege} >
 												<FormControl>
 													<SelectTrigger>
 														<SelectValue placeholder="Select the College your Team Belongs" />
@@ -278,14 +335,14 @@ export function CreateTeamDialog() {
 												</FormControl>
 												<SelectContent>
 													<SelectItem value="clo37witw0000sh64c9n62www">nmamit</SelectItem>
-													<SelectItem value="m@google.com">SDPT First Grade College, Kateel</SelectItem>
+													<SelectItem value="clo4ms7s30002vjjs7r9r9on1">SDPT First Grade College, Kateel</SelectItem>
 													<SelectItem value="m@support.com1">Alvas College, Moodabidri</SelectItem>
 													<SelectItem value="m@support.com13">Govinda Dasa Degree College,Suratkal</SelectItem>
 													<SelectItem value="m@support.com12">SDM Law College, Mangalore</SelectItem>
 												</SelectContent>
 											</Select>
 											<FormDescription>Select the College your Team Belongs</FormDescription>
-											<FormLabel className="mt-4">Create a team password.</FormLabel>
+											<FormLabel className="mt-4 text-white">Create a team password.</FormLabel>
 											<Input
 												id="Team_Password"
 												placeholder="TeamPassword"
@@ -296,36 +353,38 @@ export function CreateTeamDialog() {
 												}}
 												value={teamPassword}
 											/>
-											<FormDescription>Generate a password for your team.</FormDescription>
+											<FormDescription >Generate a password for your team.</FormDescription>
 											<div className="flex flex-cols gap-2">
-												<div className="mt-2">
+												<div className="mt-1">
 													<Checkbox
+														className="bg-white"
 														checked={isCheckboxChecked}
 														onClick={() => {
 															console.log("Checkbox clicked");
+															if (isCheckboxChecked) {
+																setSelectedRole("")
+															}
 															setIsCheckboxChecked(!isCheckboxChecked);
 														}}
 													/>
 												</div>
 												<div className="mt-2">
-													<FormDescription>Do you have a Character in the play</FormDescription>
+													<FormDescription className="text-white mt-1" >Do you have a Character in the play</FormDescription>
 												</div>
 											</div>
 											{isCheckboxChecked && (
 												<React.Fragment>
-													<FormLabel className="mt-4">Choose your Character</FormLabel>
-													<Select onValueChange={handleRoleChange} defaultValue={selectedRole}>
+													<FormLabel className="mt-4 text-white">Choose your Character</FormLabel>
+													<Select onValueChange={handleRoleChange} defaultValue={LeaderCharacter ? LeaderCharacter : undefined}>
 														<FormControl>
 															<SelectTrigger>
 																<SelectValue placeholder="Select the Character" />
 															</SelectTrigger>
 														</FormControl>
 														<SelectContent>
-															<SelectItem value="m@example.com">d</SelectItem>
-															<SelectItem value="m@google.com">dd</SelectItem>
-															<SelectItem value="m@support2.com">d</SelectItem>
-															<SelectItem value="m@support.1com">s</SelectItem>
-															<SelectItem value="m@suppor3t.com">s</SelectItem>
+															{roles.map((item) => {
+																return <SelectItem value={item.value}>{item.label}</SelectItem>
+															})}
 														</SelectContent>
 													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
@@ -339,6 +398,7 @@ export function CreateTeamDialog() {
 						</Form>
 						<DialogFooter>
 							<Button
+								variant={"default"}
 								onClick={(e) => {
 									e.preventDefault();
 									Passwordpattern();
@@ -357,7 +417,7 @@ export function CreateTeamDialog() {
 						</DialogDescription>
 						<div>
 							<Accordion type="single" collapsible>
-								{roles.map((role, index) => (
+								{availableRoles.map((role, index) => (
 									<AccordionItem key={index} value={`item-${index}`}>
 										<AccordionTrigger onClick={() => {
 											const member = MembersArray[index]
@@ -369,19 +429,19 @@ export function CreateTeamDialog() {
 										}}>{role.label}</AccordionTrigger>
 										<AccordionContent>
 											<Form {...form2}>
-												<form className="space-y-1">
+												<form className="space-y-1" >
 													<FormField
 														control={form2.control}
 														name="Role"
 														render={({ field }) => (
 															<div className="flex flex-col">
-																<FormLabel className="my-4">Name of the team member</FormLabel>
+																<FormLabel className="my-4 text-white">Name of the team member</FormLabel>
 																<Input
 																	id="Teammate_Name"
 																	placeholder="Teammate Name"
 																	className="col-span-3"
 																	type="text"
-																	defaultValue={teammateName}
+																	defaultValue={MembersArray[index]?.name}
 																	onChange={(e) => {
 																		setTeammateName(e.target.value)
 																	}}
@@ -389,13 +449,13 @@ export function CreateTeamDialog() {
 																<FormDescription>
 																	Input the Name of your teammate.
 																</FormDescription>
-																<FormLabel className="my-4">Email address of the team member</FormLabel>
+																<FormLabel className="my-4 text-white">Email address of the team member</FormLabel>
 																<Input
 																	id="Teammate_EmailID"
 																	placeholder="Teammate EmailID"
 																	className="col-span-3"
 																	type="email"
-																	defaultValue={teammateEmail}
+																	defaultValue={MembersArray[index]?.email}
 																	onChange={(e) => {
 																		if (e)
 																			setTeammateEmail(e.target.value)
@@ -404,13 +464,15 @@ export function CreateTeamDialog() {
 																<FormDescription>
 																	Input the email addresses of your teammates.
 																</FormDescription>
-																<FormLabel className="my-4">Phone of the team member</FormLabel>
+																<FormLabel className="my-4 text-white">Phone of the team member</FormLabel>
 																<Input
 																	id="Teammate_Phone"
 																	placeholder="Teammate Phone"
 																	className="col-span-3"
-																	type="tel"
-																	defaultValue={TeammatePhone}
+																	type="number"
+																	maxLength={10}
+																	minLength={10}
+																	defaultValue={MembersArray[index]?.phone}
 																	onChange={(e) => {
 																		setTeammatePhone(e.target.value)
 																	}}
@@ -429,11 +491,16 @@ export function CreateTeamDialog() {
 													/>
 													{MembersArray[index] === undefined ? <Button
 														onClick={(e) => {
-															let character_index = index
-															console.log(character_index)
-															let Characterid: string = role.value
 															e.preventDefault();
-															isMemberValid(Characterid, character_index);
+															if (FieldValidation()) {
+																let character_index = index
+																console.log(character_index)
+																let Characterid: string = role.value
+																e.preventDefault();
+																isMemberValid(Characterid, character_index);
+
+
+															}
 														}}
 													>
 														Save
@@ -444,7 +511,7 @@ export function CreateTeamDialog() {
 															let Characterid: string = role.value
 															e.preventDefault();
 															setTeamMember(Characterid, character_index);
-															handleUpload()
+
 														}}
 														>
 															Update
@@ -456,24 +523,39 @@ export function CreateTeamDialog() {
 								))}
 							</Accordion>
 						</div>
-						<AlertDialog>
-							<AlertDialogTrigger><Button>Submit</Button></AlertDialogTrigger>
-							<AlertDialogContent>
-								<AlertDialogHeader>
-									<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-									<AlertDialogDescription>
-										This action will register your team
-									</AlertDialogDescription>
-								</AlertDialogHeader>
-								<AlertDialogFooter>
-									<AlertDialogCancel>Cancel</AlertDialogCancel>
-									<AlertDialogAction onClick={(e) => {
-										e.preventDefault();
-										SubmitData()
-									}}>Continue</AlertDialogAction>
-								</AlertDialogFooter>
-							</AlertDialogContent>
-						</AlertDialog>
+						<div className="flex gap-2 m-auto">
+							<Button onClick={() => setStateForm("firstform")}>Back</Button>
+							<AlertDialog>
+								<AlertDialogTrigger disabled={MembersArray.length < availableRoles.length ? true : false}>
+									<Button disabled={MembersArray.length < availableRoles.length ? true : false} onClick={() => {
+										if (MembersArray.length < availableRoles.length) {
+											toast({
+												variant: "destructive",
+												title:
+													"Team Incomplete",
+												description:
+													"Please fill in details of all characters in your team",
+											});
+										}
+									}}>Submit</Button>
+								</AlertDialogTrigger>
+								<AlertDialogContent>
+									<AlertDialogHeader>
+										<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+										<AlertDialogDescription>
+											This action will register your team
+										</AlertDialogDescription>
+									</AlertDialogHeader>
+									<AlertDialogFooter>
+										<AlertDialogCancel>Cancel</AlertDialogCancel>
+										<AlertDialogAction onClick={(e) => {
+											e.preventDefault();
+											SubmitData()
+										}}>Continue</AlertDialogAction>
+									</AlertDialogFooter>
+								</AlertDialogContent>
+							</AlertDialog>
+						</div>
 					</React.Fragment>
 				)}
 			</DialogContent>
