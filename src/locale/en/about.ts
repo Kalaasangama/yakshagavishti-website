@@ -1,8 +1,9 @@
 const en = {
   //about heading and content
   head: "About NMAMIT",
-  content:
-    " Ranked 175 in the National Institutional Ranking Framework (NIRF) 2022 by MHRD, GoI among the engineering colleges in India, the College has been placed under the <q>Platinum</q> category for having high industry linkages by the AICTE-CII Survey of Industry-Linked Technical Institutes 2020. NMAMIT, the off-campus centre of Nitte DU located at Nitte Village, has active collaborations with several international universities and organizations for faculty and student exchanges, research, internships, and placements. (For details, visit www.nmamit.nitte.edu.in)",
+  content1: "Nitte Mahalinga Adyantaya Memorial Institute of Technology(NMAMIT), Nitte, established in 1986 and recognized by the All India Council for Technical Education, New Delhi, has been a constituent college of Nitte (Deemed to be University), Mangaluru, since June 2022.",
+  content2:
+    "Ranked 175 in the National Institutional Ranking Framework (NIRF) 2022 by MHRD, GoI among the engineering colleges in India, the College has been placed under the <q>Platinum</q> category for having high industry linkages by the AICTE-CII Survey of Industry-Linked Technical Institutes 2020. NMAMIT, the off-campus centre of Nitte DU located at Nitte Village, has active collaborations with several international universities and organizations for faculty and student exchanges, research, internships, and placements. (For details, visit www.nmamit.nitte.edu.in)",
 
   //Team heading and conent
   tHead: "Team Yakshasangama",
@@ -13,9 +14,14 @@ const en = {
 
   //Members heading,Name,title,description
   mHead: "Our Members",
-  name: "John Smith",
-  title: "Web Developer",
-  description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+  
+  members: [
+    {
+      name: "John Doe",
+      role: "President",
+      desc: "lorem ipsum doler",
+    }
+  ]
 };
 
 export default en;

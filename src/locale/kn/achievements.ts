@@ -1,6 +1,22 @@
 const kn = {
-    title:"Achievements",
-    content:"First"
-}
-
-export default kn
+    title: "Achievements",
+    achievements: [
+      {
+        content: "Content here!"
+      },
+      {
+        content: "Content here!"
+      },
+      {
+        content: "Content here!"
+      },
+      {
+        content: "Content here!"
+      },
+      {
+        content: "Content here!"
+      },
+    ]
+  }
+  
+  export default kn

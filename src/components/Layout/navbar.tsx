@@ -5,12 +5,7 @@ import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
 import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "src/components/ui/dropdown-menu"
+import LanguageDropdown from "./dropDown";
 
 
 type Link = {
@@ -45,7 +40,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-2 z-50 font-medium overflow-hidden">
+    <nav className="sticky top-2 z-50 font-medium">
       <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between items-center">
           <Reveal classes="">
@@ -81,13 +76,7 @@ const Navbar = () => {
               );
             })}
             <Reveal classes="">
-              <DropdownMenu>
-                <DropdownMenuTrigger>Lang</DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="kn">Kannada</Link></DropdownMenuItem>
-                  <DropdownMenuItem ><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="en">English</Link></DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <LanguageDropdown></LanguageDropdown>
             </Reveal>
           </div>
           <div className="flex gap-5">
@@ -109,7 +98,6 @@ const Navbar = () => {
 };
 
 const MobileNav = ({ links, activePath }: Props) => {
-  const router = useRouter()
   return (
     <div className="">
       <div className="flex flex-col items-end space-y-3 pt-0 pb-3 lg:hidden">
@@ -133,13 +121,7 @@ const MobileNav = ({ links, activePath }: Props) => {
           );
         })}
         <Reveal classes="">
-          <DropdownMenu>
-            <DropdownMenuTrigger>Lang</DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="kn">Kannada</Link></DropdownMenuItem>
-              <DropdownMenuItem ><Link className="w-full h-full inline-block font-sans" href={router.pathname} locale="en">English</Link></DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <LanguageDropdown></LanguageDropdown>
         </Reveal>
         <Reveal classes="">
           <SmallButton>Log In</SmallButton>

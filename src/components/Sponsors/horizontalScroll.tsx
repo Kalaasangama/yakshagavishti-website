@@ -3,10 +3,15 @@ import { useEffect, useRef, useState } from "react";
 import { useWindowSize, useContainerDimension } from "../customHooks";
 import Reveal from "../Animations/reveal";
 import CarouselCard from "./carouselCard";
-import { CarouselCardT } from "./carouselCard";
 import Link from "next/link";
 
-const HorizontalScroll = ({cards}: {cards: CarouselCardT[]}) => {
+type CardsInfoT = {
+  title: string;
+  link:string;
+  about: string;
+};
+
+const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -60,13 +65,13 @@ const HorizontalScroll = ({cards}: {cards: CarouselCardT[]}) => {
 
           <div className="flex flix-col">
             <div className="flex gap-8 group/title">
-              {cards.map((card, idx) => {
+              {cardsInfo.map((card, idx) => {
                 if(width < 768) 
-                  return <CarouselCard card={card} key={idx} contents={contents} setContents={setContents} />
+                  return <CarouselCard card={{...card, url: `/${idx+1}.jpg`}} key={idx} contents={contents} setContents={setContents} />
                 else
                   return (
                     <Link href={card.link}>
-                      <CarouselCard card={card} key={idx} contents={contents} setContents={setContents} />
+                      <CarouselCard card={{...card, url: `/${idx+1}.jpg`}} key={idx} contents={contents} setContents={setContents} />
                     </Link>
                   )
               })}
