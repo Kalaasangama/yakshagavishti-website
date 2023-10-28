@@ -72,8 +72,8 @@ const Dropzone = ({files,setFiles}: DropzoneProps) =>{
       <input {...getInputProps()} />
       {
         isDragActive ?
-          <p>Drop the files here ...</p> :
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <p>Drop your ID card here</p> :
+          <p>Drop your ID card here</p>
       }
     </div>
     {files.length>0 && <div className='flex-col justify-center items-center'>
