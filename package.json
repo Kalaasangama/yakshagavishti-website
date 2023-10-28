@@ -81,5 +81,9 @@
   "ct3aMetadata": {
     "initVersion": "7.20.2"
   },
-  "packageManager": "npm@9.7.2"
+  "packageManager": "npm@9.7.2",
+  "description": "This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
