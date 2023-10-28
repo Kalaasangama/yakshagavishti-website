@@ -40,18 +40,20 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="sticky top-2 z-50 font-medium">
-      <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
+    <nav className="fixed top-2 z-50 font-medium w-full max-w-screen-2xl">
+      <div className="flex flex-col backdrop-blur-md border-b border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between items-center">
           <Reveal classes="">
             <div  className="flex items-center justify-start">
-              <Image
-                src={"/logo-copy.png"}
-                alt="Logo"
-                width={100}
-                height={100}
-                className="object-contain object-left relative w-[4.5rem] md:w-20 lg:w-[5.25rem] 2xl:w-36"
-              />
+              <Link href={'/'}>
+                <Image
+                  src={"/logo-copy.png"}
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain object-left relative w-[4.5rem] md:w-20 lg:w-[5.25rem] 2xl:w-36"
+                />
+              </Link>
             </div>
           </Reveal>
           <div className="hidden space-x-7 lg:flex 2xl:text-2xl">

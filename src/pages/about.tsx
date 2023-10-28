@@ -11,7 +11,7 @@ const Index = () => {
   const t = router.locale === "en" ? en : kn
 
   return (
-    <section className="pt-2">
+    <section className="mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
       <Banner photo={"/collegeAbout.webp"} text={`${t.head[0]} ${t.head[1]}`}/>
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">

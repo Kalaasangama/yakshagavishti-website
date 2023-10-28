@@ -22,7 +22,15 @@ const kn = {
     {
       q: "Is it animated?",
       ans: "Yes. It's animated by default, but you can disable it if you prefer."
-    }
+    },
+    {
+      q: "Is it animated?",
+      ans: "Yes. It's animated by default, but you can disable it if you prefer."
+    },
+    {
+      q: "Is it animated?",
+      ans: "Yes. It's animated by default, but you can disable it if you prefer."
+    },
   ]
 };
 export default kn

@@ -43,6 +43,9 @@ module.exports = {
         hindi: 'var(--font-hindi)',
         tourney: ['var(--font-tourney)', 'cursive'],
         sans: ['var(--font-baloo)', 'Arial'],
+      },
+      screens: {
+        'short': { 'raw': '(max-height: 500px)' }
       }
     },
   },
