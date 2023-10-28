@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "src/components/ui/button";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "src/components/ui/checkbox";
@@ -285,10 +286,10 @@ export function CreateTeamDialog() {
 	}
 
 
-	const handleUpload= async (index:number) => {
+	const handleUpload = async (index: number) => {
 		setUploadStatus("Uploading....")
 		try {
-			const result =await uploadFile(files[0])
+			const result = await uploadFile(files[0])
 			setUploadStatus("Upload Succesful");
 			return result
 		} catch (error) {
@@ -388,6 +389,11 @@ export function CreateTeamDialog() {
 														</SelectContent>
 													</Select>
 													<FormDescription>Choose the Character you are Playing.</FormDescription>
+													<FormLabel className="mt-5 text-white">Drop Image of your ID</FormLabel>
+													<div className="grid grid-cols-3">
+														<div className="col-span-3"><Dropzone files={files} setFiles={setFiles} /></div>
+													</div>
+
 													<FormMessage />
 												</React.Fragment>
 											)}
@@ -398,7 +404,7 @@ export function CreateTeamDialog() {
 						</Form>
 						<DialogFooter>
 							<Button
-								variant={"default"}
+								variant={"button"}
 								onClick={(e) => {
 									e.preventDefault();
 									Passwordpattern();
@@ -482,6 +488,7 @@ export function CreateTeamDialog() {
 																	Input the Phone number of your teammate.
 																</FormDescription>
 
+																<FormLabel className="mt-5 text-white">Drop Image of your ID</FormLabel>
 																<div className="grid grid-cols-3">
 																	<div className="col-span-3"><Dropzone files={files} setFiles={setFiles} /></div>
 																</div>
@@ -490,6 +497,7 @@ export function CreateTeamDialog() {
 														)}
 													/>
 													{MembersArray[index] === undefined ? <Button
+														variant={"button"}
 														onClick={(e) => {
 															e.preventDefault();
 															if (FieldValidation()) {
@@ -505,14 +513,16 @@ export function CreateTeamDialog() {
 													>
 														Save
 													</Button> :
-														<Button onClick={(e) => {
-															let character_index = index
-															console.log(character_index)
-															let Characterid: string = role.value
-															e.preventDefault();
-															setTeamMember(Characterid, character_index);
+														<Button
+															variant={"button"}
+															onClick={(e) => {
+																let character_index = index
+																console.log(character_index)
+																let Characterid: string = role.value
+																e.preventDefault();
+																setTeamMember(Characterid, character_index);
 
-														}}
+															}}
 														>
 															Update
 														</Button>}
