@@ -5,7 +5,7 @@ import type { UserInput, createAccountParm } from "./CustomTypes";
 import management from "./auth0";
 import type { Session } from "next-auth";
 
-const createTeam = async (college_id: string, session: Session, leader_character: string | null) => {
+const createTeam = async (college_id: string, session: Session, leader_character: string | null, leaderIdUrl:string|null) => {
 	const college = await getCollegeById(college_id);
 	const collegeTeamExists = await prisma.team.findUnique({
 		where: {
@@ -51,7 +51,7 @@ const createTeam = async (college_id: string, session: Session, leader_character
 				isComplete: true,
 			},
 		});
-		await setLeader(session.user.id, team.name, college_id, leader_character);
+		await setLeader(session.user.id, team.name, college_id, leader_character, leaderIdUrl);
 		return { team, college };
 	}
 };
@@ -59,7 +59,7 @@ const getUserAccessToTeam = async (user_id: string) => {
 	const user = await prisma.user.findUnique({
 		where: { id: user_id },
 		select: {
-			team: {
+			team: |null{
 				select: { id: true, name: true },
 			},
 			leaderOf: { select: { id: true } },
@@ -90,7 +90,8 @@ const setLeader = async (
 	user_id: string,
 	teamName: string,
 	college_id: string,
-	character_id: string | null
+	character_id: string | null,
+	leaderIdUrl:string|null
 ) => {
 	if (character_id)
 		await prisma.user.update({
@@ -116,6 +117,7 @@ const setLeader = async (
 						id: character_id,
 					},
 				},
+				idURL:leaderIdUrl
 			},
 		})
 	else
