@@ -3,6 +3,7 @@ import HorizontalScroll from '~/components/Sponsors/horizontalScroll';
 import type { CarouselCardT } from '~/components/Sponsors/carouselCard';
 import Reveal from '~/components/Animations/reveal';
 import { useRouter } from 'next/router';
+import { BiChevronsDown, BiChevronsUp } from 'react-icons/bi'
 import en from '~/locale/en/sponsors';
 import kn from '~/locale/kn/sponsors';
 
@@ -14,6 +15,7 @@ const Sponsors = () => {
     <div className="">
       <div className="fixed top-0 left-0 right-0 bottom-0 -z-50">
         {/* Video */}
+        <BiChevronsDown className='fixed bottom-16 landscape:short:bottom-10 right-1/2 translate-x-1/2 animate-pulse text-3xl'></BiChevronsDown>
       </div>
       <div className="left-0 h-screen mx-4 sm:mx-8 lg:mx-32 flex flex-col justify-center items-center gap-3">
         <Reveal classes="flex h-40 items-center justify-center">
@@ -25,7 +27,7 @@ const Sponsors = () => {
       </div>
       <HorizontalScroll cardsInfo={...t.sponsors} />
       <div className="flex h-48 items-center justify-center">
-        <span className="font-semibold text-sm sm:text-base md:text-lg xl:text-xl text-center">{t.navigation}</span>
+        <span className="font-semibold text-sm sm:text-base md:text-lg xl:text-xl text-center"><BiChevronsUp className='animate-pulse text-3xl'></BiChevronsUp></span>
       </div>
     </div>
   );

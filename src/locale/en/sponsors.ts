@@ -5,7 +5,6 @@ const en = {
     //others
     ourSponsors:"Our Sponsors",
     endSponsors:"End of Sponsors",
-    navigation:"Scroll up",
     
     //sponsors
     sponsors: [
