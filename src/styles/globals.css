@@ -10,3 +10,17 @@
     @apply bg-gradient-to-tl from-bg-gradient-50 to-transparent bg-no-repeat;
   }
 }
+
+@layer utilities {
+  @variants responsive {
+   
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    .no-scrollbar {
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+    }
+  }
+}

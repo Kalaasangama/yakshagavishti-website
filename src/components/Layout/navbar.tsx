@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { SmallButton } from "../button";
+import { Button, SmallButton } from "../Button"
 import Reveal from "../Animations/reveal";
 
 type Link = {
@@ -52,15 +52,17 @@ const Navbar = () => {
     <nav className="sticky top-2 z-50 font-medium overflow-hidden">
       <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
         <div className="flex justify-between items-center">
-          <div className="flex items-center justify-center">
-            <Image
-              src={"/"}
-              alt="Logo"
-              width={50}
-              height={50}
-              className="object-contain object-center"
-            />
-          </div>
+          <Reveal classes="">
+            <div  className="flex items-center justify-center w-[5rem] h-[1rem] md:w-[8rem] md:h-[5rem]">
+              <Image
+                src={"/logo-copy.png"}
+                alt="Logo"
+                width={200}
+                height={200}
+                className="object-contain object-center relative"
+              />
+            </div>
+          </Reveal>
           <div className="hidden space-x-7 lg:flex 2xl:text-2xl">
             {links.map((link, idx) => {
               return (
