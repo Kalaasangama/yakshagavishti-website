@@ -2,7 +2,7 @@ import AllCards from "~/components/Team/Allcards";
 
 const team = () => {
   return (
-    <div>
+    <div className="mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
       <div className="m-12 text-center ">
         <div className="text-4xl font-bold italic md:text-6xl lg:text-7xl">
           Kalasangama&rsquo;s Code Wizards

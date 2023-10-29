@@ -2,19 +2,19 @@ const en = {
   title: "Achievements",
   achievements: [
     {
-      content: "Content here!"
+      content: "First prize in SDM College Yakshothsava 2023"
     },
     {
-      content: "Content here!"
+      content: "Victorious in Yakshayaana at Govinda Dasa College"
     },
     {
-      content: "Content here!"
+      content: "One of the six invited teams to the esteemed Yakshakalothsava at AJ Institute of Management"
     },
     {
-      content: "Content here!"
+      content: "Won first prize in Patla Sambhrama 2023"
     },
     {
-      content: "Content here!"
+      content: "Emerged victorious in Bhramari Yaksha Jhenkara 2023"
     },
   ]
 }

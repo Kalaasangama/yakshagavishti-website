@@ -67,7 +67,6 @@ const ScrollVelocityCarousel = ({ children, baseVelocity = 100, angle }: Paralla
         <div>{children}</div>
         <div>{children}</div>
         <div>{children}</div>
-        <div>{children}</div>
       </motion.div>
     </div>
   );

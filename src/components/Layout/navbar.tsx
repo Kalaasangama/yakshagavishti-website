@@ -6,6 +6,11 @@ import { BiMenuAltRight, BiX } from "react-icons/bi";
 import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
 import LanguageDropdown from "./dropDown";
+import { signIn, signOut, useSession } from "next-auth/react";
+import en from "~/locale/en/navbar";
+import kn from "~/locale/kn/navbar";
+
+
 
 
 type Link = {
@@ -19,14 +24,18 @@ type Props = {
 };
 
 const Navbar = () => {
+  const { data: sessionData } = useSession();
+
   const links = [
-    { label: "Home", url: "/" },
-    { label: "Sponsors", url: "/sponsors" },
-    { label: "Achievements", url: "/achievements" },
-    { label: "About Us", url: "/about" },
+    { id: "Home", label: "Home", url: "/" },
+    { id: "Sponsors", label: "Sponsors", url: "/sponsors" },
+    { id: "Achievements", label: "Achievements", url: "/achievements" },
+    { id: "About", label: "About Us", url: "/about" },
   ];
 
   const router = useRouter();
+
+  const t = router.locale === "en" ? en : kn
 
   // Need to find the active page...
   const activePaths = links.filter((link) => link.url === router.pathname);
@@ -71,19 +80,21 @@ const Navbar = () => {
                           : "hover:text-secondary-200 tranition ease-linear duration-150"
                       }
                     >
-                      {link.label}
+                      {t[link.id as keyof typeof t]}
                     </div>
                   </Link>
                 </Reveal>
               );
             })}
             <Reveal classes="">
-              <LanguageDropdown></LanguageDropdown>
+              <LanguageDropdown t={{lang: t.lang, kan: t.kan, eng: t.eng}}></LanguageDropdown>
             </Reveal>
           </div>
           <div className="flex gap-5">
             <Reveal classes="hidden lg:block">
-              <SmallButton>Log In</SmallButton>
+              <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
+                <SmallButton>{sessionData ? t.logOut : t.logIn}</SmallButton>
+              </div>
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -100,8 +111,15 @@ const Navbar = () => {
 };
 
 const MobileNav = ({ links, activePath }: Props) => {
+  const { data: sessionData } = useSession();
+
+  const router = useRouter()
+
+  const t = router.locale === "en" ? en : kn
+
   return (
     <div className="">
+      {/* <div className="">{`${sessionData}`}</div> */}
       <div className="flex flex-col items-end space-y-3 pt-0 pb-3 lg:hidden">
         {links.map((link, idx) => {
           return (
@@ -123,11 +141,13 @@ const MobileNav = ({ links, activePath }: Props) => {
           );
         })}
         <Reveal classes="">
-          <LanguageDropdown></LanguageDropdown>
+          <LanguageDropdown t={{lang: t.lang, kan: t.kan, eng: t.eng}}></LanguageDropdown>
         </Reveal>
-        <Reveal classes="">
-          <SmallButton>Log In</SmallButton>
-        </Reveal>
+          <Reveal classes="">
+            <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
+              <SmallButton>{sessionData ? t.logOut : t.logIn}</SmallButton>
+            </div>
+          </Reveal>
       </div>
     </div>
   );

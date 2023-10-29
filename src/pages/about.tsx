@@ -21,7 +21,7 @@ const Index = () => {
                 src="/nitteLogoWhite.webp"
                 alt="image"
                 loading="lazy"
-                className=" max-w-full justify-center sm:mx-0 sm:flex sm:h-52 md:mx-0  md:mt-48 md:h-20 md:w-auto lg:mt-0 lg:h-28 lg:w-96 xl:mx-16"
+                className=" max-w-full justify-center sm:mx-0 sm:flex sm:h-52 md:mx-0  md:mt-48 md:h-20 md:w-auto lg:mt-0 lg:h-28 lg:w-96 xl:mx-16 object-contain"
               />
             </Reveal>
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12">

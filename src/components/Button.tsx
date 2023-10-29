@@ -1,4 +1,9 @@
 import Link from "next/link"
+import { signIn, signOut, useSession } from "next-auth/react"
+import { useRouter } from "next/router"
+import en from "~/locale/en/navbar"
+import { MouseEventHandler } from "react"
+
 
 interface Button {
   children: string | JSX.Element
@@ -22,7 +27,11 @@ export const InactiveButton = ({children}: Button) => {
   )
 }
 
-export const SmallButton = ({children}: Button) => {
+// Remove the import statement for MouseEventHandler since it is already imported in the file
+// import { MouseEventHandler } from "react";
+
+export const SmallButton = ({children}: {children: JSX.Element | string}) => {
+  const {data: sessionData} = useSession()
   return (
       <div className="px-2 py-1 lg:px-4 2xl:px-6 lg:py-2 2xl:py-3 text-xs sm:text-xs md:text-sm lg:text-base 2xl:text-lg rounded-full font-semibold bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 active:scale-90 transition duration-150 ease-linear select-none">{children}</div>
     )

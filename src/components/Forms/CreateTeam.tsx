@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "src/components/ui/button";
+import { Button as CustomButton } from "../Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -309,7 +310,7 @@ export function CreateTeamDialog() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline">Create Team</Button>
+				<div className="px-2 py-1 lg:px-4 2xl:px-6 lg:py-2 2xl:py-3 text-xs sm:text-xs md:text-sm lg:text-base 2xl:text-lg rounded-full font-semibold bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 active:scale-90 transition duration-150 ease-linear select-none">Create Team</div>
 			</DialogTrigger>
 			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-red-900 via-neutral-900 to-purple-900 text-white font-mono lg:max-w-screen-lg overflow-y-scroll max-h-screen no-scrollbar">
 				{StateForm === "firstform" && (

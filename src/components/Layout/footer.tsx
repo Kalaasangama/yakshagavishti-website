@@ -25,7 +25,7 @@ const Footer = () => {
   const activePath = activePaths[0] ? activePaths[0] : { label: "", url: "" };
 
   return (
-    <div className="relative flex flex-col md:flex-row justify-center overflow-hidden text-[0.5rem] sm:text-sx md:text-sx xl:text-sm gap-10 md:gap-20 border-t-[1px] border-gray-500 p-10">
+    <div className="relative flex flex-col items-center justify-center overflow-hidden text-[0.5rem] sm:text-sx md:text-sx xl:text-sm gap-10 border-t-[1px] border-gray-500 p-10">
       <div className="flex flex-row justify-center gap-10 md:gap-20">
 
         <div className="flex flex-col justify-start gap-1 md:gap-2">
@@ -59,11 +59,14 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="text-xs sm:text-sm md:text-base xl:text-lg self-center">
-        © <span className="text-secondary-100 font-medium">Kalasangama</span> 2023
+      <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center flex flex-col gap-2">
+        <Link href={"/team"} className="hover:underline underline-offset-4">Made with ❤️ by <span className="text-secondary-100 font-medium">Finite Loop Club</span></Link>
+        <div className="">
+          © <span className="text-secondary-100 font-medium">Kalasangama</span> 2023
+        </div>
       </div>
         
-      <div className="absolute left-[50%] top-full -z-10 h-60 w-60 -translate-y-[50%] opacity-50">
+      {/* <div className="absolute left-[50%] top-full -z-10 h-60 w-60 -translate-y-[50%] opacity-50">
         <Image
           src={"/mandala.png"}
           height={500}
@@ -71,7 +74,7 @@ const Footer = () => {
           alt=""
           className="opacity-70 bg-blend-luminosity"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

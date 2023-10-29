@@ -17,15 +17,20 @@ import kn from "~/locale/kn";
 import en from "~/locale/en";
 
 const reelImags = [
-  { src: "/banner.jpeg" },
-  { src: "/performing Yakshagana_.jpg" },
-  { src: "/1.png" },
-  { src: "/banner.jpeg" },
-  { src: "/performing Yakshagana_.jpg" },
-  { src: "/1.png" },
+  { src: "/Cloudinary/home/reel/1.jpg" },
+  { src: "/Cloudinary/home/reel/2.jpg" },
+  { src: "/Cloudinary/home/reel/3.jpg" },
+  { src: "/Cloudinary/home/reel/4.jpg" },
+  { src: "/Cloudinary/home/reel/5.jpg" },
+  { src: "/Cloudinary/home/reel/6.jpg" },
+  { src: "/Cloudinary/home/reel/7.jpg" },
+  { src: "/Cloudinary/home/reel/8.jpg" },
+  { src: "/Cloudinary/home/reel/9.jpg" },
+  { src: "/Cloudinary/home/reel/10.jpg" },
 ]
 
 export default function Home() {
+  const { data: sessionData } = useSession();
   // const [files, setFiles] = useState<File[]>([]);
 
   const [isRegistrationActive, setIsRegistrationActive] = useState<Boolean>(true)
@@ -57,22 +62,16 @@ export default function Home() {
       </Head>
       <main className="flex flex-col">
         {/* <AuthShowcase /> */}
-        {/* <div className="h-72 bg-primary-100 absolute top-0 left-0 w-full -z-50 inline-block min-[1536px]:left-1/2 min-[1536px]:-translate-x-1/2 max-w-[1536px]"></div> */}
 
         {/* Hero Section */}
-        {/* <CreateTeamDialog></CreateTeamDialog> */}
-        {/* <section className="relative h-[83vh] sm:h-[80vh] md:h-[87vh] lg:h-[90vh] bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1"> */}
+
         <section className="relative flex flex-col justify-center items-center h-screen w-full bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
           <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
-          {/* <div className="mx-4 sm:mx-8 lg:mx-32 pt-44 sm:pt-36 md:pt-32 lg:pt-36 2xl:pt-44 flex flex-col items-center"> */}
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 ">
 
             {/* Contents - Hero Section */}
+
             <Reveal classes="">
-              {/* <div className="flex flex-col items-center pb-16 sm:pb-16 md:pb-16 lg:pb-20 2xl:pb-32 gap-3 sm:gap-0">
-                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
-                <div className="text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center leading-snug">{t.subTitle}</div>
-              </div> */}
               <div className="flex flex-col items-center gap-1 landscape:short:gap-1">
                 <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
                 <div className="font-semibold text-lg sm:text-xl md:text-2xl 2xl:text-4xl px-5 text-center leading-snug">{t.subTitle}</div>
@@ -80,9 +79,8 @@ export default function Home() {
 
             </Reveal>
             <Reveal classes="">
-              {/* <div className="pb-6 md:pb-8 lg:pb-12 2xl:pb-24"> */}
               <div className="">
-                {isRegistrationActive ? <Button>{t.register}</Button> : <InactiveButton>{t.register}</InactiveButton>}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>{t.register}</Button></div> : <CreateTeamDialog></CreateTeamDialog>}
               </div>
             </Reveal>
           </div>
@@ -139,14 +137,28 @@ export default function Home() {
                       <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
                     </div>
                   </Reveal>
-                  <a onClick={() => handleDownload("/1.png", "1.png")} className="w-fit">
-                    <OutlineButton>
-                      <div className="flex gap-2 items-center justify-center">
-                        <BiDownload />
-                        <span>{t.ruleBook}</span>
-                      </div>
-                    </OutlineButton>
-                  </a>
+                  <div className="flex md:flex-col gap-3 items-center">
+                    <Reveal classes="">
+                      <a onClick={() => handleDownload("/Cloudinary/home/Rules.pdf", "Rules.pdf")} className="w-fit">
+                        <OutlineButton>
+                          <div className="flex gap-2 items-center justify-center">
+                            <BiDownload />
+                            <span>{t.ruleBook}</span>
+                          </div>
+                        </OutlineButton>
+                      </a>
+                    </Reveal>
+                    <Reveal classes="">
+                      <a onClick={() => handleDownload("/Cloudinary/home/ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf", "ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf")} className="w-fit">
+                        <OutlineButton>
+                          <div className="flex gap-2 items-center justify-center">
+                            <BiDownload />
+                            <span>{t.padya}</span>
+                          </div>
+                        </OutlineButton>
+                      </a>
+                    </Reveal>
+                  </div>
                 </div>
               </div>
 
@@ -194,20 +206,6 @@ export default function Home() {
           <section className="w-full hidden justify-center 2xl:flex">
             <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
           </section>
-          {/* <section className="w-full justify-center hidden md:flex">
-            <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
-          </section> */}
-
-          {/* Prizes */}
-
-          {/* <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col items-center relative">
-            <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 bottom-[60%] -left-28 lg:hidden opacity-50">
-              <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
-              </div> 
-            </ScrollLag>
-            <Prizes />
-          </section> */}
 
           {/* FAQ */}
 
