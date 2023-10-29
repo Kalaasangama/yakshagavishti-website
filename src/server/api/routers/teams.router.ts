@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import kalasangamaError from "~/utils/customError";
 import {
@@ -14,6 +14,8 @@ export const TeamRouter = createTRPCRouter({
 		.input(
 			z.object({
 				college_id: z.string(),
+				leader_character: z.string().nullable(),
+				leader_idUrl:z.string().nullable(),
 				members: z.array(
 					z.object({
 						name: z.string(),
@@ -31,7 +33,9 @@ export const TeamRouter = createTRPCRouter({
 				//Create or return team
 				const { team, college } = await createTeam(
 					input.college_id,
-					ctx.session
+					ctx.session,
+					input.leader_character,
+					input.leader_idUrl
 				);
 				//Create accounts in auth0
 				await Promise.all(

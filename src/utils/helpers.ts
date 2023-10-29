@@ -5,7 +5,19 @@ import type { UserInput, createAccountParm } from "./CustomTypes";
 import management from "./auth0";
 import type { Session } from "next-auth";
 
-const createTeam = async (college_id: string, session: Session) => {
+const createTeam = async (college_id: string, session: Session, leader_character: string | null, leaderIdUrl:string|null) => {
+	const college = await getCollegeById(college_id);
+	const collegeTeamExists = await prisma.team.findUnique({
+		where: {
+			name: college.name
+		}
+	})
+	if (collegeTeamExists) {
+		throw new kalasangamaError(
+			"Create team error",
+			"Team Exists!"
+		);
+	}
 	if (session.user.team?.id && session.user.leaderOf) {
 		if (session.user.team.isComplete) {
 			throw new kalasangamaError(
@@ -13,7 +25,6 @@ const createTeam = async (college_id: string, session: Session) => {
 				"Your team is complete"
 			);
 		}
-		const college = await getCollegeById(college_id);
 		return { team: session.user.team, college };
 	} else if (session?.user?.team?.id && !session.user.leaderOf) {
 		throw new kalasangamaError(
@@ -40,7 +51,7 @@ const createTeam = async (college_id: string, session: Session) => {
 				isComplete: true,
 			},
 		});
-		await setLeader(session.user.id, team.name, college_id);
+		await setLeader(session.user.id, team.name, college_id, leader_character, leaderIdUrl);
 		return { team, college };
 	}
 };
@@ -78,28 +89,58 @@ const getCollegeById = async (college_id: string) => {
 const setLeader = async (
 	user_id: string,
 	teamName: string,
-	college_id: string
+	college_id: string,
+	character_id: string | null,
+	leaderIdUrl:string|null
 ) => {
-	await prisma.user.update({
-		where: { id: user_id },
-		data: {
-			team: {
-				connect: {
-					name: teamName,
+	if (character_id)
+		await prisma.user.update({
+			where: { id: user_id },
+			data: {
+				team: {
+					connect: {
+						name: teamName,
+					},
+				},
+				leaderOf: {
+					connect: {
+						name: teamName,
+					},
+				},
+				college: {
+					connect: {
+						id: college_id,
+					},
+				},
+				characterPlayed: {
+					connect: {
+						id: character_id,
+					},
+				},
+				idURL:leaderIdUrl
+			},
+		})
+	else
+		await prisma.user.update({
+			where: { id: user_id },
+			data: {
+				team: {
+					connect: {
+						name: teamName,
+					},
+				},
+				leaderOf: {
+					connect: {
+						name: teamName,
+					},
+				},
+				college: {
+					connect: {
+						id: college_id,
+					},
 				},
 			},
-			leaderOf: {
-				connect: {
-					name: teamName,
-				},
-			},
-			college: {
-				connect: {
-					id: college_id,
-				},
-			},
-		},
-	});
+		})
 };
 
 const createAuth0User = async (user: UserInput) => {

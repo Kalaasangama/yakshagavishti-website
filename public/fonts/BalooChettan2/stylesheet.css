@@ -1,0 +1,45 @@
+@font-face {
+    font-family: 'Baloo';
+    src: url('BalooChettan2-SemiBold.woff2') format('woff2'),
+        url('BalooChettan2-SemiBold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Baloo';
+    src: url('BalooChettan2-Bold.woff2') format('woff2'),
+        url('BalooChettan2-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Baloo';
+    src: url('BalooChettan2-ExtraBold.woff2') format('woff2'),
+        url('BalooChettan2-ExtraBold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Baloo';
+    src: url('BalooChettan2-Medium.woff2') format('woff2'),
+        url('BalooChettan2-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Baloo';
+    src: url('BalooChettan2-Regular.woff2') format('woff2'),
+        url('BalooChettan2-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
