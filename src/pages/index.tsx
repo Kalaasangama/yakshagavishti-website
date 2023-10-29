@@ -2,14 +2,13 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import dynamic from "next/dynamic.js";
-const Timer = dynamic(() => import('~/components/Home/timer'), { ssr: false })
+const Timer = dynamic(() => import("~/components/Home/timer"), { ssr: false });
 import Faq from "~/components/Home/faq";
 import Reveal from "~/components/Animations/reveal";
 import { Button, InactiveButton, OutlineButton } from "~/components/Button";
-import { BiDownload } from "react-icons/bi"
+import { BiDownload } from "react-icons/bi";
 import Reel from "~/components/Home/reel";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
-import { api } from "~/utils/api";
 import { useState } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
 import { useRouter } from "next/router";
@@ -30,22 +29,20 @@ const reelImags = [
 ]
 
 export default function Home() {
-  const { data: sessionData } = useSession();
-  // const [files, setFiles] = useState<File[]>([]);
+	const [isRegistrationActive, setIsRegistrationActive] =
+		useState<boolean>(true);
+	const { data: sessionData } = useSession();
+	const handleDownload = (path: string, name: string) => {
+		// fallback to window.open if the browser doesn't support the download attribute
+		const fileUrl = path;
+		const fileName = name;
 
-  const [isRegistrationActive, setIsRegistrationActive] = useState<Boolean>(true)
+		const link = document.createElement("a");
+		link.href = fileUrl;
+		link.download = fileName;
 
-  const handleDownload = (path: string, name: string) => {
-    // fallback to window.open if the browser doesn't support the download attribute
-    const fileUrl = path;
-    const fileName = name;
-
-    const link = document.createElement('a');
-    link.href = fileUrl;
-    link.download = fileName;
-
-    document.body.appendChild(link);
-    link.click();
+		document.body.appendChild(link);
+		link.click();
 
     document.body.removeChild(link);
   };
@@ -104,17 +101,30 @@ export default function Home() {
               </ScrollLag>
             </Reveal>
 
-            <ScrollLag speed={100} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50">
-              <Image src={'/mandala.png'} fill alt='' className="opacity-70 select-none  bg-blend-luminosity" />
-            </ScrollLag>
-          </section>
+						<ScrollLag
+							speed={100}
+							classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50"
+						>
+							<Image
+								src={"/mandala.png"}
+								fill
+								alt=""
+								className="select-none opacity-70  bg-blend-luminosity"
+							/>
+						</ScrollLag>
+					</section>
 
-          {/* About the Competition */}
+					{/* About the Competition */}
 
-          <section className="relative min-h-max  flex items-center md:pb-10 w-full justify-center">
-            <Image className="object-contain mix-blend-luminosity opacity-25 py-16 sm:py-28 md:py-0 -z-10" src={'/canva.png'} fill alt="mandala"></Image>
+					<section className="relative flex  min-h-max w-full items-center justify-center md:pb-10">
+						<Image
+							className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
+							src={"/canva.png"}
+							fill
+							alt="mandala"
+						></Image>
 
-            {/* Competition Contents section */}
+						{/* Competition Contents section */}
 
             <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16">
               <div className="flex flex-col md:flex-row items-center gap-10">
@@ -162,9 +172,9 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Rules and regulation section */}
+							{/* Rules and regulation section */}
 
-              {/* <div className="flex flex-col gap-3 max-w-2xl">
+							{/* <div className="flex flex-col gap-3 max-w-2xl">
                 <Reveal classes="">
                   <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
                     Rules & <span className="text-secondary-100">regulations</span>
@@ -194,10 +204,10 @@ export default function Home() {
                   </Reveal>
                 </ul>
               </div> */}
-            </div>
-          </section>
+						</div>
+					</section>
 
-          {/* Achievements Reel Section */}
+					{/* Achievements Reel Section */}
 
           <section className="w-full flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72 2xl:hidden">
             <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={1} angle={12} reelImg={reelImags} />
@@ -207,7 +217,7 @@ export default function Home() {
             <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
           </section>
 
-          {/* FAQ */}
+					{/* FAQ */}
 
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 items-center relative sm:mt-48 md:mt-0 xl:mt-8 2xl:mt-0">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
@@ -226,34 +236,23 @@ export default function Home() {
 }
 
 function AuthShowcase() {
-  const { data: sessionData } = useSession();
-  const createTeam = api.team.register.useMutation();
-  const { data: secretMessage } = api.example.getSecretMessage.useQuery(
-    undefined, // no input
-    { enabled: sessionData?.user !== undefined }
-  );
+	const { data: sessionData } = useSession();
+	return (
+		<div className="flex flex-col items-center justify-center gap-4">
+			<p className="text-center text-2xl ">
+				{sessionData && (
+					<span>Logged in as {sessionData.user?.name}</span>
+				)}
+			</p>
 
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl ">
-        {sessionData && (
-          <span>Logged in as {sessionData.user?.name}</span>
-        )}
-        {secretMessage && <span> - {secretMessage}</span>}
-      </p>
-
-      {sessionData && (
-
-        <CreateTeamDialog></CreateTeamDialog>
-      )}
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-        onClick={
-          sessionData ? () => void signOut() : () => void signIn()
-        }
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
-  );
+			<button
+				className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+				onClick={
+					sessionData ? () => void signOut() : () => void signIn()
+				}
+			>
+				{sessionData ? "Sign out" : "Sign in"}
+			</button>
+		</div>
+	);
 }
