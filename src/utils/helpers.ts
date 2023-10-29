@@ -59,7 +59,7 @@ const getUserAccessToTeam = async (user_id: string) => {
 	const user = await prisma.user.findUnique({
 		where: { id: user_id },
 		select: {
-			team: |null{
+			team: {
 				select: { id: true, name: true },
 			},
 			leaderOf: { select: { id: true } },

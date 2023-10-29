@@ -1,21 +1,29 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import kalasangamaError from "~/utils/customError";
-enum actions {
-	Grant = "GRANT_EDIT_ACCESS",
-	Revoke = "REVOKE_EDIT_ACCESS",
-}
 
-export const exampleRouter = createTRPCRouter({
+export const adminRouter = createTRPCRouter({
 	getRegisteredTeams: protectedProcedure.query(async ({ ctx }) => {
 		try {
 			const user = await ctx.prisma.user.findUnique({
 				where: { id: ctx.session.user.id },
 			});
 			if (user?.role === "ADMIN") {
-				const teams = await ctx.prisma.team.findMany();
+				const teams = await ctx.prisma.team.findMany({
+					select: {
+						id: true,
+						name: true,
+						members: {
+							select: {
+								id: true,
+								name: true,
+								idURL: true,
+								isIdVerified:true
+							},
+						},
+					},
+				});
 				return teams;
 			} else {
 				throw new kalasangamaError(
@@ -41,7 +49,7 @@ export const exampleRouter = createTRPCRouter({
 				userId: z.string(),
 			})
 		)
-		.query(async ({ ctx, input }) => {
+		.mutation(async ({ ctx, input }) => {
 			try {
 				const user = await ctx.prisma.user.findUnique({
 					where: { id: ctx.session.user.id },
@@ -81,7 +89,7 @@ export const exampleRouter = createTRPCRouter({
 				action: z.enum(["Grant", "Revoke"]),
 			})
 		)
-		.query(async ({ ctx, input }) => {
+		.mutation(async ({ ctx, input }) => {
 			try {
 				const user = await ctx.prisma.user.findUnique({
 					where: { id: ctx.session.user.id },
