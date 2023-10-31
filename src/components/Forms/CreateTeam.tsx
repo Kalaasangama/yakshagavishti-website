@@ -57,13 +57,13 @@ import { ToastAction } from "src/components/ui/toast";
 import { useToast } from "src/components/ui/use-toast";
 
 const roles = [
-	{ label: "Bheema", value: "clo37yupl0001sh64avly34gu" },
-	{ label: "Arjuna", value: "clo4llljw0000vjjshsy7w8e8" },
-	{ label: "Yudhishtira", value: "clo37yupl0001sh64avly34gusd" },
-	{ label: "Nakula", value: "clo37yupl0001sh64avly34guddf" },
-	{ label: "Sahadeva", value: "clo37yupl0001sh64avly34gudfgg" },
-	{ label: "Panchali", value: "clo37yupl0001sh64avly34gusdsgdg" },
-	{ label: "Duriyodhana", value: "clo37yupl0001sh64avly34guxcxcx" },
+	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
+	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
+	{ label: "TAAMRAAKSHA", value: "cloe27f110003ileorzfmoe05" },
+	{ label: "TAMAALAKETHU", value: "cloe27f110004ileolbv67nnz" },
+	{ label: "SATHYAVATHI", value: "cloe27f110005ileomce87hnz" },
+	{ label: "DAASHARAJA", value: "cloe27f110006ileobsf7jpot" },
+	{ label: "DEVAVRATHA", value: "cloe27f110007ileoc5l1vb44" },
 ];
 
 let availableRoles: {
@@ -286,14 +286,14 @@ export function CreateTeamDialog() {
 			<DialogTrigger asChild>
 				<div className="px-2 py-1 lg:px-4 2xl:px-6 lg:py-2 2xl:py-3 text-xs sm:text-xs md:text-sm lg:text-base 2xl:text-lg rounded-full font-semibold bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 active:scale-90 transition duration-150 ease-linear select-none">Create Team</div>
 			</DialogTrigger>
-			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-red-900 via-neutral-900 to-purple-900 font-mono text-white lg:max-w-screen-lg">
+			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-transparent via-slate-900 to-black font-serif text-white lg:max-w-screen-lg px-20 py-12">
 				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
 							<DialogTitle>Create Team</DialogTitle>
 							<DialogDescription>
-								Fill in the information below. Click on &lquot
-								Next &rquot to continue.
+								Fill in the information below. Click on &quot;
+								Next &quot; to continue.
 							</DialogDescription>
 						</DialogHeader>
 						<Form {...form1}>
@@ -350,7 +350,7 @@ export function CreateTeamDialog() {
 												id="Team_Password"
 												placeholder="TeamPassword"
 												className="col-span-3"
-												type="text"
+												type="password"
 												onChange={(e) => {
 													setTeamPassword(
 														e.target.value
@@ -386,7 +386,7 @@ export function CreateTeamDialog() {
 														}}
 													/>
 												</div>
-												<div className="mt-2">
+												<div>
 													<FormDescription className="mt-1 text-white">
 														Do you have a Character
 														in the play
