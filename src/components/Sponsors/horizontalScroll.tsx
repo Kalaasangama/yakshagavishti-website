@@ -4,6 +4,9 @@ import { useWindowSize, useContainerDimension } from "../customHooks";
 import Reveal from "../Animations/reveal";
 import CarouselCard from "./carouselCard";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import en from "~/locale/en/sponsors";
+import kn from "~/locale/kn/sponsors";
 
 type CardsInfoT = {
   title: string;
@@ -12,6 +15,9 @@ type CardsInfoT = {
 };
 
 const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
+  const router = useRouter()
+  const t = router.locale === "en" ? en : kn
+
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -48,25 +54,25 @@ const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
         <div className="bg-gradient-to-tr from-bg-gradient-50 from-0% to-transparent to-80% h-full w-full"></div>
       </motion.div>
 
-      <div ref={el => {containerRef.current = el}} className="sticky top-0 flex h-screen items-center overflow-hidden mx-4 sm:mx-8 lg:mx-32">
+      <div ref={el => {containerRef.current = el}} className="sticky top-0 flex h-screen items-center  mx-4 sm:mx-8 lg:mx-32 overflow-hidden">
 
         <motion.div style={{ x: x, paddingLeft: `${container.width}px` }} className={`flex gap-8`}>
-          <div style={{width: `${container.width}px`}} className={`absolute left-0 h-[250px] lg:h-[350px] flex flex-col justify-center items-center text-lg sm:text-xl md:text-2xl 2xl:text-5xl px-5 text-center`}>
+          <div style={{width: `${container.width}px`}} className={`absolute left-0 h-[250px] lg:h-[350px] flex flex-col justify-center items-center  text-xl sm:text-2xl md:text-3xl 2xl:text-5xl px-5 text-center overflow-hidden`}>
 
-            <Reveal classes=""><p>Our Sponsors</p></Reveal>
+            <Reveal classes="font-tourney font-black"><p>{t.ourSponsors}</p></Reveal>
 
           </div>
 
-          <div style={{width: `${container.width}px`}} className={`absolute left-full h-[250px] lg:h-[350px] flex flex-col justify-center items-center text-lg sm:text-xl md:text-2xl 2xl:text-5xl`}>
+          <div style={{width: `${container.width}px`}} className={`absolute left-full h-[250px] lg:h-[350px] flex flex-col justify-center items-center text-xl sm:text-2xl md:text-3xl 2xl:text-5xl`}>
 
-            <Reveal classes=""><p>End of Sponsors</p></Reveal>
+            <Reveal classes="font-tourney font-black"><p>{t.endSponsors}</p></Reveal>
 
           </div>
 
           <div className="flex flix-col">
             <div className="flex gap-8 group/title">
               {cardsInfo.map((card, idx) => {
-                if(width < 768) 
+                if(width < 1024) 
                   return <CarouselCard card={{...card, url: `/${idx+1}.jpg`}} key={idx} contents={contents} setContents={setContents} />
                 else
                   return (
@@ -90,12 +96,12 @@ const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
           }}
           initial="hidden"
           animate={animationControl}
-          className="sticky top-full right-[100%] w-full flex flex-col gap-4 md:gap-5"
+          className="absolute bottom-0 right-0 w-full gap-4 md:gap-5"
         >
-          <div className="-ml-4 sm:-ml-8 lg:-ml-32 px-4 sm:px-8 lg:px-32 w-screen font-hindi text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl text-center text-secondary-100">{contents.title}</div>
-          <div className="text-xs sm:text-sm md:text-base xl:text-lg flex flex-col justify-center gap-1 mb-20 sm:mb-16 md:mb-12 lg:mb-10 text-center">
+          <div className="w-full font-hindi text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl text-center text-secondary-100">{contents.title}</div>
+          <div className="text-xs sm:text-sm md:text-base xl:text-lg flex flex-col justify-center gap-1 mb-20 sm:mb-16 md:mb-12 lg:mb-10 text-center landscape:short:mb-1">
             <p className="">{contents.about}</p>
-            <Link href={contents.link} className="text-secondary-100 underline underline-offset-2 font-semibold md:hidden">Follow Up</Link></div>
+            <Link href={contents.link} className="text-secondary-100 underline underline-offset-2 font-semibold lg:hidden">Follow Up</Link></div>
         </motion.div>
       </div>
     </section>

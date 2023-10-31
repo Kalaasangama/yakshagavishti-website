@@ -8,13 +8,13 @@ const Achievements = () => {
   const t = router.locale === "en" ? en : kn
 
   return (
-    <main className="snap-y snap-proximity">
-      <div className="absolute inset-0 bg-black flex items-center justify-center snap-start">
+    <main className="snap-y snap-mandatory h-screen overflow-scroll no-scrollbar relative top-0">
+      <div className="h-screen bg-black flex items-center justify-center snap-start">
         {/* video */}
-        <div className="font-hindi font-bold text-4xl sm:text-6xl md:text-7xl 2xl:text-8xl">{t.title}</div>
+        <div className="font-hindi font-bold text-4xl sm:text-6xl md:text-7xl">{t.title}</div>
       </div>
-      <section className="min-h-screen mt-[100vh] pt-14 mx-4 sm:mx-8 lg:mx-32 pb-10 snap-start">
-        <div className="flex flex-col gap-10">
+      <section className="pt-[4.75rem] sm:pt-[5.75rem] md:pt-24 lg:pt-[6.25rem] mx-4 sm:mx-8 lg:mx-32 pb-10 snap-start">
+        <div className="flex flex-col gap-10 max-w-7xl xl:mx-auto">
           {t.achievements.map((ach, idx) => {
             if(idx % 2 === 0) {
               const row = [{...ach, img: `/ach${idx+1}.png`}]

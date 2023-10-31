@@ -6,7 +6,7 @@
   body {
     @apply bg-primary-100;
     @apply overflow-x-hidden;
-    @apply bg-gradient-to-tl from-bg-gradient-50 to-transparent bg-no-repeat;
+    /* @apply bg-gradient-to-tl from-bg-gradient-50 to-transparent bg-no-repeat; */
   }
 }
 

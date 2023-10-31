@@ -24,8 +24,6 @@ const reelImags = [
   { src: "/Cloudinary/home/reel/6.jpg" },
   { src: "/Cloudinary/home/reel/7.jpg" },
   { src: "/Cloudinary/home/reel/8.jpg" },
-  { src: "/Cloudinary/home/reel/9.jpg" },
-  { src: "/Cloudinary/home/reel/10.jpg" },
 ]
 
 export default function Home() {
@@ -64,28 +62,28 @@ export default function Home() {
 
         <section className="relative flex flex-col justify-center items-center h-screen w-full bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
           <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
-          <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 ">
+          <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
 
             {/* Contents - Hero Section */}
 
             <Reveal classes="">
-              <div className="flex flex-col items-center gap-1 landscape:short:gap-1">
+              <div className="flex flex-col items-center gap-1 landscape:short:gap-1 text-center">
                 <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
                 <div className="font-semibold text-lg sm:text-xl md:text-2xl 2xl:text-4xl px-5 text-center leading-snug">{t.subTitle}</div>
               </div>
 
             </Reveal>
-            <Reveal classes="">
-              <div className="">
+            <Reveal classes="flex justify-center">
+              <div className="w-fit">
                 {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>{t.register}</Button></div> : <CreateTeamDialog></CreateTeamDialog>}
               </div>
             </Reveal>
           </div>
         </section>
 
-        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-hidden">
+        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-hidden justify-center">
 
-          <section className="relative h-48 landscape: sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
+          <section className="relative h-48 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center max-w-7xl xl:mx-auto">
             <Reveal classes="2xl:hidden">
               <ScrollLag classes="" speed={500}>
                 <div className="h-full -m-4 md:-m-16">
@@ -116,116 +114,121 @@ export default function Home() {
 
 					{/* About the Competition */}
 
-					<section className="relative flex  min-h-max w-full items-center justify-center md:pb-10">
-						<Image
-							className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
-							src={"/canva.png"}
-							fill
-							alt="mandala"
-						></Image>
+            <section className="relative flex  min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
+              <Image
+                className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
+                src={"/canva.png"}
+                fill
+                alt="mandala"
+              ></Image>
 
-						{/* Competition Contents section */}
+              {/* Competition Contents section */}
 
-            <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16">
-              <div className="flex flex-col md:flex-row items-center gap-10">
-                <div className="flex flex-col gap-3">
-                  <Reveal classes="">
-                    <div className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
-                      {t.aboutHead[0]} <span className="text-secondary-100">{t.aboutHead[1]}</span>
-                    </div>
-                  </Reveal>
-                  <Reveal classes="">
-                    <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
-                      <p>{t.about}</p>
-                    </div>
-                  </Reveal>
-                </div>
-                <div className="shrink-0 flex flex-col gap-3 items-center">
-                  <Reveal classes="">
-                    <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                      <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
-                      <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
-                    </div>
-                  </Reveal>
-                  <div className="flex md:flex-col gap-3 items-center">
+              <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16 ">
+                <div className="flex flex-col md:flex-row items-center gap-10">
+                  <div className="flex flex-col gap-3">
                     <Reveal classes="">
-                      <a onClick={() => handleDownload("/Cloudinary/home/Rules.pdf", "Rules.pdf")} className="w-fit">
-                        <OutlineButton>
-                          <div className="flex gap-2 items-center justify-center">
-                            <BiDownload />
-                            <span>{t.ruleBook}</span>
-                          </div>
-                        </OutlineButton>
-                      </a>
+                      <div className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                        {t.aboutHead[0]} <span className="text-secondary-100">{t.aboutHead[1]}</span>
+                      </div>
                     </Reveal>
                     <Reveal classes="">
-                      <a onClick={() => handleDownload("/Cloudinary/home/ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf", "ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf")} className="w-fit">
-                        <OutlineButton>
-                          <div className="flex gap-2 items-center justify-center">
-                            <BiDownload />
-                            <span>{t.padya}</span>
-                          </div>
-                        </OutlineButton>
-                      </a>
+                      <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
+                        <p>{t.about}</p>
+                      </div>
                     </Reveal>
                   </div>
+                  <div className="shrink-0 flex flex-col gap-3 items-center">
+                    <Reveal classes="">
+                      <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
+                        <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                        <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
+                      </div>
+                    </Reveal>
+                    <div className="flex md:flex-col gap-3 items-center">
+                      <Reveal classes="">
+                        <a onClick={() => handleDownload("/Cloudinary/home/Rules.pdf", "Rules.pdf")} className="w-fit">
+                          <OutlineButton>
+                            <div className="flex gap-2 items-center justify-center">
+                              <BiDownload />
+                              <span>{t.ruleBook}</span>
+                            </div>
+                          </OutlineButton>
+                        </a>
+                      </Reveal>
+                      <Reveal classes="">
+                        <a onClick={() => handleDownload("/Cloudinary/home/ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf", "ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf")} className="w-fit">
+                          <OutlineButton>
+                            <div className="flex gap-2 items-center justify-center">
+                              <BiDownload />
+                              <span>{t.padya}</span>
+                            </div>
+                          </OutlineButton>
+                        </a>
+                      </Reveal>
+                    </div>
+                  </div>
                 </div>
+
+                {/* Rules and regulation section */}
+
+                {/* <div className="flex flex-col gap-3 max-w-2xl">
+                  <Reveal classes="">
+                    <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                      Rules & <span className="text-secondary-100">regulations</span>
+                    </p>
+                  </Reveal>
+                  <ul className="text-xs sm:text-sm md:text-base xl:text-lg">
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                    </Reveal>
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> LExplicabo ullam quasi similique deserunt ad voluptas consectetur dolorem</li>
+                    </Reveal>
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam oprepr enderit</li>
+                    </Reveal>
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam optio reprehenderit</li>
+                    </Reveal>
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                    </Reveal>
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                    </Reveal>
+                    <Reveal classes="">
+                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
+                    </Reveal>
+                  </ul>
+                </div> */}
               </div>
+            </section>
 
-							{/* Rules and regulation section */}
-
-							{/* <div className="flex flex-col gap-3 max-w-2xl">
-                <Reveal classes="">
-                  <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
-                    Rules & <span className="text-secondary-100">regulations</span>
-                  </p>
-                </Reveal>
-                <ul className="text-xs sm:text-sm md:text-base xl:text-lg">
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  </Reveal>
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> LExplicabo ullam quasi similique deserunt ad voluptas consectetur dolorem</li>
-                  </Reveal>
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam oprepr enderit</li>
-                  </Reveal>
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam optio reprehenderit</li>
-                  </Reveal>
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  </Reveal>
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  </Reveal>
-                  <Reveal classes="">
-                    <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                  </Reveal>
-                </ul>
-              </div> */}
-						</div>
-					</section>
 
 					{/* Achievements Reel Section */}
 
-          <section className="w-full flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72 2xl:hidden">
-            <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={1} angle={12} reelImg={reelImags} />
-            <Reel classes="" baseVelocity={-1.5} angle={-12} reelImg={reelImags} />
-          </section>
-          <section className="w-full hidden justify-center 2xl:flex">
-            <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
+          <section className="min-w-full max-w-7xl xl:mx-auto">
+            <div className="w-full xl:mx-auto flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72 2xl:hidden">
+              <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={0.5} angle={12} reelImg={reelImags} />
+              <Reel classes="" baseVelocity={-0.75} angle={-12} reelImg={reelImags} />
+            </div>
+            <div className="w-full xl:mx-auto hidden justify-center 2xl:flex">
+              <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
+            </div>
           </section>
 
 					{/* FAQ */}
 
-          <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 items-center relative sm:mt-48 md:mt-0 xl:mt-8 2xl:mt-0">
+          <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 relative sm:mt-48 md:mt-12 xl:mt-20 2xl:mt-0 ">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
                 <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div>
             </ScrollLag>
-            <Faq faqs={t.faq} title={t.faqTitle}/>
+            <div className="max-w-7xl xl:-translate-x-1/2 relative xl:left-1/2">
+              <Faq faqs={t.faq} title={t.faqTitle}/>
+            </div>
           </section>
 
         </div>

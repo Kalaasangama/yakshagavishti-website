@@ -16,7 +16,7 @@ interface ParallaxProps {
   angle: number
 }
 
-const ScrollVelocityCarousel = ({ children, baseVelocity = 100, angle }: ParallaxProps) => {
+const ScrollVelocityCarousel = ({ children, baseVelocity = 0.1, angle }: ParallaxProps) => {
   const baseX = useMotionValue(0);
   const { scrollY } = useScroll();
   const scrollVelocity = useVelocity(scrollY);
@@ -63,7 +63,8 @@ const ScrollVelocityCarousel = ({ children, baseVelocity = 100, angle }: Paralla
    */
   return (
     <div className="whitespace-nowrap w-[120vw] rotate-6" style={{transform: `rotate(${angle}deg)`}}>
-      <motion.div className="w-fit flex gap-2 whitespace-nowrap font-bold text-3xl" style={{ x }}>
+      <motion.div className="w-fit flex whitespace-nowrap font-bold" style={{ x }}>
+        <div>{children}</div>
         <div>{children}</div>
         <div>{children}</div>
         <div>{children}</div>
