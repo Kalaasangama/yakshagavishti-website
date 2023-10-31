@@ -1,6 +1,6 @@
 import React from 'react'
 import HorizontalScroll from '~/components/Sponsors/horizontalScroll';
-import type { CarouselCardT } from '~/components/Sponsors/carouselCard';
+// import type { CarouselCardT } from '~/components/Sponsors/carouselCard';
 import Reveal from '~/components/Animations/reveal';
 import { useRouter } from 'next/router';
 import { BiChevronsDown, BiChevronsUp } from 'react-icons/bi'

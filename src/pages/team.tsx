@@ -2,6 +2,7 @@ import AllCards from "~/components/Team/Allcards";
 import Reveal from "~/components/Animations/reveal";
 import Link from "next/link";
 import Banner from "~/components/About/Banner";
+import Image from "next/image";
 
 const team = () => {
   return (
@@ -10,12 +11,13 @@ const team = () => {
       <div className="m-10 py-6 flex items-center">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="space-y-6 md:flex md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
-            <Reveal classes="lg:mx-15 mx-0 md:w-5/12 lg:w-5/12">
-              <img
-                src="/nitteLogoWhite.webp"
+            <Reveal classes="lg:mx-15 mx-0 md:w-5/12 lg:w-5/12 flex justify-center items-center">
+              <Image
+                src="/Cloudinary/team/flc_logo.png"
                 alt="image"
-                loading="lazy"
-                className=" max-w-full justify-center sm:mx-0 sm:flex sm:h-52 md:mx-0  md:mt-48 md:h-20 md:w-auto lg:mt-0 lg:h-28 lg:w-96 xl:mx-16 object-contain"
+                height={300}
+                width={300}
+                className=" max-w-full lg:mt-0 w-64 md:w-72 lg:w-96 object-contain object-center"
               />
             </Reveal>
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12">

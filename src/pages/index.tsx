@@ -83,21 +83,23 @@ export default function Home() {
 
         <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-hidden justify-center">
 
-          <section className="relative h-48 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center max-w-7xl xl:mx-auto">
-            <Reveal classes="2xl:hidden">
-              <ScrollLag classes="" speed={500}>
-                <div className="h-full -m-4 md:-m-16">
-                  {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
-                </div>
-              </ScrollLag>
-            </Reveal>
-            <Reveal classes="hidden 2xl:block">
-              <ScrollLag classes="" speed={200}>
-                <div className="h-full 2xl:-m-8">
-                  {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
-                </div>
-              </ScrollLag>
-            </Reveal>
+          <section className="relative h-48 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
+            <div className="max-w-7xl xl:mx-auto">
+              <Reveal classes="2xl:hidden">
+                <ScrollLag classes="" speed={500}>
+                  <div className="h-full -m-4 md:-m-16">
+                    {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
+                  </div>
+                </ScrollLag>
+              </Reveal>
+              <Reveal classes="hidden 2xl:block">
+                <ScrollLag classes="" speed={200}>
+                  <div className="h-full 2xl:-m-8">
+                    {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
+                  </div>
+                </ScrollLag>
+              </Reveal>
+            </div>
 
 						<ScrollLag
 							speed={100}
@@ -114,7 +116,7 @@ export default function Home() {
 
 					{/* About the Competition */}
 
-            <section className="relative flex  min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
+            <section className="relative flex mt-10 min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
               <Image
                 className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
                 src={"/canva.png"}
@@ -208,7 +210,7 @@ export default function Home() {
 
 					{/* Achievements Reel Section */}
 
-          <section className="min-w-full max-w-7xl xl:mx-auto">
+          <section className="min-w-full max-w-7xl xl:mx-auto min-h-[50vh] items-center flex">
             <div className="w-full xl:mx-auto flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72 2xl:hidden">
               <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={0.5} angle={12} reelImg={reelImags} />
               <Reel classes="" baseVelocity={-0.75} angle={-12} reelImg={reelImags} />

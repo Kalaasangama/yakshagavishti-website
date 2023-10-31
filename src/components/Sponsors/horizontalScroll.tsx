@@ -50,8 +50,8 @@ const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
   return (
 
     <section ref={targetRef} className="relative h-[300vh]">
-      <motion.div style={{height: grow, width: grow}} className="fixed rounded-full top-full left-[50%] -translate-x-[50%] -translate-y-[50%] h-10 w-10 bg-gradient-to-r from-gray-700 from-10% via-gray-800 to-black to-80% -z-20 overflow-hidden">
-        <div className="bg-gradient-to-tr from-bg-gradient-50 from-0% to-transparent to-80% h-full w-full"></div>
+      <motion.div style={{height: grow, width: grow}} className="fixed rounded-full top-full left-[50%] -translate-x-[50%] -translate-y-[50%] h-10 w-10 bg-gradient-to-r from-primary-100 from-20% to-purple-900 -z-20 overflow-hidden">
+        <div className="bg-gradient-to-br from-blue-900/50 from-10% via-transparent to-fuchsia-950/70 to-90% h-full w-full"></div>
       </motion.div>
 
       <div ref={el => {containerRef.current = el}} className="sticky top-0 flex h-screen items-center  mx-4 sm:mx-8 lg:mx-32 overflow-hidden">

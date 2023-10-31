@@ -25,7 +25,7 @@ const Footer = () => {
   const activePath = activePaths[0] ? activePaths[0] : { label: "", url: "" };
 
   return (
-    <div className="border-t-[1px] border-orange-300/75 bg-gradient-to-tl from-primary-50 to-bg-gradient-100">
+    <div className="border-t-[1px] border-orange-300/75 bg-gradient-to-tl from-primary-100 to-blue-950">
       <div className="relative flex flex-col items-center justify-center overflow-hidden text-xs sm:text-sm md:text-sm xl:text-base gap-10 p-10 max-w-7xl xl:mx-auto">
         <div className="flex flex-row w-full justify-around items-center gap-10 md:gap-20">
           <div className="relative">
