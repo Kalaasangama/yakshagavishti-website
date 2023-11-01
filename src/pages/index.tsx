@@ -16,7 +16,7 @@ import kn from "~/locale/kn";
 import en from "~/locale/en";
 
 const reelImags = [
-  { src: "/Cloudinary/home/reel/1.jpg" },
+  { src: "/Cloudinary/home/reel/6.jpg" },
   { src: "/Cloudinary/home/reel/2.jpg" },
   { src: "/Cloudinary/home/reel/3.jpg" },
   { src: "/Cloudinary/home/reel/4.jpg" },
@@ -69,7 +69,6 @@ export default function Home() {
             <Reveal classes="">
               <div className="flex flex-col items-center gap-1 landscape:short:gap-1 text-center">
                 <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
-                <div className="font-semibold text-lg sm:text-xl md:text-2xl 2xl:text-4xl px-5 text-center leading-snug">{t.subTitle}</div>
               </div>
 
             </Reveal>

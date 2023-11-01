@@ -13,8 +13,8 @@ const Footer = () => {
   ];
 
   const contacts = [
-    { label: <BiLogoInstagramAlt />, url: "/" },
-    { label: <BiLogoGmail />, url: "/" },
+    { label: <BiLogoInstagramAlt />, url: "https://www.instagram.com/kalaa_sangama/" },
+    { label: <BiLogoGmail />, url: "mailto:kalaasangama.nmamit@nitte.edu.in" },
   ]
 
   const router = useRouter();
@@ -25,7 +25,7 @@ const Footer = () => {
   const activePath = activePaths[0] ? activePaths[0] : { label: "", url: "" };
 
   return (
-    <div className="border-t-[1px] border-orange-300/75 bg-gradient-to-tl from-primary-100 to-blue-950">
+    <div className="border-t-[1px] border-gray-600 bg-gradient-to-tl from-black-100 to-gray-800">
       <div className="relative flex flex-col items-center justify-center overflow-hidden text-xs sm:text-sm md:text-sm xl:text-base gap-10 p-10 max-w-7xl xl:mx-auto">
         <div className="flex flex-row w-full justify-around items-center gap-10 md:gap-20">
           <div className="relative">
@@ -65,9 +65,9 @@ const Footer = () => {
           </div>
         </div>
         <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center flex flex-col gap-2">
-          <Link href={"/team"} className="hover:underline underline-offset-4">Made with ❤️ by <span className="text-secondary-100 font-medium">Finite Loop Club</span></Link>
+          <Link href={"/team"} className="transition-all hover:tracking-widest text-gray-300 underline-offset-4">Made with ❤️ by <span className="text-secondary-100 font-medium">Finite Loop Club</span></Link>
           <div className="">
-            © <span className="text-secondary-100 font-medium">Kalasangama</span> 2023
+            © <span className="text-secondary-100 font-medium">Kalaasangama</span> 2023
           </div>
         </div>
       </div>
