@@ -13,8 +13,8 @@ const Footer = () => {
   ];
 
   const contacts = [
-    { label: <BiLogoInstagramAlt />, url: "/" },
-    { label: <BiLogoGmail />, url: "/" },
+    { label: <BiLogoInstagramAlt />, url: "https://www.instagram.com/kalaa_sangama/" },
+    { label: <BiLogoGmail />, url: "mailto:kalaasangama.nmamit@nitte.edu.in" },
   ]
 
   const router = useRouter();
@@ -25,52 +25,51 @@ const Footer = () => {
   const activePath = activePaths[0] ? activePaths[0] : { label: "", url: "" };
 
   return (
-    <div className="relative flex flex-col md:flex-row justify-center overflow-hidden text-[0.5rem] sm:text-sx md:text-sx xl:text-sm gap-10 md:gap-20 border-t-[1px] border-gray-500 p-10">
-      <div className="flex flex-row justify-center gap-10 md:gap-20">
-
-        <div className="flex flex-col justify-start gap-1 md:gap-2">
-          <div className="text-xs sm:text-sm md:text-base xl:text-lg mb-1 md:mb-2 text-center">Quik Links</div>
-          <div className="flex flex-col md:flex-row gap-1 md:gap-5">
-            {links.map((link, idx) => {
-              return (
-                <Link key={idx} className={
-                  activePath?.label === link.label
-                    ? "text-secondary-100"
-                    : "transition duration-150 ease-linear hover:text-secondary-200"
-                } href={link.url}>
-                  <div
-                    className=""
-                  >
-                    {link.label}
-                  </div>
-                </Link>
-              );
-            })}
+    <div className="border-t-[1px] border-gray-600 bg-gradient-to-tl from-black-100 to-gray-800">
+      <div className="relative flex flex-col items-center justify-center overflow-hidden text-xs sm:text-sm md:text-sm xl:text-base gap-10 p-10 max-w-7xl xl:mx-auto">
+        <div className="flex flex-row w-full justify-around items-center gap-10 md:gap-20">
+          <div className="relative">
+            <Link href={'/'}>
+              <Image src={'/Cloudinary/home/logo.png'} alt="Logo" className="object-contain object-center w-24 md:w-32 lg:w-36 2xl:w-44" height={100} width={100} />
+            </Link>
+          </div>
+          <div className="flex flex-col justify-start gap-1 md:gap-2">
+            <div className="text-base sm:text-base md:text-lg xl:text-xl mb-1 md:mb-2 text-center whitespace-nowrap">Quick Links</div>
+            <div className="flex flex-col md:flex-row items-center gap-1 md:gap-5">
+              {links.map((link, idx) => {
+                return (
+                  <Link key={idx} className={
+                    activePath?.label === link.label
+                      ? "text-secondary-100"
+                      : "transition duration-150 ease-linear hover:text-secondary-200"
+                    } href={link.url}>
+                    <div
+                      className=""
+                    >
+                      {link.label}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+          <div className="flex flex-col justify-start items-center gap-1 md:gap-2 w-24 md:w-32 lg:w-36 2xl:w-44">
+            <div className="text-sm sm:text-base md:text-lg xl:text-xl mb-1 md:mb-2">Follow On</div>
+            <ul className="flex flex-row justify-center text-sm sm:text-base md:text-lg xl:text-xl gap-2 md:gap-5">
+              {contacts.map((contact, idx) => {
+                return (                
+                    <Link key={idx} href={contact.url} className="text-white hover:text-secondary-200 transition duration-150 ease-linear">{contact.label}</Link>
+                )
+              })}
+            </ul>
           </div>
         </div>
-        <div className="flex flex-col justify-start gap-1 md:gap-2">
-          <div className="text-xs sm:text-sm md:text-base xl:text-lg mb-1 md:mb-2">Follow On</div>
-          <ul className="flex flex-row justify-center text-sm sm:text-base md:text-lg xl:text-xl gap-2 md:gap-5">
-            {contacts.map((contact, idx) => {
-              return (                
-                  <Link key={idx} href={contact.url} className="text-white hover:text-secondary-200 transition duration-150 ease-linear">{contact.label}</Link>
-              )
-            })}
-          </ul>
+        <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center flex flex-col gap-2">
+          <Link href={"/team"} className="transition-all hover:tracking-widest text-gray-300 underline-offset-4">Made with ❤️ by <span className="text-secondary-100 font-medium">Finite Loop Club</span></Link>
+          <div className="">
+            © <span className="text-secondary-100 font-medium">Kalaasangama</span> 2023
+          </div>
         </div>
-      </div>
-      <div className="text-xs sm:text-sm md:text-base xl:text-lg self-center">
-        © <span className="text-secondary-100 font-medium">Kalasangama</span> 2023
-      </div>
-        
-      <div className="absolute left-[50%] top-full -z-10 h-60 w-60 -translate-y-[50%] opacity-50">
-        <Image
-          src={"/mandala.png"}
-          height={500}
-          width={500}
-          alt=""
-          className="opacity-70 bg-blend-luminosity"
-        />
       </div>
     </div>
   );

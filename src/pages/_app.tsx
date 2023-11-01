@@ -5,7 +5,6 @@ import Navbar from "~/components/Layout/navbar";
 import Footer from "~/components/Layout/footer";
 
 import { api } from "~/utils/api";
-
 import "~/styles/globals.css";
 import { useRouter } from "next/router";
 import localFont from 'next/font/local'
@@ -55,6 +54,9 @@ const samarkan = localFont({
   display: 'swap',
   variable: '--font-hindi'
 })
+import "~/styles/dropzone.css"
+import { Toaster } from "src/components/ui/toaster"
+
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -64,9 +66,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <SessionProvider session={session}>
-      <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans`}>
+      <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
         {path.pathname !== "/_error" && <Navbar />}
         <Component {...pageProps} />
+        <Toaster />
         <Footer />
       </main>
     </SessionProvider>

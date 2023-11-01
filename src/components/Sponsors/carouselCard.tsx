@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
+import Image from "next/image";
 
 export type CarouselCardT = {
-  url: string;
   title: string;
   link:string;
   about: string;
+  url: string
 };
 
 interface Props {
@@ -43,14 +44,7 @@ const CarouselCard = ({ card, contents, setContents }: Props) => {
       }}
       className="group relative lg:h-[350px] lg:w-[350px] h-[250px] w-[250px] overflow-hidden rounded-2xl"
     >
-      <div
-        style={{
-          backgroundImage: `url(${card.url})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-        className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
-      ></div>
+      <Image src={card.url} fill className="object-cover object-center z-0 transition-transform duration-300 group-hover:scale-110" alt="" />
     </div>
   );
 };
