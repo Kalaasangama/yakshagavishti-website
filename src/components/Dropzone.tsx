@@ -79,14 +79,14 @@ const Dropzone = ({files,setFiles}: DropzoneProps) =>{
     {files.length>0 && <div className='flex-col justify-center items-center'>
       {files.map((image,index)=>
       <>
-      <img src={image} key={index}/>
+      <img src={image.preview} key={index} height={100} width={100}/>
       <button onClick={()=>handleDelete(index)}>x</button>   
       </>
       )}
 
     
 
-    //Upload Button
+    
     <p>{uploadStatus}</p>
       </div>}
     </div>
