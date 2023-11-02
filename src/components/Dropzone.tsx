@@ -64,7 +64,7 @@ const Dropzone = ({files,setFiles}: DropzoneProps) =>{
 
   return (
     <div className='container'>
-    <div className='dropzone' {...getRootProps({
+    <div className='dropzone bg-gray-500/50' {...getRootProps({
       onClick: (event:any) => console.log(event),
       role: 'button',
       'aria-label': 'drag and drop area',
