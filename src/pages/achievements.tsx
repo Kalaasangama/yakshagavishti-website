@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Expandable from "~/components/expandable";
 import { GiPaperArrow } from "react-icons/gi"
+import { BiChevronsDown } from "react-icons/bi"
 import en from "~/locale/en/achievements";
 import kn from "~/locale/kn/achievements";
 
@@ -48,10 +49,13 @@ const Achievements = () => {
     <main className="snap-y snap-mandatory h-screen overflow-scroll no-scrollbar relative top-0">
       <div className="h-screen bg-black flex items-center justify-center snap-start">
         {/* video */}
-        <div className="font-hindi font-bold text-4xl sm:text-6xl md:text-7xl">Achievements</div>
+        <div className="font-hindi font-bold text-4xl sm:text-6xl md:text-7xl ">Achievements</div>
+        <span className='animate-pulse fixed bottom-16 landscape:short:bottom-10 right-1/2 translate-x-1/2 -z-10'>
+          <BiChevronsDown className='animate-arrow-down text-3xl'></BiChevronsDown>
+        </span>
       </div>
       <section className="relative snap-start">
-        <div className="flex flex-col items-center w-screen px-4 sm:px-8 lg:px-32 snap-y snap-mandatory h-screen overflow-scroll no-scrollbar">
+        <div className="flex flex-col items-center w-screen bg-gradient-to-br from-primary-100 to-[#100D27] px-4 sm:px-8 lg:px-32 snap-y snap-mandatory h-screen overflow-scroll no-scrollbar">
           <div className="w-full ">
             {achievements.map((ach, idx) => {
               if(idx % 2 === 0) {

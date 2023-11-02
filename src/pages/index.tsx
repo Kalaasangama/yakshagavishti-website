@@ -16,7 +16,7 @@ import kn from "~/locale/kn";
 import en from "~/locale/en";
 
 const reelImags = [
-  { src: "/Cloudinary/home/reel/6.jpg" },
+  { src: "/Cloudinary/home/reel/1.jpg" },
   { src: "/Cloudinary/home/reel/2.jpg" },
   { src: "/Cloudinary/home/reel/3.jpg" },
   { src: "/Cloudinary/home/reel/4.jpg" },
@@ -60,7 +60,7 @@ export default function Home() {
 
         {/* Hero Section */}
 
-        <section className="relative flex flex-col justify-center items-center h-screen w-full bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
+        <section id="about"   className="relative flex flex-col justify-center items-center h-screen w-full bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
           <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
 
@@ -68,21 +68,21 @@ export default function Home() {
 
             <Reveal classes="">
               <div className="flex flex-col items-center gap-1 landscape:short:gap-1 text-center">
-                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">{t.title}</div>
+                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">Yakshagavishti</div>
               </div>
 
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>{t.register}</Button></div> : <CreateTeamDialog></CreateTeamDialog>}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : <CreateTeamDialog></CreateTeamDialog>}
               </div>
             </Reveal>
           </div>
         </section>
 
-        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-50 via-transparent  to-primary-100  overflow-hidden justify-center">
+        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-100/80 via-transparent  to-primary-100  overflow-hidden justify-center">
 
-          <section className="relative h-48 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
+          <section className="relative h-48 py-16 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
             <div className="max-w-7xl xl:mx-auto">
               <Reveal classes="2xl:hidden">
                 <ScrollLag classes="" speed={500}>
@@ -115,7 +115,7 @@ export default function Home() {
 
 					{/* About the Competition */}
 
-            <section className="relative flex mt-10 min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
+            <section className="relative flex mt-32 min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
               <Image
                 className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
                 src={"/canva.png"}
@@ -125,17 +125,17 @@ export default function Home() {
 
               {/* Competition Contents section */}
 
-              <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16 ">
+              <div  className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16 ">
                 <div className="flex flex-col md:flex-row items-center gap-10">
                   <div className="flex flex-col gap-3">
                     <Reveal classes="">
                       <div className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
-                        {t.aboutHead[0]} <span className="text-secondary-100">{t.aboutHead[1]}</span>
+                        About <span className="text-secondary-100">Yakshagavishti</span>
                       </div>
                     </Reveal>
                     <Reveal classes="">
                       <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
-                        <p>{t.about}</p>
+                        <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
                       </div>
                     </Reveal>
                   </div>
@@ -146,13 +146,13 @@ export default function Home() {
                         <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
                       </div>
                     </Reveal>
-                    <div className="flex md:flex-col gap-3 items-center">
+                    <div  className="flex md:flex-col gap-3 items-center scroll-mt-[4.75rem] sm:scroll-mt-[5.75rem] md:scroll-mt-24 lg:scroll-mt-[6.25rem]">
                       <Reveal classes="">
                         <a onClick={() => handleDownload("/Cloudinary/home/Rules.pdf", "Rules.pdf")} className="w-fit">
                           <OutlineButton>
                             <div className="flex gap-2 items-center justify-center">
                               <BiDownload />
-                              <span>{t.ruleBook}</span>
+                              <span>Rule Book</span>
                             </div>
                           </OutlineButton>
                         </a>
@@ -162,7 +162,7 @@ export default function Home() {
                           <OutlineButton>
                             <div className="flex gap-2 items-center justify-center">
                               <BiDownload />
-                              <span>{t.padya}</span>
+                              <span>Prasanga Padya</span>
                             </div>
                           </OutlineButton>
                         </a>
@@ -228,7 +228,7 @@ export default function Home() {
               </div>
             </ScrollLag>
             <div className="max-w-7xl xl:-translate-x-1/2 relative xl:left-1/2">
-              <Faq faqs={t.faq} title={t.faqTitle}/>
+              <Faq />
             </div>
           </section>
 

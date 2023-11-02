@@ -286,7 +286,7 @@ export function CreateTeamDialog() {
 			<DialogTrigger asChild>
 				<div className="px-2 py-1 lg:px-4 2xl:px-6 lg:py-2 2xl:py-3 text-xs sm:text-xs md:text-sm lg:text-base 2xl:text-lg rounded-full font-semibold bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 active:scale-90 transition duration-150 ease-linear select-none">Create Team</div>
 			</DialogTrigger>
-			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-transparent via-slate-900 to-black font-serif text-white lg:max-w-screen-lg px-20 py-12">
+			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black font-serif text-white lg:max-w-screen-lg px-20 py-12">
 				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
@@ -318,9 +318,6 @@ export function CreateTeamDialog() {
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													<SelectItem value="clo37witw0000sh64c9n62www">
-														nmamit
-													</SelectItem>
 													<SelectItem value="clo4ms7s30002vjjs7r9r9on1">
 														SDPT First Grade
 														College, Kateel
@@ -365,6 +362,8 @@ export function CreateTeamDialog() {
 											<div className="flex-cols flex gap-2">
 												<div className="mt-1">
 													<Checkbox
+														name="character"
+														id="character"
 														className="bg-white"
 														checked={
 															isCheckboxChecked
@@ -388,8 +387,10 @@ export function CreateTeamDialog() {
 												</div>
 												<div>
 													<FormDescription className="mt-1 text-white">
-														Do you have a Character
-														in the play
+														<label htmlFor="character">
+															Do you have a Character
+															in the play
+														</label>
 													</FormDescription>
 												</div>
 											</div>
@@ -399,6 +400,7 @@ export function CreateTeamDialog() {
 														Choose your Character
 													</FormLabel>
 													<Select
+													
 														onValueChange={
 															handleRoleChange
 														}
