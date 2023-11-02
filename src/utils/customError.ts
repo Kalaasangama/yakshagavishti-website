@@ -1,6 +1,6 @@
 class kalasangamaError extends Error {
-	public type;
-	public message;
+	public type:string;
+	public message:string;
 
 	constructor(type: string, message: string) {
 		super(type);

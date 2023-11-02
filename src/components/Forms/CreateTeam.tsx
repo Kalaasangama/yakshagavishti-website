@@ -97,7 +97,7 @@ type Members = {
 };
 
 export function CreateTeamDialog() {
-	const [files, setFiles] = useState<File[]>([]);
+	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const createTeam = api.team.register.useMutation();
 	const [StateForm, setStateForm] = useState("firstform");
 	const [selectedCollege, setSelectedCollege] = useState<string>("");
@@ -123,12 +123,12 @@ export function CreateTeamDialog() {
 		const MemberInfo = {
 			college_id: selectedCollege,
 			leader_character: LeaderCharacter,
-			leader_idUrl:LeaderIdUrl,
+			leader_idUrl: LeaderIdUrl,
 			members: MembersArray,
 		};
 		console.log(MemberInfo);
 		createTeam.mutate(MemberInfo);
-		createTeam.data &&
+		createTeam.isSuccess &&
 			toast({
 				variant: "default",
 				title: "Team has been Created",
@@ -279,14 +279,22 @@ export function CreateTeamDialog() {
 	};
 
 	const setLeaderRole = () => {
-		if (files[0]) uploadFile(files[0]).then(res=>{setLeaderIdUrl(res); setFiles([]); }).catch(err=>console.log(err));
+		if (files[0])
+			uploadFile(files[0])
+				.then((res) => {
+					setLeaderIdUrl(res);
+					setFiles([]);
+				})
+				.catch((err) => console.log(err));
 	};
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<div className="px-2 py-1 lg:px-4 2xl:px-6 lg:py-2 2xl:py-3 text-xs sm:text-xs md:text-sm lg:text-base 2xl:text-lg rounded-full font-semibold bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 active:scale-90 transition duration-150 ease-linear select-none">Create Team</div>
+				<div className="cursor-pointer select-none rounded-full bg-gradient-to-br from-secondary-200 to-secondary-100 px-2 py-1 align-middle text-xs font-semibold transition duration-150 ease-linear hover:from-secondary-100 hover:to-secondary-200 active:scale-90 sm:text-xs md:text-sm lg:px-4 lg:py-2 lg:text-base 2xl:px-6 2xl:py-3 2xl:text-lg">
+					Create Team
+				</div>
 			</DialogTrigger>
-			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black font-serif text-white lg:max-w-screen-lg px-20 py-12">
+			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black px-20 py-12 font-serif text-white lg:max-w-screen-lg">
 				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
@@ -388,8 +396,9 @@ export function CreateTeamDialog() {
 												<div>
 													<FormDescription className="mt-1 text-white">
 														<label htmlFor="character">
-															Do you have a Character
-															in the play
+															Do you have a
+															Character in the
+															play
 														</label>
 													</FormDescription>
 												</div>
@@ -400,7 +409,6 @@ export function CreateTeamDialog() {
 														Choose your Character
 													</FormLabel>
 													<Select
-													
 														onValueChange={
 															handleRoleChange
 														}
@@ -539,7 +547,9 @@ export function CreateTeamDialog() {
 																				.target
 																				.value
 																		);
-																		console.log(LeaderIdUrl)
+																		console.log(
+																			LeaderIdUrl
+																		);
 																	}}
 																/>
 																<FormDescription>
@@ -696,11 +706,8 @@ export function CreateTeamDialog() {
 								Back
 							</Button>
 							<AlertDialog>
-								<AlertDialogTrigger
-									
-								>
+								<AlertDialogTrigger>
 									<Button
-										
 										onClick={() => {
 											if (
 												MembersArray.length <

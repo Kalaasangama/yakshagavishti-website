@@ -1,4 +1,4 @@
-import { useScroll, useTransform, motion, useAnimation, animationControls } from "framer-motion";
+import { useScroll, useTransform, motion, useAnimation} from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { useWindowSize, useContainerDimension } from "../customHooks";
 import Reveal from "../Animations/reveal";
@@ -28,9 +28,9 @@ const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
 
   useEffect(() => {
     if(contents.active)
-      animationControl.start("visible")
+      animationControl.start("visible").catch(err=>console.log(err))
     else
-      animationControl.start("hidden")
+      animationControl.start("hidden").catch(err=>console.log(err))
   }, [contents])
 
   const horScroll = useScroll({
