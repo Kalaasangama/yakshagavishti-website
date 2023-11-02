@@ -1,10 +1,19 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { Dispatch, useEffect } from "react";
+import { useState } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { Button, SmallButton } from "../Button"
+import { MdOutlineLanguage } from "react-icons/md"
+import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
+// import LanguageDropdown from "./dropDown";
+import { signIn, signOut, useSession } from "next-auth/react";
+import en from "~/locale/en/navbar";
+import kn from "~/locale/kn/navbar";
+// import 
+
+
 
 type Link = {
   label: string;
@@ -14,17 +23,33 @@ type Link = {
 type Props = {
   links: Link[];
   activePath: Link;
+  setLanguageEng: Dispatch<boolean>;
+  languageEng: boolean
 };
 
 const Navbar = () => {
+  
+  const { data: sessionData } = useSession();
+  
   const links = [
-    { label: "Home", url: "/" },
-    { label: "Sponsors", url: "/sponsors" },
-    { label: "Achievements", url: "/achievements" },
-    { label: "About Us", url: "/about" },
+    { id: "Home", label: "Home", url: "/" },
+    { id: "Sponsors", label: "Sponsors", url: "/sponsors" },
+    { id: "Achievements", label: "Achievements", url: "/achievements" },
+    { id: "About", label: "About Us", url: "/about" },
   ];
-
+  
   const router = useRouter();
+
+  const [languageEng, setLanguageEng] = useState(true)
+
+  useEffect(() => {
+    router.push({
+      pathname: router.pathname,
+      query: router.query
+  }, router.asPath, { locale: languageEng ? "en" : "kn" })
+  }, [languageEng])
+  
+  const t = router.locale === "en" ? en : kn
 
   // Need to find the active page...
   const activePaths = links.filter((link) => link.url === router.pathname);
@@ -37,33 +62,24 @@ const Navbar = () => {
     setIsMenuActive(!isMenuActive);
   };
 
-  const closeMenu = () => {
-    if (isMenuActive) setTimeout(() => {setIsMenuActive(!isMenuActive)}, 100)
-  }
-
-  useEffect(() => {
-    document.addEventListener('touchstart', closeMenu);
-    return () => {
-      document.removeEventListener('touchstart', closeMenu);
-    };
-  });
-
   return (
-    <nav className="sticky top-2 z-50 font-medium overflow-hidden">
-      <div className="flex flex-col backdrop-blur-md border-[1px] border-orange-300 rounded-3xl px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4 2xl:py-6">
+    <nav className="fixed top-2 z-50 font-medium w-full max-w-screen-2xl left-1/2 -translate-x-1/2">
+      <div className="flex flex-col backdrop-blur-md border-b border-orange-300 rounded-3xl  px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4">
         <div className="flex justify-between items-center">
           <Reveal classes="">
-            <div  className="flex items-center justify-center w-[5rem] h-[1rem] md:w-[8rem] md:h-[5rem]">
-              <Image
-                src={"/logo-copy.png"}
-                alt="Logo"
-                width={200}
-                height={200}
-                className="object-contain object-center relative"
-              />
+            <div  className="flex items-center justify-start">
+              <Link href={'/'}>
+                <Image
+                  src={"/logo-copy.png"}
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                  className="object-contain object-left relative w-[4.5rem] md:w-20 lg:w-[5.25rem]"
+                />
+              </Link>
             </div>
           </Reveal>
-          <div className="hidden space-x-7 lg:flex 2xl:text-2xl">
+          <div className="hidden space-x-7 lg:flex">
             {links.map((link, idx) => {
               return (
                 <Reveal key={idx} classes="">
@@ -78,16 +94,22 @@ const Navbar = () => {
                           : "hover:text-secondary-200 tranition ease-linear duration-150"
                       }
                     >
-                      {link.label}
+                      {t[link.id as keyof typeof t]}
                     </div>
                   </Link>
                 </Reveal>
               );
             })}
           </div>
-          <div className="flex gap-5">
+          <div className="flex gap-5 items-center">
+            <Reveal classes="hidden lg:flex items-center">
+              {/* <LanguageDropdown t={{lang: t.lang, kan: t.kan, eng: t.eng}}></LanguageDropdown> */}
+              <div onClick={() => setLanguageEng(!languageEng)} className="cursor-pointer hover:text-secondary-100 align-middle"><MdOutlineLanguage className="text-base sm:text-lg md:text-xl lg:text-2xl align-middle"></MdOutlineLanguage></div>
+            </Reveal>
             <Reveal classes="hidden lg:block">
-              <SmallButton>Log In</SmallButton>
+              <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
+                <SmallButton>{sessionData ? t.logOut : t.logIn}</SmallButton>
+              </div>
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -97,15 +119,22 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        {isMenuActive && <MobileNav links={links} activePath={activePath} />}
+        {isMenuActive && <MobileNav links={links} activePath={activePath} setLanguageEng={setLanguageEng} languageEng={languageEng} />}
       </div>
     </nav>
   );
 };
 
-const MobileNav = ({ links, activePath }: Props) => {
+const MobileNav = ({ links, activePath, setLanguageEng, languageEng }: Props) => {
+  const { data: sessionData } = useSession();
+
+  const router = useRouter()
+
+  const t = router.locale === "en" ? en : kn
+
   return (
     <div className="">
+      {/* <div className="">{`${sessionData}`}</div> */}
       <div className="flex flex-col items-end space-y-3 pt-0 pb-3 lg:hidden">
         {links.map((link, idx) => {
           return (
@@ -126,9 +155,17 @@ const MobileNav = ({ links, activePath }: Props) => {
             </Reveal>
           );
         })}
-        <Reveal classes="">
-          <SmallButton>Log In</SmallButton>
-        </Reveal>
+        <div className="flex gap-4 items-center">
+          <Reveal classes="">
+            {/* <LanguageDropdown t={{lang: t.lang, kan: t.kan, eng: t.eng}}></LanguageDropdown> */}
+            <div onClick={() => setLanguageEng(!languageEng)} className="cursor-pointer hover:text-secondary-100 align-middle"><MdOutlineLanguage className="text-base sm:text-lg md:text-xl lg:text-2xl align-middle"></MdOutlineLanguage></div>
+          </Reveal>
+          <Reveal classes="">
+            <div onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
+              <SmallButton>{sessionData ? t.logOut : t.logIn}</SmallButton>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </div>
   );

@@ -36,6 +36,7 @@ export const authOptions: NextAuthOptions = {
 			issuer: env.AUTH0_ISSUER,
 			allowDangerousEmailAccountLinking:true
 		}),
+		
 	],
 	callbacks: {
 		session: async ({ session, user }) => {

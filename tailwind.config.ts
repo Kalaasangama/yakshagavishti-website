@@ -32,6 +32,7 @@ module.exports = {
       },
       colors: {
         'bg-gradient-50': 'rgba(48, 21, 75, 0.75)',
+        'bg-gradient-100': 'rgba(48, 21, 75, 1)',
         'primary-50': 'rgba(41,47,82, 0.5)',
         'primary-100': '#080b1e',
         'primary-transparent-50': 'rgba(8,11,30, 0.15)',
@@ -43,6 +44,9 @@ module.exports = {
         hindi: 'var(--font-hindi)',
         tourney: ['var(--font-tourney)', 'cursive'],
         sans: ['var(--font-baloo)', 'Arial'],
+      },
+      screens: {
+        'short': { 'raw': '(max-height: 500px)' }
       }
     },
   },
