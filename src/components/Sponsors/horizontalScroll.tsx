@@ -50,20 +50,20 @@ const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
   return (
 
     <section ref={targetRef} className="relative h-[300vh]">
-      <motion.div style={{height: grow, width: grow}} className="fixed rounded-full top-full left-[50%] -translate-x-[50%] -translate-y-[50%] h-10 w-10 bg-gradient-to-r from-primary-100 from-20% to-purple-900 -z-20 overflow-hidden">
-        <div className="bg-gradient-to-br from-blue-900/50 from-10% via-transparent to-fuchsia-950/70 to-90% h-full w-full"></div>
+      <motion.div style={{height: grow, width: grow}} className="fixed rounded-full top-full left-1/2 -translate-x-1/2 -translate-y-1/2 h-10 w-10 bg-gradient-to-r from-primary-100 from-20% to-blue-950 -z-20 overflow-hidden">
+        <div className="bg-gradient-to-br from-blue-900/50 from-10% via-transparent to-slate-950 to-60% h-full w-full"></div>
       </motion.div>
 
       <div ref={el => {containerRef.current = el}} className="sticky top-0 flex h-screen items-center  mx-4 sm:mx-8 lg:mx-32 overflow-hidden">
 
         <motion.div style={{ x: x, paddingLeft: `${container.width}px` }} className={`flex gap-8`}>
-          <div style={{width: `${container.width}px`}} className={`absolute left-0 h-[250px] lg:h-[350px] flex flex-col justify-center items-center  text-xl sm:text-2xl md:text-3xl 2xl:text-5xl px-5 text-center overflow-hidden`}>
+          <div style={{width: `${container.width}px`}} className={`absolute left-0 h-[250px] lg:h-[350px] flex flex-col justify-center items-center  text-2xl sm:text-3xl md:text-4xl px-5 text-center overflow-hidden`}>
 
             <Reveal classes="font-tourney font-black"><p>{t.ourSponsors}</p></Reveal>
 
           </div>
 
-          <div style={{width: `${container.width}px`}} className={`absolute left-full h-[250px] lg:h-[350px] flex flex-col justify-center items-center text-xl sm:text-2xl md:text-3xl 2xl:text-5xl`}>
+          <div style={{width: `${container.width}px`}} className={`absolute left-full h-[250px] lg:h-[350px] flex flex-col justify-center items-center text-2xl sm:text-3xl md:text-4xl`}>
 
             <Reveal classes="font-tourney font-black"><p>{t.endSponsors}</p></Reveal>
 
