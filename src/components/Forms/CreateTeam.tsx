@@ -693,20 +693,10 @@ export function CreateTeamDialog() {
 							</Button>
 							<AlertDialog>
 								<AlertDialogTrigger
-									disabled={
-										MembersArray.length <
-										availableRoles.length
-											? true
-											: false
-									}
+									
 								>
 									<Button
-										disabled={
-											MembersArray.length <
-											availableRoles.length
-												? true
-												: false
-										}
+										
 										onClick={() => {
 											if (
 												MembersArray.length <
