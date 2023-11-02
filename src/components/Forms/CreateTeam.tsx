@@ -92,7 +92,6 @@ type Members = {
 	email: string;
 	password: string;
 	character_id: string;
-	phone: string;
 	id_url: string;
 };
 
@@ -102,6 +101,7 @@ export function CreateTeamDialog() {
 	const [StateForm, setStateForm] = useState("firstform");
 	const [selectedCollege, setSelectedCollege] = useState<string>("");
 	const [selectedRole, setSelectedRole] = useState<string>("");
+	const [LeaderContact, setLeaderContact] = useState<string>("");
 	const [teammateName, setTeammateName] = useState("");
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setTeamPassword] = useState("");
@@ -124,6 +124,7 @@ export function CreateTeamDialog() {
 			college_id: selectedCollege,
 			leader_character: LeaderCharacter,
 			leader_idUrl: LeaderIdUrl,
+			leader_contact: LeaderContact,
 			members: MembersArray,
 		};
 		console.log(MemberInfo);
@@ -138,47 +139,36 @@ export function CreateTeamDialog() {
 	};
 	const FieldValidation = () => {
 		const emailregx = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
-		const phoneregx = "^[6-9][0-9]{9}$";
-		if (
-			teammateName === "" ||
-			TeammatePhone === "" ||
-			teammateEmail === ""
-		) {
+		if (teammateName === "" || teammateEmail === "") {
 			toast({
 				variant: "destructive",
 				title: "Fill All the details",
 				description: "Fill All the fields",
 			});
 			return false;
-		} else if (!teammateEmail.match(emailregx)) {
+		}
+		if (!teammateEmail.match(emailregx)) {
 			toast({
 				variant: "destructive",
 				title: "Invalid Email ID",
 				description: "Invalid Email ID ",
 			});
 			return false;
-		} else if (!TeammatePhone.match(phoneregx)) {
-			toast({
-				variant: "destructive",
-				title: "Invalid Phone number",
-				description: "Check the Enter phone Number",
-			});
-			return false;
 		}
-		return true;
+		return true
 	};
 
 	const setTeamMember = async (
 		character_id: string,
 		character_index: number
 	) => {
+	console.log("asdfasdf")
 		const id_url = await handleUpload();
 		//console.log(id_url);
 		const data: Members = {
 			name: teammateName,
 			email: teammateEmail,
 			password: teamPassword,
-			phone: TeammatePhone,
 			character_id: character_id,
 			id_url: z.string().parse(id_url),
 		};
@@ -204,11 +194,7 @@ export function CreateTeamDialog() {
 		console.log(array);
 		console.log("running");
 		array.some((obj) => {
-			if (
-				obj.name === teammateName ||
-				obj.email === teammateEmail ||
-				obj.phone === TeammatePhone
-			) {
+			if (obj.name === teammateName || obj.email === teammateEmail) {
 				toast({
 					variant: "destructive",
 					title: "Repeated Teammate",
@@ -225,8 +211,17 @@ export function CreateTeamDialog() {
 	const Passwordpattern = () => {
 		const passwordRegex =
 			/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+		const phoneregx = "^[6-9][0-9]{9}$";
 		if (selectedCollege) {
 			if (teamPassword.match(passwordRegex)) {
+				if (!LeaderContact.match(phoneregx)) {
+					toast({
+						variant: "destructive",
+						title: "Invalid Phone number",
+						description: "Check the Enter phone Number",
+					});
+					return false;
+				}
 				toast({
 					variant: "default",
 					title: "Details",
@@ -367,6 +362,31 @@ export function CreateTeamDialog() {
 												Generate a password for your
 												team.
 											</FormDescription>
+											<FormLabel className="my-4 text-white">
+												Phone of the team member
+											</FormLabel>
+											<Input
+												id="Teammate_Phone"
+												placeholder="Teammate Phone"
+												className="col-span-3"
+												type="number"
+												maxLength={10}
+												minLength={10}
+												defaultValue={LeaderContact}
+												onChange={(e) => {
+													setLeaderContact(
+														e.target.value
+													);
+												}}
+											/>
+											<FormDescription>
+												Input the Phone number of your
+												teammate.
+											</FormDescription>
+
+											<FormLabel className="mt-5 text-white">
+												Drop Image of your ID
+											</FormLabel>
 											<div className="flex-cols flex gap-2">
 												<div className="mt-1">
 													<Checkbox
@@ -509,9 +529,6 @@ export function CreateTeamDialog() {
 													setTeammateEmail(
 														member.email
 													);
-													setTeammatePhone(
-														member.phone
-													);
 												}
 											}}
 										>
@@ -591,43 +608,6 @@ export function CreateTeamDialog() {
 																	your
 																	teammates.
 																</FormDescription>
-																<FormLabel className="my-4 text-white">
-																	Phone of the
-																	team member
-																</FormLabel>
-																<Input
-																	id="Teammate_Phone"
-																	placeholder="Teammate Phone"
-																	className="col-span-3"
-																	type="number"
-																	maxLength={
-																		10
-																	}
-																	minLength={
-																		10
-																	}
-																	defaultValue={
-																		MembersArray[
-																			index
-																		]?.phone
-																	}
-																	onChange={(
-																		e
-																	) => {
-																		setTeammatePhone(
-																			e
-																				.target
-																				.value
-																		);
-																	}}
-																/>
-																<FormDescription>
-																	Input the
-																	Phone number
-																	of your
-																	teammate.
-																</FormDescription>
-
 																<FormLabel className="mt-5 text-white">
 																	Drop Image
 																	of your ID
@@ -669,6 +649,7 @@ export function CreateTeamDialog() {
 																		character_index
 																	);
 																}
+																console.log(MembersArray)
 															}}
 														>
 															Save

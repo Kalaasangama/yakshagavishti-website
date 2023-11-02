@@ -5,18 +5,21 @@ import type { UserInput, createAccountParm } from "./CustomTypes";
 import management from "./auth0";
 import type { Session } from "next-auth";
 
-const createTeam = async (college_id: string, session: Session, leader_character: string | null, leaderIdUrl:string|null) => {
+const createTeam = async (
+	college_id: string,
+	session: Session,
+	leader_character: string | null,
+	leaderIdUrl: string | null,
+	leader_contact: string
+) => {
 	const college = await getCollegeById(college_id);
 	const collegeTeamExists = await prisma.team.findUnique({
 		where: {
-			name: college.name
-		}
-	})
+			name: college.name,
+		},
+	});
 	if (collegeTeamExists) {
-		throw new kalasangamaError(
-			"Create team error",
-			"Team Exists!"
-		);
+		throw new kalasangamaError("Create team error", "Team Exists!");
 	}
 	if (session.user.team?.id && session.user.leaderOf) {
 		if (session.user.team.isComplete) {
@@ -51,7 +54,14 @@ const createTeam = async (college_id: string, session: Session, leader_character
 				isComplete: true,
 			},
 		});
-		await setLeader(session.user.id, team.name, college_id, leader_character, leaderIdUrl);
+		await setLeader(
+			session.user.id,
+			team.name,
+			college_id,
+			leader_character,
+			leaderIdUrl,
+			leader_contact
+		);
 		return { team, college };
 	}
 };
@@ -91,7 +101,8 @@ const setLeader = async (
 	teamName: string,
 	college_id: string,
 	character_id: string | null,
-	leaderIdUrl:string|null
+	leaderIdUrl: string | null,
+	leader_contact: string
 ) => {
 	if (character_id)
 		await prisma.user.update({
@@ -117,9 +128,10 @@ const setLeader = async (
 						id: character_id,
 					},
 				},
-				idURL:leaderIdUrl
+				idURL: leaderIdUrl,
+				contact: leader_contact,
 			},
-		})
+		});
 	else
 		await prisma.user.update({
 			where: { id: user_id },
@@ -140,7 +152,7 @@ const setLeader = async (
 					},
 				},
 			},
-		})
+		});
 };
 
 const createAuth0User = async (user: UserInput) => {

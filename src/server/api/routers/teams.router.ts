@@ -16,12 +16,12 @@ export const TeamRouter = createTRPCRouter({
 				college_id: z.string(),
 				leader_character: z.string().nullable(),
 				leader_idUrl:z.string().nullable(),
+				leader_contact:z.string(),
 				members: z.array(
 					z.object({
 						name: z.string(),
 						email: z.string(),
 						password: z.string(),
-						phone: z.string(),
 						character_id: z.string(),
 						id_url: z.string(),
 					})
@@ -31,11 +31,13 @@ export const TeamRouter = createTRPCRouter({
 		.mutation(async ({ ctx, input }) => {
 			try {
 				//Create or return team
+				console.log(input)
 				const { team, college } = await createTeam(
 					input.college_id,
 					ctx.session,
 					input.leader_character,
-					input.leader_idUrl
+					input.leader_idUrl,
+					input.leader_contact
 				);
 				//Create accounts in auth0
 				await Promise.all(

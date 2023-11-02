@@ -1,7 +1,6 @@
 import Image from "next/image";
-import { type FormEvent, useCallback, useEffect, useState } from "react";
+import {  useCallback, useEffect, useState } from "react";
 import { type FileRejection, useDropzone } from "react-dropzone";
-import { uploadFile } from "~/utils/file";
 
 interface DropzoneProps {
 	// className: string;
