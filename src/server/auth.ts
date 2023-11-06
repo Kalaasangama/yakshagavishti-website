@@ -34,9 +34,8 @@ export const authOptions: NextAuthOptions = {
 			clientId: env.AUTH0_CLIENT_ID,
 			clientSecret: env.AUTH0_CLIENT_SECRET,
 			issuer: env.AUTH0_ISSUER,
-			allowDangerousEmailAccountLinking:true
+			allowDangerousEmailAccountLinking: true,
 		}),
-		
 	],
 	callbacks: {
 		session: async ({ session, user }) => {

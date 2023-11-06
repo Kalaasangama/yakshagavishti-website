@@ -74,7 +74,7 @@ export default function Home() {
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : <CreateTeamDialog></CreateTeamDialog>}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : (!sessionData.user.team?<CreateTeamDialog></CreateTeamDialog>:<Button>View Team</Button>)}
               </div>
             </Reveal>
           </div>
