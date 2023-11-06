@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
 import { useTimer } from "react-timer-hook";
-import { string } from "zod";
 
 interface Props {
   setIsRegistrationActive?: Dispatch<boolean>;

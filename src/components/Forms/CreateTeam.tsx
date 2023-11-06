@@ -55,6 +55,7 @@ import {
 import { Input } from "src/components/ui/input";
 import { ToastAction } from "src/components/ui/toast";
 import { useToast } from "src/components/ui/use-toast";
+import Image from "next/image";
 
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
@@ -129,13 +130,16 @@ export function CreateTeamDialog() {
 		};
 		console.log(MemberInfo);
 		createTeam.mutate(MemberInfo);
-		createTeam.isSuccess &&
-			toast({
-				variant: "default",
-				title: "Team has been Created",
-				description: `Team has been Created. Continue to fill in the details of your Teammates, ${selectedCollege}, ${teamPassword}`,
-				action: <ToastAction altText="Undo">Undo</ToastAction>,
-			});
+		if(createTeam.isSuccess) {
+		 toast({
+			variant: "default",
+			title: "Team has been Created",
+			description: `Team has been Created. Continue to fill in the details of your Teammates, ${selectedCollege}, ${teamPassword}`,
+			action: <ToastAction altText="Undo">Undo</ToastAction>,
+		})
+	}
+	
+			
 	};
 	const FieldValidation = () => {
 		const emailregx = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
@@ -185,6 +189,7 @@ export function CreateTeamDialog() {
 		setTeammateEmail("");
 		setSelectedRole("");
 		setTeammatePhone("");
+		setFiles([]);
 		//console.log(data);
 	};
 
@@ -194,11 +199,11 @@ export function CreateTeamDialog() {
 		console.log(array);
 		console.log("running");
 		array.some((obj) => {
-			if (obj.name === teammateName || obj.email === teammateEmail) {
+			if (obj.email === teammateEmail) {
 				toast({
 					variant: "destructive",
-					title: "Repeated Teammate",
-					description: "Repeated Teammate",
+					title: "Repeated Email ID",
+					description: "Repeated Email ID",
 				});
 				flags = false;
 			}
@@ -554,7 +559,7 @@ export function CreateTeamDialog() {
 																	defaultValue={
 																		MembersArray[
 																			index
-																		]?.name
+																		]?.name 
 																	}
 																	onChange={(
 																		e
@@ -588,7 +593,7 @@ export function CreateTeamDialog() {
 																	defaultValue={
 																		MembersArray[
 																			index
-																		]?.email
+																		]?.email 
 																	}
 																	onChange={(
 																		e
@@ -614,6 +619,7 @@ export function CreateTeamDialog() {
 																</FormLabel>
 																<div className="grid grid-cols-3">
 																	<div className="col-span-3">
+																		
 																		<Dropzone
 																			files={
 																				files
@@ -622,6 +628,9 @@ export function CreateTeamDialog() {
 																				setFiles
 																			}
 																		/>
+																		{MembersArray[index]?.id_url && <Image src={MembersArray[index]?.id_url} alt=""
+																		height={100} width={100}
+																		/>}
 																	</div>
 																</div>
 															</div>
@@ -687,8 +696,8 @@ export function CreateTeamDialog() {
 								Back
 							</Button>
 							<AlertDialog>
-								<AlertDialogTrigger>
-									<Button
+								<AlertDialogTrigger disabled={availableRoles.length===MembersArray.length?false:true}>
+									<Button disabled={availableRoles.length===MembersArray.length?false:true}
 										onClick={() => {
 											if (
 												MembersArray.length <
