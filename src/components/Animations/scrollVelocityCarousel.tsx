@@ -1,4 +1,4 @@
-import { ReactComponentElement, useRef } from "react";
+import { useRef } from "react";
 import {
   motion,
   useScroll,

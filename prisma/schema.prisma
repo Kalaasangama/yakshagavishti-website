@@ -45,6 +45,7 @@ model User {
   email           String?          @unique
   emailVerified   Boolean?         @default(false)
   image           String?
+  contact		  String?
   collegeId       String?
   idURL           String?
   college         College?         @relation(fields: [collegeId], references: [id])

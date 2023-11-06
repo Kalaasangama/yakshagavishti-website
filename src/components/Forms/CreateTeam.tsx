@@ -92,16 +92,16 @@ type Members = {
 	email: string;
 	password: string;
 	character_id: string;
-	phone: string;
 	id_url: string;
 };
 
 export function CreateTeamDialog() {
-	const [files, setFiles] = useState<File[]>([]);
+	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const createTeam = api.team.register.useMutation();
 	const [StateForm, setStateForm] = useState("firstform");
 	const [selectedCollege, setSelectedCollege] = useState<string>("");
 	const [selectedRole, setSelectedRole] = useState<string>("");
+	const [LeaderContact, setLeaderContact] = useState<string>("");
 	const [teammateName, setTeammateName] = useState("");
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [teamPassword, setTeamPassword] = useState("");
@@ -123,12 +123,13 @@ export function CreateTeamDialog() {
 		const MemberInfo = {
 			college_id: selectedCollege,
 			leader_character: LeaderCharacter,
-			leader_idUrl:LeaderIdUrl,
+			leader_idUrl: LeaderIdUrl,
+			leader_contact: LeaderContact,
 			members: MembersArray,
 		};
 		console.log(MemberInfo);
 		createTeam.mutate(MemberInfo);
-		createTeam.data &&
+		createTeam.isSuccess &&
 			toast({
 				variant: "default",
 				title: "Team has been Created",
@@ -138,47 +139,36 @@ export function CreateTeamDialog() {
 	};
 	const FieldValidation = () => {
 		const emailregx = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$";
-		const phoneregx = "^[6-9][0-9]{9}$";
-		if (
-			teammateName === "" ||
-			TeammatePhone === "" ||
-			teammateEmail === ""
-		) {
+		if (teammateName === "" || teammateEmail === "") {
 			toast({
 				variant: "destructive",
 				title: "Fill All the details",
 				description: "Fill All the fields",
 			});
 			return false;
-		} else if (!teammateEmail.match(emailregx)) {
+		}
+		if (!teammateEmail.match(emailregx)) {
 			toast({
 				variant: "destructive",
 				title: "Invalid Email ID",
 				description: "Invalid Email ID ",
 			});
 			return false;
-		} else if (!TeammatePhone.match(phoneregx)) {
-			toast({
-				variant: "destructive",
-				title: "Invalid Phone number",
-				description: "Check the Enter phone Number",
-			});
-			return false;
 		}
-		return true;
+		return true
 	};
 
 	const setTeamMember = async (
 		character_id: string,
 		character_index: number
 	) => {
+	console.log("asdfasdf")
 		const id_url = await handleUpload();
 		//console.log(id_url);
 		const data: Members = {
 			name: teammateName,
 			email: teammateEmail,
 			password: teamPassword,
-			phone: TeammatePhone,
 			character_id: character_id,
 			id_url: z.string().parse(id_url),
 		};
@@ -204,11 +194,7 @@ export function CreateTeamDialog() {
 		console.log(array);
 		console.log("running");
 		array.some((obj) => {
-			if (
-				obj.name === teammateName ||
-				obj.email === teammateEmail ||
-				obj.phone === TeammatePhone
-			) {
+			if (obj.name === teammateName || obj.email === teammateEmail) {
 				toast({
 					variant: "destructive",
 					title: "Repeated Teammate",
@@ -225,8 +211,17 @@ export function CreateTeamDialog() {
 	const Passwordpattern = () => {
 		const passwordRegex =
 			/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+		const phoneregx = "^[6-9][0-9]{9}$";
 		if (selectedCollege) {
 			if (teamPassword.match(passwordRegex)) {
+				if (!LeaderContact.match(phoneregx)) {
+					toast({
+						variant: "destructive",
+						title: "Invalid Phone number",
+						description: "Check the Enter phone Number",
+					});
+					return false;
+				}
 				toast({
 					variant: "default",
 					title: "Details",
@@ -279,14 +274,22 @@ export function CreateTeamDialog() {
 	};
 
 	const setLeaderRole = () => {
-		if (files[0]) uploadFile(files[0]).then(res=>{setLeaderIdUrl(res); setFiles([]); }).catch(err=>console.log(err));
+		if (files[0])
+			uploadFile(files[0])
+				.then((res) => {
+					setLeaderIdUrl(res);
+					setFiles([]);
+				})
+				.catch((err) => console.log(err));
 	};
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<div className="px-2 py-1 lg:px-4 2xl:px-6 lg:py-2 2xl:py-3 text-xs sm:text-xs md:text-sm lg:text-base 2xl:text-lg rounded-full font-semibold bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 active:scale-90 transition duration-150 ease-linear select-none">Create Team</div>
+				<div className="cursor-pointer select-none rounded-full bg-gradient-to-br from-secondary-200 to-secondary-100 px-2 py-1 align-middle text-xs font-semibold transition duration-150 ease-linear hover:from-secondary-100 hover:to-secondary-200 active:scale-90 sm:text-xs md:text-sm lg:px-4 lg:py-2 lg:text-base 2xl:px-6 2xl:py-3 2xl:text-lg">
+					Create Team
+				</div>
 			</DialogTrigger>
-			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black font-serif text-white lg:max-w-screen-lg px-20 py-12">
+			<DialogContent className="no-scrollbar max-h-screen overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black px-20 py-12 font-serif text-white lg:max-w-screen-lg">
 				{StateForm === "firstform" && (
 					<React.Fragment>
 						<DialogHeader>
@@ -359,6 +362,31 @@ export function CreateTeamDialog() {
 												Generate a password for your
 												team.
 											</FormDescription>
+											<FormLabel className="my-4 text-white">
+												Phone of the team member
+											</FormLabel>
+											<Input
+												id="Teammate_Phone"
+												placeholder="Teammate Phone"
+												className="col-span-3"
+												type="number"
+												maxLength={10}
+												minLength={10}
+												defaultValue={LeaderContact}
+												onChange={(e) => {
+													setLeaderContact(
+														e.target.value
+													);
+												}}
+											/>
+											<FormDescription>
+												Input the Phone number of your
+												teammate.
+											</FormDescription>
+
+											<FormLabel className="mt-5 text-white">
+												Drop Image of your ID
+											</FormLabel>
 											<div className="flex-cols flex gap-2">
 												<div className="mt-1">
 													<Checkbox
@@ -388,8 +416,9 @@ export function CreateTeamDialog() {
 												<div>
 													<FormDescription className="mt-1 text-white">
 														<label htmlFor="character">
-															Do you have a Character
-															in the play
+															Do you have a
+															Character in the
+															play
 														</label>
 													</FormDescription>
 												</div>
@@ -400,7 +429,6 @@ export function CreateTeamDialog() {
 														Choose your Character
 													</FormLabel>
 													<Select
-													
 														onValueChange={
 															handleRoleChange
 														}
@@ -501,9 +529,6 @@ export function CreateTeamDialog() {
 													setTeammateEmail(
 														member.email
 													);
-													setTeammatePhone(
-														member.phone
-													);
 												}
 											}}
 										>
@@ -539,7 +564,9 @@ export function CreateTeamDialog() {
 																				.target
 																				.value
 																		);
-																		console.log(LeaderIdUrl)
+																		console.log(
+																			LeaderIdUrl
+																		);
 																	}}
 																/>
 																<FormDescription>
@@ -581,43 +608,6 @@ export function CreateTeamDialog() {
 																	your
 																	teammates.
 																</FormDescription>
-																<FormLabel className="my-4 text-white">
-																	Phone of the
-																	team member
-																</FormLabel>
-																<Input
-																	id="Teammate_Phone"
-																	placeholder="Teammate Phone"
-																	className="col-span-3"
-																	type="number"
-																	maxLength={
-																		10
-																	}
-																	minLength={
-																		10
-																	}
-																	defaultValue={
-																		MembersArray[
-																			index
-																		]?.phone
-																	}
-																	onChange={(
-																		e
-																	) => {
-																		setTeammatePhone(
-																			e
-																				.target
-																				.value
-																		);
-																	}}
-																/>
-																<FormDescription>
-																	Input the
-																	Phone number
-																	of your
-																	teammate.
-																</FormDescription>
-
 																<FormLabel className="mt-5 text-white">
 																	Drop Image
 																	of your ID
@@ -659,6 +649,7 @@ export function CreateTeamDialog() {
 																		character_index
 																	);
 																}
+																console.log(MembersArray)
 															}}
 														>
 															Save
@@ -696,21 +687,8 @@ export function CreateTeamDialog() {
 								Back
 							</Button>
 							<AlertDialog>
-								<AlertDialogTrigger
-									disabled={
-										MembersArray.length <
-										availableRoles.length
-											? true
-											: false
-									}
-								>
+								<AlertDialogTrigger>
 									<Button
-										disabled={
-											MembersArray.length <
-											availableRoles.length
-												? true
-												: false
-										}
 										onClick={() => {
 											if (
 												MembersArray.length <
