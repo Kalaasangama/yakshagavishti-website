@@ -69,7 +69,7 @@ const Achievements = () => {
                 
                 return (
                   <div key={idx} className="w-full relative flex flex-col justify-center h-screen snap-start gap-10 items-center group/page">
-                    <div className="xl:w-[1280px] w-full">
+                    <div className="xl:w-[1280px] w-full px-4 sm:px-8 lg:px-32 md:mb-16">
                       <Expandable key={idx} cards={row} setContentId={setContentId} direction={idx % 4 == 0? "" : "-"} />
                     </div>
                     <div className="h-48 sm:h-fit md:h-48  flex-col justify-center items-center gap-4 md:gap-3 absolute bottom-9 sm:bottom-5 md:bottom-3 group-hover/page:flex hidden landscape:short:bottom-0 landscape:short:h-fit">

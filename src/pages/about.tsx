@@ -26,7 +26,7 @@ const Index = () => {
             </Reveal>
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12">
               <Reveal classes="">
-                <h2 className="inline-block font-hindi text-xl font-bold sm:text-4xl md:text-4xl 2xl:text-5xl">
+                <h2 className="inline-block font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl">
                   {`${t.head[0]}`} <span className="text-secondary-100">{`${t.head[1]}`}</span>
                 </h2>
               </Reveal>
@@ -59,7 +59,7 @@ const Index = () => {
             </Reveal>
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12">
               <Reveal classes="">
-                <h2 className="inline-block font-hindi text-xl font-bold sm:text-4xl md:text-4xl 2xl:text-5xl">
+                <h2 className="inline-block font-hindi text-xl  sm:text-4xl md:text-4xl 2xl:text-5xl">
                   {`${t.tHead[0]}`} <span className="text-secondary-100">{`${t.tHead[1]}`}</span>
                 </h2>
               </Reveal>

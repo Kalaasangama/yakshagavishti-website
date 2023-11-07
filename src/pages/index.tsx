@@ -141,9 +141,9 @@ export default function Home() {
                   </div>
                   <div className="shrink-0 flex flex-col gap-3 items-center">
                     <Reveal classes="">
-                      <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                        <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
-                        <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
+                      <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-secondary-100 drop-shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
+                        <Image src={'/Cloudinary/home/logo.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                        {/* <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div> */}
                       </div>
                     </Reveal>
                     <div  className="flex md:flex-col gap-3 items-center scroll-mt-[4.75rem] sm:scroll-mt-[5.75rem] md:scroll-mt-24 lg:scroll-mt-[6.25rem]">

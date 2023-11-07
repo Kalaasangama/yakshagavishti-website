@@ -17,9 +17,9 @@ const en = {
   
   members: [
     {
-      name: "John Doe",
+      name: "Kalaasangama Team",
       role: "President",
-      desc: "lorem ipsum doler",
+      desc: "",
     }
   ]
 };
