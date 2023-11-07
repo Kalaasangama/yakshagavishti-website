@@ -46,7 +46,7 @@ const Footer = () => {
                       } href={link.url}>
                         {link.label}
                     </Link>
-                    {idx !== links.length-1 && <span className="mx-3 py-2">|</span>}  
+                    {idx !== links.length-1 && <span className="mx-3 py-2" key={idx}>|</span>}  
                   </>
                 );
               })}
@@ -57,7 +57,7 @@ const Footer = () => {
             <ul className="flex flex-row justify-center text-lg sm:text-xl md:text-2xl xl:text-3xl gap-4 md:gap-5">
               {contacts.map((contact, idx) => {
                 return (                
-                    <Link key={idx} href={contact.url} className="text-white hover:text-secondary-200 transition duration-150 ease-linear">{contact.label}</Link>
+                    <a key={idx} href={contact.url} target="_blank" className="text-white hover:text-secondary-200 transition duration-150 ease-linear">{contact.label}</a>
                 )
               })}
             </ul>

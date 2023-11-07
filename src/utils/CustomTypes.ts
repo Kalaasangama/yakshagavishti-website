@@ -1,4 +1,4 @@
-import { GetUsers200ResponseOneOfInner } from "auth0";
+import type { GetUsers200ResponseOneOfInner } from "auth0";
 
 interface Session {
 	accessToken: string;
@@ -19,12 +19,12 @@ interface AdapterUser {
 }
 
 interface UserInput {
-	name: string;
-	email: string;
-	password: string;
-	phone: string;
-	character_id: string;
-	id_url: string;
+	name?: string;
+	email?: string;
+	password?: string;
+	phone?: string;
+	character_id?: string;
+	id_url?: string;
 }
 
 interface createAccountParm {

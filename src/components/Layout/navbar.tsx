@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { Dispatch, useEffect } from "react";
+import { type Dispatch, useEffect } from "react";
 import { useState } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
 import { MdOutlineLanguage } from "react-icons/md"
@@ -46,7 +46,7 @@ const Navbar = () => {
     router.push({
       pathname: router.pathname,
       query: router.query
-  }, router.asPath, { locale: languageEng ? "en" : "kn" })
+  }, router.asPath, { locale: languageEng ? "en" : "kn" }).catch(err=>console.log(err))
   }, [languageEng])
   
   const t = router.locale === "en" ? en : kn
