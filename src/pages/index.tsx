@@ -105,7 +105,7 @@ export default function Home() {
 							classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50"
 						>
 							<Image
-								src={"/mandala.png"}
+								src={"/Cloudinary/home/mandala.png"}
 								fill
 								alt=""
 								className="select-none opacity-70  bg-blend-luminosity"
@@ -118,7 +118,7 @@ export default function Home() {
             <section className="relative flex mt-32 min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
               <Image
                 className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
-                src={"/canva.png"}
+                src={"/Cloudinary/home/mandala-center.png"}
                 fill
                 alt="mandala"
               ></Image>
@@ -224,7 +224,7 @@ export default function Home() {
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 relative sm:mt-48 md:mt-12 xl:mt-20 2xl:mt-0 ">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
+                <Image src={'/Cloudinary/home/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div>
             </ScrollLag>
             <div className="max-w-7xl xl:-translate-x-1/2 relative xl:left-1/2">
