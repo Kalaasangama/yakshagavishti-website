@@ -87,6 +87,99 @@ export const TeamRouter = createTRPCRouter({
 				);
 			}
 		}),
+	getTeam: protectedProcedure.mutation(async ({ ctx }) => {
+		try {
+			if (ctx.session.user.leaderOf) {
+				const teamInfo = await ctx.prisma.user.findUnique({
+					where: { id: ctx.session.user.id },
+					include: { team: true },
+				});
+				return teamInfo.team;
+			}
+			throw new kalasangamaError(
+				"Team Details Error",
+				"You are not the leader of any team"
+			);
+		} catch (error) {
+			if (error instanceof kalasangamaError) {
+				throw new TRPCError({
+					message: error.message,
+					code: "CONFLICT",
+				});
+			} else {
+				console.log(error);
+				throw "An error occurred!";
+			}
+		}
+	}),
+	updateTeam: protectedProcedure
+		.input(
+			z.object({
+				members: z.array(
+					z.object({
+						user_id: z.string(),
+						name: z.string(),
+						character_id: z.string(),
+						id_url: z.string(),
+					})
+				),
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			try {
+				//Check if user is a leader
+				if (!ctx.session.user.leaderOf)
+					throw new kalasangamaError(
+						"Update Team Error",
+						"Only leaders can modify teams"
+					);
+
+				//Get the user's team if user is a leader
+				const team = await ctx.prisma.team.findUnique({
+					where: { id: ctx.session.user.team.id },
+					include: { leader: true },
+				});
+
+				//Check if team has edit access
+				if (team.isComplete)
+					throw new kalasangamaError(
+						"Update Team Error",
+						"Please request permission to edit your team"
+					);
+
+				//Update the users 
+				await Promise.all(
+					input.members.map(async (member) => {
+						await ctx.prisma.user.update({
+							where: { id: member.user_id },
+							data: {
+								name: member.name,
+								characterPlayed: {
+									connect: { id: member.character_id },
+								},
+								idURL: member.id_url,
+							},
+						});
+					})
+				);
+
+				//Set the team complete status to prevent further edits
+				await ctx.prisma.team.update({
+					where: { id: ctx.session.user.team.id },
+					data: { isComplete: true },
+				});
+			} catch (error) {
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "CONFLICT",
+					});
+				} else {
+					console.log(error);
+					throw "An error occurred!";
+				}
+			}
+		}),
 });
 
 export default TeamRouter;
