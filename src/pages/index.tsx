@@ -5,15 +5,13 @@ import dynamic from "next/dynamic.js";
 const Timer = dynamic(() => import("~/components/Home/timer"), { ssr: false });
 import Faq from "~/components/Home/faq";
 import Reveal from "~/components/Animations/reveal";
-import { Button, InactiveButton, OutlineButton } from "~/components/Button";
+import { Button, OutlineButton } from "~/components/Button";
 import { BiDownload } from "react-icons/bi";
 import Reel from "~/components/Home/reel";
 import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
-import { useRouter } from "next/router";
-import kn from "~/locale/kn";
-import en from "~/locale/en";
+import { useContainerDimension } from "~/components/customHooks";
 import CollegeReg from "~/components/Forms/CollegeReg";
 import LeadRegister from "~/components/Forms/LeadRegister";
 import MemberReg from "~/components/Forms/MemberReg";
@@ -30,6 +28,7 @@ const reelImags = [
 ]
 
 export default function Home() {
+  const mainRef = useRef<HTMLDivElement>(null)
 	const [isRegistrationActive, setIsRegistrationActive] =
 		useState<boolean>(true);
 	const { data: sessionData } = useSession();
@@ -48,9 +47,6 @@ export default function Home() {
     document.body.removeChild(link);
   };
 
-  const router = useRouter()
-  const t = router.locale === "en" ? en : kn
-
   return (
     <>
       <Head>
@@ -58,8 +54,7 @@ export default function Home() {
         <meta name="description" content="Yakshagavishti" />
         <link rel="icon" href="/logo.png" type="images/png" sizes="64x64"/>
       </Head>
-      <main className="flex flex-col">
-        {/* <AuthShowcase /> */}
+      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20">
 
         {/* Hero Section */}
 
@@ -83,7 +78,7 @@ export default function Home() {
           </div>
         </section>
 
-        <div className="flex flex-col gap-10 md:gap-20 py-20 bg-gradient-to-t from-primary-100/80 via-transparent  to-primary-100  overflow-hidden justify-center">
+        <div style={{height: `calc(${useContainerDimension(mainRef).height + 200}px - 100vh)`}} className="bg-gradient-to-t from-primary-100/80 via-transparent to-primary-100 absolute top-full w-full -z-[5]"></div>
 
           <section className="relative h-48 py-16 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
             <div className="max-w-7xl xl:mx-auto">
@@ -132,12 +127,12 @@ export default function Home() {
                 <div className="flex flex-col md:flex-row items-center gap-10">
                   <div className="flex flex-col gap-3">
                     <Reveal classes="">
-                      <div className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                      <div className="font-hindi text-2xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
                         About <span className="text-secondary-100">Yakshagavishti</span>
                       </div>
                     </Reveal>
                     <Reveal classes="">
-                      <div className="text-xs sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
+                      <div className="text-sm sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
                         <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
                       </div>
                     </Reveal>
@@ -174,45 +169,12 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Rules and regulation section */}
-
-                {/* <div className="flex flex-col gap-3 max-w-2xl">
-                  <Reveal classes="">
-                    <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
-                      Rules & <span className="text-secondary-100">regulations</span>
-                    </p>
-                  </Reveal>
-                  <ul className="text-xs sm:text-sm md:text-base xl:text-lg">
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                    </Reveal>
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> LExplicabo ullam quasi similique deserunt ad voluptas consectetur dolorem</li>
-                    </Reveal>
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam oprepr enderit</li>
-                    </Reveal>
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Obcaecati consequatur blanditiis unde voluptate eligendi ipsam optio reprehenderit</li>
-                    </Reveal>
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                    </Reveal>
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                    </Reveal>
-                    <Reveal classes="">
-                      <li className="flex items-center gap-3"><GiPaperArrow className="-rotate-45 text-secondary-100 select-none" /> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, nisi!</li>
-                    </Reveal>
-                  </ul>
-                </div> */}
               </div>
             </section>
 
 
 					{/* Achievements Reel Section */}
-
-          <section className="min-w-full max-w-7xl xl:mx-auto min-h-[50vh] items-center flex">
+          <div className="min-w-full max-w-7xl xl:mx-auto min-h-[50vh] items-center flex overflow-hidden">
             <div className="w-full xl:mx-auto flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72 2xl:hidden">
               <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={0.5} angle={12} reelImg={reelImags} />
               <Reel classes="" baseVelocity={-0.75} angle={-12} reelImg={reelImags} />
@@ -220,7 +182,7 @@ export default function Home() {
             <div className="w-full xl:mx-auto hidden justify-center 2xl:flex">
               <Reel classes="" baseVelocity={-1.5} angle={0} reelImg={reelImags} />
             </div>
-          </section>
+          </div>
 
 					{/* FAQ */}
 
@@ -235,31 +197,7 @@ export default function Home() {
             </div>
           </section>
 
-        </div>
-
-      </main>
+      </div>
     </>
   );
-}
-
-function AuthShowcase() {
-	const { data: sessionData } = useSession();
-	return (
-		<div className="flex flex-col items-center justify-center gap-4">
-			<p className="text-center text-2xl ">
-				{sessionData && (
-					<span>Logged in as {sessionData.user?.name}</span>
-				)}
-			</p>
-
-			<button
-				className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-				onClick={
-					sessionData ? () => void signOut() : () => void signIn()
-				}
-			>
-				{sessionData ? "Sign out" : "Sign in"}
-			</button>
-		</div>
-	);
 }

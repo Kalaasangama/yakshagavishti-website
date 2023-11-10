@@ -14,14 +14,6 @@ const en = {
 
   //Members heading,Name,title,description
   mHead: ["Our", "Members"],
-  
-  members: [
-    {
-      name: "Kalaasangama Team",
-      role: "President",
-      desc: "",
-    }
-  ]
 };
 
 export default en;

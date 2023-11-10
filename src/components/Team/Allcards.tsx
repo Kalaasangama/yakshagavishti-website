@@ -10,7 +10,7 @@ const AllCards: React.FC = () => {
       githubURL: "https://github.com/janedoe",
       instagramURL: "https://www.instagram.com/janedoe",
       imageSrc:
-        "https://images.unsplash.com/photo-1562583489-bf23ec64651d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
+        "/1.png",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
     {
@@ -19,7 +19,7 @@ const AllCards: React.FC = () => {
       linkedinURL: "https://www.linkedin.com/johnsmith",
       githubURL: "https://github.com/johnsmith",
       instagramURL: "https://www.instagram.com/johnsmith",
-      imageSrc: "https://example.com/johnsmith-image.jpg",
+      imageSrc: "",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
     {
@@ -28,7 +28,7 @@ const AllCards: React.FC = () => {
       linkedinURL: "https://www.linkedin.com/alicejohnson",
       githubURL: "https://github.com/alicejohnson",
       instagramURL: "https://www.instagram.com/alicejohnson",
-      imageSrc: "https://example.com/alicejohnson-image.jpg",
+      imageSrc: "",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
   ];
