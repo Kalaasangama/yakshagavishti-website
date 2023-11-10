@@ -7,7 +7,7 @@ import Reveal from "~/components/Animations/reveal";
 const Index = () => {
   return (
     <section className="mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
-      <Banner photo={"/collegeAbout.webp"} text="About NMAMIT"/>
+      <Banner photo={"/Cloudinary/about/nitteBanner.jpg"} text="About NMAMIT"/>
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="space-y-6 md:flex md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
@@ -42,7 +42,7 @@ const Index = () => {
         </div>
       </div>
       <div className="mt-20"></div>
-      <Banner photo={"/kalateam.jpg"} text={`${t.tHead[0]} ${t.tHead[1]}`} />
+      <Banner photo={"/kalateam.jpg"} text="Team Yakshasangama" />
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="flex flex-col items-center space-y-6 md:flex-row md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
@@ -72,16 +72,6 @@ const Index = () => {
                   Our passion for Yakshagana fuels our journey, and we are excited to continue this remarkable ascent in the world of this cherished art form.
                 </p>
               </Reveal>
-              <Reveal classes="">
-                <p className="mt-4 text-justify text-xs sm:text-sm md:text-base lg:text-base xl:text-lg">
-                Meet the people behind the scenes.
-                </p>
-              </Reveal>
-              <Reveal classes="">
-                <p className="mt-4 text-justify text-xs sm:text-sm md:text-base lg:text-base xl:text-lg">
-                Meet the people behind the scenes.
-                </p>
-              </Reveal>
             </div>
           </div>
         </div>
@@ -89,7 +79,7 @@ const Index = () => {
       <div>
         <div className="mb-16 flex flex-col items-center justify-center px-6 pt-4 text-xl font-bold sm:text-4xl md:text-4xl 2xl:text-5xl">
           <Reveal classes="">
-            <span className="font-hindi text-5xl">{`${t.mHead[0]}`} <span className="text-secondary-100">{`${t.mHead[1]}`}</span></span>
+            <span className="font-hindi text-5xl">Our <span className="text-secondary-100">Members</span></span>
           </Reveal>
           <Reveal classes="">
           <p className="mt-4 text-justify text-xs sm:text-sm md:text-base xl:text-xl">

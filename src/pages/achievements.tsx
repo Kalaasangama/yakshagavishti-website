@@ -29,11 +29,11 @@ const achievements= [
     team: "First place in the overall category.",
     individual: ["Pranav Moodithaya - First place in the individual Hasya category", "Anwesh R Shetty - Overall individual third place", "Varun Acharya - Overall individual first place"]
   },
-  // {
-  //   title: "Yaksha Pranava (October 8, 2023)",
-  //   team: "First runner-up position among the nine participating teams.",
-  //   individual: ["Anwesh R Shetty - Best Kireeta Vesha (Role: Nibandhana)", "Varun Acharya - Best Pundu Vesha (Role: Satyavratha)", "Rajath Bola - Overall Second Samagra Vayaktika (Best Individual Artist, Role:Choodamani)"]
-  // },
+  {
+    title: "Yaksha Pranava (October 8, 2023)",
+    team: "First runner-up position among the nine participating teams.",
+    individual: ["Anwesh R Shetty - Best Kireeta Vesha (Role: Nibandhana)", "Varun Acharya - Best Pundu Vesha (Role: Satyavratha)", "Rajath Bola - Overall Second Samagra Vayaktika (Best Individual Artist, Role:Choodamani)"]
+  },
 ]
 
 const Achievements = () => {
