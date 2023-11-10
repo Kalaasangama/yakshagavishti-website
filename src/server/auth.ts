@@ -31,10 +31,9 @@ export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		GoogleProvider({
-			clientId: env.AUTH0_CLIENT_ID,
-			clientSecret: env.AUTH0_CLIENT_SECRET,
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
 			issuer: env.AUTH0_ISSUER,
-			allowDangerousEmailAccountLinking: true,
 		}),
 	],
 	callbacks: {

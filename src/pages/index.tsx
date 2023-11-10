@@ -17,6 +17,7 @@ import en from "~/locale/en";
 import CollegeReg from "~/components/Forms/CollegeReg";
 import LeadRegister from "~/components/Forms/LeadRegister";
 import MemberReg from "~/components/Forms/MemberReg";
+import CreateTeam from "~/components/Forms/MainForm";
 
 const reelImags = [
   { src: "/Cloudinary/home/reel/1.jpg" },
@@ -77,7 +78,7 @@ export default function Home() {
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : (!sessionData.user.team?<MemberReg />:<Button>View Team</Button>)}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : (!sessionData.user.team.isComplete?<CreateTeam/>:<Button>View Team</Button>)}
               </div>
             </Reveal>
           </div>

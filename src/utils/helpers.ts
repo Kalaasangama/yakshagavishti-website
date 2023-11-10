@@ -95,7 +95,7 @@ const setLeader = async (
 
 const createAccount = (
 	user: UserInput,
-	college_name: string,
+	teamName: string,
 	college_id: string
 ) => {
 	return prisma.user.create({
@@ -109,7 +109,7 @@ const createAccount = (
 			idURL: user?.id_url,
 			team: {
 				connect: {
-					name: college_name,
+					name: teamName,
 				},
 			},
 			college: {

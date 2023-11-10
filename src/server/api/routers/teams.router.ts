@@ -13,10 +13,10 @@ export const TeamRouter = createTRPCRouter({
 	register: protectedProcedure
 		.input(
 			z.object({
-				college_id: z.string(),
-				leader_character: z.string().nullable(),
-				leader_idUrl: z.string().nullable(),
-				leader_contact: z.string(),
+				college_id: z.string().nullish(),
+				leader_character: z.string().nullish(),
+				leader_idUrl: z.string().nullish(),
+				leader_contact: z.string().nullish(),
 				members: z.array(
 					z.object({
 						name: z.string(),
@@ -37,17 +37,20 @@ export const TeamRouter = createTRPCRouter({
 						"Create Team Error",
 						"Team is already complete"
 					);
-				await setLeader(
-					ctx.session.user.id,
-					college.Team.id,
-					college.id,
-					input.leader_character,
-					input.leader_idUrl,
-					input.leader_contact
-				);
+				if (input.members.length === 0) {
+					await setLeader(
+						ctx.session.user.id,
+						college.Team.name,
+						college.id,
+						input.leader_character,
+						input.leader_idUrl,
+						input.leader_contact
+					);
+					return { message: "success" };
+				}
 				//Create an array of prisma promises for transaction
 				const addUsersTransaction = input.members.map((user) => {
-					return createAccount(user, college.name, college.id);
+					return createAccount(user, college.Team.name, college.id);
 				});
 				//Create user accounts in transaction
 				await ctx.prisma.$transaction(addUsersTransaction);
@@ -77,14 +80,15 @@ export const TeamRouter = createTRPCRouter({
 				where: { id: input.college_id },
 			});
 			if (college) {
+				console.log(input.password, college.password);
 				if (input.password === college.password) {
 					return { message: "success" };
+				} else {
+					throw new kalasangamaError(
+						"Create Team Error",
+						"Team password is invalid"
+					);
 				}
-			} else {
-				throw new kalasangamaError(
-					"Create Team Error",
-					"Team password is invalid"
-				);
 			}
 		}),
 	getTeam: protectedProcedure.mutation(async ({ ctx }) => {
@@ -147,7 +151,7 @@ export const TeamRouter = createTRPCRouter({
 						"Please request permission to edit your team"
 					);
 
-				//Update the users 
+				//Update the users
 				await Promise.all(
 					input.members.map(async (member) => {
 						await ctx.prisma.user.update({
