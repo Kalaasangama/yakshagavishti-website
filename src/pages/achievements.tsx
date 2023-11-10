@@ -44,6 +44,7 @@ const Achievements = () => {
       <div className="h-screen bg-black flex items-center justify-center snap-start">
         {/* video */}
         <div className="font-hindi font-bold text-4xl sm:text-6xl md:text-7xl ">Achievements</div>
+        
         <span className='animate-pulse fixed bottom-16 landscape:short:bottom-10 right-1/2 translate-x-1/2 -z-10'>
           <BiChevronsDown className='animate-arrow-down text-3xl'></BiChevronsDown>
         </span>
@@ -53,10 +54,13 @@ const Achievements = () => {
           <div className="w-full ">
             {achievements.map((ach, idx) => {
               if(idx % 2 === 0) {
-                const row = [{contentId: idx,img: `/Cloudinary/achievements/${idx+1}.png`}]
+                const row = [{contentId: idx,img: `/Cloudinary/achievements/${idx+1}.jpg`}]
 
                 const nextAchievement = achievements[idx + 1];
-                nextAchievement && row.push({contentId: idx + 1, img: `/Cloudinary/achievements/${idx+2}.png`})
+                nextAchievement && row.push({contentId: idx + 1, img: `/Cloudinary/achievements/${idx+2}.jpg`})
+
+                // const secNextAchievement = t.achievements[idx + 2]
+                // secNextAchievement && row.push({...secNextAchievement, img: `/${idx+3}.jpg`})
                 
                 return (
                   <div key={idx} className="w-full relative flex flex-col justify-center h-screen snap-start gap-10 items-center group/page">

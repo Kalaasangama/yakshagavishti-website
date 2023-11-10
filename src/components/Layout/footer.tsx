@@ -29,7 +29,8 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row w-full justify-around items-center gap-5 md:gap-20">
           <div className="relative">
             <Link href={'/'}>
-              <Image src={'/Cloudinary/home/logo.png'} alt="Logo" className="object-contain object-center w-24 md:w-32 lg:w-36 2xl:w-44" height={100} width={100} />
+              <img src={'/kalaasangamalogo.png'} alt="Logo" className="object-contain object-center w-20 md:w-24 lg:w-28 2xl:w-30" height={90} width={90} />
+
             </Link>
           </div>
           <div className="flex flex-col justify-start gap-1 md:gap-2">
