@@ -24,7 +24,7 @@ const Sponsors = () => {
           <h1 className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl text-center">Yakshagavishti</h1>
         </Reveal>
         <Reveal classes=''>
-          <p className='text-base sm:text-lg md:text-xl 2xl:text-4xl px-5 text-center'>Big names backing an extraordinary event.</p>
+          <p className='text-base sm:text-lg md:text-2xl 2xl:text-4xl px-5 text-center'>Big names backing an extraordinary event.</p>
         </Reveal>
       </div>
       <div className=" max-w-7xl xl:mx-auto">

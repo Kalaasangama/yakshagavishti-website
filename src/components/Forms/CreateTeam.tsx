@@ -166,7 +166,7 @@ export function CreateTeamDialog() {
 		character_id: string,
 		character_index: number
 	) => {
-	console.log("asdfasdf")
+		console.log("asdfasdf")
 		const id_url = await handleUpload();
 		//console.log(id_url);
 		const data: Members = {

@@ -4,7 +4,7 @@ const kn = {
   Home: "Home",
   Sponsors: "Sponsors",
   Achievements: "Achievements",
-  About: "AboutUs",
+  About: "About Us",
   lang: "Lang",
   kan: "Kannada",
   eng: "English"
