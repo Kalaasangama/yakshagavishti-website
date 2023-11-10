@@ -18,6 +18,7 @@ import MemberReg from "~/components/Forms/MemberReg";
 import CreateTeam from "~/components/Forms/MainForm";
 
 import ViewDialog from "~/components/ViewDialog";
+import ViewTeam from "~/components/ViewTeam";
 const reelImags = [
   { src: "/Cloudinary/home/reel/1.jpg" },
   { src: "/Cloudinary/home/reel/2.jpg" },
@@ -74,7 +75,7 @@ export default function Home() {
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete?<CreateTeam/>:<Button>View Team</Button>)}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete?<CreateTeam/>:<ViewTeam/>)}
               </div>
             </Reveal>
           </div>

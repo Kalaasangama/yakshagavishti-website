@@ -91,12 +91,12 @@ export const TeamRouter = createTRPCRouter({
 				}
 			}
 		}),
-	getTeam: protectedProcedure.mutation(async ({ ctx }) => {
+	getTeam: protectedProcedure.query(async ({ ctx }) => {
 		try {
 			if (ctx.session.user.leaderOf) {
 				const teamInfo = await ctx.prisma.user.findUnique({
 					where: { id: ctx.session.user.id },
-					include: { team: true },
+					include: { team: {include:{members:true}}},
 				});
 				return teamInfo.team;
 			}
