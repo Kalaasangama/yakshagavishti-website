@@ -7,7 +7,7 @@ import {
 } from "next-auth";
 import { z } from "zod";
 import { prisma } from "~/server/db";
-import Auth0Provider from "next-auth/providers/auth0";
+import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
 
 declare module "next-auth" {
@@ -30,11 +30,10 @@ declare module "next-auth" {
 export const authOptions: NextAuthOptions = {
 	adapter: PrismaAdapter(prisma),
 	providers: [
-		Auth0Provider({
-			clientId: env.AUTH0_CLIENT_ID,
-			clientSecret: env.AUTH0_CLIENT_SECRET,
+		GoogleProvider({
+			clientId: env.GOOGLE_CLIENT_ID,
+			clientSecret: env.GOOGLE_CLIENT_SECRET,
 			issuer: env.AUTH0_ISSUER,
-			allowDangerousEmailAccountLinking: true,
 		}),
 	],
 	callbacks: {
