@@ -14,6 +14,9 @@ import ScrollLag from "~/components/Animations/scrollLag";
 import { useRouter } from "next/router";
 import kn from "~/locale/kn";
 import en from "~/locale/en";
+import CollegeReg from "~/components/Forms/CollegeReg";
+import LeadRegister from "~/components/Forms/LeadRegister";
+import MemberReg from "~/components/Forms/MemberReg";
 
 const reelImags = [
   { src: "/Cloudinary/home/reel/1.jpg" },
@@ -74,7 +77,7 @@ export default function Home() {
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : (!sessionData.user.team?<CreateTeamDialog></CreateTeamDialog>:<Button>View Team</Button>)}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}><Button>Register</Button></div> : (!sessionData.user.team?<MemberReg />:<Button>View Team</Button>)}
               </div>
             </Reveal>
           </div>
@@ -105,7 +108,7 @@ export default function Home() {
 							classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50"
 						>
 							<Image
-								src={"/mandala.png"}
+								src={"/Cloudinary/home/mandala.png"}
 								fill
 								alt=""
 								className="select-none opacity-70  bg-blend-luminosity"
@@ -118,7 +121,7 @@ export default function Home() {
             <section className="relative flex mt-32 min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
               <Image
                 className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
-                src={"/canva.png"}
+                src={"/Cloudinary/home/mandala-center.png"}
                 fill
                 alt="mandala"
               ></Image>
@@ -141,9 +144,9 @@ export default function Home() {
                   </div>
                   <div className="shrink-0 flex flex-col gap-3 items-center">
                     <Reveal classes="">
-                      <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-2 border-secondary-100 shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                        <Image src={'/about.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
-                        <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div>
+                      <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-secondary-100 drop-shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
+                        <Image src={'/Cloudinary/home/logo.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                        {/* <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div> */}
                       </div>
                     </Reveal>
                     <div  className="flex md:flex-col gap-3 items-center scroll-mt-[4.75rem] sm:scroll-mt-[5.75rem] md:scroll-mt-24 lg:scroll-mt-[6.25rem]">
@@ -224,7 +227,7 @@ export default function Home() {
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 relative sm:mt-48 md:mt-12 xl:mt-20 2xl:mt-0 ">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
-                <Image src={'/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
+                <Image src={'/Cloudinary/home/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div>
             </ScrollLag>
             <div className="max-w-7xl xl:-translate-x-1/2 relative xl:left-1/2">
