@@ -1,10 +1,7 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Expandable from "~/components/expandable";
 import { GiPaperArrow } from "react-icons/gi"
 import { BiChevronsDown } from "react-icons/bi"
-import en from "~/locale/en/achievements";
-import kn from "~/locale/kn/achievements";
 
 const achievements= [
   {
@@ -40,9 +37,6 @@ const achievements= [
 ]
 
 const Achievements = () => {
-  // const router = useRouter()
-  // const t = router.locale === "en" ? en : kn
-
   const [contentId, setContentId] = useState(-1)
 
   return (
@@ -63,9 +57,6 @@ const Achievements = () => {
 
                 const nextAchievement = achievements[idx + 1];
                 nextAchievement && row.push({contentId: idx + 1, img: `/Cloudinary/achievements/${idx+2}.png`})
-
-                // const secNextAchievement = t.achievements[idx + 2]
-                // secNextAchievement && row.push({...secNextAchievement, img: `/${idx+3}.jpg`})
                 
                 return (
                   <div key={idx} className="w-full relative flex flex-col justify-center h-screen snap-start gap-10 items-center group/page">
@@ -75,12 +66,12 @@ const Achievements = () => {
                     <div className="h-48 sm:h-fit md:h-48  flex-col justify-center items-center gap-4 md:gap-3 absolute bottom-9 sm:bottom-5 md:bottom-3 group-hover/page:flex hidden landscape:short:bottom-0 landscape:short:h-fit">
                       <div data-id={`${idx}`} className="flex justify-center text-lg sm:text-xl md:text-2xl text-center text-secondary-100">{achievements[contentId]?.title}</div>
                       <div className="flex flex-col justify-center items-center gap-2 md:gap-1">
-                        {achievements[contentId]?.team && <div className="text-xs sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
+                        {achievements[contentId]?.team && <div className="text-sm sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
                           <GiPaperArrow className="-rotate-45 text-secondary-100 select-none" />
                           <div className="">{achievements[contentId]?.team}</div>
                         </div>}
                         {achievements[contentId]?.individual.map((ind, i) => (
-                          <div key={i} className="text-xs sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
+                          <div key={i} className="text-sm sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
                             <GiPaperArrow className="-rotate-45 text-secondary-100 select-none" />
                             <div className="">{ind}</div>
                           </div>

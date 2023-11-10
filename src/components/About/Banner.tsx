@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from "react";
 import Reveal from "../Animations/reveal";
 import ScrollLag from "../Animations/scrollLag";
 import Image from "next/image";

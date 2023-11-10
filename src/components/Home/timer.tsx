@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import type { Dispatch } from "react";
 import { useTimer } from "react-timer-hook";
 
 interface Props {

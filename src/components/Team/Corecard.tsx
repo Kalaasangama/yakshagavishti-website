@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React from "react";
 import { AiFillLinkedin, AiFillGithub, AiFillInstagram } from 'react-icons/ai'
 
@@ -23,7 +24,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <div className="w-full max-w-sm rounded-md bg-black/20 bg-opacity-30 p-5 text-center transition-transform hover:scale-105">
       <div className="h-72">
-        <img
+        <Image
           alt={name}
           src={imageSrc}
           width="250"
