@@ -1,10 +1,7 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Expandable from "~/components/expandable";
 import { GiPaperArrow } from "react-icons/gi"
 import { BiChevronsDown } from "react-icons/bi"
-import en from "~/locale/en/achievements";
-import kn from "~/locale/kn/achievements";
 
 const achievements= [
   {
@@ -32,17 +29,14 @@ const achievements= [
     team: "First place in the overall category.",
     individual: ["Pranav Moodithaya - First place in the individual Hasya category", "Anwesh R Shetty - Overall individual third place", "Varun Acharya - Overall individual first place"]
   },
-  // {
-  //   title: "Yaksha Pranava (October 8, 2023)",
-  //   team: "First runner-up position among the nine participating teams.",
-  //   individual: ["Anwesh R Shetty - Best Kireeta Vesha (Role: Nibandhana)", "Varun Acharya - Best Pundu Vesha (Role: Satyavratha)", "Rajath Bola - Overall Second Samagra Vayaktika (Best Individual Artist, Role:Choodamani)"]
-  // },
+  {
+    title: "Yaksha Pranava (October 8, 2023)",
+    team: "First runner-up position among the nine participating teams.",
+    individual: ["Anwesh R Shetty - Best Kireeta Vesha (Role: Nibandhana)", "Varun Acharya - Best Pundu Vesha (Role: Satyavratha)", "Rajath Bola - Overall Second Samagra Vayaktika (Best Individual Artist, Role:Choodamani)"]
+  },
 ]
 
 const Achievements = () => {
-  // const router = useRouter()
-  // const t = router.locale === "en" ? en : kn
-
   const [contentId, setContentId] = useState(-1)
 
   return (
@@ -76,12 +70,12 @@ const Achievements = () => {
                     <div className="h-48 sm:h-fit md:h-48  flex-col justify-center items-center gap-4 md:gap-3 absolute bottom-9 sm:bottom-5 md:bottom-3 group-hover/page:flex hidden landscape:short:bottom-0 landscape:short:h-fit">
                       <div data-id={`${idx}`} className="flex justify-center text-lg sm:text-xl md:text-2xl text-center text-secondary-100">{achievements[contentId]?.title}</div>
                       <div className="flex flex-col justify-center items-center gap-2 md:gap-1">
-                        {achievements[contentId]?.team && <div className="text-xs sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
+                        {achievements[contentId]?.team && <div className="text-sm sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
                           <GiPaperArrow className="-rotate-45 text-secondary-100 select-none" />
                           <div className="">{achievements[contentId]?.team}</div>
                         </div>}
                         {achievements[contentId]?.individual.map((ind, i) => (
-                          <div key={i} className="text-xs sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
+                          <div key={i} className="text-sm sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
                             <GiPaperArrow className="-rotate-45 text-secondary-100 select-none" />
                             <div className="">{ind}</div>
                           </div>

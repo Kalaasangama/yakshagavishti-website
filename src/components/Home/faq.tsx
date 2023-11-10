@@ -2,11 +2,6 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "~
 import Reveal from "../Animations/reveal"
 import Link from "next/link"
 
-// type Faq = {
-//   q: string,
-//   ans: string
-// }
-
 const faqs = [
   {
     q: "Is Yakshagavishti open for all teams?",
@@ -32,15 +27,15 @@ const faqs = [
 
 const Faq = () => {
   return (
-    <Accordion type="single" collapsible className="w-full  text-xs sm:text-sm md:text-base xl:text-lg">
+    <Accordion type="single" collapsible className="w-full  text-sm sm:text-sm md:text-base xl:text-lg">
       <Reveal classes="">
-        <p className="font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">faq</p>
+        <p className="font-hindi text-2xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">faq</p>
       </Reveal>
       {faqs.map((faq, idx) => {
         return (
           <AccordionItem value={`item-${idx+1}`} key={idx}>
             <AccordionTrigger className="py-3 sm:py-4 text-justify">{faq.q}</AccordionTrigger>
-            <AccordionContent className="text-xs sm:text-sm md:text-base xl:text-lg text-gray-400">
+            <AccordionContent className="text-sm sm:text-sm md:text-base xl:text-lg text-gray-400">
               {faq.ans}
             </AccordionContent>
           </AccordionItem>

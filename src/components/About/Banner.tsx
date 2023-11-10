@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from "react";
 import Reveal from "../Animations/reveal";
 import ScrollLag from "../Animations/scrollLag";
 import Image from "next/image";
@@ -18,7 +17,7 @@ const Banner: React.FC<BannerProps> = ({ photo, text}) => {
         <ScrollLag classes="mb-10 lg:mb-44" speed={200}>
           <Reveal classes="">
             <div
-              className={`text-center text-4xl font-black lg:text-7xl font-tourney`}
+              className={`text-center text-4xl font-black lg:text-7xl`}
             >
               {text}
             </div>

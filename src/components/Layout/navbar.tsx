@@ -1,19 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import { type Dispatch, useEffect } from "react";
 import { useState } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { MdOutlineLanguage } from "react-icons/md"
 import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
-// import LanguageDropdown from "./dropDown";
 import { signIn, signOut, useSession } from "next-auth/react";
-import en from "~/locale/en/navbar";
-import kn from "~/locale/kn/navbar";
-// import 
-
-
 
 type Link = {
   label: string;
@@ -23,8 +15,6 @@ type Link = {
 type Props = {
   links: Link[];
   activePath: Link;
-  setLanguageEng: Dispatch<boolean>;
-  languageEng: boolean
 };
 
 const Navbar = () => {
@@ -40,17 +30,6 @@ const Navbar = () => {
   
   const router = useRouter();
 
-  const [languageEng, setLanguageEng] = useState(true)
-
-  useEffect(() => {
-    router.push({
-      pathname: router.pathname,
-      query: router.query
-  }, router.asPath, { locale: languageEng ? "en" : "kn" }).catch(err=>console.log(err))
-  }, [languageEng])
-  
-  const t = router.locale === "en" ? en : kn
-
   // Need to find the active page...
   const activePaths = links.filter((link) => link.url === router.pathname);
   // Idk to implement, thus doing in alternate hack... Typescript throwing error if directly used links.find()
@@ -64,7 +43,7 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-2 z-50 font-medium w-full max-w-screen-2xl left-1/2 -translate-x-1/2">
-      <div className="flex flex-col backdrop-blur-md border-b border-orange-300 rounded-3xl  px-5 text-white text-xs sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4">
+      <div className="flex flex-col backdrop-blur-md border-b border-orange-300 rounded-3xl  px-5 text-white text-sm sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4">
         <div className="flex justify-between items-center">
           <Reveal classes="">
             <div  className="flex items-center justify-start">
@@ -94,7 +73,7 @@ const Navbar = () => {
                           : "hover:text-secondary-200 tranition ease-linear duration-150"
                       }
                     >
-                      {t[link.id as keyof typeof t]}
+                      {link.label}
                     </div>
                   </Link>
                 </Reveal>
@@ -102,13 +81,9 @@ const Navbar = () => {
             })}
           </div>
           <div className="flex gap-5 items-center">
-            <Reveal classes="hidden lg:flex items-center">
-              {/* <LanguageDropdown t={{lang: t.lang, kan: t.kan, eng: t.eng}}></LanguageDropdown> */}
-              <div onClick={() => setLanguageEng(!languageEng)} className="cursor-pointer hover:text-secondary-100 align-middle"><MdOutlineLanguage className="text-base sm:text-lg md:text-xl lg:text-2xl align-middle"></MdOutlineLanguage></div>
-            </Reveal>
             <Reveal classes="hidden lg:block">
               <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
-                <SmallButton>{sessionData ? t.logOut : t.logIn}</SmallButton>
+                <SmallButton>{sessionData ? "Log Out" : "Log In"}</SmallButton>
               </div>
             </Reveal>
             <div
@@ -119,18 +94,14 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-        {isMenuActive && <MobileNav links={links} activePath={activePath} setLanguageEng={setLanguageEng} languageEng={languageEng} />}
+        {isMenuActive && <MobileNav links={links} activePath={activePath} />}
       </div>
     </nav>
   );
 };
 
-const MobileNav = ({ links, activePath, setLanguageEng, languageEng }: Props) => {
+const MobileNav = ({ links, activePath }: Props) => {
   const { data: sessionData } = useSession();
-
-  const router = useRouter()
-
-  const t = router.locale === "en" ? en : kn
 
   return (
     <div className="">
@@ -157,12 +128,8 @@ const MobileNav = ({ links, activePath, setLanguageEng, languageEng }: Props) =>
         })}
         <div className="flex gap-4 items-center">
           <Reveal classes="">
-            {/* <LanguageDropdown t={{lang: t.lang, kan: t.kan, eng: t.eng}}></LanguageDropdown> */}
-            <div onClick={() => setLanguageEng(!languageEng)} className="cursor-pointer hover:text-secondary-100 align-middle"><MdOutlineLanguage className="text-base sm:text-lg md:text-xl lg:text-2xl align-middle"></MdOutlineLanguage></div>
-          </Reveal>
-          <Reveal classes="">
             <div onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
-              <SmallButton>{sessionData ? t.logOut : t.logIn}</SmallButton>
+              <SmallButton>{sessionData ? "Log Out" : "Log In"}</SmallButton>
             </div>
           </Reveal>
         </div>

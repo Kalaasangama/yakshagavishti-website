@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Dispatch, JSX } from "react";
+import type { Dispatch } from "react";
 
 interface card {
   img: string
