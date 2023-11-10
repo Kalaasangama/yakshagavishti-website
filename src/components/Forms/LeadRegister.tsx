@@ -1,14 +1,37 @@
-import React, { useState } from 'react'
-import { useForm } from "react-hook-form"
-import { Button } from "src/components/ui/button"
-import {Form, FormControl, FormDescription, FormItem, FormField, FormLabel, FormMessage} from "src/components/ui/form"
-import { DialogContent, DialogDescription, Dialog, DialogFooter, DialogHeader, DialogTitle, DialogTrigger} from "src/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "src/components/ui/select"
-import { Input } from "src/components/ui/input"
-import { Label } from 'src/components/ui/label'
-import { Checkbox } from '../ui/checkbox'
-import Dropzone from '../Dropzone'
-import { toast } from '../ui/use-toast'
+import React, { Dispatch, SetStateAction, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "src/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormDescription,
+	FormItem,
+	FormField,
+	FormLabel,
+	FormMessage,
+} from "src/components/ui/form";
+import {
+	DialogContent,
+	DialogDescription,
+	Dialog,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "src/components/ui/dialog";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "src/components/ui/select";
+import { Input } from "src/components/ui/input";
+import { Label } from "src/components/ui/label";
+import { Checkbox } from "../ui/checkbox";
+import Dropzone from "../Dropzone";
+import { toast } from "../ui/use-toast";
+import { api } from "~/utils/api";
+import { uploadFile } from "~/utils/file";
 
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
@@ -20,47 +43,57 @@ const roles = [
 	{ label: "DEVAVRATHA", value: "cloe27f110007ileoc5l1vb44" },
 ];
 
-let availableRoles: {
-	label: string;
-	value: string;
-}[] = roles;
-
-const LeadRegister = () => {
-    const [files, setFiles] = useState<(File & { preview: string })[]>([]);
+const LeadRegister = ({
+	setFormToShow,
+	college_id,
+	setLeaderChar,
+}: {
+	college_id: string;
+	setFormToShow: Dispatch<SetStateAction<number>>;
+	setLeaderChar: Dispatch<SetStateAction<string>>;
+}) => {
+	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
 	const [LeaderContact, setLeaderContact] = useState<string>("");
 	const [teammateEmail, setTeammateEmail] = useState("");
-
-    const form = useForm()	
-    const handleRoleChange = (value: string) => {
+	const [UploadStatus, setUploadStatus] = useState("");
+	const SetLeaderDetails = api.team.register.useMutation();
+	const form = useForm();
+	const handleRoleChange = (value: string) => {
 		setLeaderCharacter(value);
-		console.log(roles);
-		console.log(value);
+		setLeaderChar(value);
 	};
-
+	if (SetLeaderDetails.isSuccess) {
+		setFormToShow(3);
+	}
+	const handleUpload = async () => {
+		setUploadStatus("Uploading....");
+		try {
+			if (files[0] instanceof File) {
+				const result = await uploadFile(files[0]);
+				setUploadStatus("Upload Succesful");
+				return result;
+			}
+		} catch (error) {
+			console.log(error);
+			setUploadStatus("Upload Failed...");
+		}
+	};
 	//Field Validation for Team Lead
 	const Passwordpattern = () => {
 		const phoneregx = "^[6-9][0-9]{9}$";
-		if (teammateEmail && teammateEmail.includes("@")) {	
-				if (!LeaderContact.match(phoneregx)) {
-					toast({
-						variant: "destructive",
-						title: "Invalid Phone number!",
-						description: "Check the entered phone number",
-					});
-					return false;
-				}
+		if (teammateEmail && teammateEmail.includes("@")) {
+			if (!LeaderContact.match(phoneregx)) {
 				toast({
-					variant: "default",
-					title: "Team Lead Registered Successfully!",
-					description: `Team Leader has been registered successfully.`,
+					variant: "destructive",
+					title: "Invalid Phone number!",
+					description: "Check the entered phone number",
 				});
-				availableRoles = roles.filter(
-					(roles) => roles.value !== LeaderCharacter
-				);
-				// setStateForm("secondform");	
+				return false;
+			}
+			// setStateForm("secondform");
 		} else {
 			toast({
 				variant: "destructive",
@@ -69,7 +102,7 @@ const LeadRegister = () => {
 			});
 			return false;
 		}
-		if(isCheckboxChecked){
+		if (isCheckboxChecked) {
 			if (!LeaderCharacter) {
 				toast({
 					variant: "destructive",
@@ -87,136 +120,191 @@ const LeadRegister = () => {
 				return false;
 			}
 		}
+		handleUpload()
+			.then((idUrl) => {
+				SetLeaderDetails.mutate({
+					college_id,
+					leader_character: LeaderCharacter,
+					leader_contact: LeaderContact,
+					leader_idUrl: idUrl,
+					members: [],
+				});
+			})
+			.catch((err) => console.log(err));
 	};
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Create Team</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
-        <DialogHeader>
-          <DialogTitle>Create Team</DialogTitle>
-          <DialogDescription>
-          Fill in the information below. Click next when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid gap-4 py-4">
-        <Form {...form}>
-      <form className="space-y-8">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-			  <div className='flex flex-col gap-6'>
-				<div>
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="email" >Email</Label>
-      <Input type="email" id="email" placeholder="Enter your Email" defaultValue={teammateEmail} onChange={(e) => {
-																		if (e)
-																			setTeammateEmail(e.target.value);
-																	}} />
-	  </div>
-			  </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-      <Label htmlFor="phone" >Phone number</Label>
-      <Input type="tel" id="phone" placeholder="Enter your Phone number" className="col-span-3"
-												maxLength={10}
-												minLength={10}
-												defaultValue={LeaderContact}
-												onChange={(e) => {setLeaderContact(e.target.value);
-												}} />
-	  </div>
-    </div>        
-    <div className="flex-cols flex gap-2">
-												<div className="mt-1">
-													<Checkbox
-														name="character"
-														id="character"
-														className="bg-white"
-														checked={isCheckboxChecked}
-														onClick={() => {console.log("Checkbox clicked");
-															if (isCheckboxChecked) {
-																setSelectedRole("");
-															}
-															setIsCheckboxChecked(
-																!isCheckboxChecked
-															);
+	return (
+		<Dialog defaultOpen={true}>
+			<DialogTrigger asChild>
+				<Button variant="outline">Create Team</Button>
+			</DialogTrigger>
+			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
+				<DialogHeader>
+					<DialogTitle>Create Team</DialogTitle>
+					<DialogDescription>
+						Fill in the information below. Click next when you're
+						done.
+					</DialogDescription>
+				</DialogHeader>
+				<div className="grid gap-4 py-4">
+					<Form {...form}>
+						<form className="space-y-8">
+							<FormField
+								control={form.control}
+								name="username"
+								render={({ field }) => (
+									<FormItem>
+										<div className="flex flex-col gap-6">
+											<div>
+												<div className="grid w-full max-w-sm items-center gap-1.5">
+													<Label htmlFor="email">
+														Email
+													</Label>
+													<Input
+														type="email"
+														id="email"
+														placeholder="Enter your Email"
+														defaultValue={
+															teammateEmail
+														}
+														onChange={(e) => {
+															if (e)
+																setTeammateEmail(
+																	e.target
+																		.value
+																);
 														}}
 													/>
 												</div>
-												<div>
-													<FormDescription className="mt-1 text-white">
-														<label htmlFor="character">Do you have a Character in the play</label>
-													</FormDescription>
-												</div>
 											</div>
-											{isCheckboxChecked && (
-												<React.Fragment>
-													<FormLabel className="mt-4 text-white">
-														Choose your Character
-													</FormLabel>
-													<Select
-														onValueChange={
-															handleRoleChange
+											<div className="grid w-full max-w-sm items-center gap-1.5">
+												<Label htmlFor="phone">
+													Phone number
+												</Label>
+												<Input
+													type="tel"
+													id="phone"
+													placeholder="Enter your Phone number"
+													className="col-span-3"
+													maxLength={10}
+													minLength={10}
+													defaultValue={LeaderContact}
+													onChange={(e) => {
+														setLeaderContact(
+															e.target.value
+														);
+													}}
+												/>
+											</div>
+										</div>
+										<div className="flex-cols flex gap-2">
+											<div className="mt-1">
+												<Checkbox
+													name="character"
+													id="character"
+													className="bg-white"
+													checked={isCheckboxChecked}
+													onClick={() => {
+														console.log(
+															"Checkbox clicked"
+														);
+														if (isCheckboxChecked) {
+															setSelectedRole("");
 														}
-														defaultValue={
-															LeaderCharacter
-																? LeaderCharacter
-																: undefined
-														}>
-														<FormControl>
-															<SelectTrigger>
-																<SelectValue placeholder="Select the Character" />
-															</SelectTrigger>
-														</FormControl>
-														<SelectContent>
-															{roles.map(
-																(item, key) => {
-																	return (
-																		<SelectItem key={key}
-																			value={item.value}>
-																			{
-																				item.label
-																			}
-																		</SelectItem>
-																	);
-																}
-															)}
-														</SelectContent>
-													</Select>
-													<FormDescription>
-														Choose the Character you
-														are Playing.
-													</FormDescription>
-													<FormLabel className="mt-5 text-white">
-														Drop Image of your ID
-													</FormLabel>
-													<div className="grid grid-cols-3">
-														<div className="col-span-3">
-															<Dropzone files={files} setFiles={setFiles}/>
-														</div>
+														setIsCheckboxChecked(
+															!isCheckboxChecked
+														);
+													}}
+												/>
+											</div>
+											<div>
+												<FormDescription className="mt-1 text-white">
+													<label htmlFor="character">
+														Do you have a Character
+														in the play
+													</label>
+												</FormDescription>
+											</div>
+										</div>
+										{isCheckboxChecked && (
+											<React.Fragment>
+												<FormLabel className="mt-4 text-white">
+													Choose your Character
+												</FormLabel>
+												<Select
+													onValueChange={
+														handleRoleChange
+													}
+													defaultValue={
+														LeaderCharacter
+															? LeaderCharacter
+															: undefined
+													}
+												>
+													<FormControl>
+														<SelectTrigger>
+															<SelectValue placeholder="Select the Character" />
+														</SelectTrigger>
+													</FormControl>
+													<SelectContent>
+														{roles.map(
+															(item, key) => {
+																return (
+																	<SelectItem
+																		key={
+																			key
+																		}
+																		value={
+																			item.value
+																		}
+																	>
+																		{
+																			item.label
+																		}
+																	</SelectItem>
+																);
+															}
+														)}
+													</SelectContent>
+												</Select>
+												<FormDescription>
+													Choose the Character you are
+													Playing.
+												</FormDescription>
+												<FormLabel className="mt-5 text-white">
+													Drop Image of your ID
+												</FormLabel>
+												<div className="grid grid-cols-3">
+													<div className="col-span-3">
+														<Dropzone
+															files={files}
+															setFiles={setFiles}
+														/>
 													</div>
-													<FormMessage />
-												</React.Fragment>
-											)}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit" className='bg-white text-white hover:bg-gray-200'
-		variant={"button"}
-		onClick={(e) => {
-			e.preventDefault();
-			Passwordpattern();
-			// setLeaderRole();
-		}}
-		>Next</Button>
-      </form>
-    </Form>
-        </div>
-              </DialogContent>
-    </Dialog>
-  )
-}
-export default LeadRegister
+												</div>
+												<FormMessage />
+											</React.Fragment>
+										)}
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<Button
+								type="submit"
+								className="bg-white text-white hover:bg-gray-200"
+								variant={"button"}
+								onClick={(e) => {
+									e.preventDefault();
+									Passwordpattern();
+									// setLeaderRole();
+								}}
+							>
+								Next
+							</Button>
+						</form>
+					</Form>
+				</div>
+			</DialogContent>
+		</Dialog>
+	);
+};
+export default LeadRegister;

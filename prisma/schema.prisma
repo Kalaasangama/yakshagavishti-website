@@ -79,7 +79,8 @@ model College {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   Users     User[]
-  Team      Team[]
+  Team      Team?
+  password  String?
 }
 
 model Team {
@@ -88,7 +89,7 @@ model Team {
   isComplete    Boolean         @default(false)
   attended      Boolean         @default(false)
   college       College?        @relation(fields: [college_id], references: [id])
-  college_id    String?
+  college_id    String?         @unique
   members       User[]
   leader        User?           @relation(name: "TeamLead")
   teamScore     Int             @default(0)
