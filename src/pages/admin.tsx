@@ -56,7 +56,8 @@ export default function Instagram() {
 						<div key={key} className="my-10 rounded border px-20">
 							<h1>Team: {element.name} </h1>
 							{element.editRequests &&
-								(element?.editRequests?.status === "PENDING" || "REVOKED" ? (
+								(element?.editRequests?.status === "PENDING" ||
+								"REVOKED" ? (
 									<Button
 										onClick={() =>
 											setEditAccess(element.id, "Grant")
@@ -93,12 +94,14 @@ export default function Instagram() {
 													{member.name}
 												</TableCell>
 												<TableCell>
-													<Image
-														src={member.idURL || "http://res.cloudinary.com/dh1bowbbe/image/upload/v1699640347/next/k2hqzuvfjmp9xiqsuqxy.jpg"}
-														alt="ID"
-														height={100}
-														width={100}
-													/>
+													{member.idURL && (
+														<Image
+															src={member.idURL}
+															alt="ID"
+															height={100}
+															width={100}
+														/>
+													)}
 												</TableCell>
 												<TableCell className="text-right">
 													{!member.isIdVerified ? (

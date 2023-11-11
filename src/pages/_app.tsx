@@ -65,14 +65,21 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const path = useRouter()
 
   return (
-    <SessionProvider session={session}>
-      <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
-        {path.pathname !== "/_error" && <Navbar />}
-        <Component {...pageProps} />
-        <Toaster />
-        <Footer />
-      </main>
-    </SessionProvider>
+    <>
+      <style jsx global>{`
+        html {
+          font-family: ${balooChettan2.style.fontFamily};
+        }
+      `}</style>
+      <SessionProvider session={session}>
+        <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
+          {path.pathname !== "/_error" && <Navbar />}
+          <Component {...pageProps} />
+          <Toaster />
+          <Footer />
+        </main>
+      </SessionProvider>
+    </>
   );
 };
 

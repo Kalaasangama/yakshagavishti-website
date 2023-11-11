@@ -7,7 +7,7 @@ import Reveal from "~/components/Animations/reveal";
 const Index = () => {
   return (
     <section className="mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
-      <Banner photo={"/Cloudinary/about/nitteBanner.jpg"} text="About NMAMIT"/>
+      <Banner video={"https://vimeo.com/883551016?share=copy"} text="About NMAMIT" credits="Video: Glen Rebello"/>
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="space-y-6 md:flex md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
@@ -45,13 +45,13 @@ const Index = () => {
       <Banner photo={"/kalateam.jpg"} text="Team Yakshasangama" />
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
-          <div className="flex flex-col items-center space-y-6 md:flex-row md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
-            <Reveal classes="lg:mx-15 mx-0 md:w-5/12 lg:w-5/12">
+          <div className="flex flex-col items-center space-y-6 md:flex-row md:gap-6 md:space-y-0 lg:items-center lg:gap-12 justify-center">
+            <Reveal classes="md:w-5/12 lg:w-5/12">
               <Image
-                src="/1.png"
+                src="/Cloudinary/home/kalaasangamalogo.png"
                 alt="image"
                 loading="lazy"
-                className=" sm: h-52 max-w-full justify-center rounded-2xl sm:mx-0 sm:flex sm:h-72  md:mx-0 md:w-auto lg:h-96 xl:mx-16"
+                className="object-contain h-52 max-w-full justify-center sm:mx-0 sm:flex sm:h-64  md:mx-0 md:w-auto lg:h-72"
                 height={500}
                 width={500}
               />
@@ -59,12 +59,12 @@ const Index = () => {
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12">
               <Reveal classes="">
                 <h2 className="inline-block font-hindi text-xl  sm:text-4xl md:text-4xl 2xl:text-5xl">
-                Team <span className="text-secondary-100">Yakshasangana</span>
+                Team <span className="text-secondary-100">Yakshasangama</span>
                 </h2>
               </Reveal>
               <Reveal classes="">
                 <p className="mt-6 text-justify text-sm sm:text-sm md:text-base lg:text-base xl:text-lg">
-                  In just a year since our inception, Team Yakshasangana has emerged as a promising team of young artists across the off centre campus of Nitte DU, securing champion titles in three out of five competitions and numerous individual prizes.
+                  In just a year since our inception, Team Yakshasangama has emerged as a promising team of young artists across the off centre campus of Nitte DU, securing champion titles in three out of five competitions and numerous individual prizes.
                 </p>
               </Reveal>
               <Reveal classes="">
@@ -79,7 +79,7 @@ const Index = () => {
       <div>
         <div className="mb-16 flex flex-col items-center justify-center px-6 pt-4 text-xl font-bold sm:text-4xl md:text-4xl 2xl:text-5xl">
           <Reveal classes="">
-            <span className="font-hindi text-5xl">Our <span className="text-secondary-100">Members</span></span>
+            <span className="font-hindi text-5xl font-normal">Our <span className="text-secondary-100">Members</span></span>
           </Reveal>
           <Reveal classes="">
           <p className="mt-4 text-justify text-xs sm:text-sm md:text-base xl:text-xl">

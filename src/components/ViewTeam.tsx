@@ -26,7 +26,7 @@ export default function ViewTeam() {
 			},
 			});
 	return (
-		!teamData.isLoading && (
+		teamData.isSuccess && (
 			<Dialog>
 				<DialogTrigger asChild>
 					<Button variant="outline" className="">
@@ -58,12 +58,12 @@ export default function ViewTeam() {
 									</TableCell>
 									<TableCell>
 									<a href={member.idURL}>
-										<Image
+										{member.idURL && <Image
 											src={member.idURL}
 											alt="id_image"
 											height={100}
 											width={100}
-										/>
+										/>}
 										</a>
 									</TableCell>
 									<TableCell>
@@ -75,7 +75,7 @@ export default function ViewTeam() {
 							))}
 						</TableBody>
 					</Table>
-					{teamData?.data?.editRequests.status==="REVOKED" ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
+					{teamData?.data?.editRequests?.status==="REVOKED" ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
 				</DialogContent>
 			</Dialog>
 		)
