@@ -59,7 +59,14 @@ const LeadRegister = ({
 	const [LeaderContact, setLeaderContact] = useState<string>("");
 	const [teammateEmail, setTeammateEmail] = useState("");
 	const [UploadStatus, setUploadStatus] = useState("");
-	const SetLeaderDetails = api.team.register.useMutation();
+	const SetLeaderDetails = api.team.register.useMutation({
+		onError(error) {
+			return toast({
+				variant: "default",
+				description: error.message,
+			});
+		},
+	});
 	const form = useForm();
 	const handleRoleChange = (value: string) => {
 		setLeaderCharacter(value);

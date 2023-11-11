@@ -59,7 +59,14 @@ const MemberReg = ({
 	CollegeId: string;
 }) => {
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
-	const registerMembers = api.team.register.useMutation();
+	const registerMembers = api.team.register.useMutation({
+		onError(error) {
+			return toast({
+				variant: "default",
+				description: error.message,
+			});
+		},
+	});
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [teammateName, setTeammateName] = useState("");
 	const [MembersArray, setMembersArray] = useState<Members[]>(

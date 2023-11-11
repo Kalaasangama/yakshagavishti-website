@@ -1,6 +1,6 @@
 import { prisma } from "../server/db";
 import kalasangamaError from "./customError";
-import type { UserInput} from "./CustomTypes";
+import type { UserInput } from "./CustomTypes";
 
 const getUserAccessToTeam = async (user_id: string) => {
 	const user = await prisma.user.findUnique({
@@ -25,7 +25,7 @@ const getCollegeById = async (college_id: string) => {
 		where: {
 			id: college_id,
 		},
-		include:{Team:true}
+		include: { Team: true },
 	});
 
 	if (!college) {
@@ -52,6 +52,7 @@ const setLeader = async (
 					},
 				},
 				leaderOf: {
+					disconnect: {},
 					connect: {
 						name: teamName,
 					},

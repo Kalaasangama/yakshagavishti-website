@@ -37,14 +37,15 @@ export default function CollegeReg({
 }) {
 	const [selectedCollege, setSelectedCollege] = useState<string>("");
 	const [teamPassword, setTeamPassword] = useState("");
-	const verifyPassword = api.team.checkPassword.useMutation();
+	const verifyPassword = api.team.checkPassword.useMutation({
+		onError(error) {
+			return toast({
+				variant: "default",
+				description: error.message,
+			});
+		},
+	});
 	const form = useForm();
-	if (verifyPassword.isError) {
-		toast({
-			variant: "default",
-			description: verifyPassword.error.message,
-		});
-	}
 	if (verifyPassword.isSuccess) {
 		toast({
 			variant: "default",
