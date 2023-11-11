@@ -19,7 +19,13 @@ export const adminRouter = createTRPCRouter({
 								id: true,
 								name: true,
 								idURL: true,
-								isIdVerified:true
+								isIdVerified: true,
+							},
+						},
+						editRequests: {
+							select: {
+								id: true,
+								status: true,
 							},
 						},
 					},
@@ -82,10 +88,10 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		}),
-	grantEditAccess: protectedProcedure
+	EditAccess: protectedProcedure
 		.input(
 			z.object({
-				teamName: z.string(),
+				team: z.string(),
 				action: z.enum(["Grant", "Revoke"]),
 			})
 		)
@@ -98,19 +104,29 @@ export const adminRouter = createTRPCRouter({
 					if (input.action === "Grant") {
 						await ctx.prisma.team.update({
 							where: {
-								name: input.teamName,
+								id: input.team,
 							},
 							data: {
 								isComplete: false,
+								editRequests: {
+									update: {
+										status: "GRANTED",
+									},
+								},
 							},
 						});
 					} else {
 						await ctx.prisma.team.update({
 							where: {
-								name: input.teamName,
+								id: input.team,
 							},
 							data: {
 								isComplete: true,
+								editRequests: {
+									update: {
+										status: "REVOKED",
+									},
+								},
 							},
 						});
 					}
