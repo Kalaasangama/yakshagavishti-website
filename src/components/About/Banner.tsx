@@ -1,6 +1,7 @@
 import Reveal from "../Animations/reveal";
 import ScrollLag from "../Animations/scrollLag";
 import Image from "next/image";
+import ReactPlayer from "react-player";
 
 type BannerProps = {
   video?: string;
@@ -21,8 +22,19 @@ const Banner: React.FC<BannerProps> = ({ photo, text, video, credits }) => {
           className="absolute inset-0 h-full w-full object-cover opacity-60"
         />
       </div> }
-      { video && <div className="absolute inset-0">
-        <video src={video} autoPlay loop controls={false} muted className="object-cover object-center absolute inset-0 h-full w-full opacity-75" />
+      { video && <div className="absolute inset-0 react-player flex justify-stretch">
+        {/* <video src={video} autoPlay loop controls={false} muted className="object-cover object-center absolute inset-0 h-full w-full opacity-75" /> */}
+        <ReactPlayer
+          url={video}
+          playing
+          loop
+          muted
+          controls = {false}
+          width="100%"
+          height="100%"
+          className="object-cover absolute inset-0 h-full w-full opacity-75"
+        />
+        {/* <iframe src="https://vimeo.com/883551016?share=copy" className="h-full w-full object-cover" /> */}
         {credits && <div className="absolute bottom-0 right-0 bg-black/30 text-xs md:text-sm p-1">{credits}</div>}
       </div> }
       <div

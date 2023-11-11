@@ -4,12 +4,10 @@ import Banner from "~/components/About/Banner";
 import AboutCardsSection from "~/components/About/CardsSection";
 import Reveal from "~/components/Animations/reveal";
 
-//test comment
-
 const Index = () => {
   return (
     <section className="mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
-      <Banner video={"/Cloudinary/about/nitte.mp4"} text="About NMAMIT" credits="Video: Glen Rebello"/>
+      <Banner video={"https://vimeo.com/883551016?share=copy"} text="About NMAMIT" credits="Video: Glen Rebello"/>
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="space-y-6 md:flex md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
