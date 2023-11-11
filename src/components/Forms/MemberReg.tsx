@@ -34,6 +34,7 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 import { uploadFile } from "~/utils/file";
 import { useRouter } from "next/router";
+import AccordianForm from "./AccordianForm";
 
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
@@ -59,6 +60,14 @@ const MemberReg = ({
 	CollegeId: string;
 }) => {
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
+	const [selectedRole, setSelectedRole] = useState<string>("");
+	const [teammateName, setTeammateName] = useState("");
+	const [MembersArray, setMembersArray] = useState<Members[]>(
+		JSON.parse(localStorage.getItem("members")) || []
+	);
+	const [uploadStatus, setUploadStatus] = useState("");
+	const { toast } = useToast();
+	const form2 = useForm();
 	const registerMembers = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -73,14 +82,6 @@ const MemberReg = ({
 			});
 		},
 	});
-	const [selectedRole, setSelectedRole] = useState<string>("");
-	const [teammateName, setTeammateName] = useState("");
-	const [MembersArray, setMembersArray] = useState<Members[]>(
-		JSON.parse(localStorage.getItem("members")) || []
-	);
-	const [uploadStatus, setUploadStatus] = useState("");
-	const { toast } = useToast();
-	const form2 = useForm();
 
 	const availableRoles = roles.filter(
 		(roles) => roles.value !== LeaderCharacter
@@ -184,112 +185,12 @@ const MemberReg = ({
 									{role.label}
 								</AccordionTrigger>
 								<AccordionContent>
-									<Form {...form2}>
-										<form className="space-y-1">
-											<FormField
-												control={form2.control}
-												name="Role"
-												render={() => (
-													<div className="flex flex-col">
-														<FormLabel className="my-4 text-white">
-															Name of the team
-															member
-														</FormLabel>
-														<Input
-															id="Teammate_Name"
-															placeholder="Teammate Name"
-															className="col-span-3"
-															type="text"
-															defaultValue={
-																MembersArray[
-																	index
-																]?.name
-															}
-															onChange={(e) => {
-																setTeammateName(
-																	e.target
-																		.value
-																);
-															}}
-														/>
-														<FormLabel className="mt-5 text-white">
-															Drop Image of your
-															ID
-														</FormLabel>
-														<div className="grid grid-cols-3">
-															<div className="col-span-3">
-																<Dropzone
-																	files={
-																		files
-																	}
-																	setFiles={
-																		setFiles
-																	}
-																/>
-																{MembersArray[
-																	index
-																]?.id_url && (
-																	<Image
-																		src={
-																			MembersArray[
-																				index
-																			]
-																				?.id_url
-																		}
-																		alt=""
-																		height={
-																			100
-																		}
-																		width={
-																			100
-																		}
-																	/>
-																)}
-															</div>
-														</div>
-													</div>
-												)}
-											/>
-											{MembersArray[index] ===
-											undefined ? (
-												<Button
-													variant={"button"}
-													onClick={(e) => {
-														e.preventDefault();
-														if (FieldValidation()) {
-															void setTeamMember(
-																role.value,
-																index
-															);
-															e.preventDefault();
-														}
-													}}
-												>
-													Save
-												</Button>
-											) : (
-												<Button
-													variant={"button"}
-													onClick={(e) => {
-														const character_index =
-															index;
-														console.log(
-															character_index
-														);
-														const Characterid: string =
-															role.value;
-														e.preventDefault();
-														void setTeamMember(
-															Characterid,
-															character_index
-														);
-													}}
-												>
-													Update
-												</Button>
-											)}
-										</form>
-									</Form>
+									<AccordianForm
+										MembersArray={MembersArray}
+										setMembersArray={setMembersArray}
+										index={index}
+										character_id={role.value}
+									/>
 								</AccordionContent>
 							</AccordionItem>
 						))}
