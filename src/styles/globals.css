@@ -11,6 +11,17 @@
   html {
     @apply scroll-smooth;
   }
+  .react-player > div > div {
+    @apply relative;
+  }
+  .react-player > div > div > iframe {
+    @apply absolute;
+    @apply top-0;
+    @apply left-0;
+  }
+  #player {
+    min-width: unset !important;
+  }
 }
 
 @layer utilities {

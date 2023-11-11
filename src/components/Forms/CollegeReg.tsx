@@ -37,40 +37,47 @@ export default function CollegeReg({
 }) {
 	const [selectedCollege, setSelectedCollege] = useState<string>("");
 	const [teamPassword, setTeamPassword] = useState("");
-	const verifyPassword = api.team.checkPassword.useMutation();
+	const verifyPassword = api.team.checkPassword.useMutation({
+		onError(error) {
+			return toast({
+				variant: "default",
+				description: error.message,
+			});
+		},
+		onSuccess(data) {
+			return toast({
+				variant: "default",
+				description: data.message,
+			});
+		},
+	});
 	const form = useForm();
-	
 	if (verifyPassword.isSuccess) {
-		toast({
-			variant: "default",
-			title: "College Registered Successfully!",
-			description: `Your college has been registered successfully.`,
-		});
-
 		setFormToShow(2);
 		setCollege(selectedCollege);
 	}
 	const handleCollegeChange = (value: string) => {
 		setSelectedCollege(value);
-		console.log(value);
 	};
 
 	const Passwordpattern = () => {
-		
+		const passwordRegex =
+			/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
 		if (selectedCollege) {
-			
+			if (teamPassword.match(passwordRegex)) {
 				verifyPassword.mutate({
 					college_id: selectedCollege,
 					password: teamPassword,
 				});
-				if (verifyPassword.isError) {
-					toast({
-						variant: "destructive",
-						title: "Oops! there is an error",
-						description: verifyPassword.error.message,
-					});
-				}
-			
+				// setStateForm("secondform");
+			} else {
+				toast({
+					variant: "destructive",
+					title: "Weak Password",
+					description:
+						"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number and atleast 1 special character ",
+				});
+			}
 		} else {
 			toast({
 				variant: "destructive",

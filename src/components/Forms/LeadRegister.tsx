@@ -57,9 +57,21 @@ const LeadRegister = ({
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
 	const [LeaderContact, setLeaderContact] = useState<string>("");
-	const [teammateEmail, setTeammateEmail] = useState("");
 	const [UploadStatus, setUploadStatus] = useState("");
-	const SetLeaderDetails = api.team.register.useMutation();
+	const SetLeaderDetails = api.team.register.useMutation({
+		onError(error) {
+			return toast({
+				variant: "default",
+				description: error.message,
+			});
+		},
+		onSuccess(data) {
+			return toast({
+				variant: "default",
+				description: data.message,
+			});
+		},
+	});
 	const form = useForm();
 	const handleRoleChange = (value: string) => {
 		setLeaderCharacter(value);
@@ -189,6 +201,15 @@ const LeadRegister = ({
 														/>
 													</div>
 												</div>
+										</div>
+
+										<div className="grid grid-cols-3">
+											<div className="col-span-3">
+												<Dropzone
+													files={files}
+													setFiles={setFiles}
+												/>
+											</div>
 										</div>
 										<div className="flex-cols flex gap-2">
 											<div className="mt-1">
