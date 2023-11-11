@@ -10,11 +10,12 @@ const team = () => {
         <div className="container m-auto px-6 md:px-12 xl:px-6 flex justify-center">
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12 flex flex-col gap-5 items-center">
               <Reveal classes="">
-                <h2 className="inline-block font-hindi text-3xl font-bold sm:text-5xl md:text-5xl 2xl:text-5xl">
+                {/* <h2 className="inline-block font-hindi text-3xl font-bold sm:text-5xl md:text-5xl 2xl:text-5xl"> */}
+                <h2 className="text-2xl font-bold md:text-4xl lg:text-5xl">
                   Finite <span className="text-secondary-100">Loop Club</span>
                 </h2>
               </Reveal>
-              <Reveal classes="lg:mx-15 mx-0 md:w-5/12 lg:w-5/12 flex justify-center items-center">
+              <Reveal classes="flex justify-center items-center">
                 <Image
                   src="/Cloudinary/team/flc_logo.png"
                   alt="image"

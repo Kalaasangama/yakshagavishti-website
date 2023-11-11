@@ -168,7 +168,6 @@ export function CreateTeamDialog() {
 	) => {
 		console.log("asdfasdf")
 		const id_url = await handleUpload();
-		//console.log(id_url);
 		const data: Members = {
 			name: teammateName,
 			email: teammateEmail,
@@ -190,7 +189,6 @@ export function CreateTeamDialog() {
 		setSelectedRole("");
 		setTeammatePhone("");
 		setFiles([]);
-		//console.log(data);
 	};
 
 	const isMemberValid = (character_id: string, character_index: number) => {
@@ -692,9 +690,11 @@ export function CreateTeamDialog() {
 							</Accordion>
 						</div>
 						<div className="m-auto flex gap-2">
-							<Button onClick={() => setStateForm("firstform")}>
-								Back
-							</Button>
+							<div onClick={() => setStateForm("firstform")}>
+								<CustomButton>
+									Back
+								</CustomButton>
+							</div>
 							<AlertDialog>
 								<AlertDialogTrigger disabled={availableRoles.length===MembersArray.length?false:true}>
 									<Button disabled={availableRoles.length===MembersArray.length?false:true}

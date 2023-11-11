@@ -1,6 +1,7 @@
 import Image from "next/image";
 import {  useCallback, useEffect, useState } from "react";
 import { type FileRejection, useDropzone } from "react-dropzone";
+import { IoCloseCircle } from "react-icons/io5";
 
 interface DropzoneProps {
 	// className: string;
@@ -76,18 +77,10 @@ const Dropzone = ({ files, setFiles }: DropzoneProps) => {
 			{files.length > 0 && (
 				<div className="flex-col items-center justify-center">
 					{files.map((image, index) => (
-						<>
-							<Image
-								src={image.preview}
-								key={index}
-								height={100}
-								width={100}
-								alt="Id Card"
-							/>
-							<button onClick={() => handleDelete(index)}>
-								x
-							</button>
-						</>
+						<div className="h-40 w-32 relative my-3" key={index} >
+							<IoCloseCircle className='absolute top-1 right-3 text-red-600 text-xl md:text-2xl cursor-pointer' onClick={() => handleDelete(index)} />
+							<Image src={image.preview} alt="ID Card" className="object-contain object-center h-full w-full" height={100} width={100}/>
+						</div>
 					))}
 
 					<p>{uploadStatus}</p>

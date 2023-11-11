@@ -4,11 +4,11 @@ import React from "react";
 interface CardProps {
   name: string;
   role: string;
-  desc: string;
+  // desc: string;
   url: string;
 }
 
-const Card: React.FC<CardProps> = ({ name, role, desc, url }) => {
+const Card: React.FC<CardProps> = ({ name, role, url }) => {
   return (
     <div className="group sm:h-96 h-80 my-2 sm:my-0 sm:w-80 w-64 [perspective:1000px]">
       <div className="relative h-full w-full rounded-xl shadow-xl transition-all duration-500 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
@@ -25,7 +25,7 @@ const Card: React.FC<CardProps> = ({ name, role, desc, url }) => {
           <div className="flex min-h-full flex-col items-center justify-center">
             <h1 className="text-3xl font-bold">{name}</h1>
             <p className="text-lg">{role}</p>
-            <p className="text-base">{desc}</p>  
+            {/* <p className="text-base">{desc}</p>   */}
           </div>
         </div>
       </div>

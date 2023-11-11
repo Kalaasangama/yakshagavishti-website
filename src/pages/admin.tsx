@@ -93,12 +93,12 @@ export default function Instagram() {
 													{member.name}
 												</TableCell>
 												<TableCell>
-													<Image
+													{/*<Image
 														src={member.idURL}
 														alt="ID"
 														height={100}
 														width={100}
-													/>
+													/>*/}
 												</TableCell>
 												<TableCell className="text-right">
 													{!member.isIdVerified ? (
