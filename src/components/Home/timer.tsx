@@ -15,22 +15,22 @@ const Timer = ({setIsRegistrationActive}: Props) => {
   });
 
   return (
-    <div className="flex justify-center space-x-7 md:space-x-9 font-tourney text-2xl sm:text-4xl lg:text-5xl 2xl:text-7xl font-black select-none drop-shadow-[0_0_3px_theme(colors.secondary-100)]">
-      <div className="flex space-x-1 md:space-x-2 items-baseline">
-        <span className="drop-shadow-[0_0_2px_theme(colors.secondary-100)]">{String (days).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-4xl font-thin">D</span> 
+    <div className="flex justify-center space-x-7 md:space-x-9 font-rhomdon text-2xl sm:text-4xl lg:text-6xl 2xl:text-7xl font-black select-none drop-shadow-[0_0_1.5px_theme(colors.secondary-100)]">
+      <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
+        <span className="">{String (days).padStart(2, '0')}</span>
+        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Days</span> 
       </div>
-      <div className="flex space-x-1 md:space-x-2 items-baseline">
-        <span className="drop-shadow-[0_0_2px_theme(colors.secondary-100)]">{String (hours).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-4xl font-thin">H</span> 
+      <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
+        <span className="">{String (hours).padStart(2, '0')}</span>
+        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Hours</span> 
       </div>
-      <div className="flex space-x-1 md:space-x-2 items-baseline">
-        <span className="drop-shadow-[0_0_2px_theme(colors.secondary-100)]">{String (minutes).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-4xl font-thin">M</span> 
+      <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
+        <span className="">{String (minutes).padStart(2, '0')}</span>
+        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Mins</span> 
       </div>
-      <div className="flex space-x-1 md:space-x-2 items-baseline">
-        <span className="drop-shadow-[0_0_2px_theme(colors.secondary-100)]">{String (seconds).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-4xl font-thin">S</span>
+      <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
+        <span className="">{String (seconds).padStart(2, '0')}</span>
+        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Secs</span>
       </div>
     </div>
   );

@@ -22,7 +22,7 @@ const Banner: React.FC<BannerProps> = ({ photo, text, video, credits }) => {
           className="absolute inset-0 h-full w-full object-cover opacity-60"
         />
       </div> }
-      { video && <div className="absolute inset-0 react-player flex justify-stretch">
+      { video && <div className="absolute inset-0 h-screen flex justify-stretch">
         {/* <video src={video} autoPlay loop controls={false} muted className="object-cover object-center absolute inset-0 h-full w-full opacity-75" /> */}
         <ReactPlayer
           url={video}

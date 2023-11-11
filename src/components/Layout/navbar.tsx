@@ -42,7 +42,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="fixed top-2 z-50 font-medium w-full max-w-screen-2xl left-1/2 -translate-x-1/2">
+    <nav className="fixed top-2 z-50 font-rhomdon tracking-widest font-medium w-full max-w-screen-2xl left-1/2 -translate-x-1/2">
       <div className="flex flex-col backdrop-blur-md border-b border-orange-300 rounded-3xl  px-5 text-white text-sm sm:text-sm md:text-base xl:text-lg mx-3 sm:mx-7 lg:mx-28 py-2 sm:py-4">
         <div className="flex justify-between items-center">
           <Reveal classes="">

@@ -54,6 +54,31 @@ const samarkan = localFont({
   display: 'swap',
   variable: '--font-hindi'
 })
+
+const rhomdon = localFont({
+  src: '../../public/fonts/Rhomdon/Rhomdon/Rhomdon.otf',
+  display: 'swap',
+  variable: '--font-rhomdon'
+})
+
+const boris = localFont({
+  src: '../../public/fonts/Boris/Boris/Boris - Free/Boris.otf',
+  display: 'swap',
+  variable: '--font-boris'
+})
+
+const oskari = localFont({
+  src: '../../public/fonts/Oskari/Oskari/oskari.otf',
+  display: 'swap',
+  variable: '--font-oskari'
+})
+
+const porpora = localFont({
+  src: '../../public/fonts/Porpora/Porpora/Porpora/web/Porpora-Regular.woff2',
+  display: 'swap',
+  variable: '--font-porpora'
+})
+
 import "~/styles/dropzone.css"
 import { Toaster } from "src/components/ui/toaster"
 
@@ -72,7 +97,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         }
       `}</style>
       <SessionProvider session={session}>
-        <main className={`${balooChettan2.variable} ${samarkan.variable} ${tourney.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
+        <main className={`${balooChettan2.variable} ${samarkan.variable} ${porpora.variable} ${oskari.variable} ${tourney.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
           {path.pathname !== "/_error" && <Navbar />}
           <Component {...pageProps} />
           <Toaster />

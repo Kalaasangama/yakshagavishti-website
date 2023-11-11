@@ -4,9 +4,6 @@ import { useWindowSize, useContainerDimension } from "../customHooks";
 import Reveal from "../Animations/reveal";
 import CarouselCard from "./carouselCard";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import en from "~/locale/en/sponsors";
-import kn from "~/locale/kn/sponsors";
 
 type CardsInfoT = {
   title: string;
@@ -15,9 +12,6 @@ type CardsInfoT = {
 };
 
 const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
-  const router = useRouter()
-  const t = router.locale === "en" ? en : kn
-
   const targetRef = useRef<HTMLDivElement | null>(null);
 
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -59,13 +53,13 @@ const HorizontalScroll = ({cardsInfo}: {cardsInfo: CardsInfoT[]}) => {
         <motion.div style={{ x: x, paddingLeft: `${container.width}px` }} className={`flex gap-8`}>
           <div style={{width: `${container.width}px`}} className={`absolute left-0 h-[250px] lg:h-[350px] flex flex-col justify-center items-center  text-2xl sm:text-3xl md:text-4xl px-5 text-center overflow-hidden`}>
 
-            <Reveal classes="font-tourney font-black"><p>{t.ourSponsors}</p></Reveal>
+            <Reveal classes="font-tourney font-black"><p>Our Sponsors</p></Reveal>
 
           </div>
 
           <div style={{width: `${container.width}px`}} className={`absolute left-full h-[250px] lg:h-[350px] flex flex-col justify-center items-center text-2xl sm:text-3xl md:text-4xl`}>
 
-            <Reveal classes="font-tourney font-black"><p>{t.endSponsors}</p></Reveal>
+            <Reveal classes="font-tourney font-black"><p>End of Sponsors</p></Reveal>
 
           </div>
 
