@@ -113,23 +113,24 @@ const LeadRegister = ({
 				});
 				return false;
 			}
-			if (files.length === 0) {
-				toast({
-					variant: "destructive",
-					title: "No ID uploaded!",
-					description: "Please upload your ID.",
-				});
-				return false;
-			}
+			
+		}
+		if (files.length === 0) {
+			toast({
+				variant: "destructive",
+				title: "No ID uploaded!",
+				description: "Please upload your ID.",
+			});
+			return false;
+		}
 
-			if(files.length > 1){
-				toast({
-					variant: "destructive",
-					title: "Only one ID allowed!",
-					description: "Please upload only one ID.",
-				});
-				return false;
-			}
+		if(files.length > 1){
+			toast({
+				variant: "destructive",
+				title: "Only one ID allowed!",
+				description: "Please upload only one ID.",
+			});
+			return false;
 		}
 		handleUpload()
 			.then((idUrl) => {
@@ -190,17 +191,7 @@ const LeadRegister = ({
 													}}
 												/>
 											</div>
-											<FormLabel className="mt-8 text-white">
-													Drop Image of your ID
-												</FormLabel>
-												<div className="grid grid-cols-3">
-													<div className="col-span-3">
-														<Dropzone
-															files={files}
-															setFiles={setFiles}
-														/>
-													</div>
-												</div>
+											
 										</div>
 
 										<div className="grid grid-cols-3">

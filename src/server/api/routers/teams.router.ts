@@ -87,7 +87,7 @@ export const TeamRouter = createTRPCRouter({
 					} else {
 						throw new kalasangamaError(
 							"Create Team Error",
-							"Team password is invalid"
+							"Team password is incorrect"
 						);
 					}
 				}
