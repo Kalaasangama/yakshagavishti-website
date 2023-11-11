@@ -7,7 +7,7 @@ import Reveal from "~/components/Animations/reveal";
 const Index = () => {
   return (
     <section className="mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
-      <Banner video={"https://vimeo.com/883551016?share=copy"} text="About NMAMIT" credits="Video: Glen Rebello"/>
+      <Banner video={"https://vimeo.com/883551016?share=copy"} text="" credits="Video: Glen Rebello"/>
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="space-y-6 md:flex md:gap-6 md:space-y-0 lg:items-center lg:gap-12">
@@ -23,18 +23,18 @@ const Index = () => {
             </Reveal>
             <div className="sm:mx-4 md:w-6/12 lg:mx-0 lg:w-6/12">
               <Reveal classes="">
-                <h2 className="inline-block font-hindi text-xl sm:text-4xl md:text-4xl 2xl:text-5xl">
+                <h2 className="inline-block font-rhomdon text-xl sm:text-4xl md:text-4xl 2xl:text-5xl">
                 About <span className="text-secondary-100">NMAMIT</span>
                 </h2>
               </Reveal>
               <Reveal classes="">
-                <p className="mt-6 text-justify text-sm sm:text-sm md:text-base lg:text-base xl:text-lg">
-                  Nitte Mahalinga Adyantaya Memorial Institute of Technology(NMAMIT), Nitte, established in 1986 and recognized by the All India Council for Technical Education, New Delhi, has been a constituent college of Nitte (Deemed to be University), Mangaluru, since June 2022.
+                <p className="mt-6 text-justify text-sm sm:text-sm md:text-base lg:text-base xl:text-xl">
+                  Nitte Mahalinga Adyantaya Memorial Institute of Technology (NMAMIT), Nitte, established in 1986 and recognized by the All India Council for Technical Education, New Delhi, has been a constituent college of Nitte (Deemed to be University), Mangaluru, since June 2022.
                 </p>
               </Reveal>
               <Reveal classes="">
-                <p className="mt-4 text-justify text-sm sm:text-sm md:text-base lg:text-base xl:text-lg">
-                  Ranked 175 in the National Institutional Ranking Framework (NIRF) 2022 by MHRD, GoI among the engineering colleges in India, the College has been placed under the <q>Platinum</q> category for having high industry linkages by the AICTE-CII Survey of Industry-Linked Technical Institutes 2020. NMAMIT, the off-campus centre of Nitte DU located at Nitte Village, has active collaborations with several international universities and organizations for faculty and student exchanges, research, internships, and placements. (For details, visit www.nmamit.nitte.edu.in)
+                <p className="mt-4 text-justify text-sm sm:text-sm md:text-base lg:text-base xl:text-xl">
+                  Ranked 175 in the National Institutional Ranking Framework (NIRF) 2022 by MHRD, GoI among the engineering colleges in India, the College has been placed under the <q>Platinum</q> category for having high industry linkages by the AICTE-CII Survey of Industry-Linked Technical Institutes 2020. NMAMIT, the off-campus centre of Nitte DU located at Nitte Village, has active collaborations with several international universities and organizations for faculty and student exchanges, research, internships, and placements. For details, visit www.nmamit.nitte.edu.in
                 </p>
               </Reveal>
             </div>
@@ -42,7 +42,7 @@ const Index = () => {
         </div>
       </div>
       <div className="mt-20"></div>
-      <Banner photo={"/kalateam.jpg"} text="Team Yakshasangama" />
+      <Banner photo={"/kalateam.jpg"} text="" />
       <div className="m-10 py-6">
         <div className="container m-auto px-6 md:px-12 xl:px-6">
           <div className="flex flex-col items-center space-y-6 md:flex-row md:gap-6 md:space-y-0 lg:items-center lg:gap-12 justify-center">

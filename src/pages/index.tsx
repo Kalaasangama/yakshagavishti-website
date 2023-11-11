@@ -69,7 +69,7 @@ export default function Home() {
 
             <Reveal classes="">
               <div className="flex flex-col items-center gap-1 landscape:short:gap-1 text-center">
-                <div className="font-hindi font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed drop-shadow-[0_0_10px_theme(colors.secondary-200)]">Yakshagavishti</div>
+                <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Yakshagavishti</div>
               </div>
 
             </Reveal>
@@ -87,7 +87,7 @@ export default function Home() {
             <div className="max-w-7xl xl:mx-auto">
               <Reveal classes="2xl:hidden">
                 <ScrollLag classes="" speed={500}>
-                  <div className="h-full -m-4 md:-m-16">
+                  <div className="h-full font-rhomdon -m-4 md:-m-16">
                     {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
                   </div>
                 </ScrollLag>
@@ -130,7 +130,7 @@ export default function Home() {
                 <div className="flex flex-col md:flex-row items-center gap-10">
                   <div className="flex flex-col gap-3">
                     <Reveal classes="">
-                      <div className="font-hindi text-2xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                      <div className="font-rhomdon text-2xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
                         About <span className="text-secondary-100">Yakshagavishti</span>
                       </div>
                     </Reveal>

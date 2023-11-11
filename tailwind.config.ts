@@ -55,7 +55,11 @@ module.exports = {
       fontFamily: {
         hindi: 'var(--font-hindi)',
         tourney: ['var(--font-tourney)', 'cursive'],
-        sans: ['var(--font-baloo)', 'Arial','ui-sans-serif','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue','Arial','Noto Sans','sans-serif','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'],
+        sans: ['var(--font-oskari)', 'Arial','ui-sans-serif','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue','Arial','Noto Sans','sans-serif','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'],
+        boris: 'var(--font-boris)',
+        rhomdon: 'var(--font-rhomdon)',
+        // porpora: 'var(--font-porpora)',
+        // oskari: 'var(--font-oskari)',
       },
       screens: {
         'short': { 'raw': '(max-height: 500px)' }
