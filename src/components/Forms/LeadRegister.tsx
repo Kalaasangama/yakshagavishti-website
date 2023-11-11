@@ -66,6 +66,12 @@ const LeadRegister = ({
 				description: error.message,
 			});
 		},
+		onSuccess(data) {
+			return toast({
+				variant: "default",
+				description: data.message,
+			});
+		},
 	});
 	const form = useForm();
 	const handleRoleChange = (value: string) => {

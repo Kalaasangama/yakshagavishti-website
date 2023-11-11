@@ -44,6 +44,12 @@ export default function CollegeReg({
 				description: error.message,
 			});
 		},
+		onSuccess(data) {
+			return toast({
+				variant: "default",
+				description: data.message,
+			});
+		},
 	});
 	const form = useForm();
 	if (verifyPassword.isSuccess) {

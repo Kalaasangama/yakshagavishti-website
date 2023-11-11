@@ -66,6 +66,12 @@ const MemberReg = ({
 				description: error.message,
 			});
 		},
+		onSuccess(data) {
+			return toast({
+				variant: "default",
+				description: data.message,
+			});
+		},
 	});
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [teammateName, setTeammateName] = useState("");
