@@ -53,18 +53,11 @@ export default function CollegeReg({
 	});
 	const form = useForm();
 	if (verifyPassword.isSuccess) {
-		toast({
-			variant: "default",
-			title: "College Registered Successfully!",
-			description: `Your college has been registered successfully.`,
-		});
-
 		setFormToShow(2);
 		setCollege(selectedCollege);
 	}
 	const handleCollegeChange = (value: string) => {
 		setSelectedCollege(value);
-		console.log(value);
 	};
 
 	const Passwordpattern = () => {

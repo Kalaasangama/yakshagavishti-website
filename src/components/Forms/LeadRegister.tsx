@@ -57,7 +57,6 @@ const LeadRegister = ({
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
 	const [LeaderContact, setLeaderContact] = useState<string>("");
-	const [teammateEmail, setTeammateEmail] = useState("");
 	const [UploadStatus, setUploadStatus] = useState("");
 	const SetLeaderDetails = api.team.register.useMutation({
 		onError(error) {
@@ -97,24 +96,15 @@ const LeadRegister = ({
 	//Field Validation for Team Lead
 	const Passwordpattern = () => {
 		const phoneregx = "^[6-9][0-9]{9}$";
-		if (teammateEmail && teammateEmail.includes("@")) {
-			if (!LeaderContact.match(phoneregx)) {
-				toast({
-					variant: "destructive",
-					title: "Invalid Phone number!",
-					description: "Check the entered phone number",
-				});
-				return false;
-			}
-			// setStateForm("secondform");
-		} else {
+		if (!LeaderContact.match(phoneregx)) {
 			toast({
 				variant: "destructive",
-				title: "Invalid Email ID!",
-				description: "Please enter a valid email id.",
+				title: "Invalid Phone number!",
+				description: "Check the entered phone number",
 			});
 			return false;
 		}
+		// setStateForm("secondform");
 		if (isCheckboxChecked) {
 			if (!LeaderCharacter) {
 				toast({
@@ -124,14 +114,14 @@ const LeadRegister = ({
 				});
 				return false;
 			}
-			if (files.length === 0) {
-				toast({
-					variant: "destructive",
-					title: "No ID uploaded!",
-					description: "Please upload your ID.",
-				});
-				return false;
-			}
+		}
+		if (files.length === 0) {
+			toast({
+				variant: "destructive",
+				title: "No ID uploaded!",
+				description: "Please upload your ID.",
+			});
+			return false;
 		}
 		handleUpload()
 			.then((idUrl) => {
@@ -168,28 +158,6 @@ const LeadRegister = ({
 									<FormItem>
 										<div className="flex flex-col gap-6">
 											<div>
-												<div className="grid w-full max-w-sm items-center gap-1.5">
-													<Label htmlFor="email">
-														Email
-													</Label>
-													<Input
-														type="email"
-														id="email"
-														placeholder="Enter your Email"
-														defaultValue={
-															teammateEmail
-														}
-														onChange={(e) => {
-															if (e)
-																setTeammateEmail(
-																	e.target
-																		.value
-																);
-														}}
-													/>
-												</div>
-											</div>
-											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Label htmlFor="phone">
 													Phone number
 												</Label>
@@ -206,6 +174,15 @@ const LeadRegister = ({
 															e.target.value
 														);
 													}}
+												/>
+											</div>
+										</div>
+
+										<div className="grid grid-cols-3">
+											<div className="col-span-3">
+												<Dropzone
+													files={files}
+													setFiles={setFiles}
 												/>
 											</div>
 										</div>
@@ -283,17 +260,6 @@ const LeadRegister = ({
 													Choose the Character you are
 													Playing.
 												</FormDescription>
-												<FormLabel className="mt-5 text-white">
-													Drop Image of your ID
-												</FormLabel>
-												<div className="grid grid-cols-3">
-													<div className="col-span-3">
-														<Dropzone
-															files={files}
-															setFiles={setFiles}
-														/>
-													</div>
-												</div>
 												<FormMessage />
 											</React.Fragment>
 										)}
