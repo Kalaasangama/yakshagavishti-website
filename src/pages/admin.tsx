@@ -56,7 +56,7 @@ export default function Instagram() {
 						<div key={key} className="my-10 rounded border px-20">
 							<h1>Team: {element.name} </h1>
 							{element.editRequests &&
-								(element?.editRequests?.status === "PENDING" ? (
+								(element?.editRequests?.status === "PENDING" || "REVOKED" ? (
 									<Button
 										onClick={() =>
 											setEditAccess(element.id, "Grant")
