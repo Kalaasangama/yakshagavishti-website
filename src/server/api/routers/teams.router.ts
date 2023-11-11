@@ -76,18 +76,30 @@ export const TeamRouter = createTRPCRouter({
 			})
 		)
 		.mutation(async ({ ctx, input }) => {
-			const college = await ctx.prisma.college.findUnique({
-				where: { id: input.college_id },
-			});
-			if (college) {
-				console.log(input.password, college.password);
-				if (input.password === college.password) {
-					return { message: "success" };
+			try {
+				const college = await ctx.prisma.college.findUnique({
+					where: { id: input.college_id },
+				});
+				if (college) {
+					console.log(input.password, college.password);
+					if (input.password === college.password) {
+						return { message: "success" };
+					} else {
+						throw new kalasangamaError(
+							"Create Team Error",
+							"Team password is invalid"
+						);
+					}
+				}
+			} catch (error) {
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "CONFLICT",
+					});
 				} else {
-					throw new kalasangamaError(
-						"Create Team Error",
-						"Team password is invalid"
-					);
+					console.log(error);
+					throw "An error occurred!";
 				}
 			}
 		}),
@@ -96,7 +108,11 @@ export const TeamRouter = createTRPCRouter({
 			if (ctx.session.user.leaderOf) {
 				const teamInfo = await ctx.prisma.user.findUnique({
 					where: { id: ctx.session.user.id },
-					include: { team: { include: { members: true , editRequests:true}, } },
+					include: {
+						team: {
+							include: { members: true, editRequests: true },
+						},
+					},
 				});
 				return teamInfo.team;
 			}
