@@ -98,6 +98,7 @@ model Team {
   criteria      criteria[]
   criteriaScore criteriaScore[]
   TeamMembers   TeamMembers[]
+  editRequests	EditRequests?
   @@index([college_id])
 }
 
@@ -141,6 +142,15 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
+model EditRequests{
+  id Int @id @default(autoincrement())
+  teamId String? @unique
+  Team Team? @relation(fields: [teamId], references: [id])
+  status editStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt 
+}
+
 enum Characters {
   SHANTHANU
   MANTRI_SUNEETHI
@@ -156,4 +166,11 @@ enum Role {
   ADMIN
   ORGANIZER
   JUDGE
+}
+
+enum editStatus{
+PENDING
+	GRANTED
+	REVOKED
+
 }

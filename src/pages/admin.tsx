@@ -1,12 +1,21 @@
 import { useSession } from "next-auth/react";
 import { api } from "../utils/api";
 import Image from "next/image";
+import {
+	Table,
+	TableBody,
+	TableRow,
+	TableHead,
+	TableCell,
+	TableHeader,
+} from "~/components/ui/table";
+import { Button } from "~/components/ui/button";
 
 export default function Instagram() {
 	const { data: sessionData } = useSession();
 	const { data, refetch } = api.admin.getRegisteredTeams.useQuery();
 	const verifyIdMutation = api.admin.verifyId.useMutation();
-	const editTeamAccessMutation = api.admin.grantEditAccess.useMutation();
+	const editTeamAccessMutation = api.admin.EditAccess.useMutation();
 	function verifyId(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		const userId = (e.target as HTMLElement)?.dataset?.userid;
 		if (userId)
@@ -24,107 +33,97 @@ export default function Instagram() {
 			);
 		else console.error("User ID is null or undefined");
 	}
-	function setEditAccess(
-		e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-		action: "Grant" | "Revoke"
-	) {
-		const teamName = (e.target as HTMLElement)?.dataset?.teamname;
-		if (teamName)
-			editTeamAccessMutation.mutate(
-				{ teamName: teamName, action },
-				{
-					onError: (error) => {
-						console.error(error);
-						alert("Error reducing score");
-					},
-				}
-			);
-		else console.error("User ID is null or undefined");
+	function setEditAccess(team: string, action: "Grant" | "Revoke") {
+		editTeamAccessMutation.mutate(
+			{ team, action },
+			{
+				onError: (error) => {
+					console.error(error);
+					alert(error.message);
+				},
+			}
+		);
 	}
+
 	if (sessionData?.user) {
 		return (
 			<>
-				<h1 className="mt-20 text-center text-2xl">Admin Dashboard</h1>
-				<div className="m-auto w-fit">
+				<div className="container px-20 pt-20">
 					<h1 className="text-extrabold mt-10 text-2xl">
 						Registered Teams
 					</h1>
-					{data?.map((element, key) => {
-						return (
-							<div key={key}>
-								<h3 className="border p-5">
-									Team: {element.name}
-								</h3>
-								<h3 className="border p-5">Members</h3>
-								<table className="border">
-									<thead>
-										<th className="border p-3">Name</th>
-										<th className="border p-3">ID Card</th>
-									</thead>
-									<tbody>
-										{element.members.map(
-											(member, index) => {
-												return (
-													<tr key={index}>
-														<td className="border p-5">
-															{member.name}
-														</td>
-														<td className="border p-5">
-															<a
-																href={
-																	member.idURL
-																		? member.idURL
-																		: ""
-																}
-															>
-																<Image
-																	src={
-																		member.idURL
-																			? member.idURL
-																			: ""
-																	}
-																	alt="Id Image"
-																	width={100}
-																	height={100}
-																/>
-															</a>
-														</td>
+					{data?.map((element, key) => (
+						<div key={key} className="my-10 rounded border px-20">
+							<h1>Team: {element.name} </h1>
+							{element.editRequests &&
+								(element?.editRequests?.status === "PENDING" ? (
+									<Button
+										onClick={() =>
+											setEditAccess(element.id, "Grant")
+										}
+									>
+										Grant Edit Access
+									</Button>
+								) : (
+									<Button
+										onClick={() =>
+											setEditAccess(element.id, "Revoke")
+										}
+									>
+										Revoke Edit Access
+									</Button>
+								))}
 
-														<td
+							<h2>Members</h2>
+							<Table className="my-10 border">
+								<TableHeader>
+									<TableRow>
+										<TableHead>Name</TableHead>
+										<TableHead>ID</TableHead>
+										<TableHead className="text-right">
+											Status
+										</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									{element.members.map((member, index) => {
+										return (
+											<TableRow key={index}>
+												<TableCell className="font-medium">
+													{member.name}
+												</TableCell>
+												<TableCell>
+													<Image
+														src={member.idURL}
+														alt="ID"
+														height={100}
+														width={100}
+													/>
+												</TableCell>
+												<TableCell className="text-right">
+													{!member.isIdVerified ? (
+														<button
+															className="rounded border bg-black p-3 text-white"
 															data-userid={
-																element.id
+																member.id
 															}
-															className="border p-5"
+															onClick={(e) =>
+																verifyId(e)
+															}
 														>
-															{!member.isIdVerified ? (
-																<button
-																	className="rounded border bg-black p-3 text-white"
-																	data-userid={
-																		member.id
-																	}
-																	onClick={(
-																		e
-																	) =>
-																		verifyId(
-																			e
-																		)
-																	}
-																>
-																	Verify ID
-																</button>
-															) : (
-																"Verified"
-															)}
-														</td>
-													</tr>
-												);
-											}
-										)}
-									</tbody>
-								</table>
-							</div>
-						);
-					})}
+															Verify ID
+														</button>
+													) : (
+														"Verified"
+													)}
+												</TableCell>
+											</TableRow>
+										);
+									})}
+								</TableBody>
+							</Table>
+						</div>
+					))}
 				</div>
 			</>
 		);

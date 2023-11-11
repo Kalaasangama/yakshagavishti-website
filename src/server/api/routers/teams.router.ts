@@ -96,7 +96,7 @@ export const TeamRouter = createTRPCRouter({
 			if (ctx.session.user.leaderOf) {
 				const teamInfo = await ctx.prisma.user.findUnique({
 					where: { id: ctx.session.user.id },
-					include: { team: {include:{members:true}}},
+					include: { team: { include: { members: true , editRequests:true}, } },
 				});
 				return teamInfo.team;
 			}
@@ -115,6 +115,17 @@ export const TeamRouter = createTRPCRouter({
 				throw "An error occurred!";
 			}
 		}
+	}),
+	requestEditAccess: protectedProcedure.mutation(async ({ ctx }) => {
+		const teamId = ctx.session.user.team.id;
+		await ctx.prisma.team.update({
+			where: { id: teamId },
+			data: {
+				editRequests: {
+					create: {},
+				},
+			},
+		});
 	}),
 	updateTeam: protectedProcedure
 		.input(

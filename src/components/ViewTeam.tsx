@@ -20,6 +20,11 @@ import { Button } from "./ui/button";
 
 export default function ViewTeam() {
 	const teamData = api.team.getTeam.useQuery();
+	const editRequest = api.team.requestEditAccess.useMutation({
+			onSuccess() {
+			    void teamData.refetch()
+			},
+			});
 	return (
 		!teamData.isLoading && (
 			<Dialog>
@@ -70,7 +75,7 @@ export default function ViewTeam() {
 							))}
 						</TableBody>
 					</Table>
-					<Button>Request Edit</Button>
+					{teamData?.data?.editRequests.status==="REVOKED" ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
 				</DialogContent>
 			</Dialog>
 		)
