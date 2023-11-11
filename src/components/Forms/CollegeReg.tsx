@@ -39,12 +39,7 @@ export default function CollegeReg({
 	const [teamPassword, setTeamPassword] = useState("");
 	const verifyPassword = api.team.checkPassword.useMutation();
 	const form = useForm();
-	if (verifyPassword.isError) {
-		toast({
-			variant: "default",
-			description: verifyPassword.error.message,
-		});
-	}
+	
 	if (verifyPassword.isSuccess) {
 		toast({
 			variant: "default",
@@ -61,23 +56,21 @@ export default function CollegeReg({
 	};
 
 	const Passwordpattern = () => {
-		const passwordRegex =
-			/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+		
 		if (selectedCollege) {
-			if (teamPassword.match(passwordRegex)) {
+			
 				verifyPassword.mutate({
 					college_id: selectedCollege,
 					password: teamPassword,
 				});
-				// setStateForm("secondform");
-			} else {
-				toast({
-					variant: "destructive",
-					title: "Weak Password",
-					description:
-						"Password should contain at least 8 characters, 1 uppercase letter, 1 lowercase letter, and 1 number and atleast 1 special character ",
-				});
-			}
+				if (verifyPassword.isError) {
+					toast({
+						variant: "destructive",
+						title: "Oops! there is an error",
+						description: verifyPassword.error.message,
+					});
+				}
+			
 		} else {
 			toast({
 				variant: "destructive",

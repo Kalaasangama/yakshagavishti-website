@@ -16,7 +16,7 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "./ui/dialog";
-import { Button } from "./ui/button";
+import { Button } from "src/components/ui/button";
 
 export default function ViewTeam() {
 	const teamData = api.team.getTeam.useQuery();
@@ -33,9 +33,9 @@ export default function ViewTeam() {
 						View Team
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
+				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] overflow-y-auto">
 					<DialogHeader>
-						<DialogTitle className="text-center">View Team</DialogTitle>
+						<DialogTitle className="text-center text-xl">View Team</DialogTitle>
 						<DialogDescription className="text-center">
 							View your team details here.
 						</DialogDescription>
@@ -53,7 +53,7 @@ export default function ViewTeam() {
 						<TableBody>
 							{teamData?.data?.members?.map((member, key) => (
 								<TableRow key={key}>
-									<TableCell className="font-medium">
+									<TableCell className="font-semibold text-sm">
 										{member.name}
 									</TableCell>
 									<TableCell>
@@ -63,12 +63,13 @@ export default function ViewTeam() {
 											alt="id_image"
 											height={100}
 											width={100}
+											className="rounded border border-gray-800"
 										/>}
 										</a>
 									</TableCell>
 									<TableCell>
 										{member.isIdVerified
-											? "Verified"
+											? <div className="flex flex-row gap-2"><span>Verified</span><span><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" className="animate-pulse text-green-500 mt-0.5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"></path></svg></span></div>
 											: "Pending"}
 									</TableCell>
 								</TableRow>

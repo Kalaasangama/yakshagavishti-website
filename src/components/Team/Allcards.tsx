@@ -4,8 +4,8 @@ import Card from "./Corecard";
 const AllCards: React.FC = () => {
   const cardProps = [
     {
-      name: "Jane Doe",
-      role: "Photographer & Artist",
+      name: "Swasthik Shetty",
+      role: "Technical Head",
       linkedinURL: "https://www.linkedin.com/janedoe",
       githubURL: "https://github.com/janedoe",
       instagramURL: "https://www.instagram.com/janedoe",
@@ -14,7 +14,7 @@ const AllCards: React.FC = () => {
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
     {
-      name: "John Smith",
+      name: "Srivatsa Upadhya",
       role: "Web Developer",
       linkedinURL: "https://www.linkedin.com/johnsmith",
       githubURL: "https://github.com/johnsmith",
@@ -23,11 +23,20 @@ const AllCards: React.FC = () => {
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
     {
-      name: "Alice Johnson",
-      role: "Graphic Designer",
+      name: "Anirudha Upadhya",
+      role: "Web Developer",
       linkedinURL: "https://www.linkedin.com/alicejohnson",
       githubURL: "https://github.com/alicejohnson",
       instagramURL: "https://www.instagram.com/alicejohnson",
+      imageSrc: "",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    },
+    {
+      name: "Satwik R Prabhu",
+      role: "Web Developer",
+      linkedinURL: "https://www.linkedin.com/in/satwikprabhu/",
+      githubURL: "https://github.com/satwikrprabhu",
+      instagramURL: "https://www.instagram.com/satwikprabhu/",
       imageSrc: "",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },

@@ -25,7 +25,7 @@ const EventsCard = ({
       <div
         className={`text-center px-3 py-4 md:p-5 h-auto  md:h-[50vh] w-[80vw] m-auto flex flex-col  md:flex-row ${
           rev ? "flex-col md:flex-row-reverse" : ""
-        } gap-3 justify-center md:justify-evenly items-center text-white py-4 lg:p-8 bg-gradient-to-tl from-primary-50 to-bg-gradient-50 my-5 hover:shadow-xl transition-all duration-300`}
+        } gap-3 justify-center md:justify-evenly items-center text-white py-4 lg:p-8 bg-gradient-to-tl from-primary-50 my-5 hover:shadow-xl transition-all duration-300`}
       >
         <div className="w-full md:w-[50%] h-full relative">
           <Image className="object-contain object-center h-full w-full" height={500} width={500} src={ImageSrc} alt="company logo" />

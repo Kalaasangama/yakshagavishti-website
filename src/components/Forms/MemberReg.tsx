@@ -150,7 +150,7 @@ const MemberReg = ({
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
+			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white overflow-y-scroll">
 				<DialogTitle>Character Details</DialogTitle>
 				<DialogDescription>
 					Enter Details of the Teammates Who will play recpective

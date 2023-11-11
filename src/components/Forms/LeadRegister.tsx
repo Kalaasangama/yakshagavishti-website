@@ -84,7 +84,6 @@ const LeadRegister = ({
 	//Field Validation for Team Lead
 	const Passwordpattern = () => {
 		const phoneregx = "^[6-9][0-9]{9}$";
-		if (teammateEmail && teammateEmail.includes("@")) {
 			if (!LeaderContact.match(phoneregx)) {
 				toast({
 					variant: "destructive",
@@ -92,16 +91,7 @@ const LeadRegister = ({
 					description: "Check the entered phone number",
 				});
 				return false;
-			}
-			// setStateForm("secondform");
-		} else {
-			toast({
-				variant: "destructive",
-				title: "Invalid Email ID!",
-				description: "Please enter a valid email id.",
-			});
-			return false;
-		}
+			}		
 		if (isCheckboxChecked) {
 			if (!LeaderCharacter) {
 				toast({
@@ -116,6 +106,15 @@ const LeadRegister = ({
 					variant: "destructive",
 					title: "No ID uploaded!",
 					description: "Please upload your ID.",
+				});
+				return false;
+			}
+
+			if(files.length > 1){
+				toast({
+					variant: "destructive",
+					title: "Only one ID allowed!",
+					description: "Please upload only one ID.",
 				});
 				return false;
 			}
@@ -137,7 +136,7 @@ const LeadRegister = ({
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
+			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] overflow-y-scroll">
 				<DialogHeader>
 					<DialogTitle>Create Team</DialogTitle>
 					<DialogDescription>
@@ -145,7 +144,7 @@ const LeadRegister = ({
 						done.
 					</DialogDescription>
 				</DialogHeader>
-				<div className="grid gap-4 py-4">
+				<div className="grid gap-4 py-2">
 					<Form {...form}>
 						<form className="space-y-8">
 							<FormField
@@ -153,30 +152,14 @@ const LeadRegister = ({
 								name="username"
 								render={({ field }) => (
 									<FormItem>
-										<div className="flex flex-col gap-6">
+										<div className="flex flex-col">
 											<div>
 												<div className="grid w-full max-w-sm items-center gap-1.5">
-													<Label htmlFor="email">
-														Email
-													</Label>
-													<Input
-														type="email"
-														id="email"
-														placeholder="Enter your Email"
-														defaultValue={
-															teammateEmail
-														}
-														onChange={(e) => {
-															if (e)
-																setTeammateEmail(
-																	e.target
-																		.value
-																);
-														}}
-													/>
 												</div>
 											</div>
+												
 											<div className="grid w-full max-w-sm items-center gap-1.5">
+												
 												<Label htmlFor="phone">
 													Phone number
 												</Label>
@@ -195,6 +178,17 @@ const LeadRegister = ({
 													}}
 												/>
 											</div>
+											<FormLabel className="mt-8 text-white">
+													Drop Image of your ID
+												</FormLabel>
+												<div className="grid grid-cols-3">
+													<div className="col-span-3">
+														<Dropzone
+															files={files}
+															setFiles={setFiles}
+														/>
+													</div>
+												</div>
 										</div>
 										<div className="flex-cols flex gap-2">
 											<div className="mt-1">
@@ -266,21 +260,7 @@ const LeadRegister = ({
 														)}
 													</SelectContent>
 												</Select>
-												<FormDescription>
-													Choose the Character you are
-													Playing.
-												</FormDescription>
-												<FormLabel className="mt-5 text-white">
-													Drop Image of your ID
-												</FormLabel>
-												<div className="grid grid-cols-3">
-													<div className="col-span-3">
-														<Dropzone
-															files={files}
-															setFiles={setFiles}
-														/>
-													</div>
-												</div>
+												
 												<FormMessage />
 											</React.Fragment>
 										)}
