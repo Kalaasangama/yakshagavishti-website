@@ -49,7 +49,7 @@ export default function Home() {
 
     document.body.removeChild(link);
   };
-
+  
   return (
     <>
       <Head>
@@ -75,9 +75,10 @@ export default function Home() {
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete?<CreateTeam/>:<ViewTeam/>)}
+                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)}
               </div>
             </Reveal>
+              
           </div>
         </section>
 

@@ -30,6 +30,7 @@ export default function CreateTeam() {
 		return (
 			<>
 				<MemberReg
+					setFormToShow={setFormToShow}
 					LeaderCharacter={LeaderChar}
 					CollegeId={CollegeId}
 				/>

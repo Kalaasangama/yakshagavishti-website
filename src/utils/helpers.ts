@@ -25,7 +25,9 @@ const getCollegeById = async (college_id: string) => {
 		where: {
 			id: college_id,
 		},
-		include: { Team: true },
+		include: { Team: {
+			include: { members: true},
+		} },
 	});
 
 	if (!college) {
@@ -52,7 +54,6 @@ const setLeader = async (
 					},
 				},
 				leaderOf: {
-					disconnect: {},
 					connect: {
 						name: teamName,
 					},
@@ -76,6 +77,7 @@ const setLeader = async (
 			where: { id: user_id },
 			data: {
 				team: {
+					
 					connect: {
 						name: teamName,
 					},
@@ -90,6 +92,8 @@ const setLeader = async (
 						id: college_id,
 					},
 				},
+				idURL: leaderIdUrl,
+				contact: leader_contact,
 			},
 		});
 };

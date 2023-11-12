@@ -11,20 +11,20 @@ import { uploadFile } from "~/utils/file";
 
 type Members = {
 	name: string;
-	character_id: string;
-	id_url: string;
+	characterId: string;
+	idURL: string;
 };
 
 export default function AccordianForm({
 	MembersArray,
 	setMembersArray,
 	index,
-	character_id,
+	characterId,
 }: {
 	MembersArray: Members[];
 	setMembersArray: Dispatch<SetStateAction<Members[]>>;
 	index: number;
-	character_id: string;
+	characterId: string;
 }) {
 	const [teammateName, setTeammateName] = useState("");
 	const [uploadStatus, setUploadStatus] = useState("");
@@ -62,19 +62,36 @@ export default function AccordianForm({
 			});
 			return false;
 		}
+		if (files.length === 0) {
+			toast({
+				variant: "destructive",
+				title: "No ID uploaded!",
+				description: "Please upload your ID.",
+			});
+			return false;
+		}
+
+		if(files.length > 1){
+			toast({
+				variant: "destructive",
+				title: "Only one ID allowed!",
+				description: "Please upload only one ID.",
+			});
+			return false;
+		}
 		return true
 	};
 
 	const setTeamMember = async (
-		character_id: string,
+		characterId: string,
 		character_index: number
 	) => {
-		const id_url = await handleUpload();
-		//console.log(id_url);
+		const idURL = await handleUpload();
+		//console.log(idURL);
 		const data: Members = {
 			name: teammateName,
-			character_id: character_id,
-			id_url: z.string().parse(id_url),
+			characterId: characterId,
+			idURL: z.string().parse(idURL),
 		};
 
 		const array = [...MembersArray];
@@ -119,9 +136,9 @@ export default function AccordianForm({
 										files={files}
 										setFiles={setFiles}
 									/>
-									{MembersArray[index]?.id_url && (
+									{MembersArray[index]?.idURL && (
 										<Image
-											src={MembersArray[index]?.id_url}
+											src={MembersArray[index]?.idURL}
 											alt=""
 											height={100}
 											width={100}
@@ -138,7 +155,7 @@ export default function AccordianForm({
 						onClick={(e) => {
 							e.preventDefault();
 							if (FieldValidation()) {
-								void setTeamMember(character_id, index);
+								void setTeamMember(characterId, index);
 							}
 						}}
 					>
@@ -149,7 +166,7 @@ export default function AccordianForm({
 						variant={"button"}
 						onClick={(e) => {
 							e.preventDefault();
-							void setTeamMember(character_id, index);
+							void setTeamMember(characterId, index);
 						}}
 					>
 						Update
