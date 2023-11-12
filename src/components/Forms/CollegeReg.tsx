@@ -41,14 +41,14 @@ export default function CollegeReg({
 		onError(error) {
 			return toast({
 				variant: "destructive",
-				title: "Invalid Password",
+				title: "Invalid Password!",
 				description: error.message,
 			});
 		},
 		onSuccess(data) {
 			return toast({
 				variant: "default",
-				title: "College signed in successfully",
+				title: "College signed in successfully!",
 				description: data.message,
 			});
 		},
@@ -75,8 +75,8 @@ export default function CollegeReg({
 		} else {
 			toast({
 				variant: "destructive",
-				title: "No college selected",
-				description: "Please select a college!",
+				title: "No college selected!",
+				description: "Please select a college.",
 			});
 			return false;
 		}

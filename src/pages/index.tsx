@@ -17,7 +17,7 @@ import LeadRegister from "~/components/Forms/LeadRegister";
 import MemberReg from "~/components/Forms/MemberReg";
 import CreateTeam from "~/components/Forms/MainForm";
 
-import ViewDialog from "~/components/ViewDialog";
+// import ViewDialog from "~/components/ViewDialog";
 import ViewTeam from "~/components/ViewTeam";
 const reelImags = [
   { src: "/Cloudinary/home/reel/1.jpg" },

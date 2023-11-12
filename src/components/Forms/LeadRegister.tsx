@@ -61,13 +61,14 @@ const LeadRegister = ({
 	const SetLeaderDetails = api.team.register.useMutation({
 		onError(error) {
 			return toast({
-				variant: "default",
+				variant: "destructive",
 				description: error.message,
 			});
 		},
 		onSuccess(data) {
 			return toast({
 				variant: "default",
+				title: "Team lead registered successfully!",
 				description: data.message,
 			});
 		},
@@ -100,7 +101,7 @@ const LeadRegister = ({
 				toast({
 					variant: "destructive",
 					title: "Invalid Phone number!",
-					description: "Check the entered phone number",
+					description: "Check the entered phone number.",
 				});
 				return false;
 			}		

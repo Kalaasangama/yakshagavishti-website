@@ -72,12 +72,14 @@ const MemberReg = ({
 		onError(error) {
 			return toast({
 				variant: "default",
+				title: "Error!",
 				description: error.message,
 			});
 		},
 		onSuccess(data) {
 			return toast({
 				variant: "default",
+				title: "Team registered successfully!",
 				description: data.message,
 			});
 		},
@@ -117,6 +119,16 @@ const MemberReg = ({
 			});
 			return false;
 		}
+
+		if (files.length > 1) {
+			toast({
+				variant: "destructive",
+				title: "Only one ID allowed!",
+				description: "Please upload only one ID.",
+			});
+			return false;
+		}
+
 		return true;
 	};
 	const handleUpload = async () => {
@@ -150,8 +162,8 @@ const MemberReg = ({
 		setMembersArray(array);
 		toast({
 			variant: "default",
-			title: "Teammate Added",
-			description: "Teammate Added",
+			title: "Teammate Added!",
+			description: "You teammate has been added to your team.",
 		});
 		setTeammateName("");
 		setSelectedRole("");
@@ -220,9 +232,9 @@ const MemberReg = ({
 									) {
 										toast({
 											variant: "destructive",
-											title: "Team Incomplete",
+											title: "Team Incomplete!",
 											description:
-												"Please fill in details of all characters in your team",
+												"Please fill in details of all characters in your team.",
 										});
 									}
 								}}
