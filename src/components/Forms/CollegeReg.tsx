@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "src/components/ui/button";
 import {

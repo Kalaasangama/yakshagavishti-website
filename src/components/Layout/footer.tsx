@@ -25,7 +25,7 @@ const Footer = () => {
 
   return (
     <div className="border-t-[1px] border-gray-600 bg-gradient-to-br from-primary-100 to-gray-950">
-      <div className="relative flex flex-col items-center justify-center overflow-hidden text-sm sm:text-sm md:text-sm xl:text-base gap-10 p-10 max-w-7xl xl:mx-auto">
+      <div className="relative flex flex-col items-center justify-center overflow-hidden text-base xl:text-lg gap-10 p-10 max-w-7xl xl:mx-auto">
         <div className="flex flex-col md:flex-row w-full justify-around items-center gap-5 md:gap-20">
           <div className="relative">
             <Link href={'/'}>

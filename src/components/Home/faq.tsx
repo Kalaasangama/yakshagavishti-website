@@ -27,15 +27,15 @@ const faqs = [
 
 const Faq = () => {
   return (
-    <Accordion type="single" collapsible className="w-full  text-sm sm:text-sm md:text-base xl:text-lg">
+    <Accordion type="single" collapsible className="w-full  text-base md:text-lg xl:text-xl">
       <Reveal classes="">
-        <p className="font-hindi text-2xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">faq</p>
+        <p className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl text-center md:text-left">FAQ</p>
       </Reveal>
       {faqs.map((faq, idx) => {
         return (
           <AccordionItem value={`item-${idx+1}`} key={idx}>
-            <AccordionTrigger className="py-3 sm:py-4 text-justify">{faq.q}</AccordionTrigger>
-            <AccordionContent className="text-sm sm:text-sm md:text-base xl:text-lg text-gray-400">
+            <AccordionTrigger className="py-3 sm:py-4 text-left">{faq.q}</AccordionTrigger>
+            <AccordionContent className="text-base md:text-lg xl:text-xl text-gray-400">
               {faq.ans}
             </AccordionContent>
           </AccordionItem>

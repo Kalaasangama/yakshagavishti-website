@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "src/components/ui/button";
-import { Button as CustomButton } from "../Button";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -691,9 +690,9 @@ export function CreateTeamDialog() {
 						</div>
 						<div className="m-auto flex gap-2">
 							<div onClick={() => setStateForm("firstform")}>
-								<CustomButton>
+								<Button>
 									Back
-								</CustomButton>
+								</Button>
 							</div>
 							<AlertDialog>
 								<AlertDialogTrigger disabled={availableRoles.length===MembersArray.length?false:true}>

@@ -35,12 +35,68 @@ module.exports = {
           "25%": {transform: 'translate(0%, -7px)'},
           "100%": {transform: 'translate(0%, 5px)'}
         },
+        "border-animation": {
+          '0%': {transform: 'rotate(0deg)'},
+          '100%': {transform: 'rotate(360deg)'}
+        },
+        "top": {
+          "0%": {transform: 'skewY(-45deg) translateY(100%)'},
+          "12.5%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "25%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "37.5%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "50%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "62.5%": {transform: 'skewY(-45deg) translateY(-100%)'},
+          "75%": {transform: 'skewY(-45deg) translateY(-100%)'},
+          "87.5%": {transform: 'skewY(-45deg) translateY(-100%)'},
+          "100%": {transform: 'skewY(-45deg) translateY(-100%)'},
+        },
+        "bottom": {
+          "0%": {transform: 'skewY(-45deg) translateY(-100%)'},
+          "12.5%": {transform: 'skewY(-45deg) translateY(-100%)'},
+          "25%": {transform: 'skewY(-45deg) translateY(-100%)'},
+          "37.5%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "50%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "62.5%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "75%": {transform: 'skewY(-45deg) translateY(0%)'},
+          "87.5%": {transform: 'skewY(-45deg) translateY(+100%)'},
+          "100%": {transform: 'skewY(-45deg) translateY(+100%)'},
+        },
+        "left": {
+          "0%": {transform: 'skewX(-45deg) translateX(100%)'},
+          "12.5%": {transform: 'skewX(-45deg) translateX(100%)'},
+          "25%": {transform: 'skewX(-45deg) translateX(100%)'},
+          "37.5%": {transform: 'skewX(-45deg) translateX(100%)'},
+          "50%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "62.5%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "75%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "87.5%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "100%": {transform: 'skewX(-45deg) translateX(-100%)'},
+        },
+        "right": {
+          "0%": {transform: 'skewX(-45deg) translateX(-100%)'},
+          "12.5%": {transform: 'skewX(-45deg) translateX(-100%)'},
+          "25%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "37.5%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "50%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "62.5%": {transform: 'skewX(-45deg) translateX(0%)'},
+          "75%": {transform: 'skewX(-45deg) translateX(100%)'},
+          "87.5%": {transform: 'skewX(-45deg) translateX(100%)'},
+          "100%": {transform: 'skewX(-45deg) translateX(100%)'},
+        }
+      },
+      transitionTimingFunction: {
+        rotationTick: "0.70, 0, 0.3, 1"
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "arrow-down": "arrow-down 1.5s linear infinite",
         "arrow-up": "arrow-up 1.5s linear infinite",
+        "border-animation": "border-animation 4s linear infinite",
+        "top": "top 4s infinite linear",
+        "bottom": "bottom 4s infinite linear",
+        "left": "left 4s infinite linear",
+        "right": "right 4s infinite linear",
       },
       colors: {
         'bg-gradient-50': 'rgba(48, 21, 75, 0.75)',

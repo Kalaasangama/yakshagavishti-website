@@ -43,7 +43,7 @@ const Achievements = () => {
     <main className="snap-y snap-mandatory h-screen overflow-scroll no-scrollbar relative top-0">
       <div className="h-screen bg-black flex items-center justify-center snap-start">
         {/* video */}
-        <div className="font-hindi font-bold text-4xl sm:text-6xl md:text-7xl ">Achievements</div>
+        <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl ">Achievements</div>
         
         <span className='animate-pulse fixed bottom-16 landscape:short:bottom-10 right-1/2 translate-x-1/2 -z-10'>
           <BiChevronsDown className='animate-arrow-down text-3xl'></BiChevronsDown>
@@ -70,12 +70,12 @@ const Achievements = () => {
                     <div className="h-48 sm:h-fit md:h-48  flex-col justify-center items-center gap-4 md:gap-3 absolute bottom-9 sm:bottom-5 md:bottom-3 group-hover/page:flex hidden landscape:short:bottom-0 landscape:short:h-fit">
                       <div data-id={`${idx}`} className="flex justify-center text-lg sm:text-xl md:text-2xl text-center text-secondary-100">{achievements[contentId]?.title}</div>
                       <div className="flex flex-col justify-center items-center gap-2 md:gap-1">
-                        {achievements[contentId]?.team && <div className="text-sm sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
+                        {achievements[contentId]?.team && <div className="text-base md:text-lg xl:text-xl flex items-center gap-3">
                           <GiPaperArrow className="-rotate-45 text-secondary-100 select-none" />
                           <div className="">{achievements[contentId]?.team}</div>
                         </div>}
                         {achievements[contentId]?.individual.map((ind, i) => (
-                          <div key={i} className="text-sm sm:text-sm md:text-base xl:text-lg flex items-center gap-3">
+                          <div key={i} className="text-base md:text-lg xl:text-xl flex items-center gap-3">
                             <GiPaperArrow className="-rotate-45 text-secondary-100 select-none" />
                             <div className="">{ind}</div>
                           </div>

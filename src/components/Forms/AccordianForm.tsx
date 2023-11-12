@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { Button } from "src/components/ui/button";
 import { Form, FormField, FormLabel } from "src/components/ui/form";
 import Dropzone from "../Dropzone";

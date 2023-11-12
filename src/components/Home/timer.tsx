@@ -1,11 +1,13 @@
-import type { Dispatch } from "react";
+import { useEffect, type Dispatch } from "react";
 import { useTimer } from "react-timer-hook";
 
 interface Props {
-  setIsRegistrationActive?: Dispatch<boolean>;
+  setIsRegistrationActive: Dispatch<boolean>;
+  setRotation: Dispatch<number>;
+  rotation: number;
 }
 
-const Timer = ({setIsRegistrationActive}: Props) => {
+const Timer = ({setIsRegistrationActive, setRotation, rotation}: Props) => {
   const expiryTimestamp = new Date("2023-11-25 9:30");
   const { seconds, minutes, hours, days } = useTimer({
     expiryTimestamp,
@@ -14,23 +16,28 @@ const Timer = ({setIsRegistrationActive}: Props) => {
     },
   });
 
+  useEffect(() => {
+    // if(seconds % 2 === 0)
+    setRotation(rotation + 10);
+  }, [seconds]);
+
   return (
-    <div className="flex justify-center space-x-7 md:space-x-9 font-rhomdon text-2xl sm:text-4xl lg:text-6xl 2xl:text-7xl font-black select-none drop-shadow-[0_0_1.5px_theme(colors.secondary-100)]">
+    <div className="flex justify-center space-x-7 md:space-x-9 font-rhomdon text-3xl sm:text-4xl lg:text-6xl 2xl:text-7xl font-black select-none drop-shadow-[0_0_1.5px_theme(colors.secondary-100)]">
       <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
         <span className="">{String (days).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Days</span> 
+        <span className="text-2xl sm:text-3xl lg:text-4xl 2xl:text-6xl font-thin">Days</span> 
       </div>
       <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
         <span className="">{String (hours).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Hours</span> 
+        <span className="text-2xl sm:text-3xl lg:text-4xl 2xl:text-6xl font-thin">Hours</span> 
       </div>
       <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
         <span className="">{String (minutes).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Mins</span> 
+        <span className="text-2xl sm:text-3xl lg:text-4xl 2xl:text-6xl font-thin">Mins</span> 
       </div>
       <div className="flex flex-col space-x-1 md:space-x-2 items-baseline">
         <span className="">{String (seconds).padStart(2, '0')}</span>
-        <span className="text-lg sm:text-xl lg:text-2xl 2xl:text-6xl font-thin">Secs</span>
+        <span className="text-2xl sm:text-3xl lg:text-4xl 2xl:text-6xl font-thin">Secs</span>
       </div>
     </div>
   );

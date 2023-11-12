@@ -31,9 +31,9 @@ const reelImags = [
 ]
 
 export default function Home() {
+  const [rotation, setRotation] = useState<number>(0);
   const mainRef = useRef<HTMLDivElement>(null)
-	const [isRegistrationActive, setIsRegistrationActive] =
-		useState<boolean>(true);
+	const [isRegistrationActive, setIsRegistrationActive] = useState<boolean>(true);
 	const { data: sessionData } = useSession();
 	const handleDownload = (path: string, name: string) => {
 		// fallback to window.open if the browser doesn't support the download attribute
@@ -83,25 +83,32 @@ export default function Home() {
 
         <div style={{height: `calc(${useContainerDimension(mainRef).height + 200}px - 100vh)`}} className="bg-gradient-to-t from-primary-100/80 via-transparent to-primary-100 absolute top-full w-full -z-[5]"></div>
 
-          <section className="relative h-48 py-16 sm:mb-16 md:mb-0 max-h-40 flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center">
+          <section className="relative h-[60vh] sm:h-screen flex items-start mx-4 sm:mx-8 lg:mx-32 justify-center overflow-hidden">
             <div className="max-w-7xl xl:mx-auto">
               <Reveal classes="2xl:hidden">
-                <ScrollLag classes="" speed={500}>
-                  <div className="h-full font-rhomdon -m-4 md:-m-16">
-                    {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
+                <ScrollLag classes="" speed={300}>
+                  <div className="h-full mt-[10vh] sm:mt-[25vh] md:mt-[30vh]">
+                    <Timer setIsRegistrationActive={setIsRegistrationActive} setRotation={setRotation} rotation={rotation} />
                   </div>
                 </ScrollLag>
               </Reveal>
               <Reveal classes="hidden 2xl:block">
                 <ScrollLag classes="" speed={200}>
-                  <div className="h-full 2xl:-m-8">
-                    {isRegistrationActive && <Timer setIsRegistrationActive={setIsRegistrationActive} />}
+                  <div className="h-full mt-[30vh]">
+                    <Timer setIsRegistrationActive={setIsRegistrationActive} setRotation={setRotation} rotation={rotation} />
                   </div>
                 </ScrollLag>
               </Reveal>
             </div>
 
-						<ScrollLag
+            <Image
+                style={{ transform: `rotate(${rotation}deg)` }}
+                className="-z-10 object-contain opacity-50 mix-blend-luminosity py-16 sm:py-20 md:py-24 transition-all duration-100 ease-rotationTick"
+                src={"/Cloudinary/home/mandala-center.png"}
+                fill
+                alt="mandala"
+            ></Image>
+						{/* <ScrollLag
 							speed={100}
 							classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50"
 						>
@@ -111,31 +118,26 @@ export default function Home() {
 								alt=""
 								className="select-none opacity-70  bg-blend-luminosity"
 							/>
-						</ScrollLag>
+						</ScrollLag> */}
 					</section>
 
 					{/* About the Competition */}
 
-            <section className="relative flex mt-32 min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
-              <Image
-                className="-z-10 object-contain py-16 opacity-25 mix-blend-luminosity sm:py-28 md:py-0"
-                src={"/Cloudinary/home/mandala-center.png"}
-                fill
-                alt="mandala"
-              ></Image>
+            <section className="relative flex min-h-max w-full items-center justify-center md:pb-10 max-w-7xl xl:mx-auto">
+              
 
               {/* Competition Contents section */}
 
               <div  className="mx-4 sm:mx-8 lg:mx-32 flex flex-col h-full items-center gap-5 sm:gap-16 " id="about" >
-                <div className="flex flex-col md:flex-row items-center gap-10">
+                <div className="flex flex-col md:flex-row items-center md:gap-10 gap-0">
                   <div className="flex flex-col gap-3">
                     <Reveal classes="">
-                      <div className="font-rhomdon text-2xl sm:text-4xl md:text-4xl 2xl:text-5xl text-center md:text-left">
+                      <div className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-5xl text-center md:text-left">
                         About <span className="text-secondary-100">Yakshagavishti</span>
                       </div>
                     </Reveal>
                     <Reveal classes="">
-                      <div className="text-sm sm:text-sm md:text-base xl:text-lg text-center md:text-justify">
+                      <div className="text-base md:text-lg xl:text-xl text-center md:text-justify">
                         <p>Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.</p>
                       </div>
                     </Reveal>
@@ -177,7 +179,7 @@ export default function Home() {
 
 
 					{/* Achievements Reel Section */}
-          <div className="min-w-full max-w-7xl xl:mx-auto min-h-[50vh] items-center flex overflow-hidden">
+          <div className="min-w-full max-w-7xl xl:mx-auto min-h-[50vh] sm:min-h-[70vh] lg:min-h-screen items-center flex overflow-hidden">
             <div className="w-full xl:mx-auto flex justify-center mb-20 sm:mb-24 md:mb-64 lg:mb-72 2xl:hidden">
               <Reel classes="blur-sm opacity-[0.47] md:opacity-100" baseVelocity={0.5} angle={12} reelImg={reelImags} />
               <Reel classes="" baseVelocity={-0.75} angle={-12} reelImg={reelImags} />
