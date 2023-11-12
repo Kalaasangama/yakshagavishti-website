@@ -203,8 +203,8 @@ const LeadRegister = ({
 												/>
 											</div>
 										</div>
-										<div className="flex-cols flex gap-2">
-											<div className="mt-1">
+										<div className="flex flex-row gap-3 items-center">
+											<div className="">
 												<Checkbox
 													name="character"
 													id="character"

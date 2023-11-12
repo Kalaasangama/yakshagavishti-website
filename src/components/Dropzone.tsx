@@ -69,9 +69,9 @@ const Dropzone = ({ files, setFiles }: DropzoneProps) => {
 			>
 				<input {...getInputProps()} />
 				{isDragActive ? (
-					<p>Drop your ID card here</p>
+					<p className="px-2 text-center">Drop your ID card here</p>
 				) : (
-					<p>Drop your ID card here</p>
+					<p className="px-2 text-center">Drop your ID card here</p>
 				)}
 			</div>
 			{files.length > 0 && (
