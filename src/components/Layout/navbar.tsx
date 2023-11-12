@@ -82,7 +82,7 @@ const Navbar = () => {
           </div>
           <div className="flex gap-5 items-center">
             <Reveal classes="hidden lg:block">
-              <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
+              <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}>
                 <SmallButton>{sessionData ? "Log Out" : "Log In"}</SmallButton>
               </div>
             </Reveal>

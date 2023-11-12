@@ -83,11 +83,11 @@ export const TeamRouter = createTRPCRouter({
 				if (college) {
 					console.log(input.password, college.password);
 					if (input.password === college.password) {
-						return { message: "success" };
+						return { message: "Your college has been signed in successfully." };
 					} else {
 						throw new kalasangamaError(
 							"Create Team Error",
-							"Team password is invalid"
+							"Team password is incorrect."
 						);
 					}
 				}

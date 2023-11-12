@@ -61,13 +61,14 @@ const LeadRegister = ({
 	const SetLeaderDetails = api.team.register.useMutation({
 		onError(error) {
 			return toast({
-				variant: "default",
+				variant: "destructive",
 				description: error.message,
 			});
 		},
 		onSuccess(data) {
 			return toast({
 				variant: "default",
+				title: "Team lead registered successfully!",
 				description: data.message,
 			});
 		},
@@ -96,15 +97,14 @@ const LeadRegister = ({
 	//Field Validation for Team Lead
 	const Passwordpattern = () => {
 		const phoneregx = "^[6-9][0-9]{9}$";
-		if (!LeaderContact.match(phoneregx)) {
-			toast({
-				variant: "destructive",
-				title: "Invalid Phone number!",
-				description: "Check the entered phone number",
-			});
-			return false;
-		}
-		// setStateForm("secondform");
+			if (!LeaderContact.match(phoneregx)) {
+				toast({
+					variant: "destructive",
+					title: "Invalid Phone number!",
+					description: "Check the entered phone number.",
+				});
+				return false;
+			}		
 		if (isCheckboxChecked) {
 			if (!LeaderCharacter) {
 				toast({
@@ -114,12 +114,22 @@ const LeadRegister = ({
 				});
 				return false;
 			}
+			
 		}
 		if (files.length === 0) {
 			toast({
 				variant: "destructive",
 				title: "No ID uploaded!",
 				description: "Please upload your ID.",
+			});
+			return false;
+		}
+
+		if(files.length > 1){
+			toast({
+				variant: "destructive",
+				title: "Only one ID allowed!",
+				description: "Please upload only one ID.",
 			});
 			return false;
 		}
@@ -140,7 +150,7 @@ const LeadRegister = ({
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
+			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] overflow-y-scroll">
 				<DialogHeader>
 					<DialogTitle>Create Team</DialogTitle>
 					<DialogDescription>
@@ -148,7 +158,7 @@ const LeadRegister = ({
 						done.
 					</DialogDescription>
 				</DialogHeader>
-				<div className="grid gap-4 py-4">
+				<div className="grid gap-4 py-2">
 					<Form {...form}>
 						<form className="space-y-8">
 							<FormField
@@ -156,8 +166,14 @@ const LeadRegister = ({
 								name="username"
 								render={({ field }) => (
 									<FormItem>
-										<div className="flex flex-col gap-6">
+										<div className="flex flex-col">
 											<div>
+												<div className="grid w-full max-w-sm items-center gap-1.5">
+												</div>
+											</div>
+												
+											<div className="grid w-full max-w-sm items-center gap-1.5">
+												
 												<Label htmlFor="phone">
 													Phone number
 												</Label>
@@ -176,6 +192,7 @@ const LeadRegister = ({
 													}}
 												/>
 											</div>
+											
 										</div>
 
 										<div className="grid grid-cols-3">
@@ -186,8 +203,8 @@ const LeadRegister = ({
 												/>
 											</div>
 										</div>
-										<div className="flex-cols flex gap-2">
-											<div className="mt-1">
+										<div className="flex flex-row gap-3 items-center">
+											<div className="">
 												<Checkbox
 													name="character"
 													id="character"
@@ -256,10 +273,7 @@ const LeadRegister = ({
 														)}
 													</SelectContent>
 												</Select>
-												<FormDescription>
-													Choose the Character you are
-													Playing.
-												</FormDescription>
+												
 												<FormMessage />
 											</React.Fragment>
 										)}

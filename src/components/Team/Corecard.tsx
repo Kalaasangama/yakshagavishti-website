@@ -47,9 +47,9 @@ const Card: React.FC<CardProps> = ({
         <a href={githubURL} target="_blank" rel="noreferrer">
           <AiFillGithub className="transition duration-150 ease-linear hover:text-secondary-200 text-2xl md:text-3xl"></AiFillGithub>
         </a>
-        <a href={instagramURL} target="_blank" rel="noreferrer">
+        {/* <a href={instagramURL} target="_blank" rel="noreferrer">
           <AiFillInstagram className="transition duration-150 ease-linear hover:text-secondary-200 text-2xl md:text-3xl"></AiFillInstagram>
-        </a>
+        </a> */}
       </div>
     </div>
   );

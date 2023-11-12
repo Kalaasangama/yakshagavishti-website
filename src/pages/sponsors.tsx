@@ -3,26 +3,25 @@ import EventsCard from "~/components/Sponsors/EventsCard";
 
 const SponsorDetails = [
   {
-    name: "Wipfli",
-    subtitle: "Official Title Sponsor",
-    description: `Wipfli brings the curiosity needed to uncover what's been overlooked. Our ingenuity helps create unexpected results. Our team of more than 3,000 associates works together to bring integrated solutions to turn data into insights, to optimize workflows, to increase margins and to transform through digital innovation`,
+    name: "Ventana Foundation",
+    subtitle: "Official Associate Partners",
+    description: `Ventana Foundation, founded in 2022 by Rohith Bhat, is a non-profit dedicated to Udupi's well-being. Focused on environmental conservation, cultural revival, education, and community service, we safeguard our roots. By empowering local artists, preserving monuments, and supporting schools, we ensure a sustainable future for our cherished town and its residents.`,
     image: "/1.png",
-    url: "https://www.wipfli.com/",
+    url: "https://ventanafoundation.org/eng",
   },
   {
-    name: "Coding Ninjas",
-    subtitle: "Official ED-Tech Sponsor",
-    description: `At Coding Ninjas' mission is to continuously innovate the best ways to train the next generation of developers and to transform the the way tech education is delivered.
-      Coding Ninjas boasts of world-class teaching faculty and a state-of-art learning platform for Coding education with faculty alumni of IIT, Stanford, IIIT and Facebook. Coding Ninjas teaches 17+ Programming courses ins Machine Learning, Data Science, Web Development, Android and more.`,
+    name: "Quadx Drones",
+    subtitle: "Official Executive Partners",
+    description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
     image: "/Sponsor/codingninja.png",
-    url: "https://www.codingninjas.com/",
+    url: "https://www.quadxdrones.com/",
   },
   {
-    name: "Paramvah Studios",
-    subtitle: "Official Event Sponsor for NAVARASA",
-    description: `Paramvah Studios aims to be a world class production house creating memorable films & characters using latest technologies & best creative talents. We are a production house, engaged in creating movie content and Paramvah Studios is more than just a name for us.`,
+    name: "AJ Institute of Management",
+    subtitle: "Official Executive Partners",
+    description: `A J Institute of Management, commonly referred to as AJIM, is a renowned educational institution established with a vision to provide quality management education, AJIM has consistently strived for excellence in the field of business and management studies. The institute is known for its commitment to fostering leadership skills, nurturing innovation, and preparing students to excel in the dynamic and competitive business world.`,
     image: "/Sponsor/paramvah.jpg",
-    url: "https://www.paramvah.com/",
+    url: "https://ajimmangalore.ac.in/",
   },
 ];
 
