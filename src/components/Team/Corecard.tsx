@@ -8,7 +8,6 @@ interface CardProps {
   linkedinURL: string;
   githubURL: string;
   instagramURL: string;
-  imageSrc: string;
   description: string;
 }
 
@@ -17,8 +16,6 @@ const Card: React.FC<CardProps> = ({
   role,
   linkedinURL,
   githubURL,
-  instagramURL,
-  imageSrc,
   description,
 }) => {
   return (
@@ -26,7 +23,7 @@ const Card: React.FC<CardProps> = ({
       <div className="h-72">
         <Image
           alt={name}
-          src={imageSrc}
+          src={`Cloudinary/team/${name}.jpg`}
           width="250"
           height="250"
           decoding="async"

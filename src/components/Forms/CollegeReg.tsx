@@ -86,7 +86,7 @@ export default function CollegeReg({
 		<div className="">
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button variant="outline" className="">
+					<Button className="">
 						Create Team
 					</Button>
 				</DialogTrigger>
