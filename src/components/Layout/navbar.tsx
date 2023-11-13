@@ -49,7 +49,7 @@ const Navbar = () => {
             <div  className="flex items-center justify-start">
               <Link href={'/'}>
                 <Image
-                  src={"/logo-copy.png"}
+                  src={"/Cloudinary/home/logo.png"}
                   alt="Logo"
                   width={100}
                   height={100}

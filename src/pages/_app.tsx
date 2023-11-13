@@ -3,6 +3,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 import Navbar from "~/components/Layout/navbar";
 import Footer from "~/components/Layout/footer";
+import Head from "next/head";
 
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
@@ -97,6 +98,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
         }
       `}</style>
       <SessionProvider session={session}>
+        <Head>
+          <title>Yakshagavishti</title>
+          <meta name="description" content="Yakshagavishti" />
+          <link rel="icon" href="/Cloudinary/home/logo.png" type="images/png" sizes="64x64"/>
+        </Head>
         <main className={`${balooChettan2.variable} ${samarkan.variable} ${porpora.variable} ${oskari.variable} ${tourney.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
           {path.pathname !== "/_error" && <Navbar />}
           <Component {...pageProps} />

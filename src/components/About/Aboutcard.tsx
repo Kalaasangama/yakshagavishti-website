@@ -24,7 +24,7 @@ const Card: React.FC<CardProps> = ({ name, role, url }) => {
         <div className="absolute inset-0 h-full w-full rounded-xl bg-black/60 px-12 text-center text-slate-200 [backface-visibility:hidden] [transform:rotateY(180deg)]">
           <div className="flex min-h-full flex-col items-center justify-center">
             <h1 className="text-3xl font-bold">{name}</h1>
-            <p className="text-lg">{role}</p>
+            <p className="text-lg capitalize">{role}</p>
             {/* <p className="text-base">{desc}</p>   */}
           </div>
         </div>

@@ -67,6 +67,14 @@ const AllCards: React.FC = () => {
       instagramURL: "",
       description: "",
     },
+    {
+      name: "Kishor S Naik",
+      role: "Web Developer",
+      linkedinURL: "linkedin.com/in/kishor-s-naik-378982247",
+      githubURL: "https://github.com/kishor068",
+      instagramURL: "",
+      description: "",
+    }
   ];
 
   return (

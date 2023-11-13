@@ -13,7 +13,7 @@ const SponsorDetails = [
     name: "Quadx Drones",
     subtitle: "Official Executive Partners",
     description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
-    image: "/Sponsor/codingninja.png",
+    image: "/Cloudinary/sponsors/Quadx Drones.png",
     url: "https://www.quadxdrones.com/",
   },
   {
@@ -36,7 +36,7 @@ const Sponsor = () => {
               SPONSORS
             </h1>
             <p className="text-secondary-100 text-3xl font-body text-center">
-              Big names backing an extraordinary fest.
+              Big names backing an extraordinary event.
             </p>
           </div>
           <div className="gap-7 mx-4 sm:mx-8 lg:mx-32 flex flex-col max-w-7xl">
@@ -45,7 +45,7 @@ const Sponsor = () => {
                   delay={i * 1000}
                   key={i}
                   rev={i % 2 === 0 ? false : true}
-                  ImageSrc={sponorDetail.image}
+                  ImageSrc={`Cloudinary/sponsors/${sponorDetail.name}.png`}
                   SponsorTitle={sponorDetail.name}
                   SponsorDesc={sponorDetail.description}
                   SponsorWebsiteLink={sponorDetail.url}

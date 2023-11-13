@@ -15,6 +15,8 @@ import CollegeReg from "~/components/Forms/CollegeReg";
 import LeadRegister from "~/components/Forms/LeadRegister";
 import MemberReg from "~/components/Forms/MemberReg";
 import CreateTeam from "~/components/Forms/MainForm";
+import { motion, useScroll, useTransform } from "framer-motion"
+
 
 // import ViewDialog from "~/components/ViewDialog";
 import ViewTeam from "~/components/ViewTeam";
@@ -29,7 +31,14 @@ const reelImags = [
   { src: "/Cloudinary/home/reel/8.jpg" },
 ]
 
+
 export default function Home() {
+  const ref = useRef(null)
+    const {scrollYProgress} = useScroll({
+      target: ref,
+      offset: ["start end", "end start"]
+    })
+    const yPos = useTransform(scrollYProgress, [0, 1], ["-90%", "-15%"])
   const mainRef = useRef<HTMLDivElement>(null)
 	const [isRegistrationActive, setIsRegistrationActive] = useState<boolean>(true);
 	const { data: sessionData } = useSession();
@@ -50,20 +59,21 @@ export default function Home() {
   
   return (
     <>
-      <Head>
-        <title>Yakshagavishti</title>
-        <meta name="description" content="Yakshagavishti" />
-        <link rel="icon" href="/logo.png" type="images/png" sizes="64x64"/>
-      </Head>
       <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20">
 
         {/* Hero Section */}
 
-        <section  className="relative flex flex-col justify-center items-center h-screen w-full bg-image-gradient mt-1">
-          <Image src={'/Cloudinary/home/Gavishti background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
+        <section  className="relative flex flex-col justify-end items-center h-screen w-full bg-image-gradient mt-1">
+          <Image src={'/Cloudinary/home/Gavishti background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-30 hidden sm:block" fill />
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
 
-          <Image src={'/Cloudinary/home/title2.png'} height={500} width={500} className="w-full max-w-xl absolute h-auto object-contaiin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff] pointer-events-none" alt="Background" />
+            <motion.img style={{y: yPos, x: "-50%"}} ref={ref} src={'/Cloudinary/home/title2.png'} height={800} width={800} className="w-full max-w-xl absolute h-auto object-contaiin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff] pointer-events-none" alt="Background" />
+
+          <Image src={'/Cloudinary/home/Gavishti mobile background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill />
+          
+          <div className="absolute bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
+            <Image src={'/Cloudinary/home/Layer 6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-bottom absolute bottom-0 left-0 right-0" />
+          </div>
 
             {/* Contents - Hero Section */}
 
@@ -73,11 +83,11 @@ export default function Home() {
               </div>
 
             </Reveal>
-            <Reveal classes="flex justify-center">
-              <div className="w-fit">
-                {/* {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)} */}
-              </div>
-            </Reveal>
+              <Reveal classes="flex justify-center">
+                <ScrollLag classes="w-fit mb-48 xl:mb-32 landscape:short:mb-3" speed={75}>
+                  {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)}
+                </ScrollLag>
+              </Reveal>
               
           </div>
         </section>
@@ -151,7 +161,7 @@ export default function Home() {
                     </Reveal>
                     <div  className="flex md:flex-col gap-3 items-center scroll-mt-[4.75rem] sm:scroll-mt-[5.75rem] md:scroll-mt-24 lg:scroll-mt-[6.25rem]">
                       <Reveal classes="">
-                        <a onClick={() => handleDownload("/Cloudinary/home/Rules.pdf", "Rules.pdf")} className="w-fit">
+                        <a onClick={() => handleDownload("/Rules.pdf", "Rules.pdf")} className="w-fit">
                           <OutlineButton>
                             <div className="flex gap-2 items-center justify-center">
                               <BiDownload />
@@ -161,7 +171,7 @@ export default function Home() {
                         </a>
                       </Reveal>
                       <Reveal classes="">
-                        <a onClick={() => handleDownload("/Cloudinary/home/ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf", "ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf")} className="w-fit">
+                        <a onClick={() => handleDownload("/ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf", "ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf")} className="w-fit">
                           <OutlineButton>
                             <div className="flex gap-2 items-center justify-center">
                               <BiDownload />
