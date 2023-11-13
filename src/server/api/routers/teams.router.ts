@@ -48,7 +48,11 @@ export const TeamRouter = createTRPCRouter({
 					);
 					return { message: "success" };
 				}
-				
+				await Promise.all(
+					college.Team.members.map(async (member) => {
+						await ctx.prisma.user.delete({ where: { id: member.id } });
+					}
+				))
 				//Create an array of prisma promises for transaction
 				const addUsersTransaction = input.members.map((user) => {
 					return createAccount(user, college.Team.name, college.id);
@@ -85,7 +89,10 @@ export const TeamRouter = createTRPCRouter({
 				if (college) {
 					console.log(input.password, college.password);
 					if (input.password === college.password) {
-						return { message: "Your college has been signed in successfully." };
+						return {
+							message:
+								"Your college has been signed in successfully.",
+						};
 					} else {
 						throw new kalasangamaError(
 							"Create Team Error",
@@ -141,13 +148,14 @@ export const TeamRouter = createTRPCRouter({
 					where: { id: ctx.session.user.id },
 					include: {
 						team: {
-							select: { members: 
-							{
-								select:{
-									name: true,
-									characterId: true,
-									idURL: true,
-							}}
+							select: {
+								members: {
+									select: {
+										name: true,
+										characterId: true,
+										idURL: true,
+									},
+								},
 							},
 						},
 					},
@@ -184,9 +192,9 @@ export const TeamRouter = createTRPCRouter({
 	updateTeam: protectedProcedure
 		.input(
 			z.object({
+				college_id: z.string(),
 				members: z.array(
 					z.object({
-						user_id: z.string(),
 						name: z.string(),
 						characterId: z.string(),
 						idURL: z.string(),
@@ -216,27 +224,24 @@ export const TeamRouter = createTRPCRouter({
 						"Please request permission to edit your team"
 					);
 
+				const college = await getCollegeById(input.college_id);
 				//Update the users
 				await Promise.all(
 					input.members.map(async (member) => {
-						await ctx.prisma.user.update({
-							where: { id: member.user_id },
-							data: {
-								name: member.name,
-								characterPlayed: {
-									connect: { id: member.characterId },
-								},
-								idURL: member.idURL,
-							},
+						await ctx.prisma.user.delete({
+							where: { id: member.characterId, leaderOf: null },
 						});
 					})
 				);
-
-				//Set the team complete status to prevent further edits
-				await ctx.prisma.team.update({
-					where: { id: ctx.session.user.team.id },
-					data: { isComplete: true },
+				//Create an array of prisma promises for transaction
+				const addUsersTransaction = input.members.map((user) => {
+					return createAccount(user, college.Team.name, college.id);
 				});
+				//Create user accounts in transaction
+				await ctx.prisma.$transaction(addUsersTransaction);
+				//Set the team complete status to prevent further edits
+				await setTeamCompleteStatus(college.Team.id, true);
+				return { message: "success" };
 			} catch (error) {
 				if (error instanceof kalasangamaError) {
 					throw new TRPCError({
