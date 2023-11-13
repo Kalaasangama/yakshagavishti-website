@@ -29,7 +29,7 @@ const Footer = () => {
         <div className="flex flex-col md:flex-row w-full justify-around items-center gap-5 md:gap-20">
           <div className="relative">
             <Link href={'/'}>
-              <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/kalaasangamalogo.png'} alt="Logo" className="object-contain object-center w-20 md:w-24 lg:w-28 2xl:w-30" height={90} width={90} />
+              <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/kalaasangamalogo.png'} alt="Logo" className="object-contain object-center w-20 md:w-24 lg:w-28 2xl:w-30" height={90} width={90} priority />
 
             </Link>
           </div>
@@ -38,14 +38,14 @@ const Footer = () => {
               {links.map((link, idx) => {
                 return (
                   <>
-                    <Link key={idx} className={ "py-2" +
+                    <Link key={`footer${idx}`} className={ "py-2" +
                       activePath?.label === link.label
                         ? "text-secondary-100"
                         : "transition duration-150 ease-linear hover:text-secondary-200"
                       } href={link.url}>
                         {link.label}
                     </Link>
-                    {idx !== links.length-1 && <span className="mx-3 py-2" key={idx}>|</span>}  
+                    {idx !== links.length-1 && <span className="mx-3 py-2" key={`footer_${idx}`}>|</span>}  
                   </>
                 );
               })}

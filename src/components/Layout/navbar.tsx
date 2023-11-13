@@ -54,6 +54,7 @@ const Navbar = () => {
                   width={100}
                   height={100}
                   className="object-contain object-left relative w-[4.5rem] md:w-20 lg:w-[5.25rem]"
+                  priority
                 />
               </Link>
             </div>

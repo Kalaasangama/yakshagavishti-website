@@ -4,19 +4,12 @@ import { type AppType } from "next/app";
 import Navbar from "~/components/Layout/navbar";
 import Footer from "~/components/Layout/footer";
 import Head from "next/head";
+// import { useEffect, useState } from "react";
 
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { useRouter } from "next/router";
 import localFont from 'next/font/local'
-import { Tourney } from "next/font/google"
-
-const tourney = Tourney({
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-tourney',
-  weight: ['700', '800', '900']
-})
 
 const balooChettan2 = localFont({
   src: [
@@ -48,12 +41,6 @@ const balooChettan2 = localFont({
   ],
   display: 'swap',
   variable: '--font-baloo'
-})
-
-const samarkan = localFont({
-  src: '../../public/fonts/Samarkan/SamarkanNormal.woff2',
-  display: 'swap',
-  variable: '--font-hindi'
 })
 
 const rhomdon = localFont({
@@ -90,6 +77,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   const path = useRouter()
 
+  // const [loading, setLoading] = useState(true);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 2000);
+  // }, []);
+
   return (
     <>
       <style jsx global>{`
@@ -103,12 +98,13 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <meta name="description" content="Yakshagavishti" />
           <link rel="icon" href="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png" type="images/png" sizes="64x64"/>
         </Head>
-        <main className={`${balooChettan2.variable} ${samarkan.variable} ${porpora.variable} ${oskari.variable} ${tourney.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
-          {path.pathname !== "/_error" && <Navbar />}
-          <Component {...pageProps} />
-          <Toaster />
-          <Footer />
-        </main>
+        {/* { loading && <Loader /> } */}
+          <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
+            {path.pathname !== "/_error" && <Navbar />}
+            <Component {...pageProps} />
+            <Toaster />
+            <Footer />
+          </main>
       </SessionProvider>
     </>
   );

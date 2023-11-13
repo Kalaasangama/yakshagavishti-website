@@ -3,6 +3,14 @@ import Card from "./Aboutcard";
 
 const members = [
   {
+    name: "Mr. Anant Murthi",
+    role: "Faculty Coordinator"
+  },
+  {
+    name: "Shravan Udupa K",
+    role: "Event Head"
+  },
+  {
     name: "Amrutha V",
     role: "President",
   },
@@ -11,12 +19,12 @@ const members = [
   //   role: "Secretary",
   // },
   {
-    name: "Anwesh R Shetty",
-    role: "Treasurer and Yakshagana Head",
-  },
-  {
     name: "Shrikrishna",
     role: "Vice President",
+  },
+  {
+    name: "Anwesh R Shetty",
+    role: "Treasurer and Yakshagana Head",
   },
   {
     name: "Keshav Nayak",
