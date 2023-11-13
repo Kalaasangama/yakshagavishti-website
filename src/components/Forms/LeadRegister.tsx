@@ -32,6 +32,9 @@ import Dropzone from "../Dropzone";
 import { toast } from "../ui/use-toast";
 import { api } from "~/utils/api";
 import { uploadFile } from "~/utils/file";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { IoCloseCircle } from "react-icons/io5";
 
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
@@ -52,11 +55,14 @@ const LeadRegister = ({
 	setFormToShow: Dispatch<SetStateAction<number>>;
 	setLeaderChar: Dispatch<SetStateAction<string>>;
 }) => {
+	const user = useSession();
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
-	const [LeaderContact, setLeaderContact] = useState<string>("");
+	const [LeaderContact, setLeaderContact] = useState<string>(
+		user.data.user.contact
+	);
 	const [UploadStatus, setUploadStatus] = useState("");
 	const SetLeaderDetails = api.team.register.useMutation({
 		onError(error) {
@@ -84,6 +90,9 @@ const LeadRegister = ({
 	const handleUpload = async () => {
 		setUploadStatus("Uploading....");
 		try {
+			if (user.data.user.idURL) {
+				return user.data.user.idURL;
+			}
 			if (files[0] instanceof File) {
 				const result = await uploadFile(files[0]);
 				setUploadStatus("Upload Succesful");
@@ -97,14 +106,14 @@ const LeadRegister = ({
 	//Field Validation for Team Lead
 	const Passwordpattern = () => {
 		const phoneregx = "^[6-9][0-9]{9}$";
-			if (!LeaderContact.match(phoneregx)) {
-				toast({
-					variant: "destructive",
-					title: "Invalid Phone number!",
-					description: "Check the entered phone number.",
-				});
-				return false;
-			}		
+		if (!LeaderContact.match(phoneregx)) {
+			toast({
+				variant: "destructive",
+				title: "Invalid Phone number!",
+				description: "Check the entered phone number.",
+			});
+			return false;
+		}
 		if (isCheckboxChecked) {
 			if (!LeaderCharacter) {
 				toast({
@@ -114,18 +123,18 @@ const LeadRegister = ({
 				});
 				return false;
 			}
-			
 		}
-		if (files.length === 0) {
-			toast({
-				variant: "destructive",
-				title: "No ID uploaded!",
-				description: "Please upload your ID.",
-			});
-			return false;
-		}
+		if (!user.data.user.idURL)
+			if (files.length === 0) {
+				toast({
+					variant: "destructive",
+					title: "No ID uploaded!",
+					description: "Please upload your ID.",
+				});
+				return false;
+			}
 
-		if(files.length > 1){
+		if (files.length > 1) {
 			toast({
 				variant: "destructive",
 				title: "Only one ID allowed!",
@@ -150,7 +159,7 @@ const LeadRegister = ({
 			<DialogTrigger asChild>
 				<Button>Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] overflow-y-scroll">
+			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Create Team</DialogTitle>
 					<DialogDescription>
@@ -168,12 +177,10 @@ const LeadRegister = ({
 									<FormItem>
 										<div className="flex flex-col">
 											<div>
-												<div className="grid w-full max-w-sm items-center gap-1.5">
-												</div>
+												<div className="grid w-full max-w-sm items-center gap-1.5"></div>
 											</div>
-												
+
 											<div className="grid w-full max-w-sm items-center gap-1.5">
-												
 												<Label htmlFor="phone">
 													Phone number
 												</Label>
@@ -192,18 +199,37 @@ const LeadRegister = ({
 													}}
 												/>
 											</div>
-											
 										</div>
 
 										<div className="grid grid-cols-3">
-											<div className="col-span-3">
-												<Dropzone
-													files={files}
-													setFiles={setFiles}
-												/>
-											</div>
+											{!user.data.user.idURL ? (
+												<div className="col-span-3">
+													<Dropzone
+														files={files}
+														setFiles={setFiles}
+													/>
+												</div>
+											) : (
+												<div className="relative w-fit">
+													<Image
+														src={
+															user.data.user.idURL
+														}
+														alt=""
+														height={100}
+														width={100}
+													/>
+													<IoCloseCircle
+														className="absolute right-3 top-1 cursor-pointer text-xl text-red-600 md:text-2xl"
+														onClick={() => {
+															user.data.user.idURL =
+																"";
+														}}
+													/>
+												</div>
+											)}
 										</div>
-										<div className="flex flex-row gap-3 items-center">
+										<div className="flex flex-row items-center gap-3">
 											<div className="">
 												<Checkbox
 													name="character"
@@ -273,7 +299,7 @@ const LeadRegister = ({
 														)}
 													</SelectContent>
 												</Select>
-												
+
 												<FormMessage />
 											</React.Fragment>
 										)}

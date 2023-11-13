@@ -20,8 +20,8 @@ interface AdapterUser {
 
 interface UserInput {
 	name?: string;
-	character_id?: string;
-	id_url?: string;
+	characterId?: string;
+	idURL?: string;
 }
 
 interface createAccountParm {
@@ -33,7 +33,7 @@ interface addScoresInput {
 	teamName: string;
 	teamScore: number;
 	characterScores: {
-		character_id: string;
+		characterId: string;
 		score: number;
 	}[];
 	givenBy: string;

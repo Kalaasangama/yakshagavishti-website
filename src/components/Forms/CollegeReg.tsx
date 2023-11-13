@@ -28,6 +28,8 @@ import { Input } from "src/components/ui/input";
 import { Label } from "src/components/ui/label";
 import { toast } from "../ui/use-toast";
 import { api } from "~/utils/api";
+import { getServerSession } from "next-auth";
+import { getSession } from "next-auth/react";
 export default function CollegeReg({
 	setFormToShow,
 	setCollege,
@@ -45,7 +47,15 @@ export default function CollegeReg({
 				description: error.message,
 			});
 		},
-		onSuccess(data) {
+		async onSuccess(data) {
+			const user = await getSession();
+			if (user.user.leaderOf) {
+				setFormToShow(3);
+			}
+			else{
+				setFormToShow(2);
+			}
+			setCollege(selectedCollege);
 			return toast({
 				variant: "default",
 				title: "College signed in successfully!",
@@ -54,24 +64,16 @@ export default function CollegeReg({
 		},
 	});
 	const form = useForm();
-	if (verifyPassword.isSuccess) {
-		setFormToShow(2);
-		setCollege(selectedCollege);
-	}
 	const handleCollegeChange = (value: string) => {
 		setSelectedCollege(value);
 	};
 
 	const Passwordpattern = () => {
-		
 		if (selectedCollege) {
-			
-				verifyPassword.mutate({
-					college_id: selectedCollege,
-					password: teamPassword,
-				});
-				
-			
+			verifyPassword.mutate({
+				college_id: selectedCollege,
+				password: teamPassword,
+			});
 		} else {
 			toast({
 				variant: "destructive",
@@ -86,9 +88,7 @@ export default function CollegeReg({
 		<div className="">
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button className="">
-						Create Team
-					</Button>
+					<Button className="">Create Team</Button>
 				</DialogTrigger>
 				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
 					<DialogHeader>

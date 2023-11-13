@@ -20,8 +20,8 @@ export const TeamRouter = createTRPCRouter({
 				members: z.array(
 					z.object({
 						name: z.string(),
-						character_id: z.string(),
-						id_url: z.string(),
+						characterId: z.string(),
+						idURL: z.string(),
 					})
 				),
 			})
@@ -192,8 +192,8 @@ export const TeamRouter = createTRPCRouter({
 					z.object({
 						user_id: z.string(),
 						name: z.string(),
-						character_id: z.string(),
-						id_url: z.string(),
+						characterId: z.string(),
+						idURL: z.string(),
 					})
 				),
 			})
@@ -228,9 +228,9 @@ export const TeamRouter = createTRPCRouter({
 							data: {
 								name: member.name,
 								characterPlayed: {
-									connect: { id: member.character_id },
+									connect: { id: member.characterId },
 								},
-								idURL: member.id_url,
+								idURL: member.idURL,
 							},
 						});
 					})
