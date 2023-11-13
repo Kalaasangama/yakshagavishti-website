@@ -176,7 +176,7 @@ const MemberReg = ({
 			<DialogTrigger asChild>
 				<Button variant="outline">Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white overflow-y-scroll">
+			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
 				<DialogTitle>Character Details</DialogTitle>
 				<DialogDescription>
 					Enter details of the Teammates who will play respective
@@ -221,7 +221,9 @@ const MemberReg = ({
 							<Button
 								disabled={
 									availableRoles.length ===
-									MembersArray.length
+									MembersArray.map((member) => {
+										if (member) return member;
+									}).length
 										? false
 										: true
 								}

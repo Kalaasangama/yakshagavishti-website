@@ -52,7 +52,6 @@ const setLeader = async (
 					},
 				},
 				leaderOf: {
-					disconnect: {},
 					connect: {
 						name: teamName,
 					},
@@ -90,6 +89,8 @@ const setLeader = async (
 						id: college_id,
 					},
 				},
+				idURL: leaderIdUrl,
+				contact: leader_contact,
 			},
 		});
 };
