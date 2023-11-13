@@ -60,7 +60,7 @@ const Dropzone = ({ files, setFiles }: DropzoneProps) => {
 
 	return (
 		<div className="container">
-			<div
+			{files.length === 0 && <div
 				className="dropzone bg-gray-500/50"
 				{...getRootProps({
 					role: "button",
@@ -73,7 +73,7 @@ const Dropzone = ({ files, setFiles }: DropzoneProps) => {
 				) : (
 					<p className="px-2 text-center">Drop your ID card here</p>
 				)}
-			</div>
+			</div>}
 			{files.length > 0 && (
 				<div className="flex-col items-center justify-center">
 					{files.map((image, index) => (

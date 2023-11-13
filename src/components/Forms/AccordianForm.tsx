@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import Image from "next/image";
 import { uploadFile } from "~/utils/file";
+import { IoCloseCircle } from "react-icons/io5";
 
 type Members = {
 	name: string;
@@ -71,7 +72,7 @@ export default function AccordianForm({
 			return false;
 		}
 
-		if(files.length > 1){
+		if (files.length > 1) {
 			toast({
 				variant: "destructive",
 				title: "Only one ID allowed!",
@@ -79,7 +80,7 @@ export default function AccordianForm({
 			});
 			return false;
 		}
-		return true
+		return true;
 	};
 
 	const setTeamMember = async (
@@ -91,7 +92,7 @@ export default function AccordianForm({
 		const data: Members = {
 			name: teammateName,
 			characterId: characterId,
-			idURL: z.string().parse(idURL),
+			idURL: z.string().parse(idURL || MembersArray[index].idURL),
 		};
 
 		const array = [...MembersArray];
@@ -128,21 +129,35 @@ export default function AccordianForm({
 								}}
 							/>
 							<FormLabel className="mt-5 text-white">
-								Drop Image of your ID
+								ID Card
 							</FormLabel>
 							<div className="grid grid-cols-3">
 								<div className="col-span-3">
-									<Dropzone
-										files={files}
-										setFiles={setFiles}
-									/>
-									{MembersArray[index]?.idURL && (
-										<Image
-											src={MembersArray[index]?.idURL}
-											alt=""
-											height={100}
-											width={100}
+									{!MembersArray[index]?.idURL && (
+										<Dropzone
+											files={files}
+											setFiles={setFiles}
 										/>
+									)}
+									{MembersArray[index]?.idURL && (
+										<div className="relative w-fit">
+											<Image
+												src={MembersArray[index]?.idURL}
+												alt=""
+												height={100}
+												width={100}
+											/>
+											<IoCloseCircle
+												className="absolute right-3 top-1 cursor-pointer text-xl text-red-600 md:text-2xl"
+												onClick={() => {
+													const members =
+														MembersArray;
+													members[index].idURL = "";
+													setFiles([]);
+													setMembersArray(members);
+												}}
+											/>
+										</div>
 									)}
 								</div>
 							</div>
