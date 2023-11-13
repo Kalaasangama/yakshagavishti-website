@@ -28,7 +28,7 @@ import { api } from "~/utils/api";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
-
+import z from "zod";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -118,20 +118,20 @@ const MemberReg = ({
 						<AlertDialogTrigger
 							disabled={
 								availableRoles.length ===
-								MembersArray.filter(
-									(member) => member !== (undefined || null)
-								).length
+									MembersArray.filter(
+										(member) => member !== (undefined || null)
+									).length
 									? false
 									: true
 							}
 						>
 							<Button
-							size="sm"
+								size="sm"
 								disabled={
 									availableRoles.length ===
-									MembersArray.filter(
-										(member) => member !== (undefined || null)
-									).length
+										MembersArray.filter(
+											(member) => member !== (undefined || null)
+										).length
 										? false
 										: true
 								}
@@ -166,18 +166,25 @@ const MemberReg = ({
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
-									disabled = {
+									disabled={
 										registerMembers.isLoading
 									}
 									onClick={(e) => {
 										e.preventDefault();
 										registerMembers.mutate({
-											members: MembersArray,
+											members:
+												z.array(
+													z.object({
+														name: z.string(),
+														characterId: z.string(),
+														idURL: z.string(),
+													})
+												).parse(MembersArray),
 											college_id: CollegeId,
-										});
+										})
 									}}
 								>
-									{registerMembers.isLoading?'Loading...':'Continue'}
+									{registerMembers.isLoading ? 'Loading...' : 'Continue'}
 								</AlertDialogAction>
 							</AlertDialogFooter>
 						</AlertDialogContent>
