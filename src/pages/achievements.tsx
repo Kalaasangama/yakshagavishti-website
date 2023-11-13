@@ -2,6 +2,8 @@ import { useState } from "react";
 import Expandable from "~/components/expandable";
 import { GiPaperArrow } from "react-icons/gi"
 import { BiChevronsDown } from "react-icons/bi"
+import dynamic from 'next/dynamic'
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
 
 const achievements= [
   {
@@ -41,8 +43,10 @@ const Achievements = () => {
 
   return (
     <main className="snap-y snap-mandatory h-screen overflow-scroll no-scrollbar relative top-0">
-      <div className="h-screen bg-black flex items-center justify-center snap-start">
-        {/* video */}
+      <div className="h-screen flex items-center justify-center snap-start overflow-x-hidden">
+          {/* <video src="https://player.vimeo.com/video/883950133?title=0&byline=0&portrait=0&playsinline=0&muted=1&autoplay=1&autopause=0&controls=0&loop=1&app_id=122963" className="h-screen w-full aspect-video absolute inset-0"></video> */}
+          <video src="https://res.cloudinary.com/dfhg1joox/video/upload/v1699877866/yakshagavishti/achievementsvideo_e7ayx4.mp4" className="h-screen w-full absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video>
+          <div className="bg-gradient-to-t from-black/50 to-black/50 h-screen w-full absolute inset-0 -z-20"></div>
         <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl ">Achievements</div>
         
         <span className='animate-pulse fixed bottom-16 landscape:short:bottom-10 right-1/2 translate-x-1/2 -z-10'>

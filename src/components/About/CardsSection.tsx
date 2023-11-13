@@ -6,10 +6,10 @@ const members = [
     name: "Amrutha V",
     role: "President",
   },
-  {
-    name: "Krishna M S",
-    role: "Secretary",
-  },
+  // {
+  //   name: "Krishna M S",
+  //   role: "Secretary",
+  // },
   {
     name: "Anwesh R Shetty",
     role: "Treasurer and Yakshagana Head",
@@ -26,10 +26,10 @@ const members = [
     name: "Sinchana S Bairy",
     role: "Classical Dance Head",
   },
-  {
-    name: "Shravya",
-    role: "Classical Dance Head",
-  },
+  // {
+  //   name: "Shravya",
+  //   role: "Classical Dance Head",
+  // },
   {
     name: "Shreyas Upadhyaya",
     role: "Classical music Head",

@@ -29,7 +29,7 @@ export default function ViewTeam() {
 		teamData.isSuccess && (
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button variant="outline" className="">
+					<Button className="">
 						View Team
 					</Button>
 				</DialogTrigger>
@@ -57,7 +57,7 @@ export default function ViewTeam() {
 										{member.name}
 									</TableCell>
 									<TableCell>
-									<a href={member.idURL}>
+									<a href={member.idURL} target="_blank">
 										{member.idURL && <Image
 											src={member.idURL}
 											alt="id_image"

@@ -27,7 +27,7 @@ export default function AccordianForm({
 	index: number;
 	characterId: string;
 }) {
-	const [teammateName, setTeammateName] = useState(MembersArray[index]?.name);
+	const [teammateName, setTeammateName] = useState(MembersArray[index]?.name || "");
 	const [uploadStatus, setUploadStatus] = useState("");
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const { toast } = useToast();
@@ -59,7 +59,7 @@ export default function AccordianForm({
 			return false;
 		}
 
-		if (teammateName.length < 3) {
+		if (teammateName?.length < 3) {
 			toast({
 				variant: "destructive",
 				title: "Invalid Name!",

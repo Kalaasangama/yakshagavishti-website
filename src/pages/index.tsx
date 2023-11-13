@@ -30,7 +30,6 @@ const reelImags = [
 ]
 
 export default function Home() {
-  console.log("rerender Index")
   const mainRef = useRef<HTMLDivElement>(null)
 	const [isRegistrationActive, setIsRegistrationActive] = useState<boolean>(true);
 	const { data: sessionData } = useSession();
@@ -60,21 +59,23 @@ export default function Home() {
 
         {/* Hero Section */}
 
-        <section  className="relative flex flex-col justify-center items-center h-screen w-full bg-gradient-to-b from-primary-100 via-primary-transparent-50  to-primary-100 mt-1">
-          <Image src={'/Banner-cropped.jpg'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
+        <section  className="relative flex flex-col justify-center items-center h-screen w-full bg-image-gradient mt-1">
+          <Image src={'/Cloudinary/home/Gavishti background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-10 drop-shadow-[0_0_30px_theme(colors.primary-100)]" fill />
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
+
+          <Image src={'/Cloudinary/home/title2.png'} height={500} width={500} className="w-full max-w-xl absolute h-auto object-contaiin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff] pointer-events-none" alt="Background" />
 
             {/* Contents - Hero Section */}
 
             <Reveal classes="">
               <div className="flex flex-col items-center gap-1 landscape:short:gap-1 text-center">
-                <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Yakshagavishti</div>
+                {/* <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Yakshagavishti</div> */}
               </div>
 
             </Reveal>
             <Reveal classes="flex justify-center">
               <div className="w-fit">
-                {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)}
+                {/* {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)} */}
               </div>
             </Reveal>
               
