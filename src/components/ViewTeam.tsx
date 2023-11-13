@@ -47,7 +47,7 @@ export default function ViewTeam() {
 									Name
 								</TableHead>
 								<TableHead>ID</TableHead>
-								<TableHead>Status</TableHead>
+								<TableHead>Verification Status</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>

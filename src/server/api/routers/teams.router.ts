@@ -46,17 +46,23 @@ export const TeamRouter = createTRPCRouter({
 						input.leader_idUrl,
 						input.leader_contact
 					);
-					return { message: "success" };
+					return { message: "Leader Details Updated" };
 				}
-				//Create an array of prisma promises for transaction
-				const addUsersTransaction = input.members.map((user) => {
-					return createAccount(user, college.Team.name, college.id);
-				});
-				//Create user accounts in transaction
-				await ctx.prisma.$transaction(addUsersTransaction);
+				//Add members to team
+				await ctx.prisma.user.createMany({
+					data:input.members.map((user) => {
+						return {
+							name: user.name,
+							idURL: user.idURL,
+							collegeId: college.id,
+							teamId: college.Team.id,
+						};
+					})
+				})
+
 				//Set team complete status to true to prevent edits
 				await setTeamCompleteStatus(college.Team.id, true);
-				return { message: "success" };
+				return { message: "Team created successfully" };
 			} catch (error) {
 				if (error instanceof kalasangamaError) {
 					throw new TRPCError({
@@ -86,7 +92,7 @@ export const TeamRouter = createTRPCRouter({
 					if (input.password === college.password) {
 						return {
 							message:
-								"Your college has been signed in successfully.",
+								"Let's Proceed",
 						};
 					} else {
 						throw new kalasangamaError(
