@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "src/components/ui/button";
 import {
 	DialogContent,
@@ -28,7 +28,7 @@ import { api } from "~/utils/api";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
-import z from "zod";
+import z, { set } from "zod";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -54,11 +54,15 @@ const MemberReg = ({
 	CollegeId: string;
 	setFormToShow: Dispatch<SetStateAction<number>>;
 }) => {
+	const membersList = api.team.getTeamForEdits.useQuery();
 	const [MembersArray, setMembersArray] = useState<Members[]>(
+
 		JSON.parse(localStorage.getItem("members")) || []
 	);
 	const { toast } = useToast();
-
+	useEffect(() => {
+		if (membersList.data && membersList.data.members.length >= 7) setMembersArray(membersList.data.members)
+	}, [membersList.data])
 	const registerMembers = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -82,6 +86,7 @@ const MemberReg = ({
 		(roles) => roles.value !== LeaderCharacter
 	);
 	const router = useRouter();
+	if (membersList.isLoading) return <div>Loading...</div>
 	return (
 		<Dialog defaultOpen={true}>
 			<DialogTrigger asChild>
@@ -117,7 +122,7 @@ const MemberReg = ({
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
-								availableRoles.length ===
+								availableRoles.length <=
 									MembersArray.filter(
 										(member) => member !== (undefined || null)
 									).length
@@ -128,7 +133,7 @@ const MemberReg = ({
 							<Button
 								size="sm"
 								disabled={
-									availableRoles.length ===
+									availableRoles.length <=
 										MembersArray.filter(
 											(member) => member !== (undefined || null)
 										).length
@@ -171,6 +176,7 @@ const MemberReg = ({
 									}
 									onClick={(e) => {
 										e.preventDefault();
+										console.log(MembersArray);
 										registerMembers.mutate({
 											members:
 												z.array(
