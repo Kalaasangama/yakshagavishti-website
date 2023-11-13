@@ -35,9 +35,11 @@ module.exports = {
           "25%": {transform: 'translate(0%, -7px)'},
           "100%": {transform: 'translate(0%, 5px)'}
         },
-        "border-animation": {
+        "rotation": {
           '0%': {transform: 'rotate(0deg)'},
-          '100%': {transform: 'rotate(360deg)'}
+          '33%': {transform: 'rotate(10deg)'},
+          '66%': {transform: 'rotate(20deg)'},
+          '100%': {transform: 'rotate(30deg)'}
         },
         "top": {
           "0%": {transform: 'skewY(-45deg) translateY(100%)'},
@@ -85,14 +87,14 @@ module.exports = {
         }
       },
       transitionTimingFunction: {
-        rotationTick: "0.70, 0, 0.3, 1"
+        rotationTick: "cubic-bezier(0.80, 0, 0.2, 1)"
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "arrow-down": "arrow-down 1.5s linear infinite",
         "arrow-up": "arrow-up 1.5s linear infinite",
-        "border-animation": "border-animation 4s linear infinite",
+        "rotation": "rotation 3s infinite",
         "top": "top 4s infinite ease-in-out",
         "bottom": "bottom 4s infinite ease-in-out",
         "left": "left 4s infinite ease-in-out",

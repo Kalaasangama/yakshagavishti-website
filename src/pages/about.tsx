@@ -12,7 +12,7 @@ const Index = () => {
           <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col md:flex-row gap-10 justify-center items-center max-w-7xl">
             <Reveal classes="w-full md:w-1/3">
               <Image
-                src="/nitteLogoWhite.webp"
+                src="/Cloudinary/about/nitteLogo.png"
                 alt="image"
                 loading="lazy"
                 className="object-contain h-full w-full object-center"

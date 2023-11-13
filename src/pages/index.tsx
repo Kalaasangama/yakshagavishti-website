@@ -8,8 +8,7 @@ import Reveal from "~/components/Animations/reveal";
 import { Button, OutlineButton } from "~/components/Button";
 import { BiDownload } from "react-icons/bi";
 import Reel from "~/components/Home/reel";
-import { CreateTeamDialog } from "~/components/Forms/CreateTeam";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
 import { useContainerDimension } from "~/components/customHooks";
 import CollegeReg from "~/components/Forms/CollegeReg";
@@ -31,7 +30,7 @@ const reelImags = [
 ]
 
 export default function Home() {
-  const [rotation, setRotation] = useState<number>(0);
+  console.log("rerender Index")
   const mainRef = useRef<HTMLDivElement>(null)
 	const [isRegistrationActive, setIsRegistrationActive] = useState<boolean>(true);
 	const { data: sessionData } = useSession();
@@ -89,22 +88,21 @@ export default function Home() {
               <Reveal classes="2xl:hidden">
                 <ScrollLag classes="" speed={300}>
                   <div className="h-full mt-[10vh] sm:mt-[25vh] md:mt-[30vh]">
-                    <Timer setIsRegistrationActive={setIsRegistrationActive} setRotation={setRotation} rotation={rotation} />
+                    <Timer setIsRegistrationActive={setIsRegistrationActive} />
                   </div>
                 </ScrollLag>
               </Reveal>
               <Reveal classes="hidden 2xl:block">
                 <ScrollLag classes="" speed={200}>
                   <div className="h-full mt-[30vh]">
-                    <Timer setIsRegistrationActive={setIsRegistrationActive} setRotation={setRotation} rotation={rotation} />
+                    <Timer setIsRegistrationActive={setIsRegistrationActive} />
                   </div>
                 </ScrollLag>
               </Reveal>
             </div>
 
             <Image
-                style={{ transform: `rotate(${rotation}deg)` }}
-                className="-z-10 object-contain opacity-50 mix-blend-luminosity py-16 sm:py-20 md:py-24 transition-all duration-100 ease-rotationTick"
+                className="-z-10 object-contain opacity-50 mix-blend-luminosity py-16 sm:py-20 md:py-24 transition-all ease-rotationTick animate-rotation"
                 src={"/Cloudinary/home/mandala-center.png"}
                 fill
                 alt="mandala"

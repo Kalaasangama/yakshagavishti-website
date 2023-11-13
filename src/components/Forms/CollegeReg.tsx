@@ -173,8 +173,20 @@ export default function CollegeReg({
 										</FormItem>
 									)}
 								/>
-								<Button
+								{verifyPassword.isLoading ? (
+									<Button
+										type="submit"
+										size="sm"
+										className="text-white"
+										variant={"button"}
+										disabled
+									>
+										Loading...
+									</Button>
+								) :
+								(<Button
 									type="submit"
+									size="sm"
 									className="bg-white text-white hover:bg-gray-200"
 									variant={"button"}
 									onClick={(e) => {
@@ -183,7 +195,7 @@ export default function CollegeReg({
 									}}
 								>
 									Next
-								</Button>
+								</Button>)}
 							</form>
 						</Form>
 					</div>

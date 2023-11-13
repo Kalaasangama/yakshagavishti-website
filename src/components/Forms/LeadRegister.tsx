@@ -281,10 +281,19 @@ const LeadRegister = ({
 									</FormItem>
 								)}
 							/>
+							{UploadStatus === "Uploading...." ? (
+								<Button
+									type="submit"
+									size="sm"
+									disabled
+								>
+									{UploadStatus}
+								</Button>
+							) : (
 							<Button
 								type="submit"
+								size="sm"
 								className="bg-white text-white hover:bg-gray-200"
-								variant={"button"}
 								onClick={(e) => {
 									e.preventDefault();
 									Passwordpattern();
@@ -292,7 +301,7 @@ const LeadRegister = ({
 								}}
 							>
 								Next
-							</Button>
+							</Button>)}
 						</form>
 					</Form>
 				</div>

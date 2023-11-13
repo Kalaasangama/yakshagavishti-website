@@ -151,7 +151,7 @@ export default function AccordianForm({
 				/>
 				{MembersArray[index] === undefined ? (
 					<Button
-						variant={"button"}
+						size="sm"
 						onClick={(e) => {
 							e.preventDefault();
 							if (FieldValidation()) {
@@ -164,6 +164,7 @@ export default function AccordianForm({
 				) : (
 					<Button
 						variant={"button"}
+						size="sm"
 						onClick={(e) => {
 							e.preventDefault();
 							void setTeamMember(characterId, index);

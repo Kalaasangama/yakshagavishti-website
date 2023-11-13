@@ -212,7 +212,7 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button onClick={()=>setFormToShow(2)}>Back</Button>
+					<Button onClick={()=>setFormToShow(2)} size="sm">Back</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
@@ -222,6 +222,7 @@ const MemberReg = ({
 							}
 						>
 							<Button
+							size="sm"
 								disabled={
 									availableRoles.length ===
 									MembersArray.length
