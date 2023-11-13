@@ -17,7 +17,7 @@ const team = () => {
               </Reveal>
               <Reveal classes="flex justify-center items-center">
                 <Image
-                  src="/Cloudinary/team/flc_logo.png"
+                  src="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/team/flc_logo.png"
                   alt="image"
                   height={300}
                   width={300}

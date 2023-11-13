@@ -21,14 +21,14 @@ import { motion, useScroll, useTransform } from "framer-motion"
 // import ViewDialog from "~/components/ViewDialog";
 import ViewTeam from "~/components/ViewTeam";
 const reelImags = [
-  { src: "/Cloudinary/home/reel/1.jpg" },
-  { src: "/Cloudinary/home/reel/2.jpg" },
-  { src: "/Cloudinary/home/reel/3.jpg" },
-  { src: "/Cloudinary/home/reel/4.jpg" },
-  { src: "/Cloudinary/home/reel/5.jpg" },
-  { src: "/Cloudinary/home/reel/6.jpg" },
-  { src: "/Cloudinary/home/reel/7.jpg" },
-  { src: "/Cloudinary/home/reel/8.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/1.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/2.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/3.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/4.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/5.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/6.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/7.jpg" },
+  { src: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/reel/8.jpg" },
 ]
 
 
@@ -64,15 +64,15 @@ export default function Home() {
         {/* Hero Section */}
 
         <section  className="relative flex flex-col justify-end items-center h-screen w-full bg-image-gradient mt-1">
-          <Image src={'/Cloudinary/home/Gavishti background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-30 hidden sm:block" fill />
+          <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-30 hidden sm:block" fill />
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
 
-            <motion.img style={{y: yPos, x: "-50%"}} ref={ref} src={'/Cloudinary/home/title2.png'} height={800} width={800} className="w-full max-w-xl absolute h-auto object-contaiin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff] pointer-events-none" alt="Background" />
+            <motion.img style={{y: yPos, x: "-50%"}} ref={ref} src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/title2.png'} height={800} width={800} className="w-full max-w-xl absolute h-auto object-contaiin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff] pointer-events-none" alt="Background" />
 
-          <Image src={'/Cloudinary/home/Gavishti mobile background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill />
+          <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill />
           
           <div className="absolute bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
-            <Image src={'/Cloudinary/home/Layer 6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-bottom absolute bottom-0 left-0 right-0" />
+            <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-bottom absolute bottom-0 left-0 right-0" />
           </div>
 
             {/* Contents - Hero Section */}
@@ -114,7 +114,7 @@ export default function Home() {
 
             <Image
                 className="-z-10 object-contain opacity-50 mix-blend-luminosity py-16 sm:py-20 md:py-24 transition-all ease-rotationTick animate-rotation"
-                src={"/Cloudinary/home/mandala-center.png"}
+                src={"https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/mandala-center.png"}
                 fill
                 alt="mandala"
             ></Image>
@@ -123,7 +123,7 @@ export default function Home() {
 							classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 -top-40 -translate-y-[50%] right-0 md:right-[10%] -translate-x-[50%] opacity-50"
 						>
 							<Image
-								src={"/Cloudinary/home/mandala.png"}
+								src={"https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/mandala.png"}
 								fill
 								alt=""
 								className="select-none opacity-70  bg-blend-luminosity"
@@ -155,7 +155,7 @@ export default function Home() {
                   <div className="shrink-0 flex flex-col gap-3 items-center">
                     <Reveal classes="">
                       <div className="group h-48 w-48 sm:h-56 sm:w-56 lg:h-60 lg:w-60 relative shrink-0 overflow-hidden border-secondary-100 drop-shadow-[0px_0px_12px_#df8b2b] hover:scale-105 transition duration-200 ease-linear rounded-xl">
-                        <Image src={'/Cloudinary/home/logo.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
+                        <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png'} alt="Yakshagana" fill className=" select-none object-contain object-center rounded-xl hover:grayscale-0  transition duration-300 ease-linear" />
                         {/* <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div> */}
                       </div>
                     </Reveal>
@@ -204,7 +204,7 @@ export default function Home() {
           <section className="mx-4 sm:mx-8 lg:mx-32 flex flex-col gap-3 relative sm:mt-48 md:mt-12 xl:mt-20 2xl:mt-0 ">
             <ScrollLag speed={125} classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50">
               <div className="">
-                <Image src={'/Cloudinary/home/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
+                <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/mandala.png'} fill alt='' className="object-contain select-none  opacity-70 bg-blend-luminosity" />
               </div>
             </ScrollLag>
             <div className="max-w-7xl xl:-translate-x-1/2 relative xl:left-1/2">
