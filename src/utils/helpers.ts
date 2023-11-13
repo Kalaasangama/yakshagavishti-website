@@ -108,10 +108,10 @@ const createAccount = (
 			name: user?.name,
 			characterPlayed: {
 				connect: {
-					id: user?.character_id,
+					id: user?.characterId,
 				},
 			},
-			idURL: user?.id_url,
+			idURL: user?.idURL,
 			team: {
 				connect: {
 					name: teamName,

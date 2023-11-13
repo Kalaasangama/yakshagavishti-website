@@ -1,6 +1,5 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "src/components/ui/button";
-import { Form, FormField, FormLabel } from "src/components/ui/form";
 import {
 	DialogContent,
 	DialogDescription,
@@ -25,14 +24,8 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "../ui/alert-dialog";
-import Dropzone from "../Dropzone";
 import { api } from "~/utils/api";
-import * as z from "zod";
 import { useToast } from "../ui/use-toast";
-import { useForm } from "react-hook-form";
-import { Input } from "../ui/input";
-import Image from "next/image";
-import { uploadFile } from "~/utils/file";
 import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
 
@@ -61,16 +54,11 @@ const MemberReg = ({
 	CollegeId: string;
 	setFormToShow: Dispatch<SetStateAction<number>>;
 }) => {
-
-	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
-	const [selectedRole, setSelectedRole] = useState<string>("");
-	const [teammateName, setTeammateName] = useState("");
 	const [MembersArray, setMembersArray] = useState<Members[]>(
 		JSON.parse(localStorage.getItem("members")) || []
 	);
-	const [uploadStatus, setUploadStatus] = useState("");
 	const { toast } = useToast();
-	
+
 	const registerMembers = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -81,105 +69,25 @@ const MemberReg = ({
 		},
 		onSuccess(data) {
 			localStorage.removeItem("members");
-			 toast({
+			toast({
 				variant: "default",
 				title: "Team registered successfully!",
 				description: data.message,
 			});
 			return router.reload();
 		},
-
 	});
 
 	const availableRoles = roles.filter(
 		(roles) => roles.value !== LeaderCharacter
 	);
 	const router = useRouter();
-	const FieldValidation = () => {
-		if (teammateName === "") {
-			toast({
-				variant: "destructive",
-				title: "Fill in all the details!",
-				description: "Fill in all the fields.",
-			});
-			return false;
-		}
-
-		if (teammateName.length < 3) {
-			toast({
-				variant: "destructive",
-				title: "Invalid Name!",
-				description: "Name must be at least 3 characters.",
-			});
-			return false;
-		}
-
-		if (files.length === 0) {
-			toast({
-				variant: "destructive",
-				title: "No ID Uploaded!",
-				description: "Please upload your ID.",
-			});
-			return false;
-		}
-
-		if (files.length > 1) {
-			toast({
-				variant: "destructive",
-				title: "Only one ID allowed!",
-				description: "Please upload only one ID.",
-			});
-			return false;
-		}
-
-		return true;
-	};
-	const handleUpload = async () => {
-		setUploadStatus("Uploading....");
-		try {
-			if (files[0] instanceof File) {
-				const result = await uploadFile(files[0]);
-				setUploadStatus("Upload Succesful");
-				return result;
-			}
-		} catch (error) {
-			console.log(error);
-			setUploadStatus("Upload Failed...");
-		}
-	};
-	const setTeamMember = async (
-		characterId: string,
-		character_index: number
-	) => {
-		const idURL = await handleUpload();
-		//console.log(idURL);
-		const data: Members = {
-			name: teammateName,
-			characterId: characterId,
-			idURL: z.string().parse(idURL),
-		};
-
-		const array = [...MembersArray];
-		array[character_index] = data;
-		localStorage.setItem("members", JSON.stringify(array));
-		setMembersArray(array);
-		toast({
-			variant: "default",
-			title: "Teammate Added!",
-			description: "You teammate has been added to your team.",
-		});
-		setTeammateName("");
-		setSelectedRole("");
-		setFiles([]);
-		//console.log(data);
-	};
-
 	return (
 		<Dialog defaultOpen={true}>
 			<DialogTrigger asChild>
 				<Button>Create Team</Button>
 			</DialogTrigger>
-			<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white overflow-y-scroll">
+			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
 				<DialogTitle>Character Details</DialogTitle>
 				<DialogDescription>
 					Enter details of the Teammates who will play respective
@@ -189,14 +97,7 @@ const MemberReg = ({
 					<Accordion type="single" collapsible>
 						{availableRoles.map((role, index) => (
 							<AccordionItem key={index} value={`item-${index}`}>
-								<AccordionTrigger
-									onClick={() => {
-										const member = MembersArray[index];
-										if (member) {
-											setTeammateName(member.name);
-										}
-									}}
-								>
+								<AccordionTrigger>
 									{role.label}
 								</AccordionTrigger>
 								<AccordionContent>
@@ -212,11 +113,14 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button onClick={()=>setFormToShow(2)}>Back</Button>
+					<Button onClick={() => setFormToShow(2)}>Back</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
-								availableRoles.length === MembersArray.length
+								availableRoles.length ===
+								MembersArray.filter(
+									(member) => member !== undefined || null
+								).length
 									? false
 									: true
 							}
@@ -224,7 +128,9 @@ const MemberReg = ({
 							<Button
 								disabled={
 									availableRoles.length ===
-									MembersArray.length
+									MembersArray.filter(
+										(member) => member !== undefined || null
+									).length
 										? false
 										: true
 								}

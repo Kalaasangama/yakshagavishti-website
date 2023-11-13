@@ -23,6 +23,8 @@ declare module "next-auth" {
 				| null
 				| undefined;
 			leaderOf: string | undefined;
+			idURL: string;
+			contact: string;
 		} & DefaultSession["user"];
 	}
 }
@@ -50,11 +52,15 @@ export const authOptions: NextAuthOptions = {
 							},
 						},
 						leaderOf: { select: { id: true } },
+						idURL: true,
+						contact: true,
 					},
 				});
 				session.user.team = data?.team;
 				session.user.leaderOf = data?.leaderOf?.id;
 				session.user.id = z.string().parse(user.id);
+				session.user.idURL = data.idURL;
+				session.user.contact = data.contact;
 			}
 			return session;
 		},
