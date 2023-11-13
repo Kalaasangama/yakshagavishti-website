@@ -13,14 +13,14 @@ const SponsorDetails = [
     name: "Quadx Drones",
     subtitle: "Official Executive Partners",
     description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
-    image: "/Cloudinary/sponsors/Quadx Drones.png",
+    image: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/Quadx Drones.png",
     url: "https://www.quadxdrones.com/",
   },
   {
     name: "AJ Institute of Management",
     subtitle: "Official Executive Partners",
     description: `A J Institute of Management, commonly referred to as AJIM, is a renowned educational institution established with a vision to provide quality management education, AJIM has consistently strived for excellence in the field of business and management studies. The institute is known for its commitment to fostering leadership skills, nurturing innovation, and preparing students to excel in the dynamic and competitive business world.`,
-    image: "/Cloudinary/sponsors/AJ Institute of Management.png",
+    image: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/AJ Institute of Management.png",
     url: "https://ajimmangalore.ac.in/",
   },
 ];
@@ -45,7 +45,7 @@ const Sponsor = () => {
                   delay={i * 1000}
                   key={i}
                   rev={i % 2 === 0 ? false : true}
-                  ImageSrc={`Cloudinary/sponsors/${sponorDetail.name}.png`}
+                  ImageSrc={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/${sponorDetail.name.replaceAll(' ', '_')}.png`}
                   SponsorTitle={sponorDetail.name}
                   SponsorDesc={sponorDetail.description}
                   SponsorWebsiteLink={sponorDetail.url}

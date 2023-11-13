@@ -101,7 +101,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Head>
           <title>Yakshagavishti</title>
           <meta name="description" content="Yakshagavishti" />
-          <link rel="icon" href="/Cloudinary/home/logo.png" type="images/png" sizes="64x64"/>
+          <link rel="icon" href="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png" type="images/png" sizes="64x64"/>
         </Head>
         <main className={`${balooChettan2.variable} ${samarkan.variable} ${porpora.variable} ${oskari.variable} ${tourney.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
           {path.pathname !== "/_error" && <Navbar />}

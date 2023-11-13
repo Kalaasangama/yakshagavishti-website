@@ -62,11 +62,11 @@ const Achievements = () => {
         <div className="flex flex-col items-center w-screen bg-gradient-to-br from-primary-100 to-[#100D27] px-4 sm:px-8 lg:px-32 snap-y snap-mandatory h-screen overflow-scroll no-scrollbar">
           <div className="w-full ">
             {achievements.map((ach, idx) => {
-              if (idx % 2 === 0) {
-                const row = [{ contentId: idx, img: `/Cloudinary/achievements/${idx + 1}.jpg` }]
+              if(idx % 2 === 0) {
+                const row = [{contentId: idx,img: `https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/achievements/${idx+1}.jpg`}]
 
                 const nextAchievement = achievements[idx + 1];
-                nextAchievement && row.push({ contentId: idx + 1, img: `/Cloudinary/achievements/${idx + 2}.jpg` })
+                nextAchievement && row.push({contentId: idx + 1, img: `https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/achievements/${idx+2}.jpg`})
 
                 // const secNextAchievement = t.achievements[idx + 2]
                 // secNextAchievement && row.push({...secNextAchievement, img: `/${idx+3}.jpg`})
