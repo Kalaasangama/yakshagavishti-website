@@ -96,6 +96,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <Head>
           <title>Yakshagavishti</title>
           <meta name="description" content="Yakshagavishti" />
+          <meta name="description" content="Presenting Yakshagavishti - 2023, an Inter-College Yakshagana competition by Nitte University and NMAM Institute of Technology, as we celebrate the fusion of technology, cultural traditions, and artistic innovation. Welcome art enthusiasts for a unique experience!" key="desc" />
+          <meta property="og:title" content="Yakshagavishti" />
+          <meta
+          property="og:description"
+          content="Presenting Yakshagavishti - 2023, an Inter-College Yakshagana competition by Nitte University and NMAM Institute of Technology, as we celebrate the fusion of technology, cultural traditions, and artistic innovation. Welcome art enthusiasts for a unique experience!"
+          />
+          <meta
+          property="og:image"
+          content="https://res.cloudinary.com/dfhg1joox/image/upload/v1699891029/yakshagavishti/assets/home/logo.png" />
           <link rel="icon" href="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png" type="images/png" sizes="64x64"/>
         </Head>
         {/* { loading && <Loader /> } */}
