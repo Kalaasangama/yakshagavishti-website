@@ -63,7 +63,7 @@ const Index = () => {
               <div className="flex flex-col gap-3">
                 <Reveal classes="">
                   <p className="text-base md:text-lg xl:text-xl">
-                    In just a year since our inception, Team Yakshasangama has emerged as a promising team of young artists across the off centre campus of Nitte DU, securing champion titles in three out of five competitions and numerous individual prizes.
+                    In just a year since our inception, Team Yakshasangama has emerged as a promising team of young artists across the off centre campus of Nitte DU, securing champion titles in four out of six competitions and numerous individual prizes.
                   </p>
                 </Reveal>
                 <Reveal classes="">
