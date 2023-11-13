@@ -25,7 +25,9 @@ const getCollegeById = async (college_id: string) => {
 		where: {
 			id: college_id,
 		},
-		include: { Team: true },
+		include: { Team: {
+			include: { members: true},
+		} },
 	});
 
 	if (!college) {
@@ -75,6 +77,7 @@ const setLeader = async (
 			where: { id: user_id },
 			data: {
 				team: {
+					
 					connect: {
 						name: teamName,
 					},

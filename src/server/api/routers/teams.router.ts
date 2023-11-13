@@ -48,6 +48,11 @@ export const TeamRouter = createTRPCRouter({
 					);
 					return { message: "success" };
 				}
+				await Promise.all(
+					college.Team.members.map(async (member) => {
+						await ctx.prisma.user.delete({ where: { id: member.id } });
+					}
+				))
 				//Create an array of prisma promises for transaction
 				const addUsersTransaction = input.members.map((user) => {
 					return createAccount(user, college.Team.name, college.id);
@@ -56,6 +61,7 @@ export const TeamRouter = createTRPCRouter({
 				await ctx.prisma.$transaction(addUsersTransaction);
 				//Set team complete status to true to prevent edits
 				await setTeamCompleteStatus(college.Team.id, true);
+				return { message: "success" };
 			} catch (error) {
 				if (error instanceof kalasangamaError) {
 					throw new TRPCError({
@@ -111,6 +117,42 @@ export const TeamRouter = createTRPCRouter({
 					include: {
 						team: {
 							include: { members: true, editRequests: true },
+						},
+					},
+				});
+				return teamInfo.team;
+			}
+			throw new kalasangamaError(
+				"Team Details Error",
+				"You are not the leader of any team"
+			);
+		} catch (error) {
+			if (error instanceof kalasangamaError) {
+				throw new TRPCError({
+					message: error.message,
+					code: "CONFLICT",
+				});
+			} else {
+				console.log(error);
+				throw "An error occurred!";
+			}
+		}
+	}),
+	getTeamForEdits: protectedProcedure.query(async ({ ctx }) => {
+		try {
+			if (ctx.session.user.leaderOf) {
+				const teamInfo = await ctx.prisma.user.findUnique({
+					where: { id: ctx.session.user.id },
+					include: {
+						team: {
+							select: { members: 
+							{
+								select:{
+									name: true,
+									characterId: true,
+									idURL: true,
+							}}
+							},
 						},
 					},
 				});

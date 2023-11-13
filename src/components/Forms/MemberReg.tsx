@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Button } from "src/components/ui/button";
 import { Form, FormField, FormLabel } from "src/components/ui/form";
 import {
@@ -48,17 +48,20 @@ const roles = [
 
 type Members = {
 	name: string;
-	character_id: string;
-	id_url: string;
+	characterId: string;
+	idURL: string;
 };
 
 const MemberReg = ({
 	LeaderCharacter,
 	CollegeId,
+	setFormToShow,
 }: {
 	LeaderCharacter: string;
 	CollegeId: string;
+	setFormToShow: Dispatch<SetStateAction<number>>;
 }) => {
+
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [teammateName, setTeammateName] = useState("");
@@ -67,7 +70,7 @@ const MemberReg = ({
 	);
 	const [uploadStatus, setUploadStatus] = useState("");
 	const { toast } = useToast();
-	const form2 = useForm();
+	
 	const registerMembers = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -77,21 +80,21 @@ const MemberReg = ({
 			});
 		},
 		onSuccess(data) {
-			return toast({
+			localStorage.removeItem("members");
+			 toast({
 				variant: "default",
 				title: "Team registered successfully!",
 				description: data.message,
 			});
+			return router.reload();
 		},
+
 	});
 
 	const availableRoles = roles.filter(
 		(roles) => roles.value !== LeaderCharacter
 	);
 	const router = useRouter();
-	if (registerMembers.isSuccess) {
-		router.reload();
-	}
 	const FieldValidation = () => {
 		if (teammateName === "") {
 			toast({
@@ -145,15 +148,15 @@ const MemberReg = ({
 		}
 	};
 	const setTeamMember = async (
-		character_id: string,
+		characterId: string,
 		character_index: number
 	) => {
-		const id_url = await handleUpload();
-		//console.log(id_url);
+		const idURL = await handleUpload();
+		//console.log(idURL);
 		const data: Members = {
 			name: teammateName,
-			character_id: character_id,
-			id_url: z.string().parse(id_url),
+			characterId: characterId,
+			idURL: z.string().parse(idURL),
 		};
 
 		const array = [...MembersArray];
@@ -174,7 +177,7 @@ const MemberReg = ({
 	return (
 		<Dialog defaultOpen={true}>
 			<DialogTrigger asChild>
-				<Button variant="outline">Create Team</Button>
+				<Button>Create Team</Button>
 			</DialogTrigger>
 			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
 				<DialogTitle>Character Details</DialogTitle>
@@ -201,7 +204,7 @@ const MemberReg = ({
 										MembersArray={MembersArray}
 										setMembersArray={setMembersArray}
 										index={index}
-										character_id={role.value}
+										characterId={role.value}
 									/>
 								</AccordionContent>
 							</AccordionItem>
@@ -209,7 +212,7 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button>Back</Button>
+					<Button onClick={()=>setFormToShow(2)}>Back</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={

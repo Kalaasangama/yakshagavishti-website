@@ -76,7 +76,7 @@ export default function ViewTeam() {
 							))}
 						</TableBody>
 					</Table>
-					{teamData?.data?.editRequests?.status==="REVOKED" ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
+					{teamData?.data?.editRequests?.status==="REVOKED" || !teamData.data.editRequests ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
 				</DialogContent>
 			</Dialog>
 		)
