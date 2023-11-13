@@ -48,11 +48,7 @@ export const TeamRouter = createTRPCRouter({
 					);
 					return { message: "success" };
 				}
-				await Promise.all(
-					college.Team.members.map(async (member) => {
-						await ctx.prisma.user.delete({ where: { id: member.id } });
-					}
-				))
+				
 				//Create an array of prisma promises for transaction
 				const addUsersTransaction = input.members.map((user) => {
 					return createAccount(user, college.Team.name, college.id);

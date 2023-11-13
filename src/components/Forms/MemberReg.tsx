@@ -119,7 +119,7 @@ const MemberReg = ({
 							disabled={
 								availableRoles.length ===
 								MembersArray.filter(
-									(member) => member !== undefined || null
+									(member) => member !== (undefined || null)
 								).length
 									? false
 									: true
@@ -130,14 +130,16 @@ const MemberReg = ({
 								disabled={
 									availableRoles.length ===
 									MembersArray.filter(
-										(member) => member !== undefined || null
+										(member) => member !== (undefined || null)
 									).length
 										? false
 										: true
 								}
 								onClick={() => {
 									if (
-										MembersArray.length <
+										MembersArray.filter(
+											(member) => member !== (undefined || null)
+										).length <
 										availableRoles.length
 									) {
 										toast({
@@ -164,6 +166,9 @@ const MemberReg = ({
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
+									disabled = {
+										registerMembers.isLoading
+									}
 									onClick={(e) => {
 										e.preventDefault();
 										registerMembers.mutate({
@@ -172,7 +177,7 @@ const MemberReg = ({
 										});
 									}}
 								>
-									Continue
+									{registerMembers.isLoading?'Loading...':'Continue'}
 								</AlertDialogAction>
 							</AlertDialogFooter>
 						</AlertDialogContent>

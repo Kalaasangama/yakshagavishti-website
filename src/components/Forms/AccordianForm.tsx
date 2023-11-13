@@ -27,14 +27,18 @@ export default function AccordianForm({
 	index: number;
 	characterId: string;
 }) {
-	const [teammateName, setTeammateName] = useState("");
+	const [teammateName, setTeammateName] = useState(MembersArray[index]?.name);
 	const [uploadStatus, setUploadStatus] = useState("");
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const { toast } = useToast();
 	const form2 = useForm();
-	const handleUpload = async () => {
+	const handleUpload = async (index: number) => {
 		setUploadStatus("Uploading....");
 		try {
+			if(MembersArray[index]?.idURL){
+				setUploadStatus("Upload Succesful");
+				return MembersArray[index]?.idURL;
+			}
 			if (files[0] instanceof File) {
 				const result = await uploadFile(files[0]);
 				setUploadStatus("Upload Succesful");
@@ -63,13 +67,17 @@ export default function AccordianForm({
 			});
 			return false;
 		}
-		if (files.length === 0) {
-			toast({
-				variant: "destructive",
-				title: "No ID uploaded!",
-				description: "Please upload your ID.",
-			});
-			return false;
+
+		if(!MembersArray[index]?.idURL) {
+			
+			if (files.length === 0) {
+				toast({
+					variant: "destructive",
+					title: "No ID uploaded!",
+					description: "Please upload your ID.",
+				});
+				return false;
+			}
 		}
 
 		if (files.length > 1) {
@@ -87,7 +95,7 @@ export default function AccordianForm({
 		characterId: string,
 		character_index: number
 	) => {
-		const idURL = await handleUpload();
+		const idURL = await handleUpload(character_index);
 		//console.log(idURL);
 		const data: Members = {
 			name: teammateName,
@@ -104,7 +112,6 @@ export default function AccordianForm({
 			title: "Teammate Added",
 			description: "Teammate Added",
 		});
-		setTeammateName("");
 		setFiles([]);
 	};
 	return (
@@ -164,7 +171,9 @@ export default function AccordianForm({
 						</div>
 					)}
 				/>
-				{MembersArray[index] === undefined ? (
+				{uploadStatus === "Uploading...." ? (
+					<Button size="sm" disabled>{uploadStatus}</Button>
+				) : (
 					<Button
 						size="sm"
 						onClick={(e) => {
@@ -174,18 +183,7 @@ export default function AccordianForm({
 							}
 						}}
 					>
-						Save
-					</Button>
-				) : (
-					<Button
-						variant={"button"}
-						size="sm"
-						onClick={(e) => {
-							e.preventDefault();
-							void setTeamMember(characterId, index);
-						}}
-					>
-						Update
+						{MembersArray[index] === undefined ? "Add" : "Update"}
 					</Button>
 				)}
 			</form>
