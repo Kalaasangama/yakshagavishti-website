@@ -11,7 +11,7 @@ const team = () => {
             <div className="sm:mx-2 md:w-6/12 lg:mx-0 lg:w-6/12 flex flex-col gap-5 items-center">
               <Reveal classes="">
                 {/* <h2 className="inline-block font-hindi text-3xl font-bold sm:text-5xl md:text-5xl 2xl:text-5xl"> */}
-                <h2 className="text-4xl font-bold md:text-5xl lg:text-6xl font-rhomdon">
+                <h2 className="text-4xl font-bold md:text-5xl lg:text-6xl font-rhomdon text-center">
                   Finite <span className="text-secondary-100">Loop Club</span>
                 </h2>
               </Reveal>
