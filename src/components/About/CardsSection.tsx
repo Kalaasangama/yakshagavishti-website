@@ -34,17 +34,17 @@ const members = [
     name: "Sinchana S Bairy",
     role: "Classical Dance Head",
   },
-  // {
-  //   name: "Shravya",
-  //   role: "Classical Dance Head",
-  // },
+  {
+    name: "Shravya",
+    role: "Classical Dance Head",
+  },
   {
     name: "Shreyas Upadhyaya",
-    role: "Classical music Head",
+    role: "Classical Music Head",
   },
   {
     name: "Mahatee",
-    role: "Classical music Head",
+    role: "Classical Music Head",
   },
   {
     name: "Eshaan Rao",
@@ -64,7 +64,7 @@ const members = [
   },
   {
     name: "Mayur M Shet",
-    role: "Social media and folk Head",
+    role: "Social Media and Folk Head",
   },
   {
     name: "Vaibhav",
@@ -89,7 +89,7 @@ const AboutCardsSection: React.FC = () => {
     <div className="flex my-8 items-center justify-center">
       <div className="flex flex-wrap gap-10 justify-center">
         {members.map((member, idx) => (
-          <Card key={idx} {...member} url={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/about/members/${member.name.replaceAll(' ', '_')}.jpg`} />
+          <Card key={idx} {...member} url={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890926/yakshagavishti/assets/about/members/${member.name.replaceAll(' ', '_')}.jpg`} />
         ))}
       </div>
     </div>
