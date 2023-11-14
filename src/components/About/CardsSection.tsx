@@ -14,10 +14,10 @@ const members = [
     name: "Amrutha V",
     role: "President",
   },
-  // {
-  //   name: "Krishna M S",
-  //   role: "Secretary",
-  // },
+  {
+    name: "Krishna M S",
+    role: "Secretary",
+  },
   {
     name: "Shrikrishna",
     role: "Vice President",
