@@ -71,7 +71,7 @@ export default function Home() {
 
           <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill priority />
           
-          <div className="absolute bottom-32 short:bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
+          <div className="absolute bottom-24 short:bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
             <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-center absolute bottom-0 left-0 right-0" priority />
           </div>
 
