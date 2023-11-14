@@ -89,7 +89,7 @@ const AboutCardsSection: React.FC = () => {
     <div className="flex my-8 items-center justify-center">
       <div className="flex flex-wrap gap-10 justify-center">
         {members.map((member, idx) => (
-          <Card key={idx} {...member} url={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890926/yakshagavishti/assets/about/members/${member.name.replaceAll(' ', '_')}.jpg`} />
+          <Card key={idx} {...member} url={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890927/yakshagavishti/assets/about/members/${member.name.replaceAll(' ', '_')}.jpg`} />
         ))}
       </div>
     </div>
