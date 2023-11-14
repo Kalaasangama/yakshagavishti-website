@@ -102,8 +102,17 @@ const MyApp: AppType<{ session: Session | null }> = ({
           property="og:description"
           content="Presenting Yakshagavishti - 2023, an Inter-College Yakshagana competition by Nitte University and NMAM Institute of Technology, as we celebrate the fusion of technology, cultural traditions, and artistic innovation. Welcome art enthusiasts for a unique experience!"
           />
+          <meta property="og:url" content="https://www.yakshagavishti.in/" />
+          <meta property="og:site_name" content="Yakshagavishti" />
+          <meta property="og:type" content="website" />
+          <meta property="og:image:width" content="800" />
+          <meta property="og:image:height" content="527" />
+          <meta property="og:image:alt" content="Yakshagavishti" />
+          <meta property="og:image:type" content="image/png" />
           <meta property="og:image" itemProp="image" content="/logo.png"  />
+          <meta property="og:image:secure_url" itemProp="image" content="/logo.png"  />
           <link rel="icon" href="/logo.png" type="images/png" sizes="64x64"/>
+          <meta property="og:type" content="website" />
         </Head>
         {/* { loading && <Loader /> } */}
           <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
