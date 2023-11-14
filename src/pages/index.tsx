@@ -59,7 +59,7 @@ export default function Home() {
   
   return (
     <>
-      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20">
+      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20 overflow-x-hidden">
 
         {/* Hero Section */}
 
@@ -72,7 +72,7 @@ export default function Home() {
           <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill priority />
           
           <div className="absolute bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
-            <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-bottom absolute bottom-0 left-0 right-0" priority />
+            <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-center absolute bottom-0 left-0 right-0" priority />
           </div>
 
             {/* Contents - Hero Section */}
@@ -84,7 +84,7 @@ export default function Home() {
 
             </Reveal>
               <Reveal classes="flex justify-center">
-                <ScrollLag classes="w-fit mb-48 xl:mb-32 landscape:short:mb-3" speed={75}>
+                <ScrollLag classes="w-fit mb-48 xl:mb-32 landscape:short:mb-10" speed={75}>
                   {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)}
                 </ScrollLag>
               </Reveal>
