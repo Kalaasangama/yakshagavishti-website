@@ -29,6 +29,7 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
 import z, { set } from "zod";
+import { m } from "framer-motion";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -56,7 +57,6 @@ const MemberReg = ({
 }) => {
 	const membersList = api.team.getTeamForEdits.useQuery();
 	const [MembersArray, setMembersArray] = useState<Members[]>(
-
 		JSON.parse(localStorage.getItem("members")) || []
 	);
 	const { toast } = useToast();
@@ -81,12 +81,18 @@ const MemberReg = ({
 			return router.reload();
 		},
 	});
-
+	const getIndex = (label: string, prevIndex: number) => {
+		const index = membersList.data.members.findIndex(
+			(member) => member.characterId === (label.replace(" ", "_"))
+		);
+		if (index === -1) return prevIndex;
+		return index;
+	};
 	const availableRoles = roles.filter(
 		(roles) => roles.value !== LeaderCharacter
 	);
 	const router = useRouter();
-	if (membersList.isLoading) return <div>Loading...</div>
+	if (membersList.isLoading) return <div>Loading...</div>;
 	return (
 		<Dialog defaultOpen={true}>
 			<DialogTrigger asChild>
@@ -107,9 +113,17 @@ const MemberReg = ({
 								</AccordionTrigger>
 								<AccordionContent>
 									<AccordianForm
-										MembersArray={MembersArray}
+										MembersArray={
+											MembersArray.length > 7
+												? MembersArray.filter(
+														(member) =>
+															member.characterId !==
+															null
+												  )
+												: MembersArray
+										}
 										setMembersArray={setMembersArray}
-										index={index}
+										index={getIndex(role.label, index)}
 										characterId={role.value}
 									/>
 								</AccordionContent>
@@ -118,14 +132,16 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button onClick={() => setFormToShow(2)} size="sm">Back</Button>
+					<Button onClick={() => setFormToShow(2)} size="sm">
+						Back
+					</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
 								availableRoles.length <=
-									MembersArray.filter(
-										(member) => member !== (undefined || null)
-									).length
+								MembersArray.filter(
+									(member) => member !== (undefined || null)
+								).length
 									? false
 									: true
 							}
@@ -134,18 +150,19 @@ const MemberReg = ({
 								size="sm"
 								disabled={
 									availableRoles.length <=
-										MembersArray.filter(
-											(member) => member !== (undefined || null)
-										).length
+									MembersArray.filter(
+										(member) =>
+											member !== (undefined || null)
+									).length
 										? false
 										: true
 								}
 								onClick={() => {
 									if (
 										MembersArray.filter(
-											(member) => member !== (undefined || null)
-										).length <
-										availableRoles.length
+											(member) =>
+												member !== (undefined || null)
+										).length < availableRoles.length
 									) {
 										toast({
 											variant: "destructive",
@@ -171,26 +188,27 @@ const MemberReg = ({
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
-									disabled={
-										registerMembers.isLoading
-									}
+									disabled={registerMembers.isLoading}
 									onClick={(e) => {
 										e.preventDefault();
 										console.log(MembersArray);
 										registerMembers.mutate({
-											members:
-												z.array(
+											members: z
+												.array(
 													z.object({
 														name: z.string(),
 														characterId: z.string(),
 														idURL: z.string(),
 													})
-												).parse(MembersArray),
+												)
+												.parse(MembersArray),
 											college_id: CollegeId,
-										})
+										});
 									}}
 								>
-									{registerMembers.isLoading ? 'Loading...' : 'Continue'}
+									{registerMembers.isLoading
+										? "Loading..."
+										: "Continue"}
 								</AlertDialogAction>
 							</AlertDialogFooter>
 						</AlertDialogContent>
