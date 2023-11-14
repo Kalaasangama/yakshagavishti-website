@@ -1,13 +1,11 @@
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 generator client {
   provider = "prisma-client-js"
- 
-
 }
 
 model Account {
@@ -36,6 +34,7 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@index([userId])
 }
 
@@ -45,7 +44,7 @@ model User {
   email           String?          @unique
   emailVerified   Boolean?         @default(false)
   image           String?
-  contact		  String?
+  contact         String?
   collegeId       String?
   idURL           String?
   college         College?         @relation(fields: [collegeId], references: [id])
@@ -59,6 +58,7 @@ model User {
   isIdVerified    Boolean          @default(false)
   accounts        Account[]
   sessions        Session[]
+
   @@index([collegeId])
   @@index([teamId])
   @@index([characterId])
@@ -69,6 +69,7 @@ model TeamMembers {
   email  String
   teamId String
   team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
   @@index([teamId])
 }
 
@@ -98,7 +99,8 @@ model Team {
   criteria      criteria[]
   criteriaScore criteriaScore[]
   TeamMembers   TeamMembers[]
-  editRequests	EditRequests?
+  editRequests  EditRequests?
+
   @@index([college_id])
 }
 
@@ -118,6 +120,7 @@ model criteria {
   Team          Team?           @relation(fields: [teamId], references: [id])
   teamId        String?
   criteriaScore criteriaScore[]
+
   @@index([teamId])
 }
 
@@ -142,13 +145,13 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model EditRequests{
-  id Int @id @default(autoincrement())
-  teamId String? @unique
-  Team Team? @relation(fields: [teamId], references: [id])
-  status editStatus @default(PENDING)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt 
+model EditRequests {
+  id        Int        @id @default(autoincrement())
+  teamId    String?    @unique
+  Team      Team?      @relation(fields: [teamId], references: [id])
+  status    editStatus @default(PENDING)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
 }
 
 enum Characters {
@@ -168,9 +171,8 @@ enum Role {
   JUDGE
 }
 
-enum editStatus{
-PENDING
-	GRANTED
-	REVOKED
-
+enum editStatus {
+  PENDING
+  GRANTED
+  REVOKED
 }

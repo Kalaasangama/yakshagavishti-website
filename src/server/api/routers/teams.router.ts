@@ -49,16 +49,69 @@ export const TeamRouter = createTRPCRouter({
 					return { message: "Leader Details Updated" };
 				}
 				//Add members to team
-				await ctx.prisma.user.createMany({
-					data:input.members.map((user) => {
-						return {
-							name: user.name,
-							idURL: user.idURL,
-							collegeId: college.id,
-							teamId: college.Team.id,
-						};
-					})
-				})
+
+				if (college.Team.members.length > 0) {
+					await ctx.prisma.user.deleteMany({
+						where: {
+							id: {
+								in: college.Team.members.map((member) => member.id).filter((id) => id !== ctx.session.user.id),
+							},
+						},
+					});
+				}
+				// const data = await ctx.prisma.user.createMany({
+				// 	data: input.members.map((user) => {
+				// 		return {
+				// 			name: user.name,
+				// 			idURL: user.idURL,
+				// 		};
+				// 	})
+				// })
+				await Promise.all(
+					input.members.map((user) =>
+						ctx.prisma.user.create({
+							data: {
+								name: user?.name,
+								characterPlayed: {
+									connect: {
+										id: user?.characterId,
+									},
+								},
+								idURL: user?.idURL,
+								team: {
+									connect: {
+										name: college.Team.name,
+									},
+								},
+								college: {
+									connect: {
+										id: college.id,
+									},
+								},
+							},
+						})
+					)
+				);
+
+				// await ctx.prisma.user.updateMany({
+				// 	where: { id:{
+				// 		in: data.map((user) => user.id)
+				// 	} },
+				// 	data: {
+				// 		teamId: college.Team.id,
+				// 		collegeId: college.id,
+				// 	},
+				// });
+				// await ctx.prisma.user.createMany({
+				// 	data: input.members.map((user) => {
+				// 		return {
+				// 			name: user.name,
+				// 			idURL: user.idURL,
+				// 			collegeId: college.id,
+				// 			teamId: college.Team.id,
+				// 		};
+				// 	})
+				// })
 
 				//Set team complete status to true to prevent edits
 				await setTeamCompleteStatus(college.Team.id, true);

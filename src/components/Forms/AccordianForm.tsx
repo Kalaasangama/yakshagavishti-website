@@ -35,7 +35,7 @@ export default function AccordianForm({
 	const handleUpload = async (index: number) => {
 		setUploadStatus("Uploading....");
 		try {
-			if(MembersArray[index]?.idURL){
+			if (MembersArray[index]?.idURL) {
 				setUploadStatus("Upload Succesful");
 				return MembersArray[index]?.idURL;
 			}
@@ -68,8 +68,8 @@ export default function AccordianForm({
 			return false;
 		}
 
-		if(!MembersArray[index]?.idURL) {
-			
+		if (!MembersArray[index]?.idURL) {
+
 			if (files.length === 0) {
 				toast({
 					variant: "destructive",
