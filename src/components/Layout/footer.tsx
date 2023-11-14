@@ -34,7 +34,7 @@ const Footer = () => {
             </Link>
           </div>
           <div className="flex flex-col justify-start gap-1 md:gap-2">
-            <div className="flex md:flex-row justify-center items-center gap-1 md:gap-5 flex-wrap select-none">
+            <div className="flex md:flex-row justify-center items-center gap-1 md:gap-5 whitespace-nowrap select-none text-sm sm:text-base">
               {links.map((link, idx) => {
                 return (
                   <>
