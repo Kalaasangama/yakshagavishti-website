@@ -102,10 +102,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
           property="og:description"
           content="Presenting Yakshagavishti - 2023, an Inter-College Yakshagana competition by Nitte University and NMAM Institute of Technology, as we celebrate the fusion of technology, cultural traditions, and artistic innovation. Welcome art enthusiasts for a unique experience!"
           />
-          <meta
-          property="og:image"
-          content="https://res.cloudinary.com/dfhg1joox/image/upload/v1699891029/yakshagavishti/assets/home/logo.png" />
-          <link rel="icon" href="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png" type="images/png" sizes="64x64"/>
+          <meta property="og:image" itemProp="image" content="/logo.png"  />
+          <link rel="icon" href="/logo.png" type="images/png" sizes="64x64"/>
         </Head>
         {/* { loading && <Loader /> } */}
           <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
