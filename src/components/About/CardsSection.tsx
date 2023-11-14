@@ -34,17 +34,17 @@ const members = [
     name: "Sinchana S Bairy",
     role: "Classical Dance Head",
   },
-  // {
-  //   name: "Shravya",
-  //   role: "Classical Dance Head",
-  // },
+  {
+    name: "Shravya",
+    role: "Classical Dance Head",
+  },
   {
     name: "Shreyas Upadhyaya",
-    role: "Classical music Head",
+    role: "Classical Music Head",
   },
   {
     name: "Mahatee",
-    role: "Classical music Head",
+    role: "Classical Music Head",
   },
   {
     name: "Eshaan Rao",
@@ -64,7 +64,7 @@ const members = [
   },
   {
     name: "Mayur M Shet",
-    role: "Social media and folk Head",
+    role: "Social Media and Folk Head",
   },
   {
     name: "Vaibhav",
