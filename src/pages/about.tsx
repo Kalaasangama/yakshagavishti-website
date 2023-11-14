@@ -80,7 +80,7 @@ const Index = () => {
             <span className="font-rhomdon text-5xl font-normal">Our <span className="text-secondary-100">Members</span></span>
           </Reveal>
           <Reveal classes="">
-          <p className="mt-4 text-justify text-xs sm:text-lg md:text-xl xl:text-2xl">
+          <p className="mt-4 text-justify text-base sm:text-lg md:text-xl xl:text-2xl">
                 Meet the people behind the scenes
                 </p>
           </Reveal>
