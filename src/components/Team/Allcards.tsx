@@ -51,14 +51,14 @@ const AllCards: React.FC = () => {
       instagramURL: "",
       description: "",
     },
-    // {
-    //   name: "Sinchana",
-    //   role: "Content Writer",
-    //   linkedinURL: "",
-    //   githubURL: "",
-    //   instagramURL: "",
-    //   description: "",
-    // },
+    {
+      name: "Sinchana SH",
+      role: "Content Writer",
+      linkedinURL: "https://www.linkedin.com/in/sinchana-s-h-0b2843253",
+      githubURL: "https://github.com/Sinchana-SH",
+      instagramURL: "",
+      description: "",
+    },
     {
       name: "Kshitij Shetty",
       role: "Web Developer",
