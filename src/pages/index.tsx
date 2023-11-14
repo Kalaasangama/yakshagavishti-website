@@ -59,11 +59,11 @@ export default function Home() {
   
   return (
     <>
-      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20 overflow-x-hidden">
+      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20 ">
 
         {/* Hero Section */}
 
-        <section  className="relative flex flex-col justify-end items-center h-screen w-full bg-image-gradient mt-1">
+        <section  className="relative flex flex-col justify-end items-center h-screen overflow-y-hidden w-full bg-image-gradient mt-1">
           <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-30 hidden sm:block" fill priority />
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
 
@@ -71,7 +71,7 @@ export default function Home() {
 
           <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill priority />
           
-          <div className="absolute bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
+          <div className="absolute bottom-32 short:bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
             <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-center absolute bottom-0 left-0 right-0" priority />
           </div>
 
