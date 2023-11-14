@@ -104,8 +104,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
           />
           <meta
           property="og:image"
-          content="https://res.cloudinary.com/dfhg1joox/image/upload/v1699891029/yakshagavishti/assets/home/logo.png" />
-          <link rel="icon" href="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png" type="images/png" sizes="64x64"/>
+          content="/logo.png" />
+          <link rel="icon" href="/logo.png" type="images/png" sizes="64x64"/>
         </Head>
         {/* { loading && <Loader /> } */}
           <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
