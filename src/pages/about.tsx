@@ -42,7 +42,7 @@ const Index = () => {
           </div>
       </div>
       <div className="flex flex-col h-screen min-h-min justify-around gap-10 items-center">
-          <Banner photo={"/kalateam.jpg"} text=""/>
+          <Banner photo={"https://res.cloudinary.com/dfhg1joox/image/upload/v1699901394/yakshagavishti/kalateam.jpg"} text=""/>
           <div className="mx-4 sm:mx-8 lg:mx-32 flex flex-col md:flex-row gap-10 justify-center items-center max-w-7xl">
             <Reveal classes="w-full md:w-1/3 flex justify-center items-center">
               <Image
