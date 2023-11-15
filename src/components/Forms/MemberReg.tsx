@@ -30,6 +30,7 @@ import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
 import z, { set } from "zod";
 import { m } from "framer-motion";
+import ViewBeforeSubmit from "../ViewBeforeSubmit";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -135,6 +136,9 @@ const MemberReg = ({
 					<Button onClick={() => setFormToShow(2)} size="sm">
 						Back
 					</Button>
+					<Button disabled={MembersArray.length > 0 ? false: true} onClick={() => {setMembersArray([]);localStorage.clear()}} size="sm">
+						Clear All
+					</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
@@ -186,6 +190,7 @@ const MemberReg = ({
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
+								<ViewBeforeSubmit data={MembersArray} />
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
 									disabled={registerMembers.isLoading}

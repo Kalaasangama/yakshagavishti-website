@@ -25,6 +25,7 @@ declare module "next-auth" {
 			leaderOf: string | undefined;
 			idURL: string;
 			contact: string;
+			characterId: string;
 		} & DefaultSession["user"];
 	}
 }
@@ -51,6 +52,9 @@ export const authOptions: NextAuthOptions = {
 								isComplete: true,
 							},
 						},
+						characterPlayed:{
+							select:{id:true}
+						},
 						leaderOf: { select: { id: true } },
 						idURL: true,
 						contact: true,
@@ -61,6 +65,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.id = z.string().parse(user.id);
 				session.user.idURL = data.idURL;
 				session.user.contact = data.contact;
+				session.user.characterId = data.characterPlayed.id;
 			}
 			return session;
 		},
