@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 import { api } from "../../utils/api";
-import Image from "next/image";
 import {
 	Table,
 	TableBody,
@@ -24,13 +23,13 @@ import { useState } from "react";
 
 const Jury : NextPage = () => {
 	const { data: sessionData } = useSession();
-    const { data,refetch } = api.jury.getTeams.useQuery();
-    const [college, setCollege] = useState(data[0]);
+    const { data,isLoading } = api.jury.getTeams.useQuery();
+    const [college, setCollege] = useState(isLoading ? [] : data[0])
     const characters = ["Character 1","Character 2","Character 3","Character 4","Character 5","Character 6","Character 7"]
     return (
         <div className="container pt-20">
             <h1 className="text-extrabold mt-10 text-4xl pb-2">
-                Judge Dashboard - {college.name}
+                Judge Dashboard - {!isLoading ? college.name : "Loading..."}
             </h1>
             <div className="flex flex-row w-full m-2">
                 <div className="flex basis-1/2 justify-start">
@@ -39,8 +38,8 @@ const Jury : NextPage = () => {
                             <div className="text-xl">Select a college</div>
                             <ArrowDown></ArrowDown>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
-                        {data != undefined ? data?.map((team)=>{
+                        <DropdownMenuContent onSelect={e=>console.log(e)}>
+                        {!isLoading ? data?.map((team)=>{
                             return(<DropdownMenuItem onSelect={e => setCollege(team)} className="text-xl">{team.name}</DropdownMenuItem>)
                         }): <DropdownMenuItem className="text-xl">No teams</DropdownMenuItem>}
                         </DropdownMenuContent>

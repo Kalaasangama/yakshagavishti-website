@@ -39,8 +39,8 @@ export const JuryRouter= createTRPCRouter({
             return teamMembers;
             }),
 
-
-            getTeamScores: protectedProcedure
+            //TODO: public to protected
+            getTeamScores: publicProcedure
             .input(z.object({
                 collegeId: z.string(),
             }))
@@ -49,6 +49,9 @@ export const JuryRouter= createTRPCRouter({
             where:{
                 college_id: input.collegeId,
             },
+            include:{
+                criteriaScore: true
+            }
             })
             return teamScores;
             }),
@@ -79,7 +82,12 @@ export const JuryRouter= createTRPCRouter({
             //TODO: make protected after testing
             getTeams: publicProcedure
             .query(async({ctx})=>{
-                const teams = await ctx.prisma.team.findMany();
+                const teams = await ctx.prisma.team.findMany({
+                    include:{
+                        criteriaScore: true
+                    }
+                });
+                console.log(teams)
                 return teams;
             }),
 
