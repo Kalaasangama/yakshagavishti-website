@@ -28,7 +28,7 @@ const Jury : NextPage = () => {
                     <Button>Remarks</Button>
                 </div>
             </div>
-            <div className="flex flex-row">
+            <div className="flex flex-col md:flex-row gap-6">
                 <div className="basis-4/5">
                     <Table>
                         <TableHeader>
@@ -57,19 +57,51 @@ const Jury : NextPage = () => {
                                         {character}
                                     </TableCell>
                                     <TableCell>
-                                        <input className="bg-transparent border border-white w-24 rounded-lg"/>
+                                        <input className="bg-transparent border text-center border-white w-24 rounded-lg"/>
                                     </TableCell>
                                     <TableCell>
-                                        <input className="bg-transparent border border-white w-24 rounded-lg"/>
+                                        <input className="bg-transparent border text-center border-white w-24 rounded-lg"/>
                                     </TableCell>
                                     <TableCell>
-                                        <input className="bg-transparent border border-white w-24 rounded-lg"/>
+                                        <input className="bg-transparent border text-center border-white w-24 rounded-lg"/>
                                     </TableCell>
                                     <TableCell>
                                         1
                                     </TableCell>
                                 </TableRow>
                             ))}
+                        </TableBody>
+                    </Table>
+                </div>
+                <div className="basis-1/5">
+                    <Table className="flex flex-col text-2xl">
+                        <TableHeader>
+                            <TableRow className="text-2xl">
+                                <TableHead>
+                                    Team Score
+                                </TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>Criteria 1</TableCell>
+                                <TableCell>1</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Criteria 2</TableCell>
+                                <TableCell>1</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Criteria 3</TableCell>
+                                <TableCell>1</TableCell>
+                            </TableRow>
+                            <TableRow>
+                                <TableCell>Total</TableCell>
+                                <TableCell>3</TableCell>
+                            </TableRow>
+                            <Button className="mt-4">
+                                Submit
+                            </Button>
                         </TableBody>
                     </Table>
                 </div>
