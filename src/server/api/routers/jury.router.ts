@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import kalasangamaError from "~/utils/customError";
 import { get } from "http";
@@ -76,7 +76,12 @@ export const JuryRouter= createTRPCRouter({
             })
             return teamCriteria;
             }),
-
+            //TODO: make protected after testing
+            getTeams: publicProcedure
+            .query(async({ctx})=>{
+                const teams = await ctx.prisma.team.findMany();
+                return teams;
+            }),
 
         })
 

@@ -11,18 +11,40 @@ import {
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 import { NextPage } from "next";
+import { 
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger 
+} from "~/components/ui/dropdown-menu";
+import { ArrowDown } from "lucide-react";
+import { useState } from "react";
 
 const Jury : NextPage = () => {
 	const { data: sessionData } = useSession();
+    const { data,refetch } = api.jury.getTeams.useQuery();
+    const [college, setCollege] = useState(data[0]);
     const characters = ["Character 1","Character 2","Character 3","Character 4","Character 5","Character 6","Character 7"]
     return (
         <div className="container pt-20">
             <h1 className="text-extrabold mt-10 text-4xl pb-2">
-                Judge Dashboard
+                Judge Dashboard - {college.name}
             </h1>
             <div className="flex flex-row w-full m-2">
                 <div className="flex basis-1/2 justify-start">
-                    <Button>Select the College Code</Button>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center">
+                            <div className="text-xl">Select a college</div>
+                            <ArrowDown></ArrowDown>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                        {data != undefined ? data?.map((team)=>{
+                            return(<DropdownMenuItem onSelect={e => setCollege(team)} className="text-xl">{team.name}</DropdownMenuItem>)
+                        }): <DropdownMenuItem className="text-xl">No teams</DropdownMenuItem>}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
                 <div className="flex basis-1/2 justify-end">
                     <Button>Remarks</Button>
