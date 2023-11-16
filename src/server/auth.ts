@@ -65,7 +65,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.id = z.string().parse(user.id);
 				session.user.idURL = data.idURL;
 				session.user.contact = data.contact;
-				session.user.characterId = data.characterPlayed.id;
+				session.user.characterId = data?.characterPlayed?.id;
 			}
 			return session;
 		},
