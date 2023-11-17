@@ -12,6 +12,14 @@ const AllCards: React.FC = () => {
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
     {
+      name: "Aaron Nazareth",
+      role: "Web Developer",
+      linkedinURL: "https://www.linkedin.com/in/aaron-nazareth-6580311b6",
+      githubURL: "https://github.com/jevil25",
+      instagramURL: "",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    },
+    {
       name: "Satwik R Prabhu",
       role: "Web Developer",
       linkedinURL: "https://www.linkedin.com/in/satwikprabhu/",
