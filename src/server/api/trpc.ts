@@ -120,6 +120,28 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
   });
 });
 
+const enforceUserIsAuthedAndJudge = t.middleware(({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  const juryEmailsString: string | undefined = process.env.JURY_EMAILS;
+  // Function to check if an email is in the list
+  const isJuryEmail = (email: string): boolean => {
+    return juryEmailsString.includes(email);
+  };
+  if(isJuryEmail(ctx.session?.user.email)){
+    return next({
+      ctx: {
+        // infers the `session` as non-nullable
+        session: { ...ctx.session, user: ctx.session.user },
+      },
+    });
+  }
+  else{
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+});
+
 /**
  * Protected (authenticated) procedure
  *
@@ -129,3 +151,4 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+export const protectedJudgeProcedure = t.procedure.use(enforceUserIsAuthedAndJudge);

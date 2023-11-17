@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedJudgeProcedure, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import kalasangamaError from "~/utils/customError";
 import { get } from "http";
@@ -38,24 +38,6 @@ export const JuryRouter= createTRPCRouter({
             })
             return teamMembers;
             }),
-
-            //TODO: public to protected
-            getTeamScores: publicProcedure
-            .input(z.object({
-                collegeId: z.string(),
-            }))
-            .query(async ({ctx,input})=>{
-            const teamScores = await ctx.prisma.team.findUnique({
-            where:{
-                college_id: input.collegeId,
-            },
-            include:{
-                criteriaScore: true
-            }
-            })
-            return teamScores;
-            }),
-
             getTeamCriteria: protectedProcedure
             .input(z.object({
                 collegeId: z.string(),
@@ -80,14 +62,13 @@ export const JuryRouter= createTRPCRouter({
             return teamCriteria;
             }),
             //TODO: make protected after testing
-            getTeams: publicProcedure
+            getTeams: protectedJudgeProcedure
             .query(async({ctx})=>{
                 const teams = await ctx.prisma.team.findMany({
                     include:{
                         criteriaScore: true
                     }
                 });
-                console.log(teams)
                 return teams;
             }),
 

@@ -22,7 +22,7 @@ import { NextPage } from "next";
 const Jury: NextPage = () => {
   const { data: sessionData } = useSession();
   const { data, isLoading } = api.jury.getTeams.useQuery();
-  const criteriaList = ["Criteria 1", "Criteria 2", "Criteria 3"];
+  const criteriaList = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3"];
   const criteriaDisplayList = ["Criteria 1", "Criteria 2", "Criteria 3"];
 
   const [scores, setScores] = useState({});
@@ -77,7 +77,7 @@ const Jury: NextPage = () => {
     "DEVAVRATHA",
   ];
 
-  return !isLoading ? (
+  return !isLoading && data.length>0 ? (
     <div className="container pt-20">
       <h1 className="text-extrabold mt-10 text-4xl pb-2">
         Judge Dashboard - {data[0].name}
@@ -168,7 +168,11 @@ const Jury: NextPage = () => {
       </div>
     </div>
   ) : (
-    <div className="flex text-2xl justify-center text-center">Loading...</div>
+    <div className="container py-40">
+        <div className="w-full h-full">
+            <div className="flex text-2xl justify-center text-center ">{isLoading ?"Loading...":"No teams to judge at the moment...."}</div>
+        </div>
+    </div>
   );
 };
 

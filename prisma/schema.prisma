@@ -100,7 +100,7 @@ model Team {
   criteriaScore criteriaScore[]
   TeamMembers   TeamMembers[]
   editRequests  EditRequests?
-  score         score[]
+  Score         Score[]
 
   @@index([college_id])
 }
@@ -111,7 +111,7 @@ model CharacterOnUser {
   playedBy  User[]
   userId    String?    @unique
   score     Int
-  scores    score[]
+  Score     Score[]
 }
 
 model criteria {
@@ -122,7 +122,7 @@ model criteria {
   Team          Team?           @relation(fields: [teamId], references: [id])
   teamId        String?
   criteriaScore criteriaScore[]
-  score         score[]
+  Score         Score[]
 
   @@index([teamId])
 }
@@ -140,17 +140,16 @@ model criteriaScore {
   @@index([id])
 }
 
-model score {
+model Score {
   id              String          @id @default(cuid())
+  criteria        criteria        @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
   team            Team            @relation(fields: [teamID], references: [id], onDelete: Cascade)
   teamID          String
-  criteria        criteria        @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
   criteriaId      String
   characterPlayed CharacterOnUser @relation(fields: [characterId], references: [character])
   characterId     Characters
-  score           Int             @default(0)
+  score           Int
 
-  @@unique([teamID, characterId, criteriaId])
   @@index([teamID])
   @@index([criteriaId])
   @@index([characterId])
