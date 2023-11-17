@@ -18,18 +18,17 @@ import {
 import { ArrowDown } from "lucide-react";
 import { useState } from "react";
 import { NextPage } from "next";
-import * as Dialog from '@radix-ui/react-dialog';
-import { Cross2Icon } from '@radix-ui/react-icons';
+import Remarks from "~/components/Jury/remarks";
 
 const Jury: NextPage = () => {
   const { data: sessionData } = useSession();
   const { data, isLoading } = api.jury.getTeams.useQuery();
   const criteriaList = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3"];
   const criteriaDisplayList = ["Criteria 1", "Criteria 2", "Criteria 3"];
-  const [modal,setModal] = useState(false);
+  const [teamName, setTeamName] = useState("Select a college");
+  const [teamId, setTeamId] = useState("");
 
   const [scores, setScores] = useState({});
-  const [remark, setRemark] = useState("");
 
   const handleScoreChange = (
     character: string,
@@ -71,8 +70,9 @@ const Jury: NextPage = () => {
     }, 0);
   };
 
-  const saveRemark = () => {
-
+  const setTeam = (teamId:string ,teamName:string) => {
+    setTeamId(teamId);
+    setTeamName(teamName);
   }
 
   const characters = [
@@ -88,7 +88,7 @@ const Jury: NextPage = () => {
   return !isLoading && data.length>0 ? (
     <div className="container md:pt-20 pt-14 flex flex-col">
       <h1 className="text-extrabold mt-10 text-4xl pb-2">
-        Judge Dashboard - {data[0].name}
+        Judge Dashboard - {teamName}
       </h1>
       <div className="flex md:flex-row flex-col w-full m-2 text-center">
         <div className="flex basis-1/2 justify-start">
@@ -97,10 +97,10 @@ const Jury: NextPage = () => {
               <div className="md:text-xl text-2xl">Select a college</div>
               <ArrowDown></ArrowDown>
             </DropdownMenuTrigger>
-            <DropdownMenuContent onSelect={(e) => console.log(e)}>
+            <DropdownMenuContent>
               {!isLoading ? (
-                data?.map((team) => (
-                  <DropdownMenuItem className="text-xl" key={team.id}>
+                data?.map((team ,i) => (
+                  <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name)}>
                     {team.name}
                   </DropdownMenuItem>
                 ))
@@ -110,46 +110,7 @@ const Jury: NextPage = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <div className="flex basis-1/2 mt-4 md:mt-0 md:justify-end text-2xl md:text-xl">
-            <Dialog.Root>
-                <Dialog.Trigger asChild>
-                    <Button>Remarks</Button>
-                </Dialog.Trigger>
-                <Dialog.Portal>
-                <Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0" />
-                <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] w-[90vw] md:max-h-[175vh] md:w-[130vw] md:max-w-[650px] translate-x-[-50%] translate-y-[-50%] bg-primary-100 rounded-lg p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
-                    <Dialog.Title className="text-white m-0 text-2xl font-medium border-0 border-b-2 w-full mb-3 border-white">
-                    Enter Remarks
-                    </Dialog.Title>
-                    <label className="text-white w-[90px] text-right text-2xl" htmlFor="name">
-                        Remarks
-                    </label>
-                    <textarea
-                        className="text-black shadow-violet7 focus:shadow-violet8 inline-flex h-[135px] w-full flex-1 items-center justify-center rounded-[4px] px-[10px] text-xl leading-none shadow-[0_0_0_1px] outline-none focus:shadow-[0_0_0_2px]"
-                        id="name"
-                        placeholder="Type here....."
-                        value={remark}
-                        onChange={e => setRemark(e.target.value)}
-                    />
-                    <div className="mt-[25px] flex justify-end">
-                    <Dialog.Close asChild>
-                        <Button onClick={e => saveRemark()}>
-                        Save changes
-                        </Button>
-                    </Dialog.Close>
-                    </div>
-                    <Dialog.Close asChild>
-                    <button
-                        className="text-white hover:bg-violet4 focus:shadow-violet7 absolute top-[10px] right-[10px] inline-flex h-[25px] w-[25px] appearance-none items-center justify-center rounded-full focus:shadow-[0_0_0_2px] focus:outline-none"
-                        aria-label="Close"
-                    >
-                        <Cross2Icon />
-                    </button>
-                    </Dialog.Close>
-                </Dialog.Content>
-                </Dialog.Portal>
-            </Dialog.Root>
-        </div>
+        <Remarks/>
       </div>
       <div className="flex flex-col md:flex-row gap-6">
         <div className="basis-4/5">
