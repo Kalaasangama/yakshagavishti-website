@@ -6,9 +6,10 @@ import { api } from '~/utils/api';
 
 const Remarks = (team: { teamId: string }) => {
     const [remark, setRemark] = useState("");
+    const remarks = api.jury.addRemark.useMutation();
 
     const saveRemark = () => {
-        api.jury.addRemark.useMutation().mutate({
+        remarks.mutate({
             teamId: team.teamId,
             remark: remark
         },{

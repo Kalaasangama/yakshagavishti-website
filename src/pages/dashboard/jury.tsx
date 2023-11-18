@@ -19,6 +19,7 @@ import { ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Remarks from "~/components/Jury/remarks";
+import Submit from "~/components/Jury/submit";
 
 const Jury: NextPage = () => {
   const { data: sessionData } = useSession();
@@ -197,7 +198,14 @@ const Jury: NextPage = () => {
                 <TableCell>Total</TableCell>
                 <TableCell>{calculateFinalTotal()}</TableCell>
               </TableRow>
-              <Button className="mt-4">Submit</Button>
+              <Submit
+                scores = {scores}
+                teamId = {teamId}
+                teamName = {teamName}
+                criteriaDisplayList = {criteriaDisplayList}
+                criteriaList = {criteriaList}
+                characters = {characters}
+              />
             </TableBody>
           </Table>
         </div>
