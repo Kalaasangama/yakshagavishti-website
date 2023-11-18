@@ -110,7 +110,6 @@ model CharacterOnUser {
   id        String     @id @default(cuid())
   character Characters @unique
   playedBy  User[]
-  score     Int?
   Score     Score[]
 }
 
@@ -132,6 +131,7 @@ model criteriaScore {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([id, teamID])
   @@index([teamID])
   @@index([id])
 }

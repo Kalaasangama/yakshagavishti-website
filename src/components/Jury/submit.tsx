@@ -10,6 +10,7 @@ import {
     TableHeader,
   } from "~/components/ui/table";
 import { api } from '~/utils/api';
+import { Dispatch, SetStateAction, useState } from 'react';
 
 type Character = "SHANTHANU" | "MANTRI_SUNEETHI" | "TAMAALAKETHU" | "TAAMRAAKSHA" | "SATHYAVATHI" | "DAASHARAJA" | "DEVAVRATHA";
 type Criteria = "CRITERIA_1" | "CRITERIA_2" | "CRITERIA_3";
@@ -26,17 +27,23 @@ const Submit = ({
     teamName,
     criteriaDisplayList,
     criteriaList,
-    characters
+    characters,
+    scored,
+    setScored
  } : {
     scores : ScoresState,
     teamId : string,
     teamName : string,
     criteriaDisplayList : String[], 
     criteriaList : Criteria[],
-    characters : Character[]
+    characters : Character[],
+    scored: boolean,
+    setScored: Dispatch<SetStateAction<boolean>>
  }
     ) => {
     const scoreUpdate = api.jury.updateScores.useMutation();
+    const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
+    const finalTeamScore = api.jury.updateTotalScore.useMutation();
 
     const saveScores = () => {
         characters.forEach((character) => {
@@ -47,9 +54,20 @@ const Submit = ({
               characterId: character,
               score: scores[character][criteria],
             });
-            // scoreUpdate.mutate();
           });
         });
+        criteriaList.forEach((criteria) => {
+            criteriaTotal.mutate({
+                teamId: teamId,
+                criteriaName: criteria,
+                score: totalCriteriaScore(criteria)
+            })
+        })
+        finalTeamScore.mutate({
+            teamId:teamId,
+            score: calculateFinalTotal()
+        })        
+        setScored(true);
       };
 
     const totalScore = (character: string) => {
@@ -82,12 +100,12 @@ const Submit = ({
                 <Button className="mt-4">Submit</Button>
             </Dialog.Trigger>
             <Dialog.Portal>
-            <Dialog.Overlay className=" z-50 data-[state=open]:animate-overlayShow fixed inset-0" />
-            <Dialog.Content className="z-50 data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] w-[90vw] md:max-h-[175vh] md:w-[90vw] md:max-w-full translate-x-[-50%] translate-y-[-50%] bg-primary-100 rounded-lg p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+            <Dialog.Overlay className=" z-50 data-[state=open]:animate-overlayShow inset-0" />
+            <Dialog.Content className="z-50 data-[state=open]:animate-contentShow h-auto scroll-m-1 fixed top-[50%] left-[50%] w-[90vw] max-h-[90vh] md:max-h-[175vh] md:w-[90vw] md:max-w-full translate-x-[-50%] translate-y-[-50%] bg-primary-100 rounded-lg p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                 <Dialog.Title className="text-white m-0 text-2xl font-medium border-0 border-b-2 w-full mb-3 border-white">
                     Scores of {teamName}
                 </Dialog.Title>
-                <div className='flex flex-row gap-3'>
+                <div className='flex gap-3 flex-col md:flex-row'>
                     <div className="basis-4/5">
                     <Table className='text-white'>
                         <TableHeader className="invisible md:visible">
@@ -141,7 +159,7 @@ const Submit = ({
                             </Button>
                         </Dialog.Close>
                         <div className='text-white text-sm'>
-                            Note: Once submitted, scores can not be change without authorization
+                            Note: Once submitted, scores can not be changed without authorization
                         </div>
                     </div>
                     <Dialog.Close asChild>

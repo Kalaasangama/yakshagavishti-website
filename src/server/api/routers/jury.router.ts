@@ -44,12 +44,18 @@ export const JuryRouter= createTRPCRouter({
                 teamId:z.string(),
             })))
             .query(async({ctx,input})=>{
-                const scores = ctx.prisma.score.findMany({
+                const scores = await ctx.prisma.score.findMany({
                     where: {
                         teamID: input.teamId
                     },
                     include: {
                         criteria: true,
+                        characterPlayed: true,
+                        team: {
+                            include: {
+                                college: true
+                            }
+                        }
                     }
                 })
                 return scores;
@@ -112,11 +118,51 @@ export const JuryRouter= createTRPCRouter({
                         score: input.score
                     }
                 });
+            }),
+            updateCriteriaScore: protectedJudgeProcedure
+            .input((z.object({
+                teamId: z.string(),
+                criteriaName: z.nativeEnum(Criteria),
+                score : z.number(),
+            }))).mutation(async({ctx,input})=>{
+                const criteria = await ctx.prisma.criteria.findUnique({
+                    where:{
+                        name: input.criteriaName
+                    }
+                });
+                return await ctx.prisma.criteriaScore.upsert({
+                    where:{
+                        id_teamID: {
+                            id: criteria.id,
+                            teamID: input.teamId
+                        }
+                    },
+                    create: {
+                        id: criteria.id,
+                        teamID: input.teamId,
+                        score: input.score
+                    },
+                    update: {
+                        score: input.score
+                    }
+                })
+            }),
+            updateTotalScore: protectedJudgeProcedure
+            .input((z.object({
+                teamId: z.string(),
+                score : z.number(),
+            })))
+            .mutation(async({ctx,input})=>{
+                return await ctx.prisma.team.update({
+                    where:{
+                        id: input.teamId
+                    },
+                    data: {
+                        teamScore: input.score,
+                        isScored: true
+                    }
+                })
             })
-            // updateScores: protectedJudgeProcedure
-            // .mutation(async({ctx})=>{
-            //     return ctx.prisma.score.deleteMany();
-            // })
         })
 
 
