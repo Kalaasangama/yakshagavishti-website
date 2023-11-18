@@ -24,11 +24,43 @@ import Submit from "~/components/Jury/submit";
 const Jury: NextPage = () => {
   const { data: sessionData } = useSession();
   const { data, isLoading } = api.jury.getTeams.useQuery();
-  const criteriaList = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3"];
-  const criteriaDisplayList = ["Criteria 1", "Criteria 2", "Criteria 3"];
   const [teamName, setTeamName] = useState("Select a college");
   const [teamId, setTeamId] = useState("");
-  const [scores, setScores] = useState({});
+
+  type Character = "SHANTHANU" | "MANTRI_SUNEETHI" | "TAMAALAKETHU" | "TAAMRAAKSHA" | "SATHYAVATHI" | "DAASHARAJA" | "DEVAVRATHA";
+type Criteria = "CRITERIA_1" | "CRITERIA_2" | "CRITERIA_3";
+
+const criteriaList: Criteria[] = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3"];
+const criteriaDisplayList = ["Criteria 1", "Criteria 2", "Criteria 3"];
+
+type ScoresState = {
+  [character in Character]: {
+    [criteria in Criteria]: number;
+  };
+};
+
+const characters : Character[] = [
+  "SHANTHANU",
+  "MANTRI_SUNEETHI",
+  "TAMAALAKETHU",
+  "TAAMRAAKSHA",
+  "SATHYAVATHI",
+  "DAASHARAJA",
+  "DEVAVRATHA",
+];
+
+// Initialize scores with all values set to 0
+const initialScores: ScoresState = {} as ScoresState;
+
+characters.forEach((character) => {
+  initialScores[character] = {} as ScoresState[Character];
+
+  criteriaList.forEach((criteria) => {
+    initialScores[character][criteria] = 0;
+  });
+});
+
+const [scores, setScores] = useState<ScoresState>(initialScores);
 
   const handleScoreChange = (
     character: string,
@@ -103,16 +135,6 @@ const Jury: NextPage = () => {
     setTeamName(teamName);
     res.refetch().catch((err) => console.log(err))
   }
-
-  const characters = [
-    "SHANTHANU",
-    "MANTRI_SUNEETHI",
-    "TAMAALAKETHU",
-    "TAAMRAAKSHA",
-    "SATHYAVATHI",
-    "DAASHARAJA",
-    "DEVAVRATHA",
-  ];
   return !isLoading && data!==undefined && data.length>0 ? (
     <div className="container md:pt-20 pt-14 flex flex-col">
       <h1 className="text-extrabold mt-10 text-4xl pb-2">

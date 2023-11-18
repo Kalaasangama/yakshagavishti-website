@@ -97,7 +97,7 @@ model Team {
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
   remark        String          @default("")
-  criteria      criteria[]
+  isScored      Boolean         @default(false)
   criteriaScore criteriaScore[]
   TeamMembers   TeamMembers[]
   editRequests  EditRequests?
@@ -110,22 +110,17 @@ model CharacterOnUser {
   id        String     @id @default(cuid())
   character Characters @unique
   playedBy  User[]
-  userId    String?    @unique
-  score     Int
+  score     Int?
   Score     Score[]
 }
 
 model criteria {
   id            String          @id @default(cuid())
-  name          String
+  name          Criteria        @unique
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  Team          Team?           @relation(fields: [teamId], references: [id])
-  teamId        String?
   criteriaScore criteriaScore[]
   Score         Score[]
-
-  @@index([teamId])
 }
 
 model criteriaScore {
@@ -147,10 +142,11 @@ model Score {
   team            Team            @relation(fields: [teamID], references: [id], onDelete: Cascade)
   teamID          String
   criteriaId      String
-  characterPlayed CharacterOnUser @relation(fields: [characterId], references: [character])
-  characterId     Characters
+  characterPlayed CharacterOnUser @relation(fields: [characterId], references: [id])
+  characterId     String
   score           Int
 
+  @@unique([teamID, criteriaId, characterId])
   @@index([teamID])
   @@index([criteriaId])
   @@index([characterId])
@@ -194,4 +190,10 @@ enum editStatus {
   PENDING
   GRANTED
   REVOKED
+}
+
+enum Criteria {
+  CRITERIA_1
+  CRITERIA_2
+  CRITERIA_3
 }

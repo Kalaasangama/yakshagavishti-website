@@ -9,12 +9,48 @@ import {
     TableCell,
     TableHeader,
   } from "~/components/ui/table";
+import { api } from '~/utils/api';
 
-const Submit = ({ scores,teamId,teamName,criteriaDisplayList,criteriaList,characters }) => {
+type Character = "SHANTHANU" | "MANTRI_SUNEETHI" | "TAMAALAKETHU" | "TAAMRAAKSHA" | "SATHYAVATHI" | "DAASHARAJA" | "DEVAVRATHA";
+type Criteria = "CRITERIA_1" | "CRITERIA_2" | "CRITERIA_3";
+
+type ScoresState = {
+  [character in Character]: {
+    [criteria in Criteria]: number;
+  };
+};
+
+const Submit = ({
+    scores,
+    teamId,
+    teamName,
+    criteriaDisplayList,
+    criteriaList,
+    characters
+ } : {
+    scores : ScoresState,
+    teamId : string,
+    teamName : string,
+    criteriaDisplayList : String[], 
+    criteriaList : Criteria[],
+    characters : Character[]
+ }
+    ) => {
+    const scoreUpdate = api.jury.updateScores.useMutation();
 
     const saveScores = () => {
-
-    }
+        characters.forEach((character) => {
+          criteriaList.forEach((criteria) => {
+            scoreUpdate.mutate({
+              teamId: teamId,
+              criteriaName: criteria,
+              characterId: character,
+              score: scores[character][criteria],
+            });
+            // scoreUpdate.mutate();
+          });
+        });
+      };
 
     const totalScore = (character: string) => {
         if (scores[character] != null) {
