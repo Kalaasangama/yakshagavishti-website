@@ -4,22 +4,6 @@ import Card from "./Corecard";
 const AllCards: React.FC = () => {
   const cardProps = [
     {
-      name: "Swasthik Shetty",
-      role: "Technical Head",
-      linkedinURL: "https://www.linkedin.com/in/swasthikshetty10",
-      githubURL: "https://github.com/swasthikshetty10",
-      instagramURL: "",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
-    },
-    {
-      name: "Aaron Nazareth",
-      role: "Web Developer",
-      linkedinURL: "https://www.linkedin.com/in/aaron-nazareth-6580311b6",
-      githubURL: "https://github.com/jevil25",
-      instagramURL: "",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
-    },
-    {
       name: "Satwik R Prabhu",
       role: "Web Developer",
       linkedinURL: "https://www.linkedin.com/in/satwikprabhu/",
@@ -40,6 +24,22 @@ const AllCards: React.FC = () => {
       role: "Web Developer",
       linkedinURL: "https://www.linkedin.com/in/aniruddha-upadhya-k-324288246",
       githubURL: "https://github.com/Aniruddha-Upadhya-K",
+      instagramURL: "",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    },
+    {
+      name: "Swasthik Shetty",
+      role: "Technical Head",
+      linkedinURL: "https://www.linkedin.com/in/swasthikshetty10",
+      githubURL: "https://github.com/swasthikshetty10",
+      instagramURL: "",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    },
+    {
+      name: "Aaron Nazareth",
+      role: "Web Developer",
+      linkedinURL: "https://www.linkedin.com/in/aaron-nazareth-6580311b6",
+      githubURL: "https://github.com/jevil25",
       instagramURL: "",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
