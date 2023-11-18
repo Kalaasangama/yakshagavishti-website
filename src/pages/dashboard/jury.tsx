@@ -16,7 +16,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { ArrowDown } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Remarks from "~/components/Jury/remarks";
 
@@ -27,7 +27,6 @@ const Jury: NextPage = () => {
   const criteriaDisplayList = ["Criteria 1", "Criteria 2", "Criteria 3"];
   const [teamName, setTeamName] = useState("Select a college");
   const [teamId, setTeamId] = useState("");
-
   const [scores, setScores] = useState({});
 
   const handleScoreChange = (
@@ -70,9 +69,38 @@ const Jury: NextPage = () => {
     }, 0);
   };
 
+  const res = api.jury.getScores.useQuery({
+    teamId: teamId
+  },
+  {
+    onSuccess: () => {
+      if(res.data !== undefined && res.data.length>0){
+        const initialScores = {};
+          res.data.forEach((item) => {
+            const character = item.characterId;
+            const criteria = item.criteria.name;
+            // Update the scores state with the new value
+            console.log("updating")
+            setScores((prevScores) => ({
+              ...prevScores,
+              [character]: {
+                ...prevScores[character],
+                [criteria]: item.score,
+              },
+            }));
+          });
+      }
+    },
+    onError: (error) => {
+      console.error(error);
+      alert("Error fetching score");
+    },
+  })
+
   const setTeam = (teamId:string ,teamName:string) => {
     setTeamId(teamId);
     setTeamName(teamName);
+    res.refetch().catch((err) => console.log(err))
   }
 
   const characters = [
@@ -84,8 +112,7 @@ const Jury: NextPage = () => {
     "DAASHARAJA",
     "DEVAVRATHA",
   ];
-
-  return !isLoading && data.length>0 ? (
+  return !isLoading && data!==undefined && data.length>0 ? (
     <div className="container md:pt-20 pt-14 flex flex-col">
       <h1 className="text-extrabold mt-10 text-4xl pb-2">
         Judge Dashboard - {teamName}
@@ -110,8 +137,11 @@ const Jury: NextPage = () => {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        <Remarks/>
+        <Remarks
+          teamId={teamId}
+        />
       </div>
+      {teamName !=="Select a college" ? (
       <div className="flex flex-col md:flex-row gap-6">
         <div className="basis-4/5">
           <Table>
@@ -172,6 +202,10 @@ const Jury: NextPage = () => {
           </Table>
         </div>
       </div>
+      ):(
+      <><div className="text-2xl flex justify-center text-center p-4 m-4">Please select a college....</div></>
+    )
+  }
     </div>
   ) : (
     <div className="container py-40">

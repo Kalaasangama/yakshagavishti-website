@@ -96,6 +96,7 @@ model Team {
   teamScore     Int             @default(0)
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  remark        String          @default("")
   criteria      criteria[]
   criteriaScore criteriaScore[]
   TeamMembers   TeamMembers[]

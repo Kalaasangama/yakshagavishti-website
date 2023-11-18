@@ -2,12 +2,24 @@ import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Button } from '../ui/button';
 import { useState } from 'react';
+import { api } from '~/utils/api';
 
-const Remarks = () => {
+const Remarks = (team: { teamId: string }) => {
     const [remark, setRemark] = useState("");
 
     const saveRemark = () => {
-
+        api.jury.addRemark.useMutation().mutate({
+            teamId: team.teamId,
+            remark: remark
+        },{
+            onSuccess: () => {
+                
+            },
+            onError: (error) => {
+                console.error(error);
+                alert("Error adding remark");
+            },
+        })
     }
     return (
     <div className="flex basis-1/2 mt-4 md:mt-0 md:justify-end text-2xl md:text-xl">

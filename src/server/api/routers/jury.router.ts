@@ -5,63 +5,6 @@ import kalasangamaError from "~/utils/customError";
 import { get } from "http";
 
 export const JuryRouter= createTRPCRouter({
-		displayMembers : protectedProcedure
-        .input(z.object({
-            collegeId: z.string(),
-        }))
-        .query(async ({ctx,input})=>{
-            const teamMembers = await ctx.prisma.team.findMany({
-            where:{
-                college_id: input.collegeId,
-            },
-            select:{
-                members:{
-                    select:{
-                        id:true,
-                        name:true,
-                        characterPlayed:{
-                            select:{
-                                character:true,
-                                playedBy:true,
-                                score:true,
-                            }
-                        }
-                    }
-                },
-                criteria:{
-                    select:{
-                        id:true,
-                        name:true,
-                    }
-                },
-            },
-            })
-            return teamMembers;
-            }),
-            getTeamCriteria: protectedProcedure
-            .input(z.object({
-                collegeId: z.string(),
-            }))
-            .query(async ({ctx,input})=>{
-            const teamCriteria = await ctx.prisma.team.findUnique({
-            where:{
-                college_id: input.collegeId,
-            },
-            select:{
-                criteria:{
-                    select:{
-                        id:true,
-                        name:true,
-                    }
-                },
-            }
-            })
-            teamCriteria.criteria.map((criteria)=>{
-                criteria.id
-            })
-            return teamCriteria;
-            }),
-            //TODO: make protected after testing
             getTeams: protectedJudgeProcedure
             .query(async({ctx})=>{
                 const teams = await ctx.prisma.team.findMany({
@@ -71,7 +14,45 @@ export const JuryRouter= createTRPCRouter({
                 });
                 return teams;
             }),
-
+            addRemark: protectedJudgeProcedure
+            .input((z.object({
+                teamId:z.string(),
+                remark:z.string(),
+            })))
+            .mutation(async({ctx,input})=>{
+                const team = await ctx.prisma.team.findUnique({
+                    where:{
+                        id: input.teamId
+                    }
+                });
+                if(!team){
+                    throw new kalasangamaError("error","no team");
+                }
+                const teams = await ctx.prisma.team.update({
+                    where:{
+                        id: input.teamId
+                    },
+                    data:{
+                        remark: input.remark,
+                    }
+                })
+                return teams;
+            }),
+            getScores: protectedJudgeProcedure
+            .input((z.object({
+                teamId:z.string(),
+            })))
+            .query(async({ctx,input})=>{
+                const scores = ctx.prisma.score.findMany({
+                    where: {
+                        teamID: input.teamId
+                    },
+                    include: {
+                        criteria: true,
+                    }
+                })
+                return scores;
+            })
         })
 
 
