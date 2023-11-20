@@ -3,20 +3,32 @@ import Card from "./Aboutcard";
 
 const members = [
   {
+    name: "Mr. Anant Murthi",
+    role: "Faculty Coordinator"
+  },
+  {
+    name: "Mr. Shyam Sundar",
+    role: "Faculty Coordinator"
+  },  
+  {
+    name: "Shravan Udupa K",
+    role: "Kalaasangama Founder"
+  }, 
+  {
     name: "Amrutha V",
     role: "President",
   },
-  // {
-  //   name: "Krishna M S",
-  //   role: "Secretary",
-  // },
   {
-    name: "Anwesh R Shetty",
-    role: "Treasurer and Yakshagana Head",
+    name: "Krishna M S",
+    role: "Secretary",
   },
   {
     name: "Shrikrishna",
     role: "Vice President",
+  },
+  {
+    name: "Anwesh R Shetty",
+    role: "Treasurer and Yakshagana Head",
   },
   {
     name: "Keshav Nayak",
@@ -26,17 +38,17 @@ const members = [
     name: "Sinchana S Bairy",
     role: "Classical Dance Head",
   },
-  // {
-  //   name: "Shravya",
-  //   role: "Classical Dance Head",
-  // },
+  {
+    name: "Shravya",
+    role: "Classical Dance Head",
+  },
   {
     name: "Shreyas Upadhyaya",
-    role: "Classical music Head",
+    role: "Classical Music Head",
   },
   {
     name: "Mahatee",
-    role: "Classical music Head",
+    role: "Classical Music Head",
   },
   {
     name: "Eshaan Rao",
@@ -56,7 +68,7 @@ const members = [
   },
   {
     name: "Mayur M Shet",
-    role: "Social media and folk Head",
+    role: "Social Media and Folk Head",
   },
   {
     name: "Vaibhav",
@@ -81,7 +93,7 @@ const AboutCardsSection: React.FC = () => {
     <div className="flex my-8 items-center justify-center">
       <div className="flex flex-wrap gap-10 justify-center">
         {members.map((member, idx) => (
-          <Card key={idx} {...member} url={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/about/members/${member.name.replaceAll(' ', '_')}.jpg`} />
+          <Card key={idx} {...member} url={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890927/yakshagavishti/assets/about/members/${member.name.replaceAll(' ', '_')}.jpg`} />
         ))}
       </div>
     </div>

@@ -7,6 +7,7 @@ import { SmallButton } from "../Button";
 import Reveal from "../Animations/reveal";
 import { signIn, signOut, useSession } from "next-auth/react";
 
+
 type Link = {
   label: string;
   url: string;
@@ -54,6 +55,7 @@ const Navbar = () => {
                   width={100}
                   height={100}
                   className="object-contain object-left relative w-[4.5rem] md:w-20 lg:w-[5.25rem]"
+                  priority
                 />
               </Link>
             </div>
@@ -117,7 +119,7 @@ const MobileNav = ({ links, activePath }: Props) => {
               >
                 <div
                   className={
-                    activePath?.label === link.label ? "text-secondary-100" : ""
+                    activePath?.label === link.label ? "text-secondary-100 " : " text-shadow"
                   }
                 >
                   {link.label}

@@ -84,6 +84,11 @@ module.exports = {
           "75%": {transform: 'skewX(-45deg) translateX(100%)'},
           "87.5%": {transform: 'skewX(-45deg) translateX(100%)'},
           "100%": {transform: 'skewX(-45deg) translateX(100%)'},
+        },
+        "breathe": {
+          "0%": {transform: 'scale(1)', filter: 'drop-shadow(0px 0px 5px #f76502)', opacity: '0.35'},
+          "50%": {transform: 'scale(1.3)', filter: 'drop-shadow(0px 0px 20px #f76502)', opacity: '1'},
+          "100%": {transform: 'scale(1)', filter: 'drop-shadow(0px 0px 5px #f76502)', opacity: '0.35'},
         }
       },
       transitionTimingFunction: {
@@ -99,6 +104,7 @@ module.exports = {
         "bottom": "bottom 4s infinite ease-in-out",
         "left": "left 4s infinite ease-in-out",
         "right": "right 4s infinite ease-in-out",
+        "breathe": "breathe 3s infinite linear",
       },
       colors: {
         'bg-gradient-50': 'rgba(48, 21, 75, 0.75)',
@@ -111,8 +117,6 @@ module.exports = {
         'secondary-200': '#f76502'
       },
       fontFamily: {
-        hindi: 'var(--font-hindi)',
-        tourney: ['var(--font-tourney)', 'cursive'],
         sans: ['var(--font-oskari)', 'Arial','ui-sans-serif','system-ui','-apple-system','BlinkMacSystemFont','Segoe UI','Roboto','Helvetica Neue','Arial','Noto Sans','sans-serif','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'],
         boris: 'var(--font-boris)',
         rhomdon: 'var(--font-rhomdon)',

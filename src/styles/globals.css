@@ -17,7 +17,7 @@
 
   @media screen and (max-width: 768px) {
     .bg-image-gradient {
-      background: circular-gradient( #080b1e 0%, rgba(0,0,0,0) 35%, rgba(0,85,103,0) 65%, #080b1e 100%);
+      background: linear-gradient( #080b1e 0%, rgba(0,0,0,0) 45%, rgba(0,85,103,0) 65%, #080b1e 85%);
       /* background: radial-gradient(circle, #080b1e 0%, rgba(0,0,0,0) 25%, rgba(0,85,103,0) 75%, #080b1e 100%); */
     }
   }
@@ -57,3 +57,8 @@
   border-radius: 20px;
   border: 3px solid transparent;
   }
+
+ 
+  .text-shadow {
+    text-shadow: 0 0 4px rgb(0, 0, 166);
+    }

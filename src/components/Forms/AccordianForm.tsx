@@ -27,6 +27,8 @@ export default function AccordianForm({
 	index: number;
 	characterId: string;
 }) {
+	console.log(index);
+	
 	const [teammateName, setTeammateName] = useState(MembersArray[index]?.name || "");
 	const [uploadStatus, setUploadStatus] = useState("");
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
@@ -183,7 +185,7 @@ export default function AccordianForm({
 							}
 						}}
 					>
-						{MembersArray[index] === undefined ? "Add" : "Update"}
+						{!MembersArray[index] ? "Add" : "Update"}
 					</Button>
 				)}
 			</form>

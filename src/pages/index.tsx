@@ -56,20 +56,20 @@ export default function Home() {
   
   return (
     <>
-      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20">
+      <div ref={mainRef} className="flex flex-col gap-10 md:gap-20 mb-20 ">
 
         {/* Hero Section */}
 
-        <section  className="relative flex flex-col justify-end items-center h-screen w-full bg-image-gradient mt-1">
-          <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-30 hidden sm:block" fill />
+        <section  className="relative flex flex-col justify-end items-center h-screen overflow-y-hidden w-full bg-image-gradient mt-1">
+          <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_background.png'} alt="Banner" className=" select-none object-cover opacity-75 object-center -z-30 hidden sm:block" fill priority />
           <div className="mx-4 sm:mx-8 lg:mx-32 landscape:short:gap-8 flex flex-col items-center gap-14 max-w-7xl">
 
             <motion.img style={{y: yPos, x: "-50%"}} ref={ref} src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/title2.png'} height={800} width={800} className="w-full max-w-xl absolute h-auto object-contaiin top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff] pointer-events-none" alt="Background" />
 
-          <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill />
+          <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png'} alt="Background Image" className="h-full w-full absolute inset-0 -z-30 object-center object-cover sm:hidden" fill priority />
           
-          <div className="absolute bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
-            <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-bottom absolute bottom-0 left-0 right-0" />
+          <div className="absolute bottom-24 short:bottom-0 left-0 right-0 h-screen w-full sm:hidden overflow-hidden -z-10">
+            <Image src={'https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Layer_6.png'} height={300} width={300} alt="" className="select-none w-full object-contain object-center absolute bottom-0 left-0 right-0" priority />
           </div>
 
             {/* Contents - Hero Section */}
@@ -81,7 +81,7 @@ export default function Home() {
 
             </Reveal>
               <Reveal classes="flex justify-center">
-                <ScrollLag classes="w-fit mb-48 xl:mb-32 landscape:short:mb-3" speed={75}>
+                <ScrollLag classes="w-fit mb-48 xl:mb-32 landscape:short:mb-10" speed={75}>
                   {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)}
                 </ScrollLag>
               </Reveal>

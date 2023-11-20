@@ -23,18 +23,17 @@ const Card: React.FC<CardProps> = ({
       <div className="h-72">
         <Image
           alt={name}
-          src={`Cloudinary/team/${name}.jpg`}
+          src={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/team/${name.replaceAll(' ','_')}.jpg`}
           width="250"
           height="250"
           decoding="async"
-          data-nimg="1"
           className="h-full w-full rounded-md object-cover"
           loading="lazy"
           style={{ color: "transparent" }}
         />
       </div>
       <div className="mt-5 flex flex-col">
-        <h1 className="titleFont text-2xl font-bold text-white">{name}</h1>
+        <h1 className="capitalize text-2xl font-bold text-white">{name}</h1>
         <p className="text-md bodyFont text-gray-200">{role}</p>
       </div>
       <div className="mt-2 flex justify-center gap-2">

@@ -48,7 +48,7 @@ const Achievements = () => {
         <video src="https://res.cloudinary.com/dfhg1joox/video/upload/v1699877866/yakshagavishti/achievementsvideo_e7ayx4.mp4" className="h-screen w-full absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video>
         <div className="bg-gradient-to-t from-black/50 to-black/50 h-screen w-full absolute inset-0 -z-20"></div>
         <div>
-          <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl ">Achievements</div>
+          <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl text-center ">Achievements</div>
           <br />
           <p className="text-secondary-100 text-3xl font-body text-center">
             Remarkable Feats in the Spotlight
@@ -73,10 +73,10 @@ const Achievements = () => {
 
                 return (
                   <div key={idx} className="w-full relative flex flex-col sm:justify-center justify-start h-screen snap-start gap-10 items-center group/page">
-                    <div className="xl:w-[1280px] w-full px-4 sm:px-8 lg:px-32 md:mb-16 mt-44 sm:mt-0">
+                    <div className="xl:w-[1280px] w-full px-4 sm:px-8 lg:px-32 md:mb-16 mt-32 sm:mt-0">
                       <Expandable key={idx} cards={row} setContentId={setContentId} direction={idx % 4 == 0 ? "" : "-"} />
                     </div>
-                    <div className="h-48 sm:h-fit md:h-48  flex-col justify-center items-center gap-4 md:gap-3 absolute bottom-9 sm:bottom-5 md:bottom-3 group-hover/page:flex hidden landscape:short:bottom-0 landscape:short:h-fit">
+                    <div className="h-48 sm:h-fit md:h-48  flex-col justify-center items-center gap-4 md:gap-3 absolute bottom-24 sm:bottom-10 md:bottom-3 group-hover/page:flex hidden landscape:short:bottom-0 landscape:short:h-fit">
                       <div data-id={`${idx}`} className="flex justify-center text-lg sm:text-xl md:text-2xl text-center text-secondary-100">{achievements[contentId]?.title}</div>
                       <div className="flex flex-col justify-center items-center gap-2 md:gap-1">
                         {achievements[contentId]?.team && <div className="text-base md:text-lg xl:text-xl flex items-center gap-3">

@@ -4,14 +4,6 @@ import Card from "./Corecard";
 const AllCards: React.FC = () => {
   const cardProps = [
     {
-      name: "Aniruddha Upadhya K",
-      role: "Web Developer",
-      linkedinURL: "https://www.linkedin.com/in/aniruddha-upadhya-k-324288246",
-      githubURL: "https://github.com/Aniruddha-Upadhya-K",
-      instagramURL: "",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
-    },
-    {
       name: "Satwik R Prabhu",
       role: "Web Developer",
       linkedinURL: "https://www.linkedin.com/in/satwikprabhu/",
@@ -28,10 +20,26 @@ const AllCards: React.FC = () => {
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
     {
+      name: "Aniruddha Upadhya K",
+      role: "Web Developer",
+      linkedinURL: "https://www.linkedin.com/in/aniruddha-upadhya-k-324288246",
+      githubURL: "https://github.com/Aniruddha-Upadhya-K",
+      instagramURL: "",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    },
+    {
       name: "Swasthik Shetty",
       role: "Technical Head",
       linkedinURL: "https://www.linkedin.com/in/swasthikshetty10",
       githubURL: "https://github.com/swasthikshetty10",
+      instagramURL: "",
+      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
+    },
+    {
+      name: "Aaron Nazareth",
+      role: "Web Developer",
+      linkedinURL: "https://www.linkedin.com/in/aaron-nazareth-6580311b6",
+      githubURL: "https://github.com/jevil25",
       instagramURL: "",
       description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
     },
@@ -52,10 +60,26 @@ const AllCards: React.FC = () => {
       description: "",
     },
     {
+      name: "Sinchana SH",
+      role: "Content Writer",
+      linkedinURL: "https://www.linkedin.com/in/sinchana-s-h-0b2843253",
+      githubURL: "https://github.com/Sinchana-SH",
+      instagramURL: "",
+      description: "",
+    },
+    {
       name: "Kshitij Shetty",
       role: "Web Developer",
       linkedinURL: "https://linkedin.com/in/kshitij%20shetty",
       githubURL: "https://github.com/kshitijshettyyy",
+      instagramURL: "",
+      description: "",
+    },
+    {
+      name: "kishor S Naik",
+      role: "Web Developer",
+      linkedinURL: "linkedin.com/in/kishor-s-naik-378982247",
+      githubURL: "https://github.com/kishor068",
       instagramURL: "",
       description: "",
     },
@@ -67,14 +91,6 @@ const AllCards: React.FC = () => {
       instagramURL: "",
       description: "",
     },
-    {
-      name: "Kishor S Naik",
-      role: "Web Developer",
-      linkedinURL: "linkedin.com/in/kishor-s-naik-378982247",
-      githubURL: "https://github.com/kishor068",
-      instagramURL: "",
-      description: "",
-    }
   ];
 
   return (

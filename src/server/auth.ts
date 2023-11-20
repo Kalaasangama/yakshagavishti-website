@@ -26,6 +26,7 @@ declare module "next-auth" {
 			idURL: string;
 			contact: string;
 			teamEditStatus: string;
+			characterId: string;
 		} & DefaultSession["user"];
 	}
 }
@@ -53,6 +54,9 @@ export const authOptions: NextAuthOptions = {
 								editRequests: { select: { status: true } },
 							},
 						},
+						characterPlayed:{
+							select:{id:true}
+						},
 						leaderOf: { select: { id: true } },
 						idURL: true,
 						contact: true,
@@ -64,6 +68,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.idURL = data.idURL;
 				session.user.contact = data.contact;
 				session.user.teamEditStatus = data?.team?.editRequests.status;
+				session.user.characterId = data?.characterPlayed?.id;
 			}
 			return session;
 		},
