@@ -8,7 +8,6 @@ import {
   TableCell,
   TableHeader,
 } from "~/components/ui/table";
-import { Button } from "~/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,14 +21,6 @@ import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
 
 const Jury: NextPage = () => {
-  const { data: sessionData } = useSession();
-  const { data, isLoading } = api.jury.getTeams.useQuery();
-  const [teamName, setTeamName] = useState<string>("Select a college");
-  const [teamId, setTeamId] = useState<string>("");
-  const [scored,setScored] = useState<boolean>(false);
-
-  const ctx = api.useContext();
-
   type Character = "SHANTHANU" | "MANTRI_SUNEETHI" | "TAMAALAKETHU" | "TAAMRAAKSHA" | "SATHYAVATHI" | "DAASHARAJA" | "DEVAVRATHA";
   type Criteria = "CRITERIA_1" | "CRITERIA_2" | "CRITERIA_3";
 
@@ -41,6 +32,19 @@ const Jury: NextPage = () => {
       [criteria in Criteria]: number;
     };
   };
+
+  const [teamName, setTeamName] = useState<string>("Select a college");
+  const [teamId, setTeamId] = useState<string>("");
+  const [scored,setScored] = useState<boolean>(false);
+  const [settingCriteria, setSettingCriteria] = useState<Criteria>("CRITERIA_1");
+  const [settingCharacter, setSettingCharacter] = useState<Character>("DAASHARAJA");
+
+  const ctx = api.useContext();
+  const scoreUpdate = api.jury.updateScores.useMutation();
+  const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
+  const finalTeamScore = api.jury.updateTotalScore.useMutation();
+  const { data: sessionData } = useSession();
+  const { data, isLoading } = api.jury.getTeams.useQuery();
 
   const characters : Character[] = [
     "SHANTHANU",
@@ -67,10 +71,12 @@ const Jury: NextPage = () => {
   const [ready, setReady] = useState<boolean>(false);
 
     const handleScoreChange = (
-      character: string,
-      criteria: string,
+      character: Character,
+      criteria: Criteria,
       value: number
     ) => {
+      setSettingCharacter(character)
+      setSettingCriteria(criteria)
       // Update the scores state with the new value
       setScores((prevScores) => ({
         ...prevScores,
@@ -79,6 +85,24 @@ const Jury: NextPage = () => {
           [criteria]: value,
         },
       }));
+      scoreUpdate.mutate({
+        teamId: teamId,
+        criteriaName: criteria,
+        characterId: character,
+        score: value,
+      });
+      criteriaList.forEach((criteria) => {
+        criteriaTotal.mutate({
+            teamId: teamId,
+            criteriaName: criteria,
+            score: totalCriteriaScore(criteria)
+        })
+      })
+      finalTeamScore.mutate({
+          teamId:teamId,
+          score: calculateFinalTotal(),
+          final: false
+      })
     };
 
     const totalScore = (character: string) => {
@@ -106,27 +130,9 @@ const Jury: NextPage = () => {
     };
 
     const res = api.jury.getScores.useQuery({
-      teamId: teamId
+      teamId: teamId,
     },
     {
-      onSuccess: () => {
-        if(res.data !== undefined && res.data.length>0){
-          console.log("updating")
-            res.data.forEach((item) => {
-              const character = item.characterPlayed.character;
-              const criteria = item.criteria.name;
-              // Update the scores state with the new value
-              setScores((prevScores) => ({
-                ...prevScores,
-                [character]: {
-                  ...prevScores[character],
-                  [criteria]: item.score,
-                },
-              }));
-            });
-            setReady(true);
-        }
-      },
       onError: (error) => {
         console.error(error);
         alert("Error fetching score");
@@ -141,8 +147,30 @@ const Jury: NextPage = () => {
         setScored(false)
       setTeamId(teamId);
       setTeamName(teamName);
-      void ctx.jury.getScores.invalidate();
     }
+
+    useEffect(() => {
+      res.refetch()
+    },[teamId])
+
+    useEffect(() => {
+      if(res.data?.length>0){
+        console.log("updating")
+          res.data.forEach((item) => {
+            const character = item.characterPlayed.character;
+            const criteria = item.criteria.name;
+            // Update the scores state with the new value
+            setScores((prevScores) => ({
+              ...prevScores,
+              [character]: {
+                ...prevScores[character],
+                [criteria]: item.score,
+              },
+            }));
+          });
+          setReady(true);
+      }
+    },[res.data])
 
     return !isLoading && data!==undefined && data.length>0 ? (
       <div className="container md:pt-20 pt-14 flex flex-col w-full">
@@ -152,7 +180,7 @@ const Jury: NextPage = () => {
         <div className="flex md:flex-row flex-col w-full m-2 text-center">
           <div className="flex basis-1/2 justify-start">
             <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center">
+              <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
                 <div className="md:text-xl text-2xl">Select a team</div>
                 <ArrowDown></ArrowDown>
               </DropdownMenuTrigger>
@@ -171,6 +199,7 @@ const Jury: NextPage = () => {
           </div>
           <Remarks
             teamId={teamId}
+            isLoading={scoreUpdate.isLoading}
           />
         </div>
         {teamName !=="Select a college" && !scored && ready ? (
@@ -201,7 +230,7 @@ const Jury: NextPage = () => {
                               parseInt(e.target.value, 10)
                             )
                           }
-                          className="bg-transparent border text-center border-white w-24 rounded-lg"
+                          className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${scoreUpdate.isLoading && settingCriteria===criteria && settingCharacter===character ? `border-red-800`:`border-green-800`}`}
                         />
                       </TableCell>
                     ))}
@@ -252,12 +281,12 @@ const Jury: NextPage = () => {
             </div>
             )
             :
-            !ready && teamName !=="Select a college" ? (
+            !ready && teamName ==="Select a college" && !scored ? (
               <><div className="text-2xl flex justify-center text-center p-4 m-4">Please select a college....</div></>
             )
           :
         (
-        <><div className="text-2xl flex justify-center text-center p-4 m-4">Please select a college....</div></>
+        <><div className="text-2xl flex justify-center text-center p-4 m-4">Loading Scores....</div></>
       )
     }
       </div>

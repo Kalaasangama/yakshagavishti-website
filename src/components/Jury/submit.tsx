@@ -65,7 +65,8 @@ const Submit = ({
         })
         finalTeamScore.mutate({
             teamId:teamId,
-            score: calculateFinalTotal()
+            score: calculateFinalTotal(),
+            final: true
         })        
         setScored(true);
       };

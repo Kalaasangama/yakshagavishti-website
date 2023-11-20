@@ -151,15 +151,25 @@ export const JuryRouter= createTRPCRouter({
             .input((z.object({
                 teamId: z.string(),
                 score : z.number(),
+                final: z.boolean()
             })))
             .mutation(async({ctx,input})=>{
+                if(input.final)
+                    return await ctx.prisma.team.update({
+                        where:{
+                            id: input.teamId
+                        },
+                        data: {
+                            teamScore: input.score,
+                            isScored: true
+                        }
+                    })
                 return await ctx.prisma.team.update({
                     where:{
                         id: input.teamId
                     },
                     data: {
                         teamScore: input.score,
-                        isScored: true
                     }
                 })
             })
