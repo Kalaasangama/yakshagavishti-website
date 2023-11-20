@@ -25,6 +25,7 @@ declare module "next-auth" {
 			leaderOf: string | undefined;
 			idURL: string;
 			contact: string;
+			teamEditStatus: string;
 		} & DefaultSession["user"];
 	}
 }
@@ -49,6 +50,7 @@ export const authOptions: NextAuthOptions = {
 								id: true,
 								name: true,
 								isComplete: true,
+								editRequests: { select: { status: true } },
 							},
 						},
 						leaderOf: { select: { id: true } },
@@ -61,6 +63,7 @@ export const authOptions: NextAuthOptions = {
 				session.user.id = z.string().parse(user.id);
 				session.user.idURL = data.idURL;
 				session.user.contact = data.contact;
+				session.user.teamEditStatus = data?.team?.editRequests.status;
 			}
 			return session;
 		},

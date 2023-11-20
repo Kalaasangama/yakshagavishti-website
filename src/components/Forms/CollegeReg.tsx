@@ -28,7 +28,6 @@ import { Input } from "src/components/ui/input";
 import { Label } from "src/components/ui/label";
 import { toast } from "../ui/use-toast";
 import { api } from "~/utils/api";
-import { getServerSession } from "next-auth";
 import { getSession } from "next-auth/react";
 export default function CollegeReg({
 	setFormToShow,

@@ -11,9 +11,6 @@ import Reel from "~/components/Home/reel";
 import { useState, useRef, useEffect } from "react";
 import ScrollLag from "~/components/Animations/scrollLag";
 import { useContainerDimension } from "~/components/customHooks";
-import CollegeReg from "~/components/Forms/CollegeReg";
-import LeadRegister from "~/components/Forms/LeadRegister";
-import MemberReg from "~/components/Forms/MemberReg";
 import CreateTeam from "~/components/Forms/MainForm";
 import { motion, useScroll, useTransform } from "framer-motion"
 

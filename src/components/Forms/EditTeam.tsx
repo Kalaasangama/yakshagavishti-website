@@ -1,5 +1,9 @@
-
-import React, { type Dispatch, type SetStateAction, useState } from "react";
+import React, {
+	type Dispatch,
+	type SetStateAction,
+	useEffect,
+	useState,
+} from "react";
 import { Button } from "src/components/ui/button";
 import {
 	DialogContent,
@@ -29,7 +33,7 @@ import { api } from "~/utils/api";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
-
+import z from "zod";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -55,11 +59,20 @@ const MemberReg = ({
 	CollegeId: string;
 	setFormToShow: Dispatch<SetStateAction<number>>;
 }) => {
+	//Get the list of members from the API
+	const membersList = api.team.getTeamForEdits.useQuery();
 	const [MembersArray, setMembersArray] = useState<Members[]>(
 		JSON.parse(localStorage.getItem("members")) || []
 	);
 	const { toast } = useToast();
 
+	useEffect(() => {
+		if (MembersArray.length === 0)
+			if (membersList.data && membersList.data.members.length >= 7)
+				setMembersArray(membersList.data.members);
+	}, [membersList.data]);
+
+	//Register members API
 	const registerMembers = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -79,14 +92,25 @@ const MemberReg = ({
 		},
 	});
 
+	//Get the index of the role in the list
+	const getIndex = (label: string, prevIndex: number) => {
+		const index = membersList.data.members.findIndex(
+			(member) => member.characterId === label.replace(" ", "_")
+		);
+		if (index === -1) return prevIndex;
+		return index;
+	};
+
+	//Remove the leader character from the list of available roles
 	const availableRoles = roles.filter(
 		(roles) => roles.value !== LeaderCharacter
 	);
 	const router = useRouter();
+	if (membersList.isLoading) return <div className="text-2xl">Loading...</div>;
 	return (
 		<Dialog defaultOpen={true}>
 			<DialogTrigger asChild>
-				<Button>Create Team</Button>
+				<Button>Edit Team</Button>
 			</DialogTrigger>
 			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
 				<DialogTitle>Character Details</DialogTitle>
@@ -103,9 +127,17 @@ const MemberReg = ({
 								</AccordionTrigger>
 								<AccordionContent>
 									<AccordianForm
-										MembersArray={MembersArray}
+										MembersArray={
+											MembersArray.length > 7
+												? MembersArray.filter(
+														(member) =>
+															member.characterId !==
+															null
+												  )
+												: MembersArray
+										}
 										setMembersArray={setMembersArray}
-										index={index}
+										index={getIndex(role.label, index)}
 										characterId={role.value}
 									/>
 								</AccordionContent>
@@ -114,31 +146,37 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button onClick={() => setFormToShow(2)}>Back</Button>
+					<Button onClick={() => setFormToShow(2)} size="sm">
+						Back
+					</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
-								availableRoles.length ===
+								availableRoles.length <=
 								MembersArray.filter(
-									(member) => member !== undefined || null
+									(member) => member !== (undefined || null)
 								).length
 									? false
 									: true
 							}
 						>
 							<Button
+								size="sm"
 								disabled={
-									availableRoles.length ===
+									availableRoles.length <=
 									MembersArray.filter(
-										(member) => member !== undefined || null
+										(member) =>
+											member !== (undefined || null)
 									).length
 										? false
 										: true
 								}
 								onClick={() => {
 									if (
-										MembersArray.length <
-										availableRoles.length
+										MembersArray.filter(
+											(member) =>
+												member !== (undefined || null)
+										).length < availableRoles.length
 									) {
 										toast({
 											variant: "destructive",
@@ -164,15 +202,27 @@ const MemberReg = ({
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
+									disabled={registerMembers.isLoading}
 									onClick={(e) => {
 										e.preventDefault();
+										console.log(MembersArray);
 										registerMembers.mutate({
-											members: MembersArray,
+											members: z
+												.array(
+													z.object({
+														name: z.string(),
+														characterId: z.string(),
+														idURL: z.string(),
+													})
+												)
+												.parse(MembersArray),
 											college_id: CollegeId,
 										});
 									}}
 								>
-									Continue
+									{registerMembers.isLoading
+										? "Loading..."
+										: "Continue"}
 								</AlertDialogAction>
 							</AlertDialogFooter>
 						</AlertDialogContent>
