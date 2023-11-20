@@ -54,7 +54,9 @@ export const TeamRouter = createTRPCRouter({
 					await ctx.prisma.user.deleteMany({
 						where: {
 							id: {
-								in: college.Team.members.map((member) => member.id).filter((id) => id !== ctx.session.user.id),
+								in: college.Team.members
+									.map((member) => member.id)
+									.filter((id) => id !== ctx.session.user.id),
 							},
 						},
 					});
@@ -116,8 +118,7 @@ export const TeamRouter = createTRPCRouter({
 					console.log(input.password, college.password);
 					if (input.password === college.password) {
 						return {
-							message:
-								"Let's Proceed",
+							message: "Let's Proceed",
 						};
 					} else {
 						throw new kalasangamaError(
@@ -178,7 +179,9 @@ export const TeamRouter = createTRPCRouter({
 								members: {
 									select: {
 										name: true,
-										characterId: true,
+										characterPlayed: {
+											select: { id: true },
+										},
 										idURL: true,
 									},
 								},

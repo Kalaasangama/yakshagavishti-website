@@ -50,7 +50,7 @@ type Members = {
 	idURL: string;
 };
 
-const EditTeamForm= ({
+const EditTeamForm = ({
 	LeaderCharacter,
 	CollegeId,
 }: {
@@ -64,10 +64,20 @@ const EditTeamForm= ({
 	);
 	const { toast } = useToast();
 
+	//Set the members array if not already loaded from local storage
 	useEffect(() => {
 		if (MembersArray.length === 0)
-			if (membersList.data && membersList.data.members.length >= 7)
-				setMembersArray(membersList.data.members);
+			if (membersList.data && MembersArray.length === 0) {
+				const tempArr = Array<Members>();
+				for (const member of membersList.data.members) {
+					tempArr.push({
+						name: member.name,
+						characterId: member.characterPlayed.id,
+						idURL: member.idURL,
+					});
+				}
+				setMembersArray(tempArr);
+			}
 	}, [membersList.data]);
 
 	//Register members API
@@ -104,7 +114,8 @@ const EditTeamForm= ({
 		(roles) => roles.value !== LeaderCharacter
 	);
 	const router = useRouter();
-	if (membersList.isLoading) return <div className="text-2xl">Loading...</div>;
+	if (membersList.isLoading)
+		return <div className="text-2xl">Loading...</div>;
 	return (
 		<Dialog defaultOpen={true}>
 			<DialogTrigger asChild>
