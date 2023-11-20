@@ -172,6 +172,20 @@ export const JuryRouter= createTRPCRouter({
                         teamScore: input.score,
                     }
                 })
+            }),
+            getRemark: protectedJudgeProcedure
+            .input((z.object({
+                teamId: z.string(),
+            })))
+            .query(async({ctx,input})=>{
+                return await ctx.prisma.team.findUnique({
+                    where: {
+                        id: input.teamId
+                    },
+                    select: {
+                        remark: true
+                    }
+                })
             })
         })
 

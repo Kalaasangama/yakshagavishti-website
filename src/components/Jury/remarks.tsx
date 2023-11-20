@@ -1,12 +1,15 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { Button } from '../ui/button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 
 const Remarks = (team: { teamId: string, isLoading: boolean }) => {
     const [remark, setRemark] = useState("");
     const remarks = api.jury.addRemark.useMutation();
+    const getRemark = api.jury.getRemark.useQuery({
+        teamId: team.teamId
+    });
 
     const saveRemark = () => {
         remarks.mutate({
@@ -22,6 +25,11 @@ const Remarks = (team: { teamId: string, isLoading: boolean }) => {
             },
         })
     }
+
+    useEffect(() => {
+        setRemark(getRemark.data?.remark)
+    },[getRemark.data])
+
     return (
     <div className="flex basis-1/2 mt-4 md:mt-0 md:justify-end text-2xl md:text-xl">
         <div className={`flex justify-end m-2 items-center border p-2 rounded-lg ${team.isLoading ? `border-red-800 bg-red-800`:`border-green-800 bg-green-800`}`}>
