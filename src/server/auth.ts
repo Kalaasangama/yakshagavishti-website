@@ -9,6 +9,7 @@ import { z } from "zod";
 import { prisma } from "~/server/db";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
+import { type editStatus } from "@prisma/client";
 
 declare module "next-auth" {
 	interface Session {
@@ -25,7 +26,7 @@ declare module "next-auth" {
 			leaderOf: string | undefined;
 			idURL: string;
 			contact: string;
-			teamEditStatus: string;
+			teamEditStatus: editStatus;
 			characterId: string;
 		} & DefaultSession["user"];
 	}
@@ -54,8 +55,8 @@ export const authOptions: NextAuthOptions = {
 								editRequests: { select: { status: true } },
 							},
 						},
-						characterPlayed:{
-							select:{id:true}
+						characterPlayed: {
+							select: { id: true },
 						},
 						leaderOf: { select: { id: true } },
 						idURL: true,

@@ -3,6 +3,7 @@ import CollegeReg from "./CollegeReg";
 import LeadRegister from "./LeadRegister";
 import MemberReg from "./MemberReg";
 import { useSession } from "next-auth/react";
+import EditTeamForm from "./EditTeam";
 
 export default function CreateTeam() {
 	const user = useSession().data.user;
@@ -25,6 +26,16 @@ export default function CreateTeam() {
 					setFormToShow={setFormToShow}
 					college_id={CollegeId}
 					setLeaderChar={setLeaderChar}
+				/>
+			</>
+		);
+
+	if (FormToShow === 4)
+		return (
+			<>
+				<EditTeamForm
+					LeaderCharacter={LeaderChar}
+					CollegeId={CollegeId}
 				/>
 			</>
 		);

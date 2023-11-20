@@ -59,14 +59,6 @@ export const TeamRouter = createTRPCRouter({
 						},
 					});
 				}
-				// const data = await ctx.prisma.user.createMany({
-				// 	data: input.members.map((user) => {
-				// 		return {
-				// 			name: user.name,
-				// 			idURL: user.idURL,
-				// 		};
-				// 	})
-				// })
 				await Promise.all(
 					input.members.map((user) =>
 						ctx.prisma.user.create({
@@ -92,26 +84,6 @@ export const TeamRouter = createTRPCRouter({
 						})
 					)
 				);
-
-				// await ctx.prisma.user.updateMany({
-				// 	where: { id:{
-				// 		in: data.map((user) => user.id)
-				// 	} },
-				// 	data: {
-				// 		teamId: college.Team.id,
-				// 		collegeId: college.id,
-				// 	},
-				// });
-				// await ctx.prisma.user.createMany({
-				// 	data: input.members.map((user) => {
-				// 		return {
-				// 			name: user.name,
-				// 			idURL: user.idURL,
-				// 			collegeId: college.id,
-				// 			teamId: college.Team.id,
-				// 		};
-				// 	})
-				// })
 
 				//Set team complete status to true to prevent edits
 				await setTeamCompleteStatus(college.Team.id, true);

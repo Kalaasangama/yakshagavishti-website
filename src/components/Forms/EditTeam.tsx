@@ -50,14 +50,12 @@ type Members = {
 	idURL: string;
 };
 
-const MemberReg = ({
+const EditTeamForm= ({
 	LeaderCharacter,
 	CollegeId,
-	setFormToShow,
 }: {
 	LeaderCharacter: string;
 	CollegeId: string;
-	setFormToShow: Dispatch<SetStateAction<number>>;
 }) => {
 	//Get the list of members from the API
 	const membersList = api.team.getTeamForEdits.useQuery();
@@ -146,9 +144,6 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button onClick={() => setFormToShow(2)} size="sm">
-						Back
-					</Button>
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
@@ -232,4 +227,4 @@ const MemberReg = ({
 		</Dialog>
 	);
 };
-export default MemberReg;
+export default EditTeamForm;
