@@ -48,16 +48,21 @@ export default function Instagram() {
 
 	if (sessionData?.user) {
 		const downloadcsvFile = () => {
-		const col = ["College Name","Team Leader","Leader Contact","Team Members","Charcter Played"]
+		const downloadcsvFile = () => {
+		// const col = ["College Name","Team Leader","Leader Contact","Team Members","Charcter Played"]
+		const col = ["College Name","Team Leader","Leader Contact"].join(',') + '\n';
 		
 		const row = data?.map((element,key)=>{
-			const college = element?.college?.name || "";
-			const leader = element?.leader?.name || "";
-			const leaderContact = element?.leader?.contact || "";
-			const members = element?.members.map((member)=>member.name + "\n").join(",") || "";
-			const membersChar = element?.members.map((member)=>member?.characterPlayed?.character + "\n").join(",") || "	";
-			const row = [college,leader,leaderContact,members,membersChar].join(",")
+			if(element.isComplete === true){
+			const college = (element?.college?.name || "").replaceAll(","," ");
+			
+			const leader = (element?.leader.name || "").replaceAll(","," ");
+			const leaderContact = (element?.leader?.contact + "\n" || "").replaceAll(","," ");
+			const members = (element?.members.map((member)=>member.name + "," + member?.characterPlayed?.character + "\n").join(",") || "")
+			const row = [college,leader,leaderContact,members].join(",")
+			console.log(row);
 			return row;
+			}
 		})
 
 		const csvfile = col + row.join("\n");
@@ -66,10 +71,10 @@ export default function Instagram() {
 		const link = document.createElement("a");
 		link.setAttribute("href", url);
 		link.setAttribute("download", "data.csv");
-		link.style.visibility = "hidden";
 		document.body.appendChild(link);
 		link.click();
 		document.body.removeChild(link);
+	
 	}
 
 		return (
@@ -165,4 +170,5 @@ export default function Instagram() {
 			</>
 		);
 	}
+}
 }
