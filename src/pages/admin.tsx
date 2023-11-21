@@ -94,12 +94,12 @@ export default function Instagram() {
 												</TableCell>
 												<TableCell>
 													{member.idURL && (
-														<Image
+														<div className="w-60"><Image
 															src={member.idURL}
 															alt="ID"
-															height={100}
-															width={100}
-														/>
+															height={1000}
+															width={500}
+														/></div>
 													)}
 												</TableCell>
 												<TableCell className="text-right">
