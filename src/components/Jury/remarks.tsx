@@ -4,7 +4,7 @@ import { Button } from '../ui/button';
 import { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 
-const Remarks = (team: { teamId: string, isLoading: boolean }) => {
+const Remarks = (team: { teamId: string, isLoading: boolean, isLoadingCriteria:boolean }) => {
     const [remark, setRemark] = useState("");
     const remarks = api.jury.addRemark.useMutation();
     const getRemark = api.jury.getRemark.useQuery({
@@ -32,8 +32,8 @@ const Remarks = (team: { teamId: string, isLoading: boolean }) => {
 
     return (
     <div className="flex basis-1/2 mt-4 md:mt-0 md:justify-end text-2xl md:text-xl">
-        <div className={`flex justify-end m-2 items-center border p-2 rounded-lg ${team.isLoading ? `border-red-800 bg-red-800`:`border-green-800 bg-green-800`}`}>
-            {team.isLoading ? "Saving..." : "Saved"}
+        <div className={`flex justify-end m-2 items-center border p-2 rounded-lg ${(team.isLoading || team.isLoadingCriteria) ? `border-red-800 bg-red-800`:`border-green-800 bg-green-800`}`}>
+            {(team.isLoading || team.isLoadingCriteria) ? "Saving..." : "Saved"}
         </div>
         <Dialog.Root>
             <Dialog.Trigger asChild>

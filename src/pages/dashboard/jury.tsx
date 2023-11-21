@@ -119,8 +119,6 @@ const Jury: NextPage = () => {
           ...prevScores,
           [criteria]: value
         }))
-        console.log(value)
-        console.log(criteria)
         criteriaTotal.mutate({
           criteriaName: criteria,
           score: value,
@@ -146,12 +144,8 @@ const Jury: NextPage = () => {
       },
     })
 
-    const setTeam = (teamId:string ,teamName:string,isScored:boolean) => {
+    const setTeam = (teamId:string ,teamName:string) => {
       setReady(false);
-      if(isScored)
-        setScored(true);
-      else
-        setScored(false)
       setTeamId(teamId);
       setTeamName(teamName);
     }
@@ -162,6 +156,8 @@ const Jury: NextPage = () => {
 
     useEffect(() => {
       if(res.data?.length>0){
+        if(res.data[0].judge.Submitted[0]?.submitted)
+          return setScored(true);
         console.log("updating")
           res.data.forEach((item) => {
             const character = item.characterPlayed.character;
@@ -175,6 +171,13 @@ const Jury: NextPage = () => {
               },
             }));
           });
+          const team = res.data[0]?.judge.teamScore;
+          team.forEach((team) => {
+            setCScores((prevScores) => ({
+              ...prevScores,
+              [team.criteria?.name]: team.score
+            }))
+          })
           setReady(true);
       }
       if(!ready2)
@@ -184,7 +187,7 @@ const Jury: NextPage = () => {
     },[res.data])
 
     return !isLoading && data!==undefined && data.length>0 ? (
-      <div className="container md:pt-20 pt-14 flex flex-col w-full">
+      <div className="container flex flex-col w-full">
         <h1 className="text-extrabold mt-10 text-4xl pb-2">
           Judge Dashboard - {teamName}
         </h1>
@@ -198,7 +201,7 @@ const Jury: NextPage = () => {
               <DropdownMenuContent>
                 {!isLoading ? (
                   data?.map((team ,i) => (
-                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name, team.isScored)}>
+                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name)}>
                       {team.name}
                     </DropdownMenuItem>
                   ))
@@ -211,6 +214,7 @@ const Jury: NextPage = () => {
           <Remarks
             teamId={teamId}
             isLoading={scoreUpdate.isLoading}
+            isLoadingCriteria={criteriaTotal.isLoading}
           />
         </div>
         {teamName !=="Select a college" && !scored && ready ? (
@@ -252,13 +256,13 @@ const Jury: NextPage = () => {
             </Table>
           </div>
           <div className="basis-1/5">
-            <Table className="flex flex-col text-2xl">
+            <Table className="flex flex-col text-xl">
               <TableHeader>
-                <TableRow className="text-2xl">
+                <TableRow className="text-xl">
                   <TableHead>Team Score</TableHead>
                 </TableRow>
               </TableHeader>
-              <TableBody>
+              <TableBody className="text-xl">
                 {criteriaDisplayList.map((criteria, k) => (
                   <TableRow key={k}>
                     <TableCell>{criteria}</TableCell>
@@ -287,6 +291,7 @@ const Jury: NextPage = () => {
                   characters = {characters}
                   scored = {scored}
                   setScored = {setScored}
+                  cScores = {cScores}
                 />
               </TableBody>
             </Table>

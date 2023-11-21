@@ -102,6 +102,7 @@ model Team {
   TeamMembers     TeamMembers[]
   editRequests    EditRequests?
   IndividualScore individualScore[]
+  Submitted       Submitted[]
 
   @@index([college_id])
 }
@@ -127,9 +128,21 @@ model Judge {
   userId          String
   IndividualScore individualScore[]
   teamScore       teamScore[]
-  submitted       Boolean           @default(false)
+  Submitted       Submitted[]
 
   @@unique([userId])
+}
+
+model Submitted {
+  Judge     Judge   @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
+  judgeId   String
+  team      Team    @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  teamID    String
+  submitted Boolean @default(false)
+
+  @@unique([judgeId, teamID])
+  @@index([judgeId])
+  @@index([teamID])
 }
 
 model teamScore {

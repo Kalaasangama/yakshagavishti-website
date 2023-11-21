@@ -54,7 +54,16 @@ export const JuryRouter= createTRPCRouter({
                         characterPlayed: true,
                         judge: {
                             include: {
-                                teamScore: true
+                                teamScore: {
+                                    include: {
+                                        criteria: true,
+                                    }
+                                },
+                                Submitted: {
+                                    where: {
+                                        teamID: input.teamId
+                                    }
+                                }
                             }
                         },
                         team: {
@@ -147,6 +156,7 @@ export const JuryRouter= createTRPCRouter({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
                 score : z.number(),
+                final: z.boolean().optional()
             }))).mutation(async({ctx,input})=>{
                 const userId = ctx.session.user.id;
                 //check if judge exiists if not add to judge table
@@ -177,6 +187,24 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update
                     }
                 });
+                if(input?.final){
+                    await ctx.prisma.submitted.upsert({
+                        where: {
+                            judgeId_teamID: {
+                                judgeId: userId,
+                                teamID: input.teamId
+                            },
+                        },
+                        update: {
+                            submitted: true
+                        },
+                        create: {
+                            judgeId: userId,
+                            teamID: input.teamId,
+                            submitted: true
+                        }
+                    })
+                }
                 return await ctx.prisma.teamScore.upsert({
                     where:{
                         teamID_judgeId_criteriaId: {

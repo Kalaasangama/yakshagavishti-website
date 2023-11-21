@@ -11,15 +11,17 @@ import {
   } from "~/components/ui/table";
 import { api } from '~/utils/api';
 import { Dispatch, SetStateAction, useState } from 'react';
-
-type Character = "SHANTHANU" | "MANTRI_SUNEETHI" | "TAMAALAKETHU" | "TAAMRAAKSHA" | "SATHYAVATHI" | "DAASHARAJA" | "DEVAVRATHA";
-type Criteria = "CRITERIA_1" | "CRITERIA_2" | "CRITERIA_3";
+import { Characters, Criteria, criteria } from '@prisma/client';
 
 type ScoresState = {
-  [character in Character]: {
+  [character in Characters]: {
     [criteria in Criteria]: number;
   };
 };
+
+type TeamScoresState = {
+  [criteria in Criteria]: number
+}
 
 const Submit = ({
     scores,
@@ -29,21 +31,22 @@ const Submit = ({
     criteriaList,
     characters,
     scored,
-    setScored
+    setScored,
+    cScores
  } : {
     scores : ScoresState,
     teamId : string,
     teamName : string,
     criteriaDisplayList : String[], 
     criteriaList : Criteria[],
-    characters : Character[],
+    characters : Characters[],
     scored: boolean,
-    setScored: Dispatch<SetStateAction<boolean>>
+    setScored: Dispatch<SetStateAction<boolean>>,
+    cScores: TeamScoresState
  }
     ) => {
     const scoreUpdate = api.jury.updateScores.useMutation();
     const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
-    const finalTeamScore = api.jury.updateTotalScore.useMutation();
 
     const saveScores = () => {
         characters.forEach((character) => {
@@ -55,19 +58,15 @@ const Submit = ({
               score: scores[character][criteria],
             });
           });
-        });
+        });   
         criteriaList.forEach((criteria) => {
-            criteriaTotal.mutate({
-                teamId: teamId,
-                criteriaName: criteria,
-                score: totalCriteriaScore(criteria)
-            })
-        })
-        finalTeamScore.mutate({
-            teamId:teamId,
-            score: calculateFinalTotal(),
+          criteriaTotal.mutate({
+            criteriaName: criteria,
+            score: cScores[criteria],
+            teamId: teamId,
             final: true
-        })        
+          })
+        })
         setScored(true);
       };
 
@@ -83,16 +82,12 @@ const Submit = ({
         return 0;
       };
     
-      const totalCriteriaScore = (criteria: string) => {
-        return characters.reduce((sum, character) => {
-          return sum + (scores[character]?.[criteria] || 0);
-        }, 0);
-      };
-    
       const calculateFinalTotal = (): number => {
-        return criteriaList.reduce((sum, criteria) => {
-          return sum + totalCriteriaScore(criteria);
-        }, 0);
+        let sum=0;
+        Object.keys(cScores).forEach((key) => {
+          sum+=cScores[key]
+        });
+        return sum
       };
 
     return (
@@ -144,7 +139,7 @@ const Submit = ({
                         {criteriaDisplayList.map((criteria, k) => (
                             <TableRow key={k}>
                             <TableCell>{criteria}</TableCell>
-                            <TableCell>{totalCriteriaScore(criteriaList[k])}</TableCell>
+                            <TableCell>{cScores[criteriaList[k]]}</TableCell>
                             </TableRow>
                         ))}
                         <TableRow>
