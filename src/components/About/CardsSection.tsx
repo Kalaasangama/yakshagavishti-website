@@ -7,9 +7,13 @@ const members = [
     role: "Faculty Coordinator"
   },
   {
+    name: "Mr. Shyam Sundar",
+    role: "Faculty Coordinator"
+  },  
+  {
     name: "Shravan Udupa K",
-    role: "Event Head"
-  },
+    role: "Kalaasangama Founder"
+  }, 
   {
     name: "Amrutha V",
     role: "President",

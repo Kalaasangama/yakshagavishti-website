@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-  },
+  }, 
 };
 
 export const getServerAuthSession = (ctx: {
