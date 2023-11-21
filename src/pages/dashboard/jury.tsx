@@ -19,34 +19,35 @@ import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
+import { Criteria, Characters } from "@prisma/client";
 
 const Jury: NextPage = () => {
-  type Character = "SHANTHANU" | "MANTRI_SUNEETHI" | "TAMAALAKETHU" | "TAAMRAAKSHA" | "SATHYAVATHI" | "DAASHARAJA" | "DEVAVRATHA";
-  type Criteria = "CRITERIA_1" | "CRITERIA_2" | "CRITERIA_3";
 
   const criteriaList: Criteria[] = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3"];
   const criteriaDisplayList: string[] = ["Criteria 1", "Criteria 2", "Criteria 3"];
 
   type ScoresState = {
-    [character in Character]: {
+    [character in Characters]: {
       [criteria in Criteria]: number;
     };
   };
+
+  type TeamScoresState = {
+    [criteria in Criteria]: number
+  }
 
   const [teamName, setTeamName] = useState<string>("Select a college");
   const [teamId, setTeamId] = useState<string>("");
   const [scored,setScored] = useState<boolean>(false);
   const [settingCriteria, setSettingCriteria] = useState<Criteria>("CRITERIA_1");
-  const [settingCharacter, setSettingCharacter] = useState<Character>("DAASHARAJA");
+  const [settingCharacter, setSettingCharacter] = useState<Characters>("DAASHARAJA");
+  const [settingCriteriaScore, setSettingCriteriaScore] = useState<Criteria>("CRITERIA_1");
 
-  const ctx = api.useContext();
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
-  const finalTeamScore = api.jury.updateTotalScore.useMutation();
-  const { data: sessionData } = useSession();
   const { data, isLoading } = api.jury.getTeams.useQuery();
 
-  const characters : Character[] = [
+  const characters : Characters[] = [
     "SHANTHANU",
     "MANTRI_SUNEETHI",
     "TAMAALAKETHU",
@@ -58,20 +59,27 @@ const Jury: NextPage = () => {
 
   // Initialize scores with all values set to 0
   const initialScores: ScoresState = {} as ScoresState;
+  const criteriaScores: TeamScoresState = {} as TeamScoresState;
 
   characters.forEach((character) => {
-    initialScores[character] = {} as ScoresState[Character];
+    initialScores[character] = {} as ScoresState[Characters];
 
     criteriaList.forEach((criteria) => {
       initialScores[character][criteria] = 0;
     });
   });
 
+  criteriaList.forEach((criteria) => {
+    criteriaScores[criteria] = 0;
+  });
+
   const [scores, setScores] = useState<ScoresState>(initialScores);
+  const [cScores, setCScores] = useState<TeamScoresState>(criteriaScores);
   const [ready, setReady] = useState<boolean>(false);
+  const [ready2, setReady2] = useState<boolean>(false);
 
     const handleScoreChange = (
-      character: Character,
+      character: Characters,
       criteria: Criteria,
       value: number
     ) => {
@@ -91,18 +99,6 @@ const Jury: NextPage = () => {
         characterId: character,
         score: value,
       });
-      criteriaList.forEach((criteria) => {
-        criteriaTotal.mutate({
-            teamId: teamId,
-            criteriaName: criteria,
-            score: totalCriteriaScore(criteria)
-        })
-      })
-      finalTeamScore.mutate({
-          teamId:teamId,
-          score: calculateFinalTotal(),
-          final: false
-      })
     };
 
     const totalScore = (character: string) => {
@@ -117,16 +113,27 @@ const Jury: NextPage = () => {
       return 0;
     };
 
-    const totalCriteriaScore = (criteria: string) => {
-      return characters.reduce((sum, character) => {
-        return sum + (scores[character]?.[criteria] || 0);
-      }, 0);
-    };
+    const handleCriteriaScoreChange = (value: number, criteria: Criteria) => {
+        setSettingCriteriaScore(criteria);
+        setCScores((prevScores) => ({
+          ...prevScores,
+          [criteria]: value
+        }))
+        console.log(value)
+        console.log(criteria)
+        criteriaTotal.mutate({
+          criteriaName: criteria,
+          score: value,
+          teamId: teamId
+        })
+    }
 
     const calculateFinalTotal = (): number => {
-      return criteriaList.reduce((sum, criteria) => {
-        return sum + totalCriteriaScore(criteria);
-      }, 0);
+      let sum=0;
+      Object.keys(cScores).forEach((key) => {
+        sum+=cScores[key]
+      });
+      return sum
     };
 
     const res = api.jury.getScores.useQuery({
@@ -170,6 +177,10 @@ const Jury: NextPage = () => {
           });
           setReady(true);
       }
+      if(!ready2)
+        setReady2(true);
+      else
+        setReady(true);
     },[res.data])
 
     return !isLoading && data!==undefined && data.length>0 ? (
@@ -227,7 +238,7 @@ const Jury: NextPage = () => {
                             handleScoreChange(
                               character,
                               criteria,
-                              parseInt(e.target.value, 10)
+                              parseInt(e.target.value, 10) || 0
                             )
                           }
                           className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${scoreUpdate.isLoading && settingCriteria===criteria && settingCharacter===character ? `border-red-800`:`border-green-800`}`}
@@ -251,7 +262,16 @@ const Jury: NextPage = () => {
                 {criteriaDisplayList.map((criteria, k) => (
                   <TableRow key={k}>
                     <TableCell>{criteria}</TableCell>
-                    <TableCell>{totalCriteriaScore(criteriaList[k])}</TableCell>
+                    <TableCell>
+                    <input
+                          value={cScores[criteriaList[k]]}
+                          onChange={(e) => handleCriteriaScoreChange(
+                            parseInt(e.target.value, 10) || 0, 
+                            criteriaList[k])
+                          }
+                          className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${criteriaTotal.isLoading && settingCriteriaScore===criteriaList[k] ? `border-red-800`:`border-green-800`}`}
+                        />
+                    </TableCell>
                   </TableRow>
                 ))}
                 <TableRow>

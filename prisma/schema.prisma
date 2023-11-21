@@ -86,48 +86,48 @@ model College {
 }
 
 model Team {
-  id           String        @id @default(cuid())
-  name         String        @unique
-  isComplete   Boolean       @default(false)
-  attended     Boolean       @default(false)
-  college      College?      @relation(fields: [college_id], references: [id])
-  college_id   String?       @unique
-  members      User[]
-  leader       User?         @relation(name: "TeamLead")
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  remark       String        @default("")
-  isScored     Boolean       @default(false)
-  teamScore    teamScore[]
-  TeamMembers  TeamMembers[]
-  editRequests EditRequests?
-  Score        Score[]
+  id              String            @id @default(cuid())
+  name            String            @unique
+  isComplete      Boolean           @default(false)
+  attended        Boolean           @default(false)
+  college         College?          @relation(fields: [college_id], references: [id])
+  college_id      String?           @unique
+  members         User[]
+  leader          User?             @relation(name: "TeamLead")
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  remark          String            @default("")
+  isScored        Boolean           @default(false)
+  teamScore       teamScore[]
+  TeamMembers     TeamMembers[]
+  editRequests    EditRequests?
+  IndividualScore individualScore[]
 
   @@index([college_id])
 }
 
 model CharacterOnUser {
-  id        String     @id @default(cuid())
-  character Characters @unique
-  playedBy  User[]
-  Score     Score[]
+  id              String            @id @default(cuid())
+  character       Characters        @unique
+  playedBy        User[]
+  IndividualScore individualScore[]
 }
 
 model criteria {
-  id        String      @id @default(cuid())
-  name      Criteria    @unique
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-  teamScore teamScore[]
-  Score     Score[]
+  id              String            @id @default(cuid())
+  name            Criteria          @unique
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  teamScore       teamScore[]
+  IndividualScore individualScore[]
 }
 
 model Judge {
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String
-  Score     Score[]
-  teamScore teamScore[]
-  submitted Boolean     @default(false)
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  IndividualScore individualScore[]
+  teamScore       teamScore[]
+  submitted       Boolean           @default(false)
 
   @@unique([userId])
 }
@@ -149,7 +149,7 @@ model teamScore {
   @@index([judgeId])
 }
 
-model Score {
+model individualScore {
   id              String          @id @default(cuid())
   criteria        criteria        @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
   team            Team            @relation(fields: [teamID], references: [id], onDelete: Cascade)
