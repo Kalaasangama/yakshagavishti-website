@@ -225,4 +225,5 @@ enum Criteria {
   CRITERIA_1
   CRITERIA_2
   CRITERIA_3
+  CRITERIA_4
 }

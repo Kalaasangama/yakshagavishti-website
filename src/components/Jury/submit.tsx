@@ -30,9 +30,9 @@ const Submit = ({
     criteriaDisplayList,
     criteriaList,
     characters,
-    scored,
     setScored,
-    cScores
+    cScores,
+    criteriaTeamDisplayList
  } : {
     scores : ScoresState,
     teamId : string,
@@ -40,9 +40,9 @@ const Submit = ({
     criteriaDisplayList : String[], 
     criteriaList : Criteria[],
     characters : Characters[],
-    scored: boolean,
     setScored: Dispatch<SetStateAction<boolean>>,
-    cScores: TeamScoresState
+    cScores: TeamScoresState,
+    criteriaTeamDisplayList: String[]
  }
     ) => {
     const scoreUpdate = api.jury.updateScores.useMutation();
@@ -97,15 +97,15 @@ const Submit = ({
             </Dialog.Trigger>
             <Dialog.Portal>
             <Dialog.Overlay className=" z-50 data-[state=open]:animate-overlayShow inset-0" />
-            <Dialog.Content className="z-50 data-[state=open]:animate-contentShow h-auto scroll-m-1 fixed top-[50%] left-[50%] w-[90vw] max-h-[90vh] md:max-h-[175vh] md:w-[90vw] md:max-w-full translate-x-[-50%] translate-y-[-50%] bg-primary-100 rounded-lg p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
+            <Dialog.Content className="z-50 data-[state=open]:animate-contentShow h-auto scroll-m-1 fixed top-[50%] left-[50%] w-[80dvw] max-h-[90dvh] md:max-h-[90dvh] md:w-[80dvw] md:max-w-full translate-x-[-50%] translate-y-[-50%] bg-primary-100 rounded-lg p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none">
                 <Dialog.Title className="text-white m-0 text-2xl font-medium border-0 border-b-2 w-full mb-3 border-white">
                     Scores of {teamName}
                 </Dialog.Title>
                 <div className='flex gap-3 flex-col md:flex-row'>
-                    <div className="basis-4/5">
+                    <div className="basis-3/4">
                     <Table className='text-white'>
                         <TableHeader className="invisible md:visible">
-                        <TableRow className="text-xl">
+                        <TableRow className="text-l">
                             <TableHead>Character</TableHead>
                             {criteriaDisplayList.map((criteria, i) => (
                             <TableHead key={i}>{criteria}</TableHead>
@@ -113,7 +113,7 @@ const Submit = ({
                             <TableHead>Total</TableHead>
                         </TableRow>
                         </TableHeader>
-                        <TableBody className="text-xl">
+                        <TableBody className="text-l">
                         {characters.map((character, i) => (
                             <TableRow key={i} className="">
                             <TableCell className="md:m-0">{character}</TableCell>
@@ -128,15 +128,15 @@ const Submit = ({
                         </TableBody>
                     </Table>
                     </div>
-                    <div className="basis-1/5">
-                    <Table className="flex flex-col text-2xl text-white">
+                    <div className="basis-1/4">
+                    <Table className="flex flex-col text-l text-white">
                         <TableHeader>
-                        <TableRow className="text-2xl">
+                        <TableRow className="text-l">
                             <TableHead>Team Score</TableHead>
                         </TableRow>
                         </TableHeader>
                         <TableBody>
-                        {criteriaDisplayList.map((criteria, k) => (
+                        {criteriaTeamDisplayList.map((criteria, k) => (
                             <TableRow key={k}>
                             <TableCell>{criteria}</TableCell>
                             <TableCell>{cScores[criteriaList[k]]}</TableCell>

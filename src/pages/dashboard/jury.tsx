@@ -23,8 +23,9 @@ import { Criteria, Characters } from "@prisma/client";
 
 const Jury: NextPage = () => {
 
-  const criteriaList: Criteria[] = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3"];
-  const criteriaDisplayList: string[] = ["Criteria 1", "Criteria 2", "Criteria 3"];
+  const criteriaList: Criteria[] = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3", "CRITERIA_4"];
+  const criteriaDisplayList: string[] = ["Criteria 1(30)", "Criteria 2(30)", "Criteria 3(30)", "Criteria 4(10)"];
+  const criteriaTeamDisplayList: string[] = ["Criteria 1(30)", "Criteria 2(30)", "Criteria 3(30)", "Criteria 4(10)"];
 
   type ScoresState = {
     [character in Characters]: {
@@ -76,7 +77,7 @@ const Jury: NextPage = () => {
   const [scores, setScores] = useState<ScoresState>(initialScores);
   const [cScores, setCScores] = useState<TeamScoresState>(criteriaScores);
   const [ready, setReady] = useState<boolean>(false);
-  const [ready2, setReady2] = useState<boolean>(false);
+  const [refetch, setRefetch] = useState<boolean>(false);
 
     const handleScoreChange = (
       character: Characters,
@@ -144,14 +145,19 @@ const Jury: NextPage = () => {
       },
     })
 
-    const setTeam = (teamId:string ,teamName:string) => {
+    const setTeam = (newTeamId:string ,teamName:string) => {
+      if(newTeamId === teamId)
+        return;
+      setRefetch(true);
       setReady(false);
-      setTeamId(teamId);
+      setTeamId(newTeamId);
       setTeamName(teamName);
     }
 
     useEffect(() => {
-      res.refetch()
+      if(refetch)
+        res.refetch()
+      setRefetch(false);
     },[teamId])
 
     useEffect(() => {
@@ -180,9 +186,7 @@ const Jury: NextPage = () => {
           })
           setReady(true);
       }
-      if(!ready2)
-        setReady2(true);
-      else
+      if(res.data?.length === 0)
         setReady(true);
     },[res.data])
 
@@ -219,20 +223,20 @@ const Jury: NextPage = () => {
         </div>
         {teamName !=="Select a college" && !scored && ready ? (
         <div className="flex flex-col md:flex-row gap-6">
-          <div className="basis-4/5">
+          <div className="basis-3/5">
             <Table>
-              <TableHeader className="invisible md:visible">
-                <TableRow className="text-xl">
-                  <TableHead>Character</TableHead>
+              <TableHeader className="invisible md:visible align-middle">
+                <TableRow className="text-xl text-center">
+                  <TableHead className="text-center">Character</TableHead>
                   {criteriaDisplayList.map((criteria, i) => (
-                    <TableHead key={i}>{criteria}</TableHead>
+                    <TableHead key={i} className="text-center">{criteria}</TableHead>
                   ))}
                   <TableHead>Total</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="text-xl">
                 {characters.map((character, i) => (
-                  <TableRow key={i} className="">
+                  <TableRow key={i} className="text-center">
                     <TableCell className="md:m-0">{character}</TableCell>
                     {criteriaList.map((criteria, j) => (
                       <TableCell key={j}>
@@ -255,15 +259,15 @@ const Jury: NextPage = () => {
               </TableBody>
             </Table>
           </div>
-          <div className="basis-1/5">
-            <Table className="flex flex-col text-xl">
-              <TableHeader>
-                <TableRow className="text-xl">
-                  <TableHead>Team Score</TableHead>
+          <div className="basis-1/4">
+            <Table className="flex flex-col text-xl w-full items-center">
+              <TableHeader className="w-full flex items-center justify-center border-b-[1px] border-b-white">
+                <TableRow className="text-2xl border-none">
+                  <TableHead className="text-center">Team Score</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody className="text-xl">
-                {criteriaDisplayList.map((criteria, k) => (
+                {criteriaTeamDisplayList.map((criteria, k) => (
                   <TableRow key={k}>
                     <TableCell>{criteria}</TableCell>
                     <TableCell>
@@ -289,9 +293,9 @@ const Jury: NextPage = () => {
                   criteriaDisplayList = {criteriaDisplayList}
                   criteriaList = {criteriaList}
                   characters = {characters}
-                  scored = {scored}
                   setScored = {setScored}
                   cScores = {cScores}
+                  criteriaTeamDisplayList = {criteriaTeamDisplayList}
                 />
               </TableBody>
             </Table>
