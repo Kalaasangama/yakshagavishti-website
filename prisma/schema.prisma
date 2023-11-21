@@ -58,6 +58,7 @@ model User {
   isIdVerified    Boolean          @default(false)
   accounts        Account[]
   sessions        Session[]
+  Judge           Judge?
 
   @@index([collegeId])
   @@index([teamId])
@@ -85,23 +86,22 @@ model College {
 }
 
 model Team {
-  id            String          @id @default(cuid())
-  name          String          @unique
-  isComplete    Boolean         @default(false)
-  attended      Boolean         @default(false)
-  college       College?        @relation(fields: [college_id], references: [id])
-  college_id    String?         @unique
-  members       User[]
-  leader        User?           @relation(name: "TeamLead")
-  teamScore     Int             @default(0)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  remark        String          @default("")
-  isScored      Boolean         @default(false)
-  criteriaScore criteriaScore[]
-  TeamMembers   TeamMembers[]
-  editRequests  EditRequests?
-  Score         Score[]
+  id           String        @id @default(cuid())
+  name         String        @unique
+  isComplete   Boolean       @default(false)
+  attended     Boolean       @default(false)
+  college      College?      @relation(fields: [college_id], references: [id])
+  college_id   String?       @unique
+  members      User[]
+  leader       User?         @relation(name: "TeamLead")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  remark       String        @default("")
+  isScored     Boolean       @default(false)
+  teamScore    teamScore[]
+  TeamMembers  TeamMembers[]
+  editRequests EditRequests?
+  Score        Score[]
 
   @@index([college_id])
 }
@@ -114,26 +114,39 @@ model CharacterOnUser {
 }
 
 model criteria {
-  id            String          @id @default(cuid())
-  name          Criteria        @unique
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  criteriaScore criteriaScore[]
-  Score         Score[]
+  id        String      @id @default(cuid())
+  name      Criteria    @unique
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  teamScore teamScore[]
+  Score     Score[]
 }
 
-model criteriaScore {
-  id        String   @id @default(cuid())
-  criteria  criteria @relation(fields: [id], references: [id], onDelete: Cascade)
-  team      Team     @relation(fields: [teamID], references: [id], onDelete: Cascade)
-  teamID    String
-  score     Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Judge {
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  Score     Score[]
+  teamScore teamScore[]
+  submitted Boolean     @default(false)
 
-  @@unique([id, teamID])
+  @@unique([userId])
+}
+
+model teamScore {
+  criteria   criteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+  criteriaId String
+  Judge      Judge    @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
+  judgeId    String
+  team       Team     @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  teamID     String
+  score      Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([teamID, judgeId, criteriaId])
   @@index([teamID])
-  @@index([id])
+  @@index([criteriaId])
+  @@index([judgeId])
 }
 
 model Score {
@@ -145,11 +158,14 @@ model Score {
   characterPlayed CharacterOnUser @relation(fields: [characterId], references: [id])
   characterId     String
   score           Int
+  judgeId         String
+  judge           Judge           @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
 
-  @@unique([teamID, criteriaId, characterId])
+  @@unique([teamID, criteriaId, characterId, judgeId])
   @@index([teamID])
   @@index([criteriaId])
   @@index([characterId])
+  @@index([judgeId])
 }
 
 model VerificationToken {

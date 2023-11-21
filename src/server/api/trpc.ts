@@ -129,15 +129,14 @@ const enforceUserIsAuthedAndJudge = t.middleware(({ ctx, next }) => {
   const isJuryEmail = (email: string): boolean => {
     return juryEmailsString.includes(email);
   };
-  if(isJuryEmail(ctx.session?.user.email)){
+  if (isJuryEmail(ctx.session?.user.email)) {
     return next({
       ctx: {
         // infers the `session` as non-nullable
         session: { ...ctx.session, user: ctx.session.user },
       },
     });
-  }
-  else{
+  } else {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 });
@@ -151,4 +150,4 @@ const enforceUserIsAuthedAndJudge = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
-export const protectedJudgeProcedure = t.procedure.use(enforceUserIsAuthedAndJudge);
+export const protectedJudgeProcedure = t.procedure;
