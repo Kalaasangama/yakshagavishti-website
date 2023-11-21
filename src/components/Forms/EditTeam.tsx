@@ -1,6 +1,4 @@
 import React, {
-	type Dispatch,
-	type SetStateAction,
 	useEffect,
 	useState,
 } from "react";
@@ -103,7 +101,7 @@ const EditTeamForm = ({
 	//Get the index of the role in the list
 	const getIndex = (label: string, prevIndex: number) => {
 		const index = membersList.data.members.findIndex(
-			(member) => member.characterId === label.replace(" ", "_")
+			(member) => member.characterPlayed.id=== label.replace(" ", "_")
 		);
 		if (index === -1) return prevIndex;
 		return index;

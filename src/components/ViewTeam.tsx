@@ -46,6 +46,9 @@ export default function ViewTeam() {
 								<TableHead className="w-[100px]">
 									Name
 								</TableHead>
+								<TableHead className="w-[100px]">
+									Character Played	
+								</TableHead>
 								<TableHead>ID</TableHead>
 								<TableHead>Verification Status</TableHead>
 							</TableRow>
@@ -55,6 +58,9 @@ export default function ViewTeam() {
 								<TableRow key={key}>
 									<TableCell className="font-semibold text-sm">
 										{member.name}
+									</TableCell>
+									<TableCell className="font-semibold text-sm">
+										{member.characterPlayed.character}
 									</TableCell>
 									<TableCell>
 									<a href={member.idURL} target="_blank">
