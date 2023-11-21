@@ -16,6 +16,7 @@ export default function Instagram() {
 	const { data, refetch } = api.admin.getRegisteredTeams.useQuery();
 	const verifyIdMutation = api.admin.verifyId.useMutation();
 	const editTeamAccessMutation = api.admin.EditAccess.useMutation();
+
 	function verifyId(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		const userId = (e.target as HTMLElement)?.dataset?.userid;
 		if (userId)
@@ -46,14 +47,48 @@ export default function Instagram() {
 	}
 
 	if (sessionData?.user) {
+		const downloadcsvFile = () => {
+		const col = ["College Name","Team Leader","Leader Contact","Team Members","Charcter Played"]
+		
+		const row = data?.map((element,key)=>{
+			const college = element?.college?.name || "";
+			const leader = element?.leader?.name || "";
+			const leaderContact = element?.leader?.contact || "";
+			const members = element?.members.map((member)=>member.name + "\n").join(",") || "";
+			const membersChar = element?.members.map((member)=>member?.characterPlayed?.character + "\n").join(",") || "	";
+			const row = [college,leader,leaderContact,members,membersChar].join(",")
+			return row;
+		})
+
+		const csvfile = col + row.join("\n");
+		const blob = new Blob([csvfile], { type: "text/csv" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.setAttribute("href", url);
+		link.setAttribute("download", "data.csv");
+		link.style.visibility = "hidden";
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	}
+
 		return (
 			<>
 				<div className="container px-20 pt-20">
+					<div className="flex justify-center mt-20">
+						
+	
+						<Button onClick={downloadcsvFile}>
+							Download
+						</Button>
+					</div>
+
 					<h1 className="text-extrabold mt-10 text-2xl">
 						Registered Teams
 					</h1>
 					{data?.map((element, key) => (
 						<div key={key} className="my-10 rounded border px-20">
+
 							<h1>Team: {element.name} </h1>
 							{element.editRequests &&
 								(element?.editRequests?.status === ("PENDING" || "REVOKED") ? (
