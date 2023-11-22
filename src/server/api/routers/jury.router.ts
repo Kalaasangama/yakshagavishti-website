@@ -55,6 +55,9 @@ export const JuryRouter= createTRPCRouter({
                         judge: {
                             include: {
                                 teamScore: {
+                                    where: {
+                                        teamID: input.teamId
+                                    },
                                     include: {
                                         criteria: true,
                                     }
@@ -80,9 +83,12 @@ export const JuryRouter= createTRPCRouter({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
                 characterId: z.nativeEnum(Characters),
-                score : z.number(),
+                score : z.number().max(30),
             })))
             .mutation(async({ctx,input})=>{
+                if(input.criteriaName === "CRITERIA_4" && input.score>10){
+                    throw new kalasangamaError("EXCEEDING SCORE LIMIT", "Score should be with 0-10")
+                }
                 const userId = ctx.session.user.id;
                 //check if judge exiists if not add to judge table
                 const judge = await ctx.prisma.judge.upsert({
@@ -155,9 +161,12 @@ export const JuryRouter= createTRPCRouter({
             .input((z.object({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
-                score : z.number(),
+                score : z.number().max(30),
                 final: z.boolean().optional()
             }))).mutation(async({ctx,input})=>{
+                if(input.criteriaName === "CRITERIA_4" && input.score>10){
+                    throw new kalasangamaError("EXCEEDING SCORE LIMIT", "Score should be with 0-10")
+                }
                 const userId = ctx.session.user.id;
                 //check if judge exiists if not add to judge table
                 const judge = await ctx.prisma.judge.upsert({

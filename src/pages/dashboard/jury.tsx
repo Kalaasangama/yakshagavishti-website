@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { api } from "../../utils/api";
 import {
   Table,
@@ -20,6 +19,7 @@ import { NextPage } from "next";
 import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
 import { Criteria, Characters } from "@prisma/client";
+import toast from "react-hot-toast";
 
 const Jury: NextPage = () => {
 
@@ -47,6 +47,7 @@ const Jury: NextPage = () => {
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
   const { data, isLoading } = api.jury.getTeams.useQuery();
+  const ctx = api.useContext();
 
   const characters : Characters[] = [
     "SHANTHANU",
@@ -66,18 +67,19 @@ const Jury: NextPage = () => {
     initialScores[character] = {} as ScoresState[Characters];
 
     criteriaList.forEach((criteria) => {
-      initialScores[character][criteria] = 0;
+      initialScores[character][criteria] = 999;
     });
   });
 
   criteriaList.forEach((criteria) => {
-    criteriaScores[criteria] = 0;
+    criteriaScores[criteria] = 999;
   });
 
   const [scores, setScores] = useState<ScoresState>(initialScores);
   const [cScores, setCScores] = useState<TeamScoresState>(criteriaScores);
   const [ready, setReady] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
 
     const handleScoreChange = (
       character: Characters,
@@ -86,6 +88,23 @@ const Jury: NextPage = () => {
     ) => {
       setSettingCharacter(character)
       setSettingCriteria(criteria)
+      if(value>10 && criteria=="CRITERIA_4"){
+        setError(true);
+        toast.error("Score should be within 0-10", {
+          position: "bottom-center",
+          duration: 4000,
+        })
+        return
+      }
+      if(value>30){
+        setError(true);
+        toast.error("Score should be within 0-30", {
+          position: "bottom-center",
+          duration: 4000,
+        })
+        return
+      }
+      setError(false);
       // Update the scores state with the new value
       setScores((prevScores) => ({
         ...prevScores,
@@ -107,7 +126,8 @@ const Jury: NextPage = () => {
         const keys = Object.keys(scores[character]);
         let sum = 0;
         keys.forEach((key) => {
-          sum += scores[character][key];
+          if(scores[character][key]!==999)
+            sum += scores[character][key];
         });
         return sum;
       }
@@ -116,6 +136,23 @@ const Jury: NextPage = () => {
 
     const handleCriteriaScoreChange = (value: number, criteria: Criteria) => {
         setSettingCriteriaScore(criteria);
+        if(value>10 && criteria==="CRITERIA_4"){
+          setError(true);
+          toast.error("Score should be within 0-10", {
+            position: "bottom-center",
+            duration: 2000,
+          })
+          return
+        }
+        if(value>30){
+          setError(true);
+          toast.error("Score should be within 0-30", {
+            position: "bottom-center",
+            duration: 2000,
+          })
+          return
+        }
+        setError(false);
         setCScores((prevScores) => ({
           ...prevScores,
           [criteria]: value
@@ -130,7 +167,8 @@ const Jury: NextPage = () => {
     const calculateFinalTotal = (): number => {
       let sum=0;
       Object.keys(cScores).forEach((key) => {
-        sum+=cScores[key]
+        if(cScores[key]!==999)
+          sum+=cScores[key]
       });
       return sum
     };
@@ -148,6 +186,8 @@ const Jury: NextPage = () => {
     const setTeam = (newTeamId:string ,teamName:string) => {
       if(newTeamId === teamId)
         return;
+      setScores(initialScores)
+      setCScores(criteriaScores)
       setRefetch(true);
       setReady(false);
       setTeamId(newTeamId);
@@ -186,7 +226,7 @@ const Jury: NextPage = () => {
           })
           setReady(true);
       }
-      if(res.data?.length === 0)
+      if(res.data?.length === 0 && teamId !== '')
         setReady(true);
     },[res.data])
 
@@ -241,7 +281,7 @@ const Jury: NextPage = () => {
                     {criteriaList.map((criteria, j) => (
                       <TableCell key={j}>
                         <input
-                          value={scores[character]?.[criteria] || 0}
+                          value={scores[character]?.[criteria]===999 ? "" : scores[character]?.[criteria]}
                           onChange={(e) =>
                             handleScoreChange(
                               character,
@@ -249,7 +289,7 @@ const Jury: NextPage = () => {
                               parseInt(e.target.value, 10) || 0
                             )
                           }
-                          className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${scoreUpdate.isLoading && settingCriteria===criteria && settingCharacter===character ? `border-red-800`:`border-green-800`}`}
+                          className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${scoreUpdate.isLoading && settingCriteria===criteria && settingCharacter===character && !error ? `border-red-800`:`border-green-800`}`}
                         />
                       </TableCell>
                     ))}
@@ -272,12 +312,12 @@ const Jury: NextPage = () => {
                     <TableCell>{criteria}</TableCell>
                     <TableCell>
                     <input
-                          value={cScores[criteriaList[k]]}
+                          value={cScores[criteriaList[k]]===999 ? "" : cScores[criteriaList[k]]}
                           onChange={(e) => handleCriteriaScoreChange(
                             parseInt(e.target.value, 10) || 0, 
                             criteriaList[k])
                           }
-                          className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${criteriaTotal.isLoading && settingCriteriaScore===criteriaList[k] ? `border-red-800`:`border-green-800`}`}
+                          className={`outline-none  bg-transparent border-2 text-center w-24 rounded-lg ${criteriaTotal.isLoading && settingCriteriaScore===criteriaList[k] && !error ? `border-red-800`:`border-green-800`}`}
                         />
                     </TableCell>
                   </TableRow>

@@ -68,7 +68,7 @@ const porpora = localFont({
 })
 
 import "~/styles/dropzone.css"
-import { Toaster } from "src/components/ui/toaster"
+import { Toaster } from 'react-hot-toast';
 
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -119,7 +119,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             {path.pathname !== "/_error" && path.pathname !== "/dashboard/jury"  && <Navbar />}
             <Component {...pageProps} />
             <Toaster />
-            <Footer />
+            {path.pathname !== "/dashboard/jury" && <Footer/>}
           </main>
       </SessionProvider>
     </>
