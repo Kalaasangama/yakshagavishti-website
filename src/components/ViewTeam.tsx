@@ -33,7 +33,7 @@ export default function ViewTeam() {
 						View Team
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] overflow-y-auto">
+				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] md:max-w-[50%] overflow-y-auto">
 					<DialogHeader>
 						<DialogTitle className="text-center text-xl">View Team</DialogTitle>
 						<DialogDescription className="text-center">
@@ -43,13 +43,13 @@ export default function ViewTeam() {
 					<Table>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-[100px]">
+								<TableHead >
 									Name
 								</TableHead>
-								<TableHead className="w-[100px]">
+								<TableHead >
 									Character Played	
 								</TableHead>
-								<TableHead>ID</TableHead>
+								<TableHead className="text-center ">ID</TableHead>
 								<TableHead>Verification Status</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -57,19 +57,19 @@ export default function ViewTeam() {
 							{teamData?.data?.members?.map((member, key) => (
 								<TableRow key={key}>
 									<TableCell className="font-semibold text-sm">
-										{member.name}
+										{member?.name}
 									</TableCell>
 									<TableCell className="font-semibold text-sm">
-										{member.characterPlayed.character}
+										{member?.characterPlayed?.character}
 									</TableCell>
 									<TableCell>
 									<a href={member.idURL} target="_blank">
 										{member.idURL && <Image
-											src={member.idURL}
+											src={member?.idURL}
 											alt="id_image"
 											height={100}
 											width={100}
-											className="rounded border border-gray-800"
+											className="rounded m-auto border border-gray-800"
 										/>}
 										</a>
 									</TableCell>

@@ -86,6 +86,23 @@ export const TeamRouter = createTRPCRouter({
 						})
 					)
 				);
+				//TODO: Remove character played from leader
+				//Fix this
+				//if (ctx.session.user.characterId) {
+				//	const leaderChar = input.members.find(
+				//		(member) =>
+				//			member.characterId === ctx.session.user.characterId
+				//	);
+				//	if (leaderChar)
+				//		await ctx.prisma.user.update({
+				//			where: { id: ctx.session.user.id },
+				//			data: {
+				//				characterPlayed: {
+				//					disconnect: {{}},
+				//				},
+				//			},
+				//		});
+				//}
 
 				//Set team complete status to true to prevent edits
 				await setTeamCompleteStatus(college.Team.id, true);

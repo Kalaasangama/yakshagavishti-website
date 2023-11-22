@@ -70,7 +70,7 @@ const EditTeamForm = ({
 				for (const member of membersList.data.members) {
 					tempArr.push({
 						name: member.name,
-						characterId: member.characterPlayed.id,
+						characterId: member?.characterPlayed?.id,
 						idURL: member.idURL,
 					});
 				}
@@ -101,7 +101,7 @@ const EditTeamForm = ({
 	//Get the index of the role in the list
 	const getIndex = (label: string, prevIndex: number) => {
 		const index = membersList.data.members.findIndex(
-			(member) => member.characterPlayed.id=== label.replace(" ", "_")
+			(member) => member?.characterPlayed?.id=== label.replace(" ", "_")
 		);
 		if (index === -1) return prevIndex;
 		return index;
