@@ -48,6 +48,7 @@ export default function CollegeReg({
 			});
 		},
 		onSuccess(data) {
+			setCollege(selectedCollege);
 			if (user.teamEditStatus === "GRANTED") {
 				return setFormToShow(4);
 			}
@@ -56,7 +57,6 @@ export default function CollegeReg({
 			} else {
 				setFormToShow(2);
 			}
-			setCollege(selectedCollege);
 			return toast({
 				variant: "default",
 				title: "College signed in successfully!",

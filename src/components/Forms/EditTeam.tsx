@@ -1,9 +1,4 @@
-import React, {
-	type Dispatch,
-	type SetStateAction,
-	useEffect,
-	useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "src/components/ui/button";
 import {
 	DialogContent,
@@ -34,6 +29,7 @@ import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/router";
 import AccordianForm from "./AccordianForm";
 import z from "zod";
+import ViewBeforeSubmit from "../ViewBeforeSubmit";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -70,11 +66,12 @@ const EditTeamForm = ({
 			if (membersList.data && MembersArray.length === 0) {
 				const tempArr = Array<Members>();
 				for (const member of membersList.data.members) {
-					tempArr.push({
-						name: member.name,
-						characterId: member.characterPlayed.id,
-						idURL: member.idURL,
-					});
+					if (member?.characterPlayed?.id)
+						tempArr.push({
+							name: member.name,
+							characterId: member?.characterPlayed?.id,
+							idURL: member.idURL,
+						});
 				}
 				setMembersArray(tempArr);
 			}
@@ -102,17 +99,14 @@ const EditTeamForm = ({
 
 	//Get the index of the role in the list
 	const getIndex = (label: string, prevIndex: number) => {
-		const index = membersList.data.members.findIndex(
-			(member) => member.characterId === label.replace(" ", "_")
+		const index = MembersArray.findIndex(
+			(member) => member?.characterId === label.replace(" ", "_")
 		);
 		if (index === -1) return prevIndex;
 		return index;
 	};
 
 	//Remove the leader character from the list of available roles
-	const availableRoles = roles.filter(
-		(roles) => roles.value !== LeaderCharacter
-	);
 	const router = useRouter();
 	if (membersList.isLoading)
 		return <div className="text-2xl">Loading...</div>;
@@ -129,7 +123,7 @@ const EditTeamForm = ({
 				</DialogDescription>
 				<div>
 					<Accordion type="single" collapsible>
-						{availableRoles.map((role, index) => (
+						{roles.map((role, index) => (
 							<AccordionItem key={index} value={`item-${index}`}>
 								<AccordionTrigger>
 									{role.label}
@@ -146,7 +140,7 @@ const EditTeamForm = ({
 												: MembersArray
 										}
 										setMembersArray={setMembersArray}
-										index={getIndex(role.label, index)}
+										index={getIndex(role.value, index)}
 										characterId={role.value}
 									/>
 								</AccordionContent>
@@ -158,7 +152,7 @@ const EditTeamForm = ({
 					<AlertDialog>
 						<AlertDialogTrigger
 							disabled={
-								availableRoles.length <=
+								roles.length <=
 								MembersArray.filter(
 									(member) => member !== (undefined || null)
 								).length
@@ -169,7 +163,7 @@ const EditTeamForm = ({
 							<Button
 								size="sm"
 								disabled={
-									availableRoles.length <=
+									roles.length <=
 									MembersArray.filter(
 										(member) =>
 											member !== (undefined || null)
@@ -182,7 +176,7 @@ const EditTeamForm = ({
 										MembersArray.filter(
 											(member) =>
 												member !== (undefined || null)
-										).length < availableRoles.length
+										).length < roles.length
 									) {
 										toast({
 											variant: "destructive",
@@ -207,6 +201,10 @@ const EditTeamForm = ({
 							</AlertDialogHeader>
 							<AlertDialogFooter>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
+								<ViewBeforeSubmit
+									data={MembersArray}
+									roles={roles}
+								/>
 								<AlertDialogAction
 									disabled={registerMembers.isLoading}
 									onClick={(e) => {
