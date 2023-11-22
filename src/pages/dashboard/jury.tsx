@@ -181,11 +181,15 @@ const Jury: NextPage = () => {
         console.error(error);
         alert("Error fetching score");
       },
-    })
+      enabled: false,
+      staleTime: Infinity
+    },
+    )
 
     const setTeam = (newTeamId:string ,teamName:string) => {
       if(newTeamId === teamId)
         return;
+      setScored(false)
       setScores(initialScores)
       setCScores(criteriaScores)
       setRefetch(true);
