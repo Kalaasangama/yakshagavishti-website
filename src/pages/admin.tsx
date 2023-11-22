@@ -58,7 +58,7 @@ export default function Admin() {
 			
 			const leader = (element?.leader.name || "").replaceAll(","," ");
 			const leaderContact = (element?.leader?.contact + "\n" || "").replaceAll(","," ");
-			const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character + "\n").join(",") || "")
+			const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character ? member?.characterPlayed?.character:"" + "\n").join(",") || "")
 			const row = [college,leader,leaderContact,members].join(",")
 			console.log(row);
 			return row;
