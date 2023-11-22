@@ -11,11 +11,12 @@ import {
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 
-export default function Instagram() {
+export default function Admin() {
 	const { data: sessionData } = useSession();
 	const { data, refetch } = api.admin.getRegisteredTeams.useQuery();
 	const verifyIdMutation = api.admin.verifyId.useMutation();
 	const editTeamAccessMutation = api.admin.EditAccess.useMutation();
+
 	function verifyId(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
 		const userId = (e.target as HTMLElement)?.dataset?.userid;
 		if (userId)
@@ -46,14 +47,53 @@ export default function Instagram() {
 	}
 
 	if (sessionData?.user) {
+		
+		const downloadcsvFile = () => {
+		// const col = ["College Name","Team Leader","Leader Contact","Team Members","Charcter Played"]
+		const col = ["College Name","Team Leader","Leader Contact","Team Member","Character"].join(',') + '\n';
+		
+		const row = data?.map((element,key)=>{
+			if(element.isComplete === true){
+			const college = (element?.college?.name || "").replaceAll(","," ");
+			
+			const leader = (element?.leader.name || "").replaceAll(","," ");
+			const leaderContact = (element?.leader?.contact + "\n" || "").replaceAll(","," ");
+			const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character + "\n").join(",") || "")
+			const row = [college,leader,leaderContact,members].join(",")
+			console.log(row);
+			return row;
+			}
+		})
+
+		const csvfile = col + row.join("\n");
+		const blob = new Blob([csvfile], { type: "text/csv" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.setAttribute("href", url);
+		link.setAttribute("download", "data.csv");
+		document.body.appendChild(link);
+		link.click();
+		document.body.removeChild(link);
+	
+	}
+
 		return (
 			<>
 				<div className="container px-20 pt-20">
+					<div className="flex justify-center mt-20">
+						
+	
+						<Button onClick={downloadcsvFile}>
+							Download
+						</Button>
+					</div>
+
 					<h1 className="text-extrabold mt-10 text-2xl">
 						Registered Teams
 					</h1>
 					{data?.map((element, key) => (
 						<div key={key} className="my-10 rounded border px-20">
+
 							<h1>Team: {element.name} </h1>
 							{element.editRequests &&
 								(element?.editRequests?.status === ("PENDING" || "REVOKED") ? (
@@ -98,12 +138,12 @@ export default function Instagram() {
 												</TableCell>
 												<TableCell>
 													{member.idURL && (
-														<Image
+														<div className="w-60"><Image
 															src={member.idURL}
 															alt="ID"
-															height={100}
-															width={100}
-														/>
+															height={1000}
+															width={500}
+														/></div>
 													)}
 												</TableCell>
 												<TableCell className="text-right">
@@ -134,4 +174,4 @@ export default function Instagram() {
 			</>
 		);
 	}
-}
+	}

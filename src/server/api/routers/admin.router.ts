@@ -14,13 +14,34 @@ export const adminRouter = createTRPCRouter({
 					select: {
 						id: true,
 						name: true,
+						college: {
+							select: {
+								name: true,
+							},
+						},
+						isComplete: true,
+						leader: {
+							select: {
+								name: true,
+								contact: true,
+								characterPlayed: {
+									select: {
+										character: true,
+									},
+								},
+							},
+						},
 						members: {
 							select: {
 								id: true,
 								name: true,
 								idURL: true,
 								isIdVerified: true,
-								characterPlayed:{select:{character:true}}
+								characterPlayed: {
+									select: {
+										character: true,
+									},
+								},
 							},
 						},
 						editRequests: {

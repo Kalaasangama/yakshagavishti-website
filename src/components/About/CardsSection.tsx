@@ -23,7 +23,7 @@ const members = [
     role: "Secretary",
   },
   {
-    name: "Shrikrishna",
+    name: "Srikrishna",
     role: "Vice President",
   },
   {
