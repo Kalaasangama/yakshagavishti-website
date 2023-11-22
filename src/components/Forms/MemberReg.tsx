@@ -62,8 +62,9 @@ const MemberReg = ({
 	);
 	const { toast } = useToast();
 	useEffect(() => {
-		if (membersList.data && membersList.data.members.length >= 7) setMembersArray(membersList.data.members)
-	}, [membersList.data])
+		if (membersList.data && membersList.data.members.length >= 7)
+			setMembersArray(membersList.data.members);
+	}, [membersList.data]);
 	const registerMembers = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -83,8 +84,8 @@ const MemberReg = ({
 		},
 	});
 	const getIndex = (label: string, prevIndex: number) => {
-		const index = membersList.data.members.findIndex(
-			(member) => member.characterId === (label.replace(" ", "_"))
+		const index = membersList?.data?.members.findIndex(
+			(member) => member?.characterPlayed?.id === label.replace(" ", "_")
 		);
 		if (index === -1) return prevIndex;
 		return index;
@@ -136,7 +137,14 @@ const MemberReg = ({
 					<Button onClick={() => setFormToShow(2)} size="sm">
 						Back
 					</Button>
-					<Button disabled={MembersArray.length > 0 ? false: true} onClick={() => {setMembersArray([]);localStorage.clear()}} size="sm">
+					<Button
+						disabled={MembersArray.length > 0 ? false : true}
+						onClick={() => {
+							setMembersArray([]);
+							localStorage.clear();
+						}}
+						size="sm"
+					>
 						Clear All
 					</Button>
 					<AlertDialog>
@@ -190,7 +198,7 @@ const MemberReg = ({
 								</AlertDialogDescription>
 							</AlertDialogHeader>
 							<AlertDialogFooter>
-								<ViewBeforeSubmit data={MembersArray} />
+								<ViewBeforeSubmit data={MembersArray} roles={availableRoles} />
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
 									disabled={registerMembers.isLoading}
