@@ -79,6 +79,7 @@ export default function Instagram() {
 								<TableHeader>
 									<TableRow>
 										<TableHead>Name</TableHead>
+										<TableHead>Character</TableHead>
 										<TableHead>ID</TableHead>
 										<TableHead className="text-right">
 											Status
@@ -91,6 +92,9 @@ export default function Instagram() {
 											<TableRow key={index}>
 												<TableCell className="font-medium">
 													{member.name}
+												</TableCell>
+												<TableCell className="font-medium">
+													{member?.characterPlayed?.character}
 												</TableCell>
 												<TableCell>
 													{member.idURL && (

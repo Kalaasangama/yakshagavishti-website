@@ -20,6 +20,7 @@ export const adminRouter = createTRPCRouter({
 								name: true,
 								idURL: true,
 								isIdVerified: true,
+								characterPlayed:{select:{character:true}}
 							},
 						},
 						editRequests: {
