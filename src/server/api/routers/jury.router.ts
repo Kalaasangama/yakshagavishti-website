@@ -8,6 +8,23 @@ import { Characters, Criteria } from "@prisma/client";
 export const JuryRouter= createTRPCRouter({
             getTeams: protectedJudgeProcedure
             .query(async({ctx})=>{
+                const userId = ctx.session.user.id;
+                //check if judge exiists if not add to judge table
+                const judge = await ctx.prisma.judge.upsert({
+                    where:{
+                        userId: userId
+                    },
+                    update: {
+                        //nothing to update here
+                    },
+                    create:{
+                        user: {
+                            connect:{
+                                id: userId
+                            }
+                        }
+                    }
+                })
                 const teams = await ctx.prisma.team.findMany({
                     include:{
                         teamScore: true
@@ -44,6 +61,23 @@ export const JuryRouter= createTRPCRouter({
                 teamId:z.string(),
             })))
             .query(async({ctx,input})=>{
+                const userId = ctx.session.user.id;
+                //check if judge exiists if not add to judge table
+                const judge = await ctx.prisma.judge.upsert({
+                    where:{
+                        userId: userId
+                    },
+                    update: {
+                        //nothing to update here
+                    },
+                    create:{
+                        user: {
+                            connect:{
+                                id: userId
+                            }
+                        }
+                    }
+                })
                 const scores = await ctx.prisma.individualScore.findMany({
                     where: {
                         teamID: input.teamId,
@@ -90,22 +124,6 @@ export const JuryRouter= createTRPCRouter({
                     throw new kalasangamaError("EXCEEDING SCORE LIMIT", "Score should be with 0-10")
                 }
                 const userId = ctx.session.user.id;
-                //check if judge exiists if not add to judge table
-                const judge = await ctx.prisma.judge.upsert({
-                    where:{
-                        userId: userId
-                    },
-                    update: {
-                        //nothing to update here
-                    },
-                    create:{
-                        user: {
-                            connect:{
-                                id: userId
-                            }
-                        }
-                    }
-                })
                 //check if criteria exists if not add it
                 const criteria = await ctx.prisma.criteria.upsert({
                     where: {
@@ -168,22 +186,6 @@ export const JuryRouter= createTRPCRouter({
                     throw new kalasangamaError("EXCEEDING SCORE LIMIT", "Score should be with 0-10")
                 }
                 const userId = ctx.session.user.id;
-                //check if judge exiists if not add to judge table
-                const judge = await ctx.prisma.judge.upsert({
-                    where:{
-                        userId: userId
-                    },
-                    update: {
-                        //nothing to update here
-                    },
-                    create:{
-                        user: {
-                            connect:{
-                                id: userId
-                            }
-                        }
-                    }
-                })
                 //check if criteria exists if not add it
                 const criteria = await ctx.prisma.criteria.upsert({
                     where: {
@@ -238,6 +240,23 @@ export const JuryRouter= createTRPCRouter({
                 teamId: z.string(),
             })))
             .query(async({ctx,input})=>{
+                const userId = ctx.session.user.id;
+                //check if judge exiists if not add to judge table
+                const judge = await ctx.prisma.judge.upsert({
+                    where:{
+                        userId: userId
+                    },
+                    update: {
+                        //nothing to update here
+                    },
+                    create:{
+                        user: {
+                            connect:{
+                                id: userId
+                            }
+                        }
+                    }
+                })
                 return await ctx.prisma.team.findUnique({
                     where: {
                         id: input.teamId
