@@ -49,7 +49,6 @@ const setLeader = async (
 		await prisma.user.update({
 			where: { id: user_id },
 			data: {
-				name: leader_name,
 				team: {
 					connect: {
 						name: teamName,
@@ -78,7 +77,6 @@ const setLeader = async (
 		await prisma.user.update({
 			where: { id: user_id },
 			data: {
-				name: leader_name,
 				team: {
 					
 					connect: {
