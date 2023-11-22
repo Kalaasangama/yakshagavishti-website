@@ -18,10 +18,17 @@ const SponsorDetails = [
   },
   {
     name: "AJ Institute of Management",
-    subtitle: "Official Executive Partners",
+    subtitle: "Official Associate Partners",
     description: `A J Institute of Management, commonly referred to as AJIM, is a renowned educational institution established with a vision to provide quality management education, AJIM has consistently strived for excellence in the field of business and management studies. The institute is known for its commitment to fostering leadership skills, nurturing innovation, and preparing students to excel in the dynamic and competitive business world.`,
     image: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/AJ Institute of Management.png",
     url: "https://ajimmangalore.ac.in/",
+  },
+  {
+    name: "WENAMITAA",
+    subtitle: "Official Associate Partners",
+    description: `Established in 1991 and registered in 2013, the WENAMITAA, NMAMIT Alumni Association signifies the enduring bond between alumni and their alma mater. With vibrant chapters like Me-NMAMIT and Be-NMAMIT, the association fosters connections through annual gatherings. Highlight events, including the annual Alumni Meet and biennial Global Meet, provide opportunities for alumni to relive academic memories and celebrate achievements globally. The association, beyond celebrations, sponsors academic excellence and funds student projects, exemplified by the recent inauguration of a conference hall in the Atal Block. Actively involving alumni in academic endeavors, NMAMIT seeks their input for curriculum development and invites them as esteemed judges during fests, underscoring a commitment to excellence.`,
+    image: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/WENAMITAA.png",
+    url: "https://alumni.nitte.edu.in/page/wenamitaa-607",
   },
 ];
 

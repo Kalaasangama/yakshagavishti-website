@@ -11,7 +11,7 @@ import {
 } from "~/components/ui/table";
 import { Button } from "~/components/ui/button";
 
-export default function Instagram() {
+export default function Admin() {
 	const { data: sessionData } = useSession();
 	const { data, refetch } = api.admin.getRegisteredTeams.useQuery();
 	const verifyIdMutation = api.admin.verifyId.useMutation();
@@ -47,10 +47,10 @@ export default function Instagram() {
 	}
 
 	if (sessionData?.user) {
-		const downloadcsvFile = () => {
+		
 		const downloadcsvFile = () => {
 		// const col = ["College Name","Team Leader","Leader Contact","Team Members","Charcter Played"]
-		const col = ["College Name","Team Leader","Leader Contact"].join(',') + '\n';
+		const col = ["College Name","Team Leader","Leader Contact","Team Member","Character"].join(',') + '\n';
 		
 		const row = data?.map((element,key)=>{
 			if(element.isComplete === true){
@@ -58,7 +58,7 @@ export default function Instagram() {
 			
 			const leader = (element?.leader.name || "").replaceAll(","," ");
 			const leaderContact = (element?.leader?.contact + "\n" || "").replaceAll(","," ");
-			const members = (element?.members.map((member)=>member.name + "," + member?.characterPlayed?.character + "\n").join(",") || "")
+			const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character + "\n").join(",") || "")
 			const row = [college,leader,leaderContact,members].join(",")
 			console.log(row);
 			return row;
@@ -170,5 +170,4 @@ export default function Instagram() {
 			</>
 		);
 	}
-}
-}
+	}
