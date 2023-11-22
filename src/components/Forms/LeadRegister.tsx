@@ -193,8 +193,6 @@ const LeadRegister = ({
 													id="phone"
 													placeholder="Enter your Name"
 													className="col-span-3"
-													maxLength={10}
-													minLength={10}
 													defaultValue={LeaderName}
 													onChange={(e) => {
 														setLeaderName(
