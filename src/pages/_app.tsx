@@ -68,7 +68,7 @@ const porpora = localFont({
 })
 
 import "~/styles/dropzone.css"
-import { Toaster } from "src/components/ui/toaster"
+import { Toaster } from 'react-hot-toast';
 
 
 const MyApp: AppType<{ session: Session | null }> = ({
@@ -116,10 +116,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </Head>
         {/* { loading && <Loader /> } */}
           <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
-            {path.pathname !== "/_error" && <Navbar />}
+            {path.pathname !== "/_error" && path.pathname !== "/dashboard/jury"  && <Navbar />}
             <Component {...pageProps} />
             <Toaster />
-            <Footer />
+            {path.pathname !== "/dashboard/jury" && <Footer/>}
           </main>
       </SessionProvider>
     </>

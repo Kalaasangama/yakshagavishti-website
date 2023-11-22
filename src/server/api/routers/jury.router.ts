@@ -10,7 +10,7 @@ export const JuryRouter= createTRPCRouter({
             .query(async({ctx})=>{
                 const teams = await ctx.prisma.team.findMany({
                     include:{
-                        criteriaScore: true
+                        teamScore: true
                     }
                 });
                 return teams;
@@ -44,13 +44,31 @@ export const JuryRouter= createTRPCRouter({
                 teamId:z.string(),
             })))
             .query(async({ctx,input})=>{
-                const scores = await ctx.prisma.score.findMany({
+                const scores = await ctx.prisma.individualScore.findMany({
                     where: {
-                        teamID: input.teamId
+                        teamID: input.teamId,
+                        judgeId: ctx.session.user.id
                     },
                     include: {
                         criteria: true,
                         characterPlayed: true,
+                        judge: {
+                            include: {
+                                teamScore: {
+                                    where: {
+                                        teamID: input.teamId
+                                    },
+                                    include: {
+                                        criteria: true,
+                                    }
+                                },
+                                Submitted: {
+                                    where: {
+                                        teamID: input.teamId
+                                    }
+                                }
+                            }
+                        },
                         team: {
                             include: {
                                 college: true
@@ -65,9 +83,29 @@ export const JuryRouter= createTRPCRouter({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
                 characterId: z.nativeEnum(Characters),
-                score : z.number(),
+                score : z.number().max(30),
             })))
             .mutation(async({ctx,input})=>{
+                if(input.criteriaName === "CRITERIA_4" && input.score>10){
+                    throw new kalasangamaError("EXCEEDING SCORE LIMIT", "Score should be with 0-10")
+                }
+                const userId = ctx.session.user.id;
+                //check if judge exiists if not add to judge table
+                const judge = await ctx.prisma.judge.upsert({
+                    where:{
+                        userId: userId
+                    },
+                    update: {
+                        //nothing to update here
+                    },
+                    create:{
+                        user: {
+                            connect:{
+                                id: userId
+                            }
+                        }
+                    }
+                })
                 //check if criteria exists if not add it
                 const criteria = await ctx.prisma.criteria.upsert({
                     where: {
@@ -80,8 +118,6 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update
                     }
                 });
-                if(!criteria)
-                    throw new kalasangamaError("ERROR","no such criteria")
                 //check if team exists
                 const team = await ctx.prisma.team.findUnique({
                     where: {
@@ -100,12 +136,13 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update
                     }
                 });
-                return await ctx.prisma.score.upsert({
+                return await ctx.prisma.individualScore.upsert({
                     where: {
-                        teamID_criteriaId_characterId: {
+                        teamID_criteriaId_characterId_judgeId: {
                             criteriaId : criteria.id,
                             characterId : character.id,
-                            teamID: input.teamId
+                            teamID: input.teamId,
+                            judgeId: userId
                         }
                     },
                     update: {
@@ -115,7 +152,8 @@ export const JuryRouter= createTRPCRouter({
                         criteriaId : criteria.id,
                         characterId : character.id,
                         teamID: input.teamId,
-                        score: input.score
+                        score: input.score,
+                        judgeId: userId
                     }
                 });
             }),
@@ -123,53 +161,75 @@ export const JuryRouter= createTRPCRouter({
             .input((z.object({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
-                score : z.number(),
+                score : z.number().max(30),
+                final: z.boolean().optional()
             }))).mutation(async({ctx,input})=>{
-                const criteria = await ctx.prisma.criteria.findUnique({
+                if(input.criteriaName === "CRITERIA_4" && input.score>10){
+                    throw new kalasangamaError("EXCEEDING SCORE LIMIT", "Score should be with 0-10")
+                }
+                const userId = ctx.session.user.id;
+                //check if judge exiists if not add to judge table
+                const judge = await ctx.prisma.judge.upsert({
                     where:{
-                        name: input.criteriaName
+                        userId: userId
+                    },
+                    update: {
+                        //nothing to update here
+                    },
+                    create:{
+                        user: {
+                            connect:{
+                                id: userId
+                            }
+                        }
+                    }
+                })
+                //check if criteria exists if not add it
+                const criteria = await ctx.prisma.criteria.upsert({
+                    where: {
+                        name: input.criteriaName 
+                    },
+                    create: {
+                        name: input.criteriaName 
+                    },
+                    update: {
+                        //nothing to update
                     }
                 });
-                return await ctx.prisma.criteriaScore.upsert({
+                if(input?.final){
+                    await ctx.prisma.submitted.upsert({
+                        where: {
+                            judgeId_teamID: {
+                                judgeId: userId,
+                                teamID: input.teamId
+                            },
+                        },
+                        update: {
+                            submitted: true
+                        },
+                        create: {
+                            judgeId: userId,
+                            teamID: input.teamId,
+                            submitted: true
+                        }
+                    })
+                }
+                return await ctx.prisma.teamScore.upsert({
                     where:{
-                        id_teamID: {
-                            id: criteria.id,
-                            teamID: input.teamId
+                        teamID_judgeId_criteriaId: {
+                            criteriaId: criteria.id,
+                            teamID: input.teamId,
+                            judgeId: userId
                         }
                     },
                     create: {
-                        id: criteria.id,
+                        criteriaId: criteria.id,
                         teamID: input.teamId,
-                        score: input.score
+                        score: input.score,
+                        judgeId: userId
                     },
                     update: {
                         score: input.score
-                    }
-                })
-            }),
-            updateTotalScore: protectedJudgeProcedure
-            .input((z.object({
-                teamId: z.string(),
-                score : z.number(),
-                final: z.boolean()
-            })))
-            .mutation(async({ctx,input})=>{
-                if(input.final)
-                    return await ctx.prisma.team.update({
-                        where:{
-                            id: input.teamId
-                        },
-                        data: {
-                            teamScore: input.score,
-                            isScored: true
-                        }
-                    })
-                return await ctx.prisma.team.update({
-                    where:{
-                        id: input.teamId
-                    },
-                    data: {
-                        teamScore: input.score,
                     }
                 })
             }),
