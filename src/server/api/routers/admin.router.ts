@@ -149,4 +149,57 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		}),
+		getScores: protectedProcedure
+            .input((z.object({
+                teamId:z.string(),
+				judgeId:z.string()
+            })))
+            .query(async({ctx,input})=>{
+                const scores = await ctx.prisma.individualScore.findMany({
+                    where: {
+                        teamID: input.teamId,
+                        judgeId: input.judgeId
+                    },
+                    include: {
+                        criteria: true,
+                        characterPlayed: true,
+                        judge: {
+                            include: {
+                                teamScore: {
+                                    where: {
+                                        teamID: input.teamId,
+										judgeId: input.judgeId
+                                    },
+                                    include: {
+                                        criteria: true,
+                                    }
+                                },
+                                Submitted: {
+                                    where: {
+                                        teamID: input.teamId,
+										judgeId: input.judgeId
+                                    }
+                                }
+                            }
+                        },
+                        team: {
+                            include: {
+                                college: true
+                            }
+                        }
+                    }
+                })
+                return scores;
+            }),
+			getJudges:protectedProcedure
+			.input(z.object({
+				teamId:z.string(),
+			})).
+			query(async({ctx})=>{
+				return await ctx.prisma.judge.findMany({
+					include: {
+						user: true
+					}
+				});
+			})
 });

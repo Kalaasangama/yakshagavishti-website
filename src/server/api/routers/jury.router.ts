@@ -90,7 +90,8 @@ export const JuryRouter= createTRPCRouter({
                             include: {
                                 teamScore: {
                                     where: {
-                                        teamID: input.teamId
+                                        teamID: input.teamId,
+                                        judgeId: ctx.session.user.id
                                     },
                                     include: {
                                         criteria: true,
@@ -98,7 +99,8 @@ export const JuryRouter= createTRPCRouter({
                                 },
                                 Submitted: {
                                     where: {
-                                        teamID: input.teamId
+                                        teamID: input.teamId,
+                                        judgeId: ctx.session.user.id
                                     }
                                 }
                             }

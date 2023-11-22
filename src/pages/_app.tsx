@@ -116,7 +116,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         </Head>
         {/* { loading && <Loader /> } */}
           <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
-            {path.pathname !== "/_error" && path.pathname !== "/dashboard/jury"  && <Navbar />}
+            {path.pathname !== "/_error" && path.pathname !== "/dashboard/jury" && path.pathname !== "/dashboard/results" && <Navbar />}
             <Component {...pageProps} />
             <Toaster />
             {path.pathname !== "/dashboard/jury" && <Footer/>}
