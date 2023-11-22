@@ -42,12 +42,14 @@ const setLeader = async (
 	college_id: string,
 	character_id: string | null,
 	leaderIdUrl: string | null,
-	leader_contact: string
+	leader_contact: string,
+	leader_name: string
 ) => {
 	if (character_id)
 		await prisma.user.update({
 			where: { id: user_id },
 			data: {
+				name: leader_name,
 				team: {
 					connect: {
 						name: teamName,
@@ -76,6 +78,7 @@ const setLeader = async (
 		await prisma.user.update({
 			where: { id: user_id },
 			data: {
+				name: leader_name,
 				team: {
 					
 					connect: {

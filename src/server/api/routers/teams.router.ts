@@ -17,6 +17,7 @@ export const TeamRouter = createTRPCRouter({
 				leader_character: z.string().nullish(),
 				leader_idUrl: z.string().nullish(),
 				leader_contact: z.string().nullish(),
+				leader_name: z.string().nullish(),
 				members: z.array(
 					z.object({
 						name: z.string(),
@@ -44,7 +45,8 @@ export const TeamRouter = createTRPCRouter({
 						college.id,
 						input.leader_character,
 						input.leader_idUrl,
-						input.leader_contact
+						input.leader_contact,
+						input.leader_name
 					);
 					return { message: "Leader Details Updated" };
 				}

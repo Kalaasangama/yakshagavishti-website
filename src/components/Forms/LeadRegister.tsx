@@ -63,6 +63,9 @@ const LeadRegister = ({
 	const [LeaderContact, setLeaderContact] = useState<string>(
 		user.data.user.contact
 	);
+	const [LeaderName, setLeaderName] = useState<string>(
+		user.data.user.name
+	);
 	const [UploadStatus, setUploadStatus] = useState("");
 	const SetLeaderDetails = api.team.register.useMutation({
 		onError(error) {
@@ -147,6 +150,7 @@ const LeadRegister = ({
 				SetLeaderDetails.mutate({
 					college_id,
 					leader_character: LeaderCharacter,
+					leader_name: LeaderName,
 					leader_contact: LeaderContact,
 					leader_idUrl: idUrl,
 					members: [],
@@ -180,6 +184,25 @@ const LeadRegister = ({
 												<div className="grid w-full max-w-sm items-center gap-1.5"></div>
 											</div>
 
+											<div className="grid w-full max-w-sm items-center gap-1.5">
+												<Label htmlFor="phone">
+													Leader Name	
+												</Label>
+												<Input
+													type="text"
+													id="phone"
+													placeholder="Enter your Name"
+													className="col-span-3"
+													maxLength={10}
+													minLength={10}
+													defaultValue={LeaderName}
+													onChange={(e) => {
+														setLeaderName(
+															e.target.value
+														);
+													}}
+												/>
+											</div>
 											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Label htmlFor="phone">
 													Phone number
