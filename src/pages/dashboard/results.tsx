@@ -17,9 +17,13 @@ import { ArrowDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { Criteria, Characters } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
+import Score from "~/components/Jury/score";
 
 const Jury: NextPage = () => {
 
+  const user = useSession()
   const criteriaList: Criteria[] = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3", "CRITERIA_4"];
   const criteriaDisplayList: string[] = ["Criteria 1(30)", "Criteria 2(30)", "Criteria 3(30)", "Criteria 4(10)"];
   const criteriaTeamDisplayList: string[] = ["Criteria 1(30)", "Criteria 2(30)", "Criteria 3(30)", "Criteria 4(10)"];
@@ -72,6 +76,7 @@ const Jury: NextPage = () => {
   const [ready, setReady] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<boolean>(false);
   const [enable, setEnable] = useState<boolean>(true);
+  const [active, setActive] = useState<string>("");
 
     const totalScore = (character: string) => {
       if (scores[character] != null) {
@@ -180,120 +185,131 @@ const Jury: NextPage = () => {
         setReady(true);
     },[res.data])
 
-    return !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
+    return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
       <div className="container flex flex-col w-full items-center">
         <h1 className="text-extrabold mt-4 text-3xl pb-2 text-center">
           Results<br/>
           Judge - {judgeName}<br/>
           Team - {teamName}
         </h1>
-        <div className="flex md:flex-row flex-col w-full m-2 items-center text-center">
-          <div className="flex flex-row gap-5 basis-1/2 justify-start">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
-                <div className="md:text-xl text-2xl">Select a Team</div>
-                <ArrowDown></ArrowDown>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {!isLoading ? (
-                  data?.map((team ,i) => (
-                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name)}>
-                      {team.name}
-                    </DropdownMenuItem>
-                  ))
-                ) : (
-                  <DropdownMenuItem className="text-xl">No Judges</DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
-                <div className="md:text-xl text-2xl">Select a Judge</div>
-                <ArrowDown></ArrowDown>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                {!isLoading ? (
-                  judge.data?.map((judge ,i) => (
-                    <DropdownMenuItem className="text-xl" key={judge.userId} onSelect={e => setJudge(judge.userId, judge.user.name)}>
-                      {judge.user.name}
-                    </DropdownMenuItem>
-                  ))
-                ) : (
-                  <DropdownMenuItem className="text-xl">No teams</DropdownMenuItem>
-                )}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-        {teamName !=="Select a college" && judgeName!=="Select a judge" && scored && ready ? (
-        <div className="flex flex-col md:flex-row gap-6 justify-center">
-          <div className="basis-3/5">
-            <Table>
-              <TableHeader className="invisible md:visible align-middle">
-                <TableRow className="text-2xl text-center">
-                  <TableHead className="text-center">Character</TableHead>
-                  {criteriaDisplayList.map((criteria, i) => (
-                    <TableHead key={i} className="text-center">{criteria}</TableHead>
-                  ))}
-                  <TableHead>Total</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="text-2xl">
-                {characters.map((character, i) => (
-                  <TableRow key={i} className="text-center">
-                    <TableCell className="md:m-0">{character}</TableCell>
-                    {criteriaList.map((criteria, j) => (
-                      <TableCell key={j}>
-                        {scores[character]?.[criteria]}
-                      </TableCell>
-                    ))}
-                    <TableCell>{totalScore(character)}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="basis-1/4">
-            <Table className="flex flex-col text-2xl w-full items-center">
-              <TableHeader className="w-full flex items-center justify-center border-b-[1px] border-b-white">
-                <TableRow className="text-2xl border-none">
-                  <TableHead className="text-center">Team Score</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody className="text-2xl">
-                {criteriaTeamDisplayList.map((criteria, k) => (
-                  <TableRow key={k}>
-                    <TableCell>{criteria}</TableCell>
-                    <TableCell>
-                        {cScores[criteriaList[k]]}
-                    </TableCell>
-                  </TableRow>
-                ))}
-                <TableRow>
-                  <TableCell>Total</TableCell>
-                  <TableCell>{calculateFinalTotal()}</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-        ):
-        !ready && teamName ==="Select a college" && judgeName==="Select a judge" && !scored  ? (
-              <div className="container py-40">
-                <div className="w-full h-full">
-                    <div className="flex text-2xl justify-center text-center ">Please select a college or judge....</div>
-                </div>
+        <Tabs defaultValue="account" className="w-full">
+          <TabsList className="bg-primary-100 p-2">
+            <TabsTrigger value="results" onClick={e => {setActive("result")}} className={`text-2xl mb-3 ${active==="result" ? `bg-white rounded-lg text-primary-100`: ""}`}>Results</TabsTrigger>
+            <TabsTrigger value="scoreBoard" onClick={e => {setActive("score")}} className={`text-2xl mb-3  ${active==="score" ? `bg-white rounded-lg text-primary-100`: ""}`}>ScoreBoard</TabsTrigger>
+          </TabsList>
+          <TabsContent value="results" className="w-full">
+            <div className="flex md:flex-row flex-col w-full m-2 items-center text-center">
+              <div className="flex flex-row gap-5 basis-1/2 justify-start">
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
+                    <div className="md:text-xl text-2xl">Select a Team</div>
+                    <ArrowDown></ArrowDown>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {!isLoading ? (
+                      data?.map((team ,i) => (
+                        <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name)}>
+                          {team.name}
+                        </DropdownMenuItem>
+                      ))
+                    ) : (
+                      <DropdownMenuItem className="text-xl">No Judges</DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+                <DropdownMenu>
+                  <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
+                    <div className="md:text-xl text-2xl">Select a Judge</div>
+                    <ArrowDown></ArrowDown>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    {!isLoading ? (
+                      judge.data?.map((judge ,i) => (
+                        <DropdownMenuItem className="text-xl" key={judge.userId} onSelect={e => setJudge(judge.userId, judge.user.name)}>
+                          {judge.user.name}
+                        </DropdownMenuItem>
+                      ))
+                    ) : (
+                      <DropdownMenuItem className="text-xl">No teams</DropdownMenuItem>
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
+              {teamName !=="Select a college" && judgeName!=="Select a judge" && scored && ready ? (
+              <div className="flex flex-col md:flex-row gap-6 justify-center">
+                <div className="basis-3/5">
+                  <Table>
+                    <TableHeader className="invisible md:visible align-middle">
+                      <TableRow className="text-2xl text-center">
+                        <TableHead className="text-center">Character</TableHead>
+                        {criteriaDisplayList.map((criteria, i) => (
+                          <TableHead key={i} className="text-center">{criteria}</TableHead>
+                        ))}
+                        <TableHead>Total</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="text-2xl">
+                      {characters.map((character, i) => (
+                        <TableRow key={i} className="text-center">
+                          <TableCell className="md:m-0">{character}</TableCell>
+                          {criteriaList.map((criteria, j) => (
+                            <TableCell key={j}>
+                              {scores[character]?.[criteria]}
+                            </TableCell>
+                          ))}
+                          <TableCell>{totalScore(character)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <div className="basis-1/4">
+                  <Table className="flex flex-col text-2xl w-full items-center">
+                    <TableHeader className="w-full flex items-center justify-center border-b-[1px] border-b-white">
+                      <TableRow className="text-2xl border-none">
+                        <TableHead className="text-center">Team Score</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="text-2xl">
+                      {criteriaTeamDisplayList.map((criteria, k) => (
+                        <TableRow key={k}>
+                          <TableCell>{criteria}</TableCell>
+                          <TableCell>
+                              {cScores[criteriaList[k]]}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow>
+                        <TableCell>Total</TableCell>
+                        <TableCell>{calculateFinalTotal()}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+              ):
+              !ready && teamName ==="Select a college" && judgeName==="Select a judge" && !scored  ? (
+                    <div className="container py-40">
+                      <div className="w-full h-full">
+                          <div className="flex text-2xl justify-center text-center ">Please select a college or judge....</div>
+                      </div>
+                  </div>
+                  )
+                  :
+                  !scored ? (
+                    <><div className="text-2xl flex justify-center text-center p-4 m-4">Scores has not been submitted...</div></>
+                  )
+                :
+              (
+              <><div className="text-2xl flex justify-center text-center p-4 m-4">Loading Scores....</div></>
             )
-            :
-            !scored ? (
-              <><div className="text-2xl flex justify-center text-center p-4 m-4">Scores has not been submitted...</div></>
-            )
-          :
-        (
-        <><div className="text-2xl flex justify-center text-center p-4 m-4">Loading Scores....</div></>
-      )
-    }
+          }
+          </TabsContent>
+          <TabsContent value="scoreBoard">
+            <Score/>
+          </TabsContent>
+        </Tabs>
       </div>
     ) : (
       <div className="container py-40">

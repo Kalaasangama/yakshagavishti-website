@@ -20,6 +20,7 @@ import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
 import { Criteria, Characters } from "@prisma/client";
 import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 const Jury: NextPage = () => {
 
@@ -48,6 +49,7 @@ const Jury: NextPage = () => {
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
   const { data, isLoading } = api.jury.getTeams.useQuery();
   const ctx = api.useContext();
+  const user = useSession();
 
   const characters : Characters[] = [
     "SHANTHANU",
@@ -234,7 +236,7 @@ const Jury: NextPage = () => {
         setReady(true);
     },[res.data])
 
-    return !isLoading && data!==undefined && data.length>0 ? (
+    return user.data?.user && !isLoading && data!==undefined && data.length>0 ? (
       <div className="container flex flex-col w-full">
         <h1 className="text-extrabold mt-10 text-4xl pb-2">
           Judge Dashboard - {teamName}
