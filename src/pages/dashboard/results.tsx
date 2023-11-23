@@ -20,6 +20,7 @@ import { Criteria, Characters } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
 import Score from "~/components/Jury/score";
+import TeamScore from "~/components/Jury/teamScore";
 
 const Jury: NextPage = () => {
 
@@ -198,7 +199,8 @@ const Jury: NextPage = () => {
         <Tabs defaultValue="account" className="w-full">
           <TabsList className="bg-primary-100 p-2">
             <TabsTrigger value="results" onClick={e => {setActive("result")}} className={`text-2xl mb-3 ${active==="result" ? `bg-white rounded-lg text-primary-100`: ""}`}>Results</TabsTrigger>
-            <TabsTrigger value="scoreBoard" onClick={e => {setActive("score")}} className={`text-2xl mb-3  ${active==="score" ? `bg-white rounded-lg text-primary-100`: ""}`}>ScoreBoard</TabsTrigger>
+            <TabsTrigger value="scoreBoard" onClick={e => {setActive("score")}} className={`text-2xl mb-3  ${active==="score" ? `bg-white rounded-lg text-primary-100`: ""}`}>Character ScoreBoard</TabsTrigger>
+            <TabsTrigger value="teamScoreBoard" onClick={e => {setActive("team")}} className={`text-2xl mb-3  ${active==="team" ? `bg-white rounded-lg text-primary-100`: ""}`}>Team ScoreBoard</TabsTrigger>
           </TabsList>
           <TabsContent value="results" className="w-full">
             <div className="flex md:flex-row flex-col w-full m-2 items-center text-center">
@@ -295,22 +297,25 @@ const Jury: NextPage = () => {
               !ready && teamName ==="Select a college" && judgeName==="Select a judge" && !scored  ? (
                     <div className="container py-40">
                       <div className="w-full h-full">
-                          <div className="flex text-2xl justify-center text-center ">Please select a college or judge....</div>
+                          <div className="flex text-2xl justify-center text-center mb-[100vw]">Please select a college or judge....</div>
                       </div>
                   </div>
                   )
                   :
                   !scored ? (
-                    <><div className="text-2xl flex justify-center text-center p-4 m-4">Scores has not been submitted...</div></>
+                    <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-[100vw]">Scores has not been submitted...</div></>
                   )
                 :
               (
-              <><div className="text-2xl flex justify-center text-center p-4 m-4">Loading Scores....</div></>
+              <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-[100vw]">Loading Scores....</div></>
             )
           }
           </TabsContent>
           <TabsContent value="scoreBoard">
             <Score/>
+          </TabsContent>
+          <TabsContent value="teamScoreBoard">
+            <TeamScore/>
           </TabsContent>
         </Tabs>
       </div>

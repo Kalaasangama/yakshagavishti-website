@@ -239,7 +239,7 @@ const Jury: NextPage = () => {
     return user.data?.user && !isLoading && data!==undefined && data.length>0 ? (
       <div className="container flex flex-col w-full">
         <h1 className="text-extrabold mt-10 text-4xl pb-2">
-          Judge Dashboard - {teamName}
+          Judge Dashboard - Team {teamName}
         </h1>
         <div className="flex md:flex-row flex-col w-full m-2 text-center">
           <div className="flex basis-1/2 justify-start">
@@ -251,8 +251,8 @@ const Jury: NextPage = () => {
               <DropdownMenuContent>
                 {!isLoading ? (
                   data?.map((team ,i) => (
-                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name)}>
-                      {team.name}
+                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.TeamNumber.number.toString())}>
+                      team {team.TeamNumber.number}
                     </DropdownMenuItem>
                   ))
                 ) : (

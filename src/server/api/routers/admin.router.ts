@@ -1,7 +1,7 @@
 import { Characters } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedAdminProcedure, protectedProcedure } from "~/server/api/trpc";
 import kalasangamaError from "~/utils/customError";
 
 export const adminRouter = createTRPCRouter({
@@ -150,7 +150,7 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		}),
-		getScores: protectedProcedure
+		getScores: protectedAdminProcedure
             .input((z.object({
                 teamId:z.string(),
 				judgeId:z.string()
@@ -192,7 +192,7 @@ export const adminRouter = createTRPCRouter({
                 })
                 return scores;
             }),
-			getJudges:protectedProcedure
+			getJudges:protectedAdminProcedure
 			.input(z.object({
 				teamId:z.string(),
 			})).
@@ -203,7 +203,7 @@ export const adminRouter = createTRPCRouter({
 					}
 				});
 			}),
-			getResults:protectedProcedure
+			getResults:protectedAdminProcedure
 			.query(async({ctx})=>{
 				const Submitted = await ctx.prisma.submitted.findMany({
 					where: {
@@ -212,9 +212,9 @@ export const adminRouter = createTRPCRouter({
 				});
 				const teams = await ctx.prisma.team.findMany();
 				const judges = await ctx.prisma.judge.findMany();
-				// if(Submitted.length !== (teams.length * judges.length)){
-				// 	return "Not submitted"
-				// }
+				if(Submitted.length !== (teams.length * judges.length)){
+					return "Not submitted"
+				}
 				const individualScores = await ctx.prisma.individualScore.findMany({
 					include: {
 						characterPlayed: true,
@@ -233,10 +233,9 @@ export const adminRouter = createTRPCRouter({
 						}
 					]
 				})
-				console.log(individualScores)
 				return individualScores;
 			}),
-			getName:protectedProcedure
+			getName:protectedAdminProcedure
 			.input(z.object({
 				teamId: z.string(),
 				character: z.nativeEnum(Characters)
@@ -250,5 +249,33 @@ export const adminRouter = createTRPCRouter({
 						}
 					}
 				})
-			})
+			}),
+			getTeamScore:protectedAdminProcedure
+			.query(async({ctx})=>{
+				const Submitted = await ctx.prisma.submitted.findMany({
+					where: {
+						submitted: true
+					},
+				});
+				const teams = await ctx.prisma.team.findMany();
+				const judges = await ctx.prisma.judge.findMany();
+				if(Submitted.length !== (teams.length * judges.length)){
+					return "Not submitted"
+				}
+				const teamScores = await ctx.prisma.teamScore.findMany({
+					include: {
+						criteria: true,
+						team: true
+					},
+					orderBy: [
+						{
+							teamID: "asc"
+						},
+						{
+							criteriaId: "asc"
+						}
+					]
+				})
+				return teamScores;
+			}),
 });

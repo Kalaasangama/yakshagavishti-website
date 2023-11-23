@@ -5,14 +5,10 @@ import { Table,TableBody, TableCell, TableHead, TableHeader, TableRow } from '..
 
 function Score() {
   type TotalScores = {
-    [character in Characters]: {
-      [team: string]: number;
-    };
+    [character in Characters]: Record<string, number>;
   };
 
-  type Team = {
-    [team: string] : string
-  }
+  type Team = Record<string, string>;
 
   const characters : Characters[] = [
     "SHANTHANU",
@@ -43,41 +39,42 @@ function Score() {
 
     // Initialize an array to store unique team names
     const uniqueTeams = {};
+    if(results.data !== "Not submitted"){
+      // Loop through each result
+      results.data?.forEach(result => {
+        const team: string = result.team.name;
+        const character: Characters = result.characterPlayed.character;
+        const score: number = result.score;
 
-    // Loop through each result
-    results.data?.forEach(result => {
-      const team: string = result.team.name;
-      const character: Characters = result.characterPlayed.character;
-      const score: number = result.score;
-
-      // If the characterID is not already in the team's scores, initialize it
-      if (!newTotalScores[character]) {
-        newTotalScores[character] = {};
-      }
-
-      // If the teamID is not already in the totalScores object, initialize it
-      if (!newTotalScores[character][team]) {
-        newTotalScores[character][team] = 0;
-        if(!uniqueTeams[team]){
-          uniqueTeams[team] = result.teamID; 
+        // If the characterID is not already in the team's scores, initialize it
+        if (!newTotalScores[character]) {
+          newTotalScores[character] = {};
         }
-      }
 
-      // Add the score to the total for the character
-      newTotalScores[character][team] += score;
-    });
-    
-    // Sort the inner teams in descending order for each character
-    for (const [character, teams] of Object.entries(newTotalScores)) {
-      // Sort teams for each character
-      let sortedTeams = Object.fromEntries(
-          Object.entries(teams).sort(([, a], [, b]) => b - a)
-      );
-      newTotalScores[character] = sortedTeams;
+        // If the teamID is not already in the totalScores object, initialize it
+        if (!newTotalScores[character][team]) {
+          newTotalScores[character][team] = 0;
+          if(!uniqueTeams[team]){
+            uniqueTeams[team] = result.teamID; 
+          }
+        }
+
+        // Add the score to the total for the character
+        newTotalScores[character][team] += score;
+      });
+      
+      // Sort the inner teams in descending order for each character
+      for (const [character, teams] of Object.entries(newTotalScores)) {
+        // Sort teams for each character
+        const sortedTeams = Object.fromEntries(
+            Object.entries(teams).sort(([, a], [, b]) => b - a)
+        );
+        newTotalScores[character] = sortedTeams;
+    }
+      // Update the state with the new total scores
+      setTotalScores(newTotalScores);
+      setTeams(uniqueTeams);
   }
-    // Update the state with the new total scores
-    setTotalScores(newTotalScores);
-    setTeams(uniqueTeams);
   }, [results.data]);
 
   // const getName = (teamId: string, character: Characters) => {
@@ -89,9 +86,9 @@ function Score() {
   //   return "Aaron";
   // }
 
-  useEffect(() => {
-    
-  },[teamId])
+
+  if(results.isLoading) return <div className='text-2xl text-center p-4 mb-[100vh]'>Loading....</div>
+  if(results.data === "Not submitted") return <div className='text-2xl text-center p-4 mb-[100vh]'>All scores not submitted</div>  
 
   return results.isLoading ? (
     <div>
@@ -100,8 +97,8 @@ function Score() {
     )
     :(
     <div>
-      {characters.map((character) => (
-        <div>
+      {characters.map((character,i) => (
+        <div key={i}>
           <div>{character}</div>
           <Table className='text-2xl'>
             <TableHeader>
@@ -113,7 +110,7 @@ function Score() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {Object.keys(totalScores[character]).map((team,i) => (
+              {Object.keys(totalScores[character]).map((team:string,i) => (
                 <TableRow key={i}>
                   <TableCell>
                     {i+1}

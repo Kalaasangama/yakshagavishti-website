@@ -27,7 +27,8 @@ export const JuryRouter= createTRPCRouter({
                 })
                 const teams = await ctx.prisma.team.findMany({
                     include:{
-                        teamScore: true
+                        teamScore: true,
+                        TeamNumber: true
                     }
                 });
                 return teams;
