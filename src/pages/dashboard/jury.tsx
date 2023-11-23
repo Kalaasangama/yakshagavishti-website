@@ -349,19 +349,19 @@ const Jury: NextPage = () => {
         </div>
         ):
         scored ? (
-              <div className="container py-40">
+              <div className="container py-40 h-full">
                 <div className="w-full h-full">
-                    <div className="flex text-2xl justify-center text-center ">Thank you for Judging... you can select any other team</div>
+                    <div className="flex text-2xl justify-center text-center mb-20 ">Thank you for Judging... you can select any other team</div>
                 </div>
             </div>
             )
             :
             !ready && teamName ==="Select a college" && !scored ? (
-              <><div className="text-2xl flex justify-center text-center p-4 m-4">Please select a college....</div></>
+              <><div className="text-2xl flex justify-center text-center p-4 m-4 h-full mb-96">Please select a college....</div></>
             )
           :
         (
-        <><div className="text-2xl flex justify-center text-center p-4 m-4">Loading Scores....</div></>
+        <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-24">Loading Scores....</div></>
       )
     }
       </div>

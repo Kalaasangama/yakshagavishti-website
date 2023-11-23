@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { ArrowDown } from "lucide-react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { NextPage } from "next";
 import { Criteria, Characters } from "@prisma/client";
 import { useSession } from "next-auth/react";
@@ -77,6 +77,7 @@ const Jury: NextPage = () => {
   const [refetch, setRefetch] = useState<boolean>(false);
   const [enable, setEnable] = useState<boolean>(true);
   const [active, setActive] = useState<string>("");
+  const ref = useRef<HTMLButtonElement>(null);
 
     const totalScore = (character: Characters) => {
       if (scores[character] != null) {
@@ -186,11 +187,13 @@ const Jury: NextPage = () => {
     },[res.data])
 
     return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
-      <div className="container flex flex-col w-full items-center">
+      <div className="container flex flex-col w-full items-center h-full">
         <h1 className="text-extrabold mt-4 text-3xl pb-2 text-center">
           Results<br/>
-          Judge - {judgeName}<br/>
-          Team - {teamName}
+          {active==="result" ? ( 
+            `Judge - ${judgeName}
+             Team - ${teamName}`
+          ):(<></>)}
         </h1>
         <Tabs defaultValue="account" className="w-full">
           <TabsList className="bg-primary-100 p-2">

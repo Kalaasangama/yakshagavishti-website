@@ -119,7 +119,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             {path.pathname !== "/_error" && path.pathname !== "/dashboard/jury" && path.pathname !== "/dashboard/results" && <Navbar />}
             <Component {...pageProps} />
             <Toaster />
-            {path.pathname !== "/dashboard/jury" && <Footer/>}
+            {path.pathname !== "/dashboard/jury" && path.pathname !== "/dashboard/results" && <Footer/>}
           </main>
       </SessionProvider>
     </>

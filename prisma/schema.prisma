@@ -60,6 +60,7 @@ model User {
   sessions        Session[]
   Judge           Judge?
 
+  @@unique([characterId, teamId])
   @@index([collegeId])
   @@index([teamId])
   @@index([characterId])

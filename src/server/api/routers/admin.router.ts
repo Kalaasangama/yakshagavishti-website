@@ -1,3 +1,4 @@
+import { Characters } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -201,5 +202,53 @@ export const adminRouter = createTRPCRouter({
 						user: true
 					}
 				});
+			}),
+			getResults:protectedProcedure
+			.query(async({ctx})=>{
+				const Submitted = await ctx.prisma.submitted.findMany({
+					where: {
+						submitted: true
+					},
+				});
+				const teams = await ctx.prisma.team.findMany();
+				const judges = await ctx.prisma.judge.findMany();
+				// if(Submitted.length !== (teams.length * judges.length)){
+				// 	return "Not submitted"
+				// }
+				const individualScores = await ctx.prisma.individualScore.findMany({
+					include: {
+						characterPlayed: true,
+						criteria: true,
+						team: true
+					},
+					orderBy: [
+						{
+							characterId: "asc"
+						},
+						{
+							teamID: "asc"
+						},
+						{
+							criteriaId: "asc"
+						}
+					]
+				})
+				console.log(individualScores)
+				return individualScores;
+			}),
+			getName:protectedProcedure
+			.input(z.object({
+				teamId: z.string(),
+				character: z.nativeEnum(Characters)
+			}))
+			.query(async ({ctx,input})=>{
+				return await ctx.prisma.user.findUnique({
+					where:{
+						characterId_teamId:{
+							characterId:input.character,
+							teamId: input.teamId
+						}
+					}
+				})
 			})
 });
