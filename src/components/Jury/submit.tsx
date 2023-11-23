@@ -25,29 +25,30 @@ type TeamScoresState = {
 };
 
 const Submit = ({
-	scores,
-	teamId,
-	teamName,
-	criteriaDisplayList,
-	criteriaList,
-	characters,
-	setScored,
-	cScores,
-	criteriaTeamDisplayList,
-}: {
-	scores: ScoresState;
-	teamId: string;
-	teamName: string;
-	criteriaDisplayList: string[];
-	criteriaList: Criteria[];
-	characters: Characters[];
-	setScored: Dispatch<SetStateAction<boolean>>;
-	cScores: TeamScoresState;
-	criteriaTeamDisplayList: string[];
-}) => {
-	const scoreUpdate = api.jury.updateScores.useMutation();
-	const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
-	const [open, setOpen] = useState<boolean>(false);
+    scores,
+    teamId,
+    teamName,
+    criteriaDisplayList,
+    criteriaList,
+    characters,
+    setScored,
+    cScores,
+    criteriaTeamDisplayList
+ } : {
+    scores : ScoresState,
+    teamId : string,
+    teamName : string,
+    criteriaDisplayList : string[], 
+    criteriaList : Criteria[],
+    characters : Characters[],
+    setScored: Dispatch<SetStateAction<boolean>>,
+    cScores: TeamScoresState,
+    criteriaTeamDisplayList: string[]
+ }
+    ) => {
+    const scoreUpdate = api.jury.updateScores.useMutation();
+    const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
+    const [open, setOpen] = useState<boolean>(false)
 
 	const saveScores = () => {
 		characters.forEach((character) => {
@@ -71,25 +72,25 @@ const Submit = ({
 		setScored(true);
 	};
 
-	const totalScore = (character: string) => {
-		if (scores[character] != null) {
-			const keys = Object.keys(scores[character]);
-			let sum = 0;
-			keys.forEach((key) => {
-				sum += (scores[character] as ScoresState)[key];
-			});
-			return sum;
-		}
-		return 0;
-	};
-
-	const calculateFinalTotal = (): number => {
-		let sum = 0;
-		Object.keys(cScores).forEach((key) => {
-			sum += cScores[key];
-		});
-		return sum;
-	};
+    const totalScore = (character: Characters) => {
+        if (scores[character] != null) {
+          const keys = criteriaList;
+          let sum = 0;
+          keys.forEach((key) => {
+            sum += scores[character][key];
+          });
+          return sum;
+        }
+        return 0;
+      };
+    
+      const calculateFinalTotal = (): number => {
+        let sum=0;
+        Object.keys(cScores).forEach((key) => {
+          sum+=cScores[key]
+        });
+        return sum
+      };
 
 	const checkIfAllFieldsIsScored = () => {
 		let flag = 0;

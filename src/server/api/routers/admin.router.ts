@@ -1,6 +1,7 @@
+import { Characters } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedAdminProcedure, protectedProcedure } from "~/server/api/trpc";
 import kalasangamaError from "~/utils/customError";
 
 export const adminRouter = createTRPCRouter({
@@ -171,4 +172,132 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		}),
+		getScores: protectedAdminProcedure
+            .input((z.object({
+                teamId:z.string(),
+				judgeId:z.string()
+            })))
+            .query(async({ctx,input})=>{
+                const scores = await ctx.prisma.individualScore.findMany({
+                    where: {
+                        teamID: input.teamId,
+                        judgeId: input.judgeId
+                    },
+                    include: {
+                        criteria: true,
+                        characterPlayed: true,
+                        judge: {
+                            include: {
+                                teamScore: {
+                                    where: {
+                                        teamID: input.teamId,
+										judgeId: input.judgeId
+                                    },
+                                    include: {
+                                        criteria: true,
+                                    }
+                                },
+                                Submitted: {
+                                    where: {
+                                        teamID: input.teamId,
+										judgeId: input.judgeId
+                                    }
+                                }
+                            }
+                        },
+                        team: {
+                            include: {
+                                college: true
+                            }
+                        }
+                    }
+                })
+                return scores;
+            }),
+			getJudges:protectedAdminProcedure
+			.input(z.object({
+				teamId:z.string(),
+			})).
+			query(async({ctx})=>{
+				return await ctx.prisma.judge.findMany({
+					include: {
+						user: true
+					}
+				});
+			}),
+			getResults:protectedAdminProcedure
+			.query(async({ctx})=>{
+				const Submitted = await ctx.prisma.submitted.findMany({
+					where: {
+						submitted: true
+					},
+				});
+				const teams = await ctx.prisma.team.findMany();
+				const judges = await ctx.prisma.judge.findMany();
+				if(Submitted.length !== (teams.length * judges.length)){
+					return "Not submitted"
+				}
+				const individualScores = await ctx.prisma.individualScore.findMany({
+					include: {
+						characterPlayed: true,
+						criteria: true,
+						team: true
+					},
+					orderBy: [
+						{
+							characterId: "asc"
+						},
+						{
+							teamID: "asc"
+						},
+						{
+							criteriaId: "asc"
+						}
+					]
+				})
+				return individualScores;
+			}),
+			getName:protectedAdminProcedure
+			.input(z.object({
+				teamId: z.string(),
+				character: z.nativeEnum(Characters)
+			}))
+			.query(async ({ctx,input})=>{
+				return await ctx.prisma.user.findUnique({
+					where:{
+						characterId_teamId:{
+							characterId:input.character,
+							teamId: input.teamId
+						}
+					}
+				})
+			}),
+			getTeamScore:protectedAdminProcedure
+			.query(async({ctx})=>{
+				const Submitted = await ctx.prisma.submitted.findMany({
+					where: {
+						submitted: true
+					},
+				});
+				const teams = await ctx.prisma.team.findMany();
+				const judges = await ctx.prisma.judge.findMany();
+				if(Submitted.length !== (teams.length * judges.length)){
+					return "Not submitted"
+				}
+				const teamScores = await ctx.prisma.teamScore.findMany({
+					include: {
+						criteria: true,
+						team: true
+					},
+					orderBy: [
+						{
+							teamID: "asc"
+						},
+						{
+							criteriaId: "asc"
+						}
+					]
+				})
+				return teamScores;
+			}),
 });

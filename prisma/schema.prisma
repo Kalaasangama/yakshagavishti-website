@@ -60,6 +60,7 @@ model User {
   sessions        Session[]
   Judge           Judge?
 
+  @@unique([characterId, teamId])
   @@index([collegeId])
   @@index([teamId])
   @@index([characterId])
@@ -103,8 +104,18 @@ model Team {
   editRequests    EditRequests?
   IndividualScore individualScore[]
   Submitted       Submitted[]
+  TeamNumber      TeamNumber?
 
   @@index([college_id])
+}
+
+model TeamNumber {
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  teamId String
+  number Int
+
+  @@unique([teamId])
+  @@index([teamId])
 }
 
 model CharacterOnUser {
