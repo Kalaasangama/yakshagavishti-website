@@ -267,7 +267,7 @@ const Jury: NextPage = () => {
                 {!isLoading ? (
                   data?.map((team ,i) => (
                     <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.TeamNumber.number.toString())}>
-                      team {team.TeamNumber.number}
+                      team {team?.TeamNumber?.number}
                     </DropdownMenuItem>
                   ))
                 ) : (
