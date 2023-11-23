@@ -30,7 +30,6 @@ export const TeamRouter = createTRPCRouter({
 		.mutation(async ({ ctx, input }) => {
 			try {
 				//Create or return team
-				console.log(input);
 				const college = await getCollegeById(input.college_id);
 				//Set team leader
 				if (college.Team.isComplete)
@@ -38,6 +37,7 @@ export const TeamRouter = createTRPCRouter({
 						"Create Team Error",
 						"Team is already complete"
 					);
+				
 				if (input.members.length === 0) {
 					await setLeader(
 						ctx.session.user.id,
@@ -76,7 +76,7 @@ export const TeamRouter = createTRPCRouter({
 								idURL: user?.idURL,
 								team: {
 									connect: {
-										name: college.Team.name,
+										id: college.Team.id,
 									},
 								},
 								college: {
@@ -93,7 +93,7 @@ export const TeamRouter = createTRPCRouter({
 						(member) =>
 							member.characterId === ctx.session.user.characterId
 					);
-					if (leaderChar.name === ctx.session.user.name)
+					if (leaderChar?.name === ctx.session?.user?.name)
 						await ctx.prisma.user.update({
 							where: { id: ctx.session.user.id },
 							data: {
