@@ -23,7 +23,7 @@ type Members = {
 	characterId: string;
 	idURL: string;
 };
-export default function ViewBeforeSubmit({data}:{data:Members[]}) {
+export default function ViewBeforeSubmit({data, roles}:{data:Members[], roles:{value:string, label:string}[]}) {
 	return (
 			<Dialog>
 				<DialogTrigger asChild>
@@ -44,6 +44,9 @@ export default function ViewBeforeSubmit({data}:{data:Members[]}) {
 								<TableHead className="w-[100px]">
 									Name
 								</TableHead>
+								<TableHead className="w-[100px]">
+									Character
+								</TableHead>
 								<TableHead>ID</TableHead>
 							</TableRow>
 						</TableHeader>
@@ -52,6 +55,9 @@ export default function ViewBeforeSubmit({data}:{data:Members[]}) {
 								<TableRow key={key}>
 									<TableCell className="font-semibold text-sm">
 										{member.name}
+									</TableCell>
+									<TableCell className="font-semibold text-sm">
+										{(roles.find( role => role.value === member.characterId)).label}
 									</TableCell>
 									<TableCell>
 									<a href={member.idURL} target="_blank">

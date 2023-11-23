@@ -9,6 +9,7 @@ import { z } from "zod";
 import { prisma } from "~/server/db";
 import GoogleProvider from "next-auth/providers/google";
 import { env } from "~/env.mjs";
+import { Role, type editStatus } from "@prisma/client";
 
 declare module "next-auth" {
 	interface Session {
@@ -25,7 +26,9 @@ declare module "next-auth" {
 			leaderOf: string | undefined;
 			idURL: string;
 			contact: string;
+			teamEditStatus: editStatus;
 			characterId: string;
+			role: Role;
 		} & DefaultSession["user"];
 	}
 }
@@ -50,10 +53,12 @@ export const authOptions: NextAuthOptions = {
 								id: true,
 								name: true,
 								isComplete: true,
+								editRequests: { select: { status: true } },
 							},
 						},
-						characterPlayed:{
-							select:{id:true}
+						role: true,
+						characterPlayed: {
+							select: { id: true },
 						},
 						leaderOf: { select: { id: true } },
 						idURL: true,
@@ -63,8 +68,10 @@ export const authOptions: NextAuthOptions = {
 				session.user.team = data?.team;
 				session.user.leaderOf = data?.leaderOf?.id;
 				session.user.id = z.string().parse(user.id);
+				session.user.role = data?.role;
 				session.user.idURL = data.idURL;
 				session.user.contact = data.contact;
+				session.user.teamEditStatus = data?.team?.editRequests?.status;
 				session.user.characterId = data?.characterPlayed?.id;
 			}
 			return session;

@@ -28,8 +28,7 @@ import { Input } from "src/components/ui/input";
 import { Label } from "src/components/ui/label";
 import { toast } from "../ui/use-toast";
 import { api } from "~/utils/api";
-import { getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 export default function CollegeReg({
 	setFormToShow,
 	setCollege,
@@ -39,6 +38,7 @@ export default function CollegeReg({
 }) {
 	const [selectedCollege, setSelectedCollege] = useState<string>("");
 	const [teamPassword, setTeamPassword] = useState("");
+	const user = useSession()?.data?.user;
 	const verifyPassword = api.team.checkPassword.useMutation({
 		onError(error) {
 			return toast({
@@ -47,15 +47,16 @@ export default function CollegeReg({
 				description: error.message,
 			});
 		},
-		async onSuccess(data) {
-			const user = await getSession();
-			if (user.user.leaderOf) {
-				setFormToShow(3);
+		onSuccess(data) {
+			setCollege(selectedCollege);
+			if (user.teamEditStatus === "GRANTED") {
+				return setFormToShow(4);
 			}
-			else{
+			if (user.leaderOf) {
+				setFormToShow(3);
+			} else {
 				setFormToShow(2);
 			}
-			setCollege(selectedCollege);
 			return toast({
 				variant: "default",
 				title: "College signed in successfully!",
@@ -88,7 +89,9 @@ export default function CollegeReg({
 		<div className="">
 			<Dialog>
 				<DialogTrigger asChild>
-					<Button className="">Create Team</Button>
+					<Button className="">
+						{user.leaderOf ? "Edit Team" : "Create Team"}
+					</Button>
 				</DialogTrigger>
 				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
 					<DialogHeader>
@@ -183,19 +186,20 @@ export default function CollegeReg({
 									>
 										Loading...
 									</Button>
-								) :
-								(<Button
-									type="submit"
-									size="sm"
-									className="bg-white text-white hover:bg-gray-200"
-									variant={"button"}
-									onClick={(e) => {
-										e.preventDefault();
-										Passwordpattern();
-									}}
-								>
-									Next
-								</Button>)}
+								) : (
+									<Button
+										type="submit"
+										size="sm"
+										className="bg-white text-white hover:bg-gray-200"
+										variant={"button"}
+										onClick={(e) => {
+											e.preventDefault();
+											Passwordpattern();
+										}}
+									>
+										Next
+									</Button>
+								)}
 							</form>
 						</Form>
 					</div>

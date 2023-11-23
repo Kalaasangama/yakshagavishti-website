@@ -17,6 +17,7 @@ export const TeamRouter = createTRPCRouter({
 				leader_character: z.string().nullish(),
 				leader_idUrl: z.string().nullish(),
 				leader_contact: z.string().nullish(),
+				leader_name: z.string().nullish(),
 				members: z.array(
 					z.object({
 						name: z.string(),
@@ -29,7 +30,6 @@ export const TeamRouter = createTRPCRouter({
 		.mutation(async ({ ctx, input }) => {
 			try {
 				//Create or return team
-				console.log(input);
 				const college = await getCollegeById(input.college_id);
 				//Set team leader
 				if (college.Team.isComplete)
@@ -37,6 +37,7 @@ export const TeamRouter = createTRPCRouter({
 						"Create Team Error",
 						"Team is already complete"
 					);
+				
 				if (input.members.length === 0) {
 					await setLeader(
 						ctx.session.user.id,
@@ -44,7 +45,8 @@ export const TeamRouter = createTRPCRouter({
 						college.id,
 						input.leader_character,
 						input.leader_idUrl,
-						input.leader_contact
+						input.leader_contact,
+						input.leader_name
 					);
 					return { message: "Leader Details Updated" };
 				}
@@ -54,19 +56,13 @@ export const TeamRouter = createTRPCRouter({
 					await ctx.prisma.user.deleteMany({
 						where: {
 							id: {
-								in: college.Team.members.map((member) => member.id).filter((id) => id !== ctx.session.user.id),
+								in: college.Team.members
+									.map((member) => member.id)
+									.filter((id) => id !== ctx.session.user.id),
 							},
 						},
 					});
 				}
-				// const data = await ctx.prisma.user.createMany({
-				// 	data: input.members.map((user) => {
-				// 		return {
-				// 			name: user.name,
-				// 			idURL: user.idURL,
-				// 		};
-				// 	})
-				// })
 				await Promise.all(
 					input.members.map((user) =>
 						ctx.prisma.user.create({
@@ -80,7 +76,7 @@ export const TeamRouter = createTRPCRouter({
 								idURL: user?.idURL,
 								team: {
 									connect: {
-										name: college.Team.name,
+										id: college.Team.id,
 									},
 								},
 								college: {
@@ -92,26 +88,21 @@ export const TeamRouter = createTRPCRouter({
 						})
 					)
 				);
-
-				// await ctx.prisma.user.updateMany({
-				// 	where: { id:{
-				// 		in: data.map((user) => user.id)
-				// 	} },
-				// 	data: {
-				// 		teamId: college.Team.id,
-				// 		collegeId: college.id,
-				// 	},
-				// });
-				// await ctx.prisma.user.createMany({
-				// 	data: input.members.map((user) => {
-				// 		return {
-				// 			name: user.name,
-				// 			idURL: user.idURL,
-				// 			collegeId: college.id,
-				// 			teamId: college.Team.id,
-				// 		};
-				// 	})
-				// })
+				if (ctx.session.user.characterId) {
+					const leaderChar = input.members.find(
+						(member) =>
+							member.characterId === ctx.session.user.characterId
+					);
+					if (leaderChar?.name === ctx.session?.user?.name)
+						await ctx.prisma.user.update({
+							where: { id: ctx.session.user.id },
+							data: {
+								characterPlayed: {
+									disconnect: {},
+								},
+							},
+						});
+				}
 
 				//Set team complete status to true to prevent edits
 				await setTeamCompleteStatus(college.Team.id, true);
@@ -144,8 +135,7 @@ export const TeamRouter = createTRPCRouter({
 					console.log(input.password, college.password);
 					if (input.password === college.password) {
 						return {
-							message:
-								"Let's Proceed",
+							message: "Let's Proceed",
 						};
 					} else {
 						throw new kalasangamaError(
@@ -173,7 +163,10 @@ export const TeamRouter = createTRPCRouter({
 					where: { id: ctx.session.user.id },
 					include: {
 						team: {
-							include: { members: true, editRequests: true },
+							include: {
+								members: { include: { characterPlayed: true } },
+								editRequests: true,
+							},
 						},
 					},
 				});
@@ -206,7 +199,9 @@ export const TeamRouter = createTRPCRouter({
 								members: {
 									select: {
 										name: true,
-										characterId: true,
+										characterPlayed: {
+											select: { id: true },
+										},
 										idURL: true,
 									},
 								},

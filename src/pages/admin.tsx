@@ -58,7 +58,7 @@ export default function Admin() {
 			
 			const leader = (element?.leader.name || "").replaceAll(","," ");
 			const leaderContact = (element?.leader?.contact + "\n" || "").replaceAll(","," ");
-			const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character + "\n").join(",") || "")
+			const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character ? member?.characterPlayed?.character:"" + "\n").join(",") || "")
 			const row = [college,leader,leaderContact,members].join(",")
 			console.log(row);
 			return row;
@@ -119,6 +119,7 @@ export default function Admin() {
 								<TableHeader>
 									<TableRow>
 										<TableHead>Name</TableHead>
+										<TableHead>Character</TableHead>
 										<TableHead>ID</TableHead>
 										<TableHead className="text-right">
 											Status
@@ -131,6 +132,9 @@ export default function Admin() {
 											<TableRow key={index}>
 												<TableCell className="font-medium">
 													{member.name}
+												</TableCell>
+												<TableCell className="font-medium">
+													{member?.characterPlayed?.character}
 												</TableCell>
 												<TableCell>
 													{member.idURL && (

@@ -42,7 +42,8 @@ const setLeader = async (
 	college_id: string,
 	character_id: string | null,
 	leaderIdUrl: string | null,
-	leader_contact: string
+	leader_contact: string,
+	leader_name: string
 ) => {
 	if (character_id)
 		await prisma.user.update({
