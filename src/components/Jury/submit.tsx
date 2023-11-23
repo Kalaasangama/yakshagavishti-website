@@ -38,12 +38,12 @@ const Submit = ({
     scores : ScoresState,
     teamId : string,
     teamName : string,
-    criteriaDisplayList : String[], 
+    criteriaDisplayList : string[], 
     criteriaList : Criteria[],
     characters : Characters[],
     setScored: Dispatch<SetStateAction<boolean>>,
     cScores: TeamScoresState,
-    criteriaTeamDisplayList: String[]
+    criteriaTeamDisplayList: string[]
  }
     ) => {
     const scoreUpdate = api.jury.updateScores.useMutation();
@@ -72,9 +72,9 @@ const Submit = ({
         setScored(true);
       };
 
-    const totalScore = (character: string) => {
+    const totalScore = (character: Characters) => {
         if (scores[character] != null) {
-          const keys = Object.keys(scores[character]);
+          const keys = criteriaList;
           let sum = 0;
           keys.forEach((key) => {
             sum += scores[character][key];

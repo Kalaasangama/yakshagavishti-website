@@ -78,9 +78,9 @@ const Jury: NextPage = () => {
   const [enable, setEnable] = useState<boolean>(true);
   const [active, setActive] = useState<string>("");
 
-    const totalScore = (character: string) => {
+    const totalScore = (character: Characters) => {
       if (scores[character] != null) {
-        const keys = Object.keys(scores[character]);
+        const keys = criteriaList;
         let sum = 0;
         keys.forEach((key) => {
           if(scores[character][key]!==999)
@@ -151,7 +151,7 @@ const Jury: NextPage = () => {
 
     useEffect(() => {
       if(refetch)
-        res.refetch()
+        res.refetch().catch((err) => console.log(err))
       setRefetch(false);
     },[teamId,judgeId])
 

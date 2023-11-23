@@ -16,9 +16,6 @@ const Remarks = (team: { teamId: string, isLoading: boolean, isLoadingCriteria:b
             teamId: team.teamId,
             remark: remark
         },{
-            onSuccess: () => {
-                
-            },
             onError: (error) => {
                 console.error(error);
                 alert("Error adding remark");
