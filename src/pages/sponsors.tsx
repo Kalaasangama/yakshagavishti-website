@@ -3,6 +3,27 @@ import EventsCard from "~/components/Sponsors/EventsCard";
 
 const SponsorDetails = [
   {
+    name: "Adarsh Sudhakar Hegde",
+    subtitle: "Official Title Partners",
+    description: `Mr. Adarsh Sudhakar Hegde, is a philanthropist and an admirer of the Yakshagaana who wo started his career as Assistant Maintenance Engineer in 1987. Presently he is the Joint Managing Director and Executive Director of Allcargo Logistics Limited. He is also a partner at SKS Netgate LLP and part of the board of directors in 25 other companies. He is the current President of Container Freight Association of India.`,
+    image: "/1.png",
+    url: "",
+  },
+  {
+    name: "Agari Enterprises",
+    subtitle: "Official Executive Partners",
+    description: `Agari Enterprises is a leading retail brand that has been serving the community since 1992. Specializing in electronics and furniture, our stores offer a wide range of high-quality products at competitive prices. Whether you're looking for the latest gadgets or stylish home furnishings, we have everything you need to make your life more comfortable and convenient. At Agari Enterprises, we pride ourselves on providing exceptional customer service and expert advice. Our knowledgeable staff are always on hand to help you find the perfect product to suit your needs and budget. Plus, with our convenient online store, you can browse and shop from the comfort of your own home.`,
+    image: "/1.png",
+    url: "https://agarienterprises.com/",
+  },
+  {
+    name: "Muliya Jewels",
+    subtitle: "Official Executive Partners",
+    description: `Muliya Jewels was established in 1944, by Mr. Keshava Bhatta, at Court Road Puttur, which is 54 Kilometers away from Mangalore. We have more than 75 years of expertise and trust in the field of jewllery. We are happy to realize your desire to have dream jewels from array of overwhelming collection at Muliya.`,
+    image: "/1.png",
+    url: "https://muliya.in/",
+  },
+  {
     name: "Ventana Foundation",
     subtitle: "Official Associate Partners",
     description: `Ventana Foundation, founded in 2022 by Rohith Bhat, is a non-profit dedicated to Udupi's well-being. Focused on environmental conservation, cultural revival, education, and community service, we safeguard our roots. By empowering local artists, preserving monuments, and supporting schools, we ensure a sustainable future for our cherished town and its residents.`,
@@ -52,7 +73,7 @@ const Sponsor = () => {
                   delay={i * 1000}
                   key={i}
                   rev={i % 2 === 0 ? false : true}
-                  ImageSrc={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/${sponorDetail.name.replaceAll(' ', '_')}.png`}
+                  ImageSrc={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890929/yakshagavishti/assets/sponsors/${sponorDetail.name.replaceAll(' ', '_')}.png`}
                   SponsorTitle={sponorDetail.name}
                   SponsorDesc={sponorDetail.description}
                   SponsorWebsiteLink={sponorDetail.url}
