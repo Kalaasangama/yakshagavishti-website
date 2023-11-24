@@ -220,7 +220,7 @@ const Jury: NextPage = () => {
     return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
       <div className="container flex flex-col w-full items-center min-h-[130vh] max-h-auto">
         <h1 className="text-extrabold mt-4 text-3xl pb-2 flex flex-row w-full">
-          <div className="text-left flex text-4xl justify-start basis-1/2">Results</div><br/>
+          <div className="text-left flex text-4xl justify-start basis-1/2 mb-[100vh]">Results</div><br/>
           <div className="text-right text-2xl flex justify-end basis-1/2">
             {active==="result" ? ( 
               <div>
@@ -359,7 +359,7 @@ const Jury: NextPage = () => {
     ) : (
       <div className="container py-40">
           <div className="w-full h-full">
-              <div className="flex text-2xl justify-center text-center ">{(isLoading || judge.isLoading) ?"Loading...":"No teams to judge at the moment...."}</div>
+              <div className="flex text-2xl justify-center text-center mb-[100vh] ">{(isLoading || judge.isLoading) ?"Loading...":"No teams scored at the moment...."}</div>
           </div>
       </div>
     );

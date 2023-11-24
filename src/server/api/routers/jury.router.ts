@@ -2,8 +2,59 @@ import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedJudgeProcedure, protectedProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import kalasangamaError from "~/utils/customError";
-import { get } from "http";
 import { Characters, Criteria } from "@prisma/client";
+
+const schema = z.object({
+    "SHANTHANU": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+    "MANTRI_SUNEETHI": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+    "TAMAALAKETHU": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+    "TAAMRAAKSHA": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+    "SATHYAVATHI": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+    "DAASHARAJA": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+    "DEVAVRATHA": z.object({
+      CRITERIA_1: z.number(),
+      CRITERIA_2: z.number(),
+      CRITERIA_3: z.number(),
+      CRITERIA_4: z.number(),
+    }),
+  });
+
+  const totalSchema = z.object({
+    CRITERIA_1: z.number(),
+    CRITERIA_2: z.number(),
+    CRITERIA_3: z.number(),
+    CRITERIA_4: z.number()
+  })
 
 export const JuryRouter= createTRPCRouter({
             getTeams: protectedJudgeProcedure
@@ -266,6 +317,85 @@ export const JuryRouter= createTRPCRouter({
                     },
                     select: {
                         remark: true
+                    }
+                })
+            }),
+            scoresUpdate:protectedJudgeProcedure
+            .input(z.object({
+                scores: schema,
+                characters: z.array(z.nativeEnum(Characters)), 
+                criteria: z.array(z.nativeEnum(Criteria)),
+                teamId: z.string() 
+            }))
+            .mutation(({ctx,input}) => {
+                input.characters.map((character) => {
+                    input.criteria.map(async(criteria) => {
+                        const characterinfo = await ctx.prisma.characterOnUser.findUnique({
+                            where: {
+                                character: character
+                            },
+                        });
+                        const criteriainfo = await ctx.prisma.criteria.findUnique({
+                            where: {
+                                name: criteria
+                            }
+                        });
+                        await ctx.prisma.individualScore.update({
+                            where:{
+                                teamID_criteriaId_characterId_judgeId:{
+                                    teamID: input.teamId,
+                                    characterId: characterinfo.id,
+                                    judgeId: ctx.session.user.id,
+                                    criteriaId: criteriainfo.id
+                                }
+                            },
+                            data:{
+                                score: input.scores[character][criteria]
+                            }
+                        });
+                    });
+                });
+            }),
+            totalScoreUpdate: protectedJudgeProcedure
+            .input(z.object({
+                scores: totalSchema, 
+                teamId: z.string(),
+                criteria: z.array(z.nativeEnum(Criteria)),
+            }))
+            .mutation(async({ctx,input}) => {
+                input.criteria.map(async (criteria) => {
+                    const criteriainfo =  await ctx.prisma.criteria.findUnique({
+                        where: {
+                            name: criteria
+                        }
+                    });
+                    const res = await ctx.prisma.teamScore.update({
+                        where: {
+                            teamID_judgeId_criteriaId: {
+                                teamID: input.teamId,
+                                criteriaId: criteriainfo.id,
+                                judgeId: ctx.session.user.id
+                            }
+                        },
+                        data: {
+                            score: input.scores[criteria]
+                        }
+                    })
+                });
+                await ctx.prisma.submitted.upsert({
+                    where: {
+                        judgeId_teamID: {
+                            teamID: input.teamId,
+                            judgeId: ctx.session.user.id
+                        }
+                    },
+                    create: {
+                        teamID: input.teamId,
+                        judgeId: ctx.session.user.id,
+                        submitted: true
+                    },
+                    update: {
+                        submitted: true
                     }
                 })
             })

@@ -55,6 +55,7 @@ const Jury: NextPage = () => {
 	const [teamName, setTeamName] = useState<string>("Select a college");
 	const [teamId, setTeamId] = useState<string>("");
 	const [scored, setScored] = useState<boolean>(false);
+	const [updating, setUpdating] = useState<boolean>(false);
 	const [settingCriteria, setSettingCriteria] =
 		useState<Criteria>("CRITERIA_1");
 	const [settingCharacter, setSettingCharacter] =
@@ -74,7 +75,6 @@ const Jury: NextPage = () => {
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
   const { data, isLoading } = api.jury.getTeams.useQuery();
-  const ctx = api.useContext();
   const user = useSession();
 
 	// Initialize scores with all values set to 0
@@ -226,6 +226,7 @@ const Jury: NextPage = () => {
         if(res.data[0].judge.Submitted[0]?.submitted)
           return setScored(true);
         console.log("updating")
+          setUpdating(true);
           res.data.forEach((item) => {
             const character = item.characterPlayed.character;
             const criteria = item.criteria.name;
@@ -246,12 +247,16 @@ const Jury: NextPage = () => {
             }))
           })
           setReady(true);
+          setUpdating(false);
       }
       if(res.data?.length === 0 && teamId !== '')
         setReady(true);
     },[res.data])
 
-    return user.data?.user && !isLoading && data!==undefined && data.length>0 ? (
+    if(isLoading)<div className="text-2xl text-center mt-20 mb-[100vh]">Loading....</div>
+    if(scored)<div className="text-2xl text-center mt-20 mb-[100vh]">Thank you for Judging... you can select any other team</div>
+
+    return user.data?.user && !isLoading && data!==undefined && data.length>0 && !updating ? (
       <div className="container flex flex-col w-full">
         <h1 className="text-extrabold mt-10 text-4xl pb-2">
           Judge Dashboard - Team {teamName}
@@ -371,19 +376,19 @@ const Jury: NextPage = () => {
             </div>
             )
             :
-            !ready && teamName ==="Select a college" && !scored ? (
+            !ready && teamName ==="Select a college" && !scored && !updating ? (
               <><div className="text-2xl flex justify-center text-center p-4 m-4 h-full mb-96">Please select a college....</div></>
             )
           :
         (
-        <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-24">Loading Scores....</div></>
+        <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-[100vw]">Loading Scores....</div></>
       )
     }
       </div>
     ) : (
       <div className="container py-40">
           <div className="w-full h-full">
-              <div className="flex text-2xl justify-center text-center ">{isLoading ?"Loading...":"No teams to judge at the moment...."}</div>
+              <div className="flex text-2xl justify-center text-center mb-[100vh]">{isLoading ?"Loading...":"No teams to judge at the moment...."}</div>
           </div>
       </div>
     );
