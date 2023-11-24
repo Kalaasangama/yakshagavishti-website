@@ -48,20 +48,40 @@ const Submit = ({
     ) => {
 	const scoresUpdate = api.jury.scoresUpdate.useMutation();
 	const totalScoreUpdate = api.jury.totalScoreUpdate.useMutation();
+	const scoreUpdate = api.jury.updateScores.useMutation();
+    const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
     const [open, setOpen] = useState<boolean>(false)
 
 	const saveScores = () => {
-		scoresUpdate.mutate({
-			scores: scores,
-			characters: characters,
-			criteria: criteriaList,
-			teamId: teamId
+		characters.forEach((character) => {
+			criteriaList.forEach((criteria) => {
+				scoreUpdate.mutate({
+					teamId: teamId,
+					criteriaName: criteria,
+					characterId: character,
+					score: scores[character][criteria],
+				});
+			});
 		});
-		totalScoreUpdate.mutate({
-			scores: cScores,
-			teamId: teamId,
-			criteria: criteriaList
-		})
+		criteriaList.forEach((criteria) => {
+			criteriaTotal.mutate({
+				criteriaName: criteria,
+				score: cScores[criteria],
+				teamId: teamId,
+				final: true,
+			});
+		});
+		// scoresUpdate.mutate({
+		// 	scores: scores,
+		// 	characters: characters,
+		// 	criteria: criteriaList,
+		// 	teamId: teamId
+		// });
+		// totalScoreUpdate.mutate({
+		// 	scores: cScores,
+		// 	teamId: teamId,
+		// 	criteria: criteriaList
+		// })
 		setScored(true);
 	};
 

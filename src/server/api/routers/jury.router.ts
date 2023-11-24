@@ -190,12 +190,6 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update
                     }
                 });
-                //check if team exists
-                const team = await ctx.prisma.team.findUnique({
-                    where: {
-                        id: input.teamId 
-                    }
-                });
                 //check if chacter exists if not add it
                 const character = await ctx.prisma.characterOnUser.upsert({
                     where: {
