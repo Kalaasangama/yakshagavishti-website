@@ -263,11 +263,10 @@ const Jury: NextPage = () => {
     if (res.data?.length === 0 && teamId !== "") setReady(true);
   }, [res.data]);
 
-  if (isLoading)
-    <div className="mb-[100vh] mt-20 text-center text-2xl">Loading....</div>;
-  if (scored)
-    <div className="mb-[100vh] mt-20 text-center text-2xl">
-      Thank you for Judging... you can select any other team
+  const { data: sessionData } = useSession();
+  if(sessionData?.user.role !== "JUDGE")
+    return <div className="mb-[100vh] mt-20 text-center text-2xl">
+      Your not authorized to view this page
     </div>;
 
   return user.data?.user &&

@@ -213,6 +213,13 @@ const Jury: NextPage = () => {
       document.body.removeChild(link);
     }
 
+    const { data: sessionData } = useSession();
+
+    if(sessionData?.user.role !== "ADMIN")
+    return  <div className="mb-[100vh] mt-20 text-center text-2xl">
+              Your not authorized to view this page
+            </div>;
+
     return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
       <div className="container flex flex-col w-full items-center min-h-[130vh] max-h-auto">
         <h1 className="text-extrabold mt-4 text-3xl pb-2 flex flex-row w-full">
