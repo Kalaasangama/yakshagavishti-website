@@ -44,7 +44,7 @@ const Jury: NextPage = () => {
   const [teamId, setTeamId] = useState<string>("");
   const [judgeName, setJudgeName] = useState<string>("Select a judge");
   const [judgeId, setJudgeId] = useState<string>("");
-  const [scored,setScored] = useState<boolean>(false);
+  const [scored,setScored] = useState<boolean>(true);
   const { data, isLoading } = api.admin.getTeams.useQuery();
 
   const characters : Characters[] = [
@@ -65,12 +65,12 @@ const Jury: NextPage = () => {
     initialScores[character] = {} as ScoresState[Characters];
 
     criteriaList.forEach((criteria) => {
-      initialScores[character][criteria] = 999;
+      initialScores[character][criteria] = 0;
     });
   });
 
   criteriaList.forEach((criteria) => {
-    criteriaScores[criteria] = 999;
+    criteriaScores[criteria] = 0;
   });
 
   const [scores, setScores] = useState<ScoresState>(initialScores);
@@ -131,7 +131,6 @@ const Jury: NextPage = () => {
     const setTeam = (newTeamId:string ,teamName:string) => {
       if(newTeamId === teamId)
         return;
-      setScored(false)
       setScores(initialScores)
       setCScores(criteriaScores)
       setRefetch(true);
@@ -143,7 +142,6 @@ const Jury: NextPage = () => {
     const setJudge = (newJudgeId:string ,judgeName:string) => {
         if(newJudgeId === judgeId)
           return;
-        setScored(false)
         setScores(initialScores)
         setCScores(criteriaScores)
         setRefetch(true);
@@ -160,8 +158,6 @@ const Jury: NextPage = () => {
 
     useEffect(() => {
       if(res.data?.length>0){
-        if(res.data[0].judge.Submitted[0]?.submitted)
-          setScored(true);
         console.log("updating")
           res.data.forEach((item) => {
             const character = item.characterPlayed.character;
@@ -220,7 +216,7 @@ const Jury: NextPage = () => {
     return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
       <div className="container flex flex-col w-full items-center min-h-[130vh] max-h-auto">
         <h1 className="text-extrabold mt-4 text-3xl pb-2 flex flex-row w-full">
-          <div className="text-left flex text-4xl justify-start basis-1/2 mb-[100vh]">Results</div><br/>
+          <div className="text-left flex text-4xl justify-start basis-1/2">Results</div><br/>
           <div className="text-right text-2xl flex justify-end basis-1/2">
             {active==="result" ? ( 
               <div>
@@ -331,7 +327,7 @@ const Jury: NextPage = () => {
                 </div>
               </div>
               ):
-              !ready && teamName ==="Select a college" && judgeName==="Select a judge" && !scored  ? (
+              !ready && teamName ==="Select a college" && judgeName==="Select a judge"  ? (
                     <div className="container py-40">
                       <div className="w-full h-full">
                           <div className="flex text-2xl justify-center text-center mb-[100vw]">Please select a college or judge....</div>
