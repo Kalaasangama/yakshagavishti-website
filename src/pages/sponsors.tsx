@@ -10,32 +10,11 @@ const SponsorDetails = [
     url: "",
   },
   {
-    name: "Agari Enterprises",
-    subtitle: "Official Executive Partners",
-    description: `Agari Enterprises is a leading retail brand that has been serving the community since 1992. Specializing in electronics and furniture, our stores offer a wide range of high-quality products at competitive prices. Whether you're looking for the latest gadgets or stylish home furnishings, we have everything you need to make your life more comfortable and convenient. At Agari Enterprises, we pride ourselves on providing exceptional customer service and expert advice. Our knowledgeable staff are always on hand to help you find the perfect product to suit your needs and budget. Plus, with our convenient online store, you can browse and shop from the comfort of your own home.`,
-    image: "/1.png",
-    url: "https://agarienterprises.com/",
-  },
-  {
-    name: "Muliya Jewels",
-    subtitle: "Official Executive Partners",
-    description: `Muliya Jewels was established in 1944, by Mr. Keshava Bhatta, at Court Road Puttur, which is 54 Kilometers away from Mangalore. We have more than 75 years of expertise and trust in the field of jewllery. We are happy to realize your desire to have dream jewels from array of overwhelming collection at Muliya.`,
-    image: "/1.png",
-    url: "https://muliya.in/",
-  },
-  {
     name: "Ventana Foundation",
     subtitle: "Official Associate Partners",
     description: `Ventana Foundation, founded in 2022 by Rohith Bhat, is a non-profit dedicated to Udupi's well-being. Focused on environmental conservation, cultural revival, education, and community service, we safeguard our roots. By empowering local artists, preserving monuments, and supporting schools, we ensure a sustainable future for our cherished town and its residents.`,
     image: "/1.png",
     url: "https://ventanafoundation.org/eng",
-  },
-  {
-    name: "Quadx Drones",
-    subtitle: "Official Executive Partners",
-    description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
-    image: "",
-    url: "https://www.quadxdrones.com/",
   },
   {
     name: "AJ Institute of Management",
@@ -50,6 +29,27 @@ const SponsorDetails = [
     description: `Established in 1991 and registered in 2013, the WENAMITAA, NMAMIT Alumni Association signifies the enduring bond between alumni and their alma mater. With vibrant chapters like Me-NMAMIT and Be-NMAMIT, the association fosters connections through annual gatherings. Highlight events, including the annual Alumni Meet and biennial Global Meet, provide opportunities for alumni to relive academic memories and celebrate achievements globally. The association, beyond celebrations, sponsors academic excellence and funds student projects, exemplified by the recent inauguration of a conference hall in the Atal Block. Actively involving alumni in academic endeavors, NMAMIT seeks their input for curriculum development and invites them as esteemed judges during fests, underscoring a commitment to excellence.`,
     image: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/WENAMITAA.png",
     url: "https://alumni.nitte.edu.in/page/wenamitaa-607",
+  },
+  {
+    name: "Quadx Drones",
+    subtitle: "Official Executive Partners",
+    description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
+    image: "",
+    url: "https://www.quadxdrones.com/",
+  },
+  {
+    name: "Agari Enterprises",
+    subtitle: "Official Executive Partners",
+    description: `Agari Enterprises is a leading retail brand that has been serving the community since 1992. Specializing in electronics and furniture, our stores offer a wide range of high-quality products at competitive prices. Whether you're looking for the latest gadgets or stylish home furnishings, we have everything you need to make your life more comfortable and convenient. At Agari Enterprises, we pride ourselves on providing exceptional customer service and expert advice. Our knowledgeable staff are always on hand to help you find the perfect product to suit your needs and budget. Plus, with our convenient online store, you can browse and shop from the comfort of your own home.`,
+    image: "/1.png",
+    url: "https://agarienterprises.com/",
+  },
+  {
+    name: "Muliya Jewels",
+    subtitle: "Official Executive Partners",
+    description: `Muliya Jewels was established in 1944, by Mr. Keshava Bhatta, at Court Road Puttur, which is 54 Kilometers away from Mangalore. We have more than 75 years of expertise and trust in the field of jewllery. We are happy to realize your desire to have dream jewels from array of overwhelming collection at Muliya.`,
+    image: "/1.png",
+    url: "https://muliya.in/",
   },
 ];
 
