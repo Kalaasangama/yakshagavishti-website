@@ -34,7 +34,7 @@ const SponsorDetails = [
     name: "Quadx Drones",
     subtitle: "Official Executive Partners",
     description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
-    image: "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/Quadx Drones.png",
+    image: "",
     url: "https://www.quadxdrones.com/",
   },
   {
