@@ -374,6 +374,7 @@ const Jury: NextPage = () => {
                   setScored = {setScored}
                   cScores = {cScores}
                   criteriaTeamDisplayList = {criteriaTeamDisplayList}
+                  charactersDisplay = {charactersDisplay}
                 />
               </TableBody>
             </Table>
