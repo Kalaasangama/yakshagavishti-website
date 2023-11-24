@@ -300,4 +300,14 @@ export const adminRouter = createTRPCRouter({
 				})
 				return teamScores;
 			}),
+			getTeams: protectedAdminProcedure
+			.query(async({ctx})=>{
+				const teams = await ctx.prisma.team.findMany({
+                    include:{
+                        teamScore: true,
+                        TeamNumber: true
+                    }
+                });
+                return teams;
+			})
 });

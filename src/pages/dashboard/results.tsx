@@ -21,6 +21,7 @@ import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
 import Score from "~/components/Jury/score";
 import TeamScore from "~/components/Jury/teamScore";
+import { Button } from "~/components/ui/button";
 
 const Jury: NextPage = () => {
 
@@ -44,7 +45,7 @@ const Jury: NextPage = () => {
   const [judgeName, setJudgeName] = useState<string>("Select a judge");
   const [judgeId, setJudgeId] = useState<string>("");
   const [scored,setScored] = useState<boolean>(false);
-  const { data, isLoading } = api.jury.getTeams.useQuery();
+  const { data, isLoading } = api.admin.getTeams.useQuery();
 
   const characters : Characters[] = [
     "SHANTHANU",
@@ -187,14 +188,47 @@ const Jury: NextPage = () => {
         setReady(true);
     },[res.data])
 
+    const downloadCSV = () => {
+      const array:string[] = criteriaDisplayList;
+      array.unshift("Character");
+      array.push("Total");
+      const col = array.join(',') + '\n';
+      
+      const row = characters.map((character) => {
+          const row = [
+            character,
+            scores[character]?.[criteriaList[0]],
+            scores[character]?.[criteriaList[1]],
+            scores[character]?.[criteriaList[2]],
+            scores[character]?.[criteriaList[3]],
+            totalScore(character)
+          ]
+          return row
+        })
+
+      const csvfile = col + row.join("\n");
+      const blob = new Blob([csvfile], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `${teamName}_${judgeName}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
     return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
-      <div className="container flex flex-col w-full items-center h-full">
-        <h1 className="text-extrabold mt-4 text-3xl pb-2 text-center">
-          Results<br/>
-          {active==="result" ? ( 
-            `Judge - ${judgeName}
-             Team - ${teamName}`
-          ):(<></>)}
+      <div className="container flex flex-col w-full items-center min-h-[130vh] max-h-auto">
+        <h1 className="text-extrabold mt-4 text-3xl pb-2 flex flex-row w-full">
+          <div className="text-left flex text-4xl justify-start basis-1/2">Results</div><br/>
+          <div className="text-right text-2xl flex justify-end basis-1/2">
+            {active==="result" ? ( 
+              <div>
+              <span>Judge - <span className="bg-white rounded-lg p-[2px] text-primary-100">{judgeName}</span></span><br/>
+              <span>Team - <span className="bg-white rounded-lg p-[2px] text-primary-100">{teamName}</span></span>
+              </div>
+            ):(<></>)}
+          </div>
         </h1>
         <Tabs defaultValue="account" className="w-full">
           <TabsList className="bg-primary-100 p-2">
@@ -240,6 +274,9 @@ const Jury: NextPage = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
+              <div className="flex justify-end w-full">
+                <Button onClick={e => downloadCSV()}>Download CSV</Button>
+              </div>
             </div>
               {teamName !=="Select a college" && judgeName!=="Select a judge" && scored && ready ? (
               <div className="flex flex-col md:flex-row gap-6 justify-center">
@@ -249,7 +286,7 @@ const Jury: NextPage = () => {
                       <TableRow className="text-2xl text-center">
                         <TableHead className="text-center">Character</TableHead>
                         {criteriaDisplayList.map((criteria, i) => (
-                          <TableHead key={i} className="text-center">{criteria}</TableHead>
+                          <TableHead key={i} className="text-center">{criteriaDisplayList[i]}</TableHead>
                         ))}
                         <TableHead>Total</TableHead>
                       </TableRow>

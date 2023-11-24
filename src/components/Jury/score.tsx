@@ -2,6 +2,7 @@ import { Characters } from '@prisma/client';
 import React, { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { Table,TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
+import { Button } from '../ui/button';
 
 function Score() {
   type TotalScores = {
@@ -85,7 +86,32 @@ function Score() {
   //     })
   //   return "Aaron";
   // }
-
+  const downloadCSV = () => {
+    const array:string[] = ["Character Name", "Ranking", "Team Name", "Played By", "Score"];
+    const col = array.join(',') + '\n';
+    const row = characters.map((character) => {
+          const row = Object.keys(totalScores[character]).map((team,i) => {
+            const row = [
+              character,
+              i+1,
+              team,
+              character,
+              totalScores[character][team]
+            ]
+            return row.join(',');
+          })
+          return row.join('\n');
+        })
+    const csvfile = col + row.join("\n");
+    const blob = new Blob([csvfile], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `character_results.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 
   if(results.isLoading) return <div className='text-2xl text-center p-4 mb-[100vh]'>Loading....</div>
   if(results.data === "Not submitted") return <div className='text-2xl text-center p-4 mb-[100vh]'>All scores not submitted</div>  
@@ -97,6 +123,7 @@ function Score() {
     )
     :(
     <div>
+      <Button className='my-3' onClick={e => downloadCSV()}>Download CSV</Button>
       {characters.map((character,i) => (
         <div key={i}>
           <div>{character}</div>

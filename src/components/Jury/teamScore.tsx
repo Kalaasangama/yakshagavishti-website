@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
+import { Button } from '../ui/button';
 
 function TeamScore() {
     type TeamScores = Record<string, number>;
@@ -39,10 +40,33 @@ function TeamScore() {
         }
     },[team.data])
 
+    const downloadCSV = () => {
+        const array:string[] = ["Ranking", "Team Name", "Team Score"];
+        const col = array.join(',') + '\n';
+        const row = total?.map((team,i) => {  
+            const row = [
+                i+1,
+                team.teamName,
+                team.totalScore
+            ]
+              return row;
+            })
+        const csvfile = col + row.join("\n");
+        const blob = new Blob([csvfile], { type: "text/csv" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", `teams_results.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
     if(team.isLoading) return <div className='text-2xl text-center p-4 mb-[100vh]'>Loading....</div>
     if(team.data === "Not submitted") return <div className='text-2xl text-center p-4 mb-[100vh]'>All scores not submitted</div>
     return (
         <div className="mb-[100vh]">
+         <Button className='my-3' onClick={e => downloadCSV()}>Download CSV</Button>
             <Table className='text-2xl'>
                 <TableHeader>
                     <TableRow>
