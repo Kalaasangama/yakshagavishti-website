@@ -72,6 +72,18 @@ const Jury: NextPage = () => {
 		"DAASHARAJA",
 		"DEVAVRATHA",
 	];
+  const charactersDisplay: string[] = [
+		"SHANTHANU",
+		"MANTRI_SUNEETHI",
+		"TAMAALAKETHU",
+		"TAAMRAAKSHA",
+		"SATHYAVATHI",
+		"DAASHARAJA",
+		"DEVAVRATHA",
+	];
+
+  const displayTeam: string[] = ["ಅವನಿ","ಅನಿಲ","ಅಗ","ಅಂಬರ","ಅರ್ನಹ"]
+
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
   const { data, isLoading } = api.jury.getTeams.useQuery();
@@ -259,7 +271,7 @@ const Jury: NextPage = () => {
     return user.data?.user && !isLoading && data!==undefined && data.length>0 && !updating ? (
       <div className="container flex flex-col w-full">
         <h1 className="text-extrabold mt-10 text-4xl pb-2">
-          Judge Dashboard - Team {teamName}
+          Judge Dashboard - {teamName}
         </h1>
         <div className="flex md:flex-row flex-col w-full m-2 text-center">
           <div className="flex basis-1/2 justify-start">
@@ -271,8 +283,8 @@ const Jury: NextPage = () => {
               <DropdownMenuContent>
                 {!isLoading ? (
                   data?.map((team ,i) => (
-                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.TeamNumber.number.toString())}>
-                      team {team?.TeamNumber?.number}
+                    <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, displayTeam[team?.TeamNumber?.number])}>
+                      {displayTeam[team?.TeamNumber?.number]}
                     </DropdownMenuItem>
                   ))
                 ) : (
@@ -303,7 +315,7 @@ const Jury: NextPage = () => {
               <TableBody className="text-xl">
                 {characters.map((character, i) => (
                   <TableRow key={i} className="text-center">
-                    <TableCell className="md:m-0">{character}</TableCell>
+                    <TableCell className="md:m-0">{charactersDisplay[i]}</TableCell>
                     {criteriaList.map((criteria, j) => (
                       <TableCell key={j}>
                         <input
@@ -362,6 +374,7 @@ const Jury: NextPage = () => {
                   setScored = {setScored}
                   cScores = {cScores}
                   criteriaTeamDisplayList = {criteriaTeamDisplayList}
+                  charactersDisplay = {charactersDisplay}
                 />
               </TableBody>
             </Table>

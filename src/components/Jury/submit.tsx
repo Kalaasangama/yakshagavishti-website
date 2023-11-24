@@ -33,7 +33,8 @@ const Submit = ({
     characters,
     setScored,
     cScores,
-    criteriaTeamDisplayList
+    criteriaTeamDisplayList,
+	charactersDisplay
  } : {
     scores : ScoresState,
     teamId : string,
@@ -43,7 +44,8 @@ const Submit = ({
     characters : Characters[],
     setScored: Dispatch<SetStateAction<boolean>>,
     cScores: TeamScoresState,
-    criteriaTeamDisplayList: string[]
+    criteriaTeamDisplayList: string[],
+	charactersDisplay:string[]
  }
     ) => {
 	const scoresUpdate = api.jury.scoresUpdate.useMutation();
@@ -161,7 +163,7 @@ const Submit = ({
 										{characters.map((character, i) => (
 											<TableRow key={i} className="">
 												<TableCell className="md:m-0">
-													{character}
+													{charactersDisplay[i]}
 												</TableCell>
 												{criteriaList.map(
 													(criteria, j) => (
