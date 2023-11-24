@@ -1,4 +1,4 @@
-import { Characters } from '@prisma/client';
+import { Characters, User } from '@prisma/client';
 import React, { useEffect, useState } from 'react'
 import { api } from '~/utils/api'
 import { Table,TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
@@ -8,6 +8,10 @@ function Score() {
   type TotalScores = {
     [character in Characters]: Record<string, number>;
   };
+
+  type Name = {
+    [character in Characters]: Record<string,string>;
+  }
 
   type Team = Record<string, string>;
 
@@ -22,6 +26,7 @@ function Score() {
   ];
 
   const initialScores: TotalScores = {} as TotalScores;
+  const initialName: Name = {} as Name;
 
   characters.forEach((character) => {
     initialScores[character] = {};
@@ -32,6 +37,7 @@ function Score() {
   const results = api.admin.getResults.useQuery();
   const name = api.admin.getName;
   const [totalScores, setTotalScores] = useState<TotalScores>(initialScores);
+  const [names, setNames] = useState<Name>(initialName);
   const [teams, setTeams] = useState<Team>({})
 
   useEffect(() => {
@@ -40,12 +46,29 @@ function Score() {
 
     // Initialize an array to store unique team names
     const uniqueTeams = {};
-    if(results.data !== "Not submitted"){
       // Loop through each result
       results.data?.forEach(result => {
         const team: string = result.team.name;
         const character: Characters = result.characterPlayed.character;
         const score: number = result.score;
+        const members: User[] = result.team.members;
+
+        // Find the member with the matching character and get their name
+        const matchingMember: User | undefined = members.find((mem) => mem.characterId === character);
+
+        if (!names[character]) {
+          names[character] = {};
+        }
+        // Use the matching member's name as needed
+        if (matchingMember) {
+            const matchingMemberName: string = matchingMember.name;
+            names[character][team] = matchingMemberName;
+            console.log(`The name of the member playing ${character} is ${matchingMemberName}`);
+        } else {
+            const matchingMemberName: string = character;
+            names[character][team] = matchingMemberName;
+            console.log(`No member found playing ${character}`);
+        }
 
         // If the characterID is not already in the team's scores, initialize it
         if (!newTotalScores[character]) {
@@ -75,7 +98,6 @@ function Score() {
       // Update the state with the new total scores
       setTotalScores(newTotalScores);
       setTeams(uniqueTeams);
-  }
   }, [results.data]);
 
   // const getName = (teamId: string, character: Characters) => {
@@ -112,9 +134,9 @@ function Score() {
     link.click();
     document.body.removeChild(link);
   }
+  const check = api.admin.checkIfAllSubmitted.useQuery();
 
   if(results.isLoading) return <div className='text-2xl text-center p-4 mb-[100vh]'>Loading....</div>
-  if(results.data === "Not submitted") return <div className='text-2xl text-center p-4 mb-[100vh]'>All scores not submitted</div>  
 
   return results.isLoading ? (
     <div>
@@ -123,7 +145,10 @@ function Score() {
     )
     :(
     <div>
-      <Button className='my-3' onClick={e => downloadCSV()}>Download CSV</Button>
+      <div className='flex flex-row gap-[56vw]'>
+        <Button className='my-3 flex basis-1/2 justify-start' onClick={e => downloadCSV()}>Download CSV</Button>
+        <div className={`rounded-3xl basis-1/2 text-center flex items-center px-3 py-1 my-3 text-2xl justify-center ${check.data === "Not submitted" ? "bg-red-800":"bg-green-800"}`}>{`${check.data === "Not submitted" ? "Not Submitted":"Submitted"}`}</div>
+      </div>
       {characters.map((character,i) => (
         <div key={i}>
           <div>{character}</div>
@@ -146,7 +171,7 @@ function Score() {
                     {team}
                   </TableCell>
                   <TableCell>
-                    {character}
+                    {names[character][team]}
                   </TableCell>
                   <TableCell>
                     {totalScores[character][team]}
