@@ -1,6 +1,8 @@
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
+import { Analytics } from '@vercel/analytics/react';
+
 import Navbar from "~/components/Layout/navbar";
 import Footer from "~/components/Layout/footer";
 import Head from "next/head";
@@ -118,6 +120,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
           <main className={`${balooChettan2.variable} ${porpora.variable} ${oskari.variable} ${boris.variable} ${rhomdon.variable} font-sans mx-auto text-white selection:bg-secondary-200 selection:text-white`}>
             {path.pathname !== "/_error" && path.pathname !== "/dashboard/jury" && path.pathname !== "/dashboard/results" && <Navbar />}
             <Component {...pageProps} />
+            <Analytics />
             <Toaster />
             {path.pathname !== "/dashboard/jury" && path.pathname !== "/dashboard/results" && <Footer/>}
           </main>
