@@ -280,7 +280,7 @@ const Jury: NextPage = () => {
           Judge Dashboard - {teamName}
         </h1>
         <h1 className="flex justify-end basis-1/2 text-3xl">
-          Judge Name: {user.data?.user.name}
+          {user.data?.user.name}
         </h1>
       </div>
       <div className="m-2 flex w-full flex-col text-center md:flex-row">
