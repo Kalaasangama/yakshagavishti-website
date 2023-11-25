@@ -75,6 +75,9 @@ const Submit = ({
 		// 		final: true,
 		// 	});
 		// });
+		finalScore.mutate({
+			teamId: teamId
+		})
 		scoresUpdate.mutate({
 			scores: scores,
 			characters: characters,
@@ -85,9 +88,6 @@ const Submit = ({
 			scores: cScores,
 			teamId: teamId,
 			criteria: criteriaList
-		})
-		finalScore.mutate({
-			teamId: teamId
 		})
 		void ctx.jury.getScores.invalidate()
 		setScored(true);
@@ -128,6 +128,7 @@ const Submit = ({
 				position: "bottom-center",
 			});
 		} else {
+			void ctx.jury.getScores.invalidate();
 			setOpen(true);
 		}
 	};
