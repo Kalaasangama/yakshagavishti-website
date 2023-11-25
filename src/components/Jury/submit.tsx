@@ -53,37 +53,43 @@ const Submit = ({
 	const scoreUpdate = api.jury.updateScores.useMutation();
     const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
     const [open, setOpen] = useState<boolean>(false)
+	const finalScore = api.jury.finalScore.useMutation();
+	const ctx = api.useContext()
 
 	const saveScores = () => {
-		characters.forEach((character) => {
-			criteriaList.forEach((criteria) => {
-				scoreUpdate.mutate({
-					teamId: teamId,
-					criteriaName: criteria,
-					characterId: character,
-					score: scores[character][criteria],
-				});
-			});
-		});
-		criteriaList.forEach((criteria) => {
-			criteriaTotal.mutate({
-				criteriaName: criteria,
-				score: cScores[criteria],
-				teamId: teamId,
-				final: true,
-			});
-		});
-		// scoresUpdate.mutate({
-		// 	scores: scores,
-		// 	characters: characters,
-		// 	criteria: criteriaList,
-		// 	teamId: teamId
+		// characters.forEach((character) => {
+		// 	criteriaList.forEach((criteria) => {
+		// 		scoreUpdate.mutate({
+		// 			teamId: teamId,
+		// 			criteriaName: criteria,
+		// 			characterId: character,
+		// 			score: scores[character][criteria],
+		// 		});
+		// 	});
 		// });
-		// totalScoreUpdate.mutate({
-		// 	scores: cScores,
-		// 	teamId: teamId,
-		// 	criteria: criteriaList
-		// })
+		// criteriaList.forEach((criteria) => {
+		// 	criteriaTotal.mutate({
+		// 		criteriaName: criteria,
+		// 		score: cScores[criteria],
+		// 		teamId: teamId,
+		// 		final: true,
+		// 	});
+		// });
+		finalScore.mutate({
+			teamId: teamId
+		})
+		scoresUpdate.mutate({
+			scores: scores,
+			characters: characters,
+			criteria: criteriaList,
+			teamId: teamId
+		});
+		totalScoreUpdate.mutate({
+			scores: cScores,
+			teamId: teamId,
+			criteria: criteriaList
+		})
+		void ctx.jury.getScores.invalidate()
 		setScored(true);
 	};
 
@@ -122,6 +128,7 @@ const Submit = ({
 				position: "bottom-center",
 			});
 		} else {
+			void ctx.jury.getScores.invalidate();
 			setOpen(true);
 		}
 	};

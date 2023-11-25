@@ -83,7 +83,7 @@ const Jury: NextPage = () => {
     "ದೇವವ್ರತ",
   ];
 
-  const displayTeam: string[] = ["ಅವನಿ", "ಅನಿಲ", "ಅಗ", "ಅಂಬರ", "ಅರ್ನಹ"];
+  const displayTeam: string[] = ["ಅವನಿ", "ಅನಿಲ", "ಅಗ್ನಿ", "ಅಂಬರ", "ಅರ್ನಹ"];
 
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
@@ -235,7 +235,7 @@ const Jury: NextPage = () => {
 
   useEffect(() => {
     if (res.data?.length > 0) {
-      if (res.data[0].judge.Submitted[0]?.submitted) return setScored(true);
+      if (res.data[0].judge.Submitted[0]?.submitted) setScored(true);
       console.log("updating");
       setUpdating(true);
       res.data.forEach((item) => {
@@ -275,9 +275,14 @@ const Jury: NextPage = () => {
     data.length > 0 &&
     !updating ? (
     <div className="container flex w-full flex-col">
-      <h1 className="text-extrabold mt-10 pb-2 text-4xl">
-        Judge Dashboard - {teamName}
-      </h1>
+      <div className="flex flex-row pb-2 mt-10 items-center justify-evenly">
+        <h1 className="text-extrabold basis-1/2 text-4xl flex justify-start">
+          Judge Dashboard - {teamName}
+        </h1>
+        <h1 className="flex justify-end basis-1/2 text-3xl">
+          {user.data?.user.name}
+        </h1>
+      </div>
       <div className="m-2 flex w-full flex-col text-center md:flex-row">
         <div className="flex basis-1/2 justify-start">
           <DropdownMenu>
@@ -312,7 +317,7 @@ const Jury: NextPage = () => {
           isLoadingCriteria={criteriaTotal.isLoading}
         />
       </div>
-      {teamName !== "Select a college" && !scored && ready ? (
+      {teamName !== "Select a college" && !scored && ready && !isLoading ? (
         <div className="flex flex-col gap-6 md:flex-row">
           <div className="basis-3/5">
             <Table>
@@ -421,13 +426,64 @@ const Jury: NextPage = () => {
           </div>
         </div>
       ) : scored ? (
-        <div className="container h-full py-40">
+        <div className="container h-full py-2">
           <div className="h-full w-full">
             <div className="mb-20 flex justify-center text-center text-2xl ">
               ತೀರ್ಪಿಗಾಗಿ ಧನ್ಯವಾದಗಳು. ಇನ್ನೊಂದು ತಂಡವನ್ನು ನೀವು ಈಗ ಆಯ್ಕೆ
               ಮಾಡಿಕೊಳ್ಳಬಹುದು!
             </div>
           </div>
+          <div className="flex flex-col md:flex-row gap-6 justify-center">
+                <div className="basis-3/5">
+                  <Table>
+                    <TableHeader className="invisible md:visible align-middle">
+                      <TableRow className="text-2xl text-center">
+                        <TableHead className="text-center">Character</TableHead>
+                        {criteriaDisplayList.map((criteria, i) => (
+                          <TableHead key={i} className="text-center">{criteriaDisplayList[i]}</TableHead>
+                        ))}
+                        <TableHead>Total</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="text-2xl">
+                      {characters.map((character, i) => (
+                        <TableRow key={i} className="text-center">
+                          <TableCell className="md:m-0">{character}</TableCell>
+                          {criteriaList.map((criteria, j) => (
+                            <TableCell key={j}>
+                              {scores[character]?.[criteria]}
+                            </TableCell>
+                          ))}
+                          <TableCell>{totalScore(character)}</TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+                <div className="basis-1/4">
+                  <Table className="flex flex-col text-2xl w-full items-center">
+                    <TableHeader className="w-full flex items-center justify-center border-b-[1px] border-b-white">
+                      <TableRow className="text-2xl border-none">
+                        <TableHead className="text-center">Team Score</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody className="text-2xl">
+                      {criteriaTeamDisplayList.map((criteria, k) => (
+                        <TableRow key={k}>
+                          <TableCell>{criteria}</TableCell>
+                          <TableCell>
+                              {cScores[criteriaList[k]]}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                      <TableRow>
+                        <TableCell>Total</TableCell>
+                        <TableCell>{calculateFinalTotal()}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
         </div>
       ) : !ready && teamName === "Select a college" && !scored && !updating ? (
         <>

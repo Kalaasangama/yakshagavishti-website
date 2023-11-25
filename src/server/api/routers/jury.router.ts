@@ -392,6 +392,28 @@ export const JuryRouter= createTRPCRouter({
                         submitted: true
                     }
                 })
+            }),
+            finalScore: protectedJudgeProcedure
+            .input(z.object({
+                teamId: z.string(),
+            }))
+            .mutation(async({ctx,input})=>{
+                await ctx.prisma.submitted.upsert({
+                    where: {
+                        judgeId_teamID: {
+                            teamID: input.teamId,
+                            judgeId: ctx.session.user.id
+                        }
+                    },
+                    create: {
+                        teamID: input.teamId,
+                        judgeId: ctx.session.user.id,
+                        submitted: true
+                    },
+                    update: {
+                        submitted: true
+                    }
+                })
             })
         })
 

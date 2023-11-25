@@ -16,7 +16,6 @@ function TeamScore() {
 
     useEffect(() => {
         const teamScores : TeamScores  = {};
-        if(team.data !== "Not submitted"){
             team.data?.map((data) => {
                 const teamName = data.team.name;
                 // If the teamID doesn't exist in the 'teamScores' object, initialize it
@@ -37,7 +36,6 @@ function TeamScore() {
             sortedTeams.sort((a , b) => b.totalScore - a.totalScore);
 
             setTotal(sortedTeams)
-        }
     },[team.data])
 
     const downloadCSV = () => {
@@ -61,12 +59,15 @@ function TeamScore() {
         link.click();
         document.body.removeChild(link);
       }
+      const check = api.admin.checkIfAllSubmitted.useQuery();
 
     if(team.isLoading) return <div className='text-2xl text-center p-4 mb-[100vh]'>Loading....</div>
-    if(team.data === "Not submitted") return <div className='text-2xl text-center p-4 mb-[100vh]'>All scores not submitted</div>
     return (
         <div className="mb-[100vh]">
-         <Button className='my-3' onClick={e => downloadCSV()}>Download CSV</Button>
+            <div className='flex flex-row gap-[56vw]'>
+                <Button className='my-3 flex basis-1/2 justify-start' onClick={e => downloadCSV()}>Download CSV</Button>
+                <div className={`rounded-3xl basis-1/2 text-center flex items-center px-3 py-1 my-3 text-2xl justify-center ${check.data === "Not submitted" ? "bg-red-800":"bg-green-800"}`}>{`${check.data === "Not submitted" ? "Not Submitted":"Submitted"}`}</div>
+            </div>
             <Table className='text-2xl'>
                 <TableHeader>
                     <TableRow>

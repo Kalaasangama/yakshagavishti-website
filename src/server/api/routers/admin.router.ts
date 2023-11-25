@@ -227,21 +227,15 @@ export const adminRouter = createTRPCRouter({
 			}),
 			getResults:protectedAdminProcedure
 			.query(async({ctx})=>{
-				const Submitted = await ctx.prisma.submitted.findMany({
-					where: {
-						submitted: true
-					},
-				});
-				const teams = await ctx.prisma.team.findMany();
-				const judges = await ctx.prisma.judge.findMany();
-				if(Submitted.length !== (teams.length * judges.length)){
-					return "Not submitted"
-				}
 				const individualScores = await ctx.prisma.individualScore.findMany({
 					include: {
 						characterPlayed: true,
 						criteria: true,
-						team: true
+						team: {
+							include:{
+								members: true
+							}
+						}
 					},
 					orderBy: [
 						{
@@ -274,16 +268,6 @@ export const adminRouter = createTRPCRouter({
 			}),
 			getTeamScore:protectedAdminProcedure
 			.query(async({ctx})=>{
-				const Submitted = await ctx.prisma.submitted.findMany({
-					where: {
-						submitted: true
-					},
-				});
-				const teams = await ctx.prisma.team.findMany();
-				const judges = await ctx.prisma.judge.findMany();
-				if(Submitted.length !== (teams.length * judges.length)){
-					return "Not submitted"
-				}
 				const teamScores = await ctx.prisma.teamScore.findMany({
 					include: {
 						criteria: true,
@@ -309,5 +293,19 @@ export const adminRouter = createTRPCRouter({
                     }
                 });
                 return teams;
+			}),
+			checkIfAllSubmitted: protectedAdminProcedure
+			.query(async({ctx})=>{
+				const Submitted = await ctx.prisma.submitted.findMany({
+					where: {
+						submitted: true
+					},
+				});
+				const teams = await ctx.prisma.team.findMany();
+				const judges = await ctx.prisma.judge.findMany();
+				if(Submitted.length !== (teams.length * judges.length)){
+					return "Not submitted"
+				}
+				return "done";
 			})
 });
