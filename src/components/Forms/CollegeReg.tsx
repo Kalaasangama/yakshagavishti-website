@@ -49,10 +49,10 @@ export default function CollegeReg({
 		},
 		onSuccess(data) {
 			setCollege(selectedCollege);
-			if (user.teamEditStatus === "GRANTED") {
+			if (user?.teamEditStatus === "GRANTED") {
 				return setFormToShow(4);
 			}
-			if (user.leaderOf) {
+			if (user?.leaderOf) {
 				setFormToShow(3);
 			} else {
 				setFormToShow(2);
@@ -90,7 +90,7 @@ export default function CollegeReg({
 			<Dialog>
 				<DialogTrigger asChild>
 					<Button className="">
-						{user.leaderOf ? "Edit Team" : "Create Team"}
+						{user?.leaderOf ? "Edit Team" : "Create Team"}
 					</Button>
 				</DialogTrigger>
 				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">

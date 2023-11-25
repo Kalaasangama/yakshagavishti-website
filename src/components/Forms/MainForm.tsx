@@ -6,10 +6,10 @@ import { useSession } from "next-auth/react";
 import EditTeamForm from "./EditTeam";
 
 export default function CreateTeam() {
-	const user = useSession().data.user;
+	const user = useSession()?.data?.user;
 	const [FormToShow, setFormToShow] = useState(1);
 	const [CollegeId, setCollegeId] = useState("");
-	const [LeaderChar, setLeaderChar] = useState(user.characterId || null);
+	const [LeaderChar, setLeaderChar] = useState(user?.characterId || null);
 	if (FormToShow === 1)
 		return (
 			<>

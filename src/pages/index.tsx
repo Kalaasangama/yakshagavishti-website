@@ -80,11 +80,7 @@ export default function Home() {
               </div>
 
             </Reveal>
-              <Reveal classes="flex justify-center">
-                <ScrollLag classes="w-fit mb-48 xl:mb-32 landscape:short:mb-10" speed={75}>
-                  {isRegistrationActive && !sessionData ? <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}><Button>Register</Button></div> : (!sessionData?.user?.team?.isComplete ? <CreateTeam/>:<ViewTeam/>)}
-                </ScrollLag>
-              </Reveal>
+            
               
           </div>
         </section>
