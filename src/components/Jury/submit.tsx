@@ -75,17 +75,17 @@ const Submit = ({
 		// 		final: true,
 		// 	});
 		// });
-		// scoresUpdate.mutate({
-		// 	scores: scores,
-		// 	characters: characters,
-		// 	criteria: criteriaList,
-		// 	teamId: teamId
-		// });
-		// totalScoreUpdate.mutate({
-		// 	scores: cScores,
-		// 	teamId: teamId,
-		// 	criteria: criteriaList
-		// })
+		scoresUpdate.mutate({
+			scores: scores,
+			characters: characters,
+			criteria: criteriaList,
+			teamId: teamId
+		});
+		totalScoreUpdate.mutate({
+			scores: cScores,
+			teamId: teamId,
+			criteria: criteriaList
+		})
 		finalScore.mutate({
 			teamId: teamId
 		})
