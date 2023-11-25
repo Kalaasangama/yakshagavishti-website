@@ -83,7 +83,7 @@ const Jury: NextPage = () => {
     "ದೇವವ್ರತ",
   ];
 
-  const displayTeam: string[] = ["ಅವನಿ", "ಅನಿಲ", "ಅಗ", "ಅಂಬರ", "ಅರ್ನಹ"];
+  const displayTeam: string[] = ["ಅವನಿ", "ಅನಿಲ", "ಅಗ್ನಿ", "ಅಂಬರ", "ಅರ್ನಹ"];
 
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
