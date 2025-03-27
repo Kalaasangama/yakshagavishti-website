@@ -3,88 +3,52 @@ import Card from "./Aboutcard";
 
 const members = [
   {
-    name: "Mr. Anant Murthi",
-    role: "Faculty Coordinator"
+    "name": "Spoorthi Bailoor",
+    "role": "Folk Head"
   },
   {
-    name: "Mr. Shyam Sundar",
-    role: "Faculty Coordinator"
-  },  
-  {
-    name: "Shravan Udupa K",
-    role: "Kalaasangama Founder"
-  }, 
-  {
-    name: "Amrutha V",
-    role: "President",
+    "name": "Sumith S Hegde",
+    "role": "Bhajan Head"
   },
   {
-    name: "Krishna M S",
-    role: "Secretary",
+    "name": "Shraddha Upadhyaya",
+    "role": "Music Head"
   },
   {
-    name: "Srikrishna",
-    role: "Vice President",
+    "name": "Manish R Rao",
+    "role": "Core Member"
   },
   {
-    name: "Anwesh R Shetty",
-    role: "Treasurer and Yakshagana Head",
+    "name": "Pratham P",
+    "role": "Media Head"
   },
   {
-    name: "Keshav Nayak",
-    role: "Joint Secretary",
+    "name": "Shreya S Prabhu",
+    "role": "Core Member"
   },
   {
-    name: "Sinchana S Bairy",
-    role: "Classical Dance Head",
+    "name": "Amrutha R Rao",
+    "role": "Core Member"
   },
   {
-    name: "Shravya",
-    role: "Classical Dance Head",
+    "name": "Keshav Nayak",
+    "role": "Joint Secretary"
   },
   {
-    name: "Shreyas Upadhyaya",
-    role: "Classical Music Head",
+    "name": "Shreya S Rao",
+    "role": "Classical Music Head"
   },
   {
-    name: "Mahatee",
-    role: "Classical Music Head",
+    "name": "Harish Vishwanath Bhat",
+    "role": "Bhajan Co-Head"
   },
   {
-    name: "Eshaan Rao",
-    role: "Bhajan Head",
+    "name": "Shreya P V",
+    "role": "Secretary and Treasurer"
   },
   {
-    name: "Shreya P V",
-    role: "Bhajan Head",
-  },
-  {
-    name: "Varun",
-    role: "Yakshagana Head",
-  },
-  {
-    name: "Sanjana Jain",
-    role: "Folk Head",
-  },
-  {
-    name: "Mayur M Shet",
-    role: "Social Media and Folk Head",
-  },
-  {
-    name: "Vaibhav",
-    role: "Executive Member",
-  },
-  {
-    name: "T M Shravan Acharya",
-    role: "Executive Member",
-  },
-  {
-    name: "Manish",
-    role: "Executive Member",
-  },
-  {
-    name: "Kishan",
-    role: "Executive Member",
+    "name": "Srikrishna Rao K S",
+    "role": "President"
   },
 ]
 

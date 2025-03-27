@@ -9,7 +9,7 @@ const faqs = [
   },
   {
     q: "When will Yakshagavishti be conducted?",
-    ans: <div className="">Yakshagavishti will be on Saturday, November 25th, 2023</div>
+    ans: <div className="">Yakshagavishti will be on Saturday, April 12th, 2025</div>
   },
   {
     q: "Do we have to physically register again on the day of competition?",

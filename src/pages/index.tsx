@@ -164,7 +164,7 @@ export default function Home() {
                         </a>
                       </Reveal>
                       <Reveal classes="">
-                        <a onClick={() => handleDownload("/ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf", "ಭೀಷ್ಮ ಪ್ರತಿಜ್ಞೆ.pdf")} className="w-fit">
+                        <a onClick={() => handleDownload("/ರತ್ನಾವತಿ ಕಲ್ಯಾಣ.pdf", "ರತ್ನಾವತಿ ಕಲ್ಯಾಣ.pdf")} className="w-fit">
                           <OutlineButton>
                             <div className="flex gap-2 items-center justify-center">
                               <BiDownload />
