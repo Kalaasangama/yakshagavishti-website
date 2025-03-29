@@ -7,7 +7,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "src/components/ui/table";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import {
 	Dialog,
 	DialogContent,
@@ -63,7 +63,7 @@ export default function ViewTeam() {
 										{member?.characterPlayed?.character}
 									</TableCell>
 									<TableCell>
-									<a href={member.idURL} target="_blank">
+									<a href={member.idURL ?? ""} target="_blank">
 										{member.idURL && <Image
 											src={member?.idURL}
 											alt="id_image"
@@ -82,7 +82,7 @@ export default function ViewTeam() {
 							))}
 						</TableBody>
 					</Table>
-					{teamData?.data?.editRequests?.status==="REVOKED" || !teamData.data.editRequests ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
+					{teamData?.data?.editRequests?.status==="REVOKED" || !teamData.data?.editRequests ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
 				</DialogContent>
 			</Dialog>
 		)

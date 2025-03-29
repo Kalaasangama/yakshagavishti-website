@@ -1,17 +1,13 @@
-import { Characters, User } from '@prisma/client';
+import type { Characters, User } from '@prisma/client';
 import React, { useEffect, useState } from 'react'
-import { api } from '~/utils/api'
-import { Table,TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
-import { Button } from '../ui/button';
+import { api } from '~/trpc/react';
+import { Table,TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
+import { Button } from '~/components/ui/button';
 
 function Score() {
-  type TotalScores = {
-    [character in Characters]: Record<string, number>;
-  };
+  type TotalScores = Record<Characters, Record<string, number>>;
 
-  type Name = {
-    [character in Characters]: Record<string,string>;
-  }
+  type Name = Record<Characters, Record<string, string>>;
 
   type Team = Record<string, string>;
 
@@ -32,10 +28,10 @@ function Score() {
     initialScores[character] = {};
   });
 
-  const [teamId, setTeamId] = useState<string>("")
-  const [characterName, setCharacter] = useState<Characters>("DAASHARAJA");
+//   const [teamId, setTeamId] = useState<string>("")
+//   const [characterName, setCharacter] = useState<Characters>("DAASHARAJA");
   const results = api.admin.getResults.useQuery();
-  const name = api.admin.getName;
+//   const name = api.admin.getName;
   const [totalScores, setTotalScores] = useState<TotalScores>(initialScores);
   const [names, setNames] = useState<Name>(initialName);
   const [teams, setTeams] = useState<Team>({})
@@ -45,7 +41,7 @@ function Score() {
     const newTotalScores = initialScores;
 
     // Initialize an array to store unique team names
-    const uniqueTeams = {};
+    const uniqueTeams: Record<string, string> = {};
       // Loop through each result
       results.data?.forEach(result => {
         const team: string = result.team.name;
@@ -61,7 +57,7 @@ function Score() {
         }
         // Use the matching member's name as needed
         if (matchingMember) {
-            const matchingMemberName: string = matchingMember.name;
+            const matchingMemberName: string = matchingMember.name ?? "";
             names[character][team] = matchingMemberName;
             console.log(`The name of the member playing ${character} is ${matchingMemberName}`);
         } else {
@@ -78,9 +74,7 @@ function Score() {
         // If the teamID is not already in the totalScores object, initialize it
         if (!newTotalScores[character][team]) {
           newTotalScores[character][team] = 0;
-          if(!uniqueTeams[team]){
-            uniqueTeams[team] = result.teamID; 
-          }
+          uniqueTeams[team] ??= result.teamID;
         }
 
         // Add the score to the total for the character
@@ -93,7 +87,7 @@ function Score() {
         const sortedTeams = Object.fromEntries(
             Object.entries(teams).sort(([, a], [, b]) => b - a)
         );
-        newTotalScores[character] = sortedTeams;
+        newTotalScores[character as Characters] = sortedTeams;
     }
       // Update the state with the new total scores
       setTotalScores(newTotalScores);

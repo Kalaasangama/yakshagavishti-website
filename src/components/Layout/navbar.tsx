@@ -1,12 +1,13 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 import { BiMenuAltRight, BiX } from "react-icons/bi";
-import { SmallButton } from "../Button";
-import Reveal from "../Animations/reveal";
+import { SmallButton } from "~/components/Button";
+import Reveal from "~/components/Animations/reveal";
+import LocaleSwitcher from "~/components/Layout/localeSwitcher";
+import { useTranslations } from "next-intl";
 import { signIn, signOut, useSession } from "next-auth/react";
-
 
 type Link = {
   label: string;
@@ -19,22 +20,22 @@ type Props = {
 };
 
 const Navbar = () => {
-  
   const { data: sessionData } = useSession();
+  const t = useTranslations("Navbar");
   
   const links = [
-    { id: "Home", label: "Home", url: "/" },
-    { id: "Sponsors", label: "Sponsors", url: "/sponsors" },
-    { id: "Achievements", label: "Achievements", url: "/achievements" },
-    { id: "About", label: "About Us", url: "/about" },
+    { id: "Home", label: t('Home'), url: "/" },
+    { id: "Sponsors", label: t('Sponsors'), url: "/sponsors" },
+    { id: "Achievements", label: t('Achievements'), url: "/achievements" },
+    { id: "About", label: t('About'), url: "/about" },
   ];
   
-  const router = useRouter();
+  const pathname = usePathname();
 
   // Need to find the active page...
-  const activePaths = links.filter((link) => link.url === router.pathname);
+  const activePaths = links.filter((link) => link.url === pathname);
   // Idk to implement, thus doing in alternate hack... Typescript throwing error if directly used links.find()
-  const activePath = activePaths[0] ? activePaths[0] : { label: "", url: "" };
+  const activePath = activePaths[0] ?? { label: "", url: "" };
 
   const [isMenuActive, setIsMenuActive] = useState(false);
 
@@ -50,7 +51,7 @@ const Navbar = () => {
             <div  className="flex items-center justify-start">
               <Link href={'/'}>
                 <Image
-                  src={"https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/logo.png"}
+                  src={"/logo.png"}
                   alt="Logo"
                   width={100}
                   height={100}
@@ -82,11 +83,14 @@ const Navbar = () => {
               );
             })}
           </div>
-          <div className="flex gap-5 items-center">
+          <div className="flex gap-3 items-center">
             <Reveal classes="hidden lg:block">
               <div className="" onClick={sessionData ? () => void signOut() : () => void signIn("google")}>
                 <SmallButton>{sessionData ? "Log Out" : "Log In"}</SmallButton>
               </div>
+            </Reveal>
+            <Reveal classes="hidden lg:block">
+              <LocaleSwitcher />
             </Reveal>
             <div
               className="flex items-center text-2xl lg:hidden"
@@ -130,9 +134,14 @@ const MobileNav = ({ links, activePath }: Props) => {
         })}
         <div className="flex gap-4 items-center">
           <Reveal classes="">
-            <div onClick={sessionData ? () => void signOut() : () => void signIn("auth0")}>
+            <div onClick={sessionData ? () => void signOut() : () => void signIn("google")}>
               <SmallButton>{sessionData ? "Log Out" : "Log In"}</SmallButton>
             </div>
+          </Reveal>
+        </div>
+        <div className="flex gap-4 items-center">
+          <Reveal classes="">
+            <LocaleSwitcher />
           </Reveal>
         </div>
       </div>

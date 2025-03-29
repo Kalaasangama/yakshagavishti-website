@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./Corecard";
+import Card from "~/components/Team/Corecard";
 
 const AllCards: React.FC = () => {
   const cardProps = [

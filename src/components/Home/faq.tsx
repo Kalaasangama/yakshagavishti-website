@@ -1,35 +1,38 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger, } from "~/components/ui/accordion"
-import Reveal from "../Animations/reveal"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "~/components/ui/accordion"
+import Reveal from "~/components/Animations/reveal"
 import Link from "next/link"
-
-const faqs = [
-  {
-    q: "Is Yakshagavishti open for all teams?",
-    ans: <div className="">No, unfortunately this is for invited colleges only.</div>
-  },
-  {
-    q: "When will Yakshagavishti be conducted?",
-    ans: <div className="">Yakshagavishti will be on Saturday, April 12th, 2025</div>
-  },
-  {
-    q: "Do we have to physically register again on the day of competition?",
-    ans: <div className="">No; teams only need to verify their registrations.</div>
-  },
-  {
-    q: "Where & how can I access the rule book and Prasanga Padya list?",
-    ans: <div className="">It can be downloaded directly from the website <Link href='#about' className="text-secondary-100">here</Link></div>
-  },
-  {
-    q: "Can anyone attend Yakshagavishti as an audience member?",
-    ans: <div className="">Yes. Anyone can be an audience member; you're most welcome for the event!</div>
-  },
-]
+import { useTranslations } from "next-intl"
 
 const Faq = () => {
+  const t = useTranslations("Home");
+
+  const faqs = [
+    {
+      q: t("q1").split("&")[0],
+      ans: <div className="">{t("q1").split("&")[1]}</div>
+    },
+    {
+      q: t("q2").split("&")[0],
+      ans: <div className="">{t("q2").split("&")[1]}</div>
+    },
+    {
+      q: t("q3").split("&")[0],
+      ans: <div className="">{t("q3").split("&")[1]}</div>
+    },
+    {
+      q: t("q4_q"),
+      ans: <div className="">{t("q4_ans").split("&")[0]}<Link href='#about' className='text-secondary-100'>{t("q4_ans").split("&")[1]}</Link>{t("q4_ans").split("&")[2]}</div>
+    },
+    {
+      q: t("q5").split("&")[0],
+      ans: <div className="">{t("q5").split("&")[1]}</div>
+    },
+  ]
+
   return (
     <Accordion type="single" collapsible className="w-full  text-base md:text-lg xl:text-xl">
       <Reveal classes="">
-        <p className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl text-center md:text-left">FAQ</p>
+        <p className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl text-center md:text-left">{t("FAQ")}</p>
       </Reveal>
       {faqs.map((faq, idx) => {
         return (

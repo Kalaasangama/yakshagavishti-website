@@ -1,6 +1,9 @@
+"use client";
+
 import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "src/components/ui/button";
+import { Button } from "~/components/ui/button";
+import { Button as RegButton } from "~/components/Button";
 import {
 	Form,
 	FormControl,
@@ -9,7 +12,7 @@ import {
 	FormField,
 	FormLabel,
 	FormMessage,
-} from "src/components/ui/form";
+} from "~/components/ui/form";
 import {
 	DialogContent,
 	DialogDescription,
@@ -17,7 +20,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "src/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
 	Select,
 	SelectContent,
@@ -25,12 +28,12 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "src/components/ui/select";
-import { Input } from "src/components/ui/input";
-import { Label } from "src/components/ui/label";
-import { Checkbox } from "../ui/checkbox";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Checkbox } from "~/components/ui/checkbox";
 import Dropzone from "../Dropzone";
 import { toast } from "../ui/use-toast";
-import { api } from "~/utils/api";
+import { api } from "~/trpc/react";
 import { uploadFile } from "~/utils/file";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -57,14 +60,14 @@ const LeadRegister = ({
 }) => {
 	const user = useSession();
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
-	const [isCheckboxChecked, setIsCheckboxChecked] = useState(user.data.user.characterId ? true : false);
+	const [isCheckboxChecked, setIsCheckboxChecked] = useState(user.data?.user.characterId ? true : false);
 	const [selectedRole, setSelectedRole] = useState<string>("");
-	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(user.data.user.characterId || null);
+	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(user.data?.user.characterId ?? null);
 	const [LeaderContact, setLeaderContact] = useState<string>(
-		user.data.user.contact
+		user.data?.user.contact ?? ""
 	);
 	const [LeaderName, setLeaderName] = useState<string>(
-		user.data.user.name
+		user.data?.user.name ?? ""
 	);
 	const [UploadStatus, setUploadStatus] = useState("");
 	const SetLeaderDetails = api.team.register.useMutation({
@@ -88,12 +91,12 @@ const LeadRegister = ({
 		setLeaderChar(value);
 	};
 	if (SetLeaderDetails.isSuccess) {
-		setFormToShow(3);
+		setTimeout(() => { setFormToShow(3); }, 1000);
 	}
 	const handleUpload = async () => {
 		setUploadStatus("Uploading....");
 		try {
-			if (user.data.user.idURL) {
+			if (user.data?.user.idURL) {
 				return user.data.user.idURL;
 			}
 			if (files[0] instanceof File) {
@@ -109,7 +112,7 @@ const LeadRegister = ({
 	//Field Validation for Team Lead
 	const Passwordpattern = () => {
 		const phoneregx = "^[6-9][0-9]{9}$";
-		if (!LeaderContact.match(phoneregx)) {
+		if (!new RegExp(phoneregx).exec(LeaderContact)) {
 			toast({
 				variant: "destructive",
 				title: "Invalid Phone number!",
@@ -127,7 +130,7 @@ const LeadRegister = ({
 				return false;
 			}
 		}
-		if (!user.data.user.idURL)
+		if (!user.data?.user.idURL)
 			if (files.length === 0) {
 				toast({
 					variant: "destructive",
@@ -160,14 +163,14 @@ const LeadRegister = ({
 	};
 	return (
 		<Dialog defaultOpen={true}>
-			<DialogTrigger asChild>
-				<Button>Create Team</Button>
+			<DialogTrigger>
+				<RegButton>Create Team</RegButton>
 			</DialogTrigger>
 			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
 				<DialogHeader>
 					<DialogTitle>Create Team</DialogTitle>
 					<DialogDescription>
-						Fill in the information below. Click next when you're
+						Fill in the information below. Click next when you&apos;re
 						done.
 					</DialogDescription>
 				</DialogHeader>
@@ -223,7 +226,7 @@ const LeadRegister = ({
 										</div>
 
 										<div className="grid grid-cols-3">
-											{!user.data.user.idURL ? (
+											{!user.data?.user.idURL ? (
 												<div className="col-span-3">
 													<Dropzone
 														files={files}
@@ -289,9 +292,7 @@ const LeadRegister = ({
 														handleRoleChange
 													}
 													defaultValue={
-														LeaderCharacter
-															? LeaderCharacter
-															: undefined
+														LeaderCharacter ?? undefined
 													}
 												>
 													<FormControl>

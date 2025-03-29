@@ -1,5 +1,3 @@
-import type { GetUsers200ResponseOneOfInner } from "auth0";
-
 interface Session {
 	accessToken: string;
 }
@@ -24,11 +22,6 @@ interface UserInput {
 	idURL?: string;
 }
 
-interface createAccountParm {
-	auth0Data: GetUsers200ResponseOneOfInner | undefined;
-	memberDetails: UserInput;
-}
-
 interface addScoresInput {
 	teamName: string;
 	teamScore: number;
@@ -51,5 +44,4 @@ export type {
 	AdapterUser,
 	UserInput,
 	addScoresInput,
-	createAccountParm,
 };

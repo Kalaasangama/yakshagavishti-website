@@ -6,8 +6,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "src/components/ui/table";
-import { api } from "~/utils/api";
+} from "~/components/ui/table";
 import {
 	Dialog,
 	DialogContent,
@@ -15,8 +14,8 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "./ui/dialog";
-import { Button } from "src/components/ui/button";
+} from "~/components/ui/dialog";
+import { Button } from "~/components/ui/button";
 
 type Members = {
 	name: string;
@@ -57,7 +56,7 @@ export default function ViewBeforeSubmit({data, roles}:{data:Members[], roles:{v
 										{member.name}
 									</TableCell>
 									<TableCell className="font-semibold text-sm">
-										{(roles.find( role => role.value === member.characterId)).label}
+										{roles.find(role => role.value === member.characterId)?.label ?? "Unknown"}
 									</TableCell>
 									<TableCell>
 									<a href={member.idURL} target="_blank">

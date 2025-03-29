@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { api } from '~/utils/api'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table'
-import { Button } from '../ui/button';
+import { api } from '~/trpc/react'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table'
+import { Button } from '~/components/ui/button';
 
 function TeamScore() {
     type TeamScores = Record<string, number>;
@@ -19,9 +19,7 @@ function TeamScore() {
             team.data?.map((data) => {
                 const teamName = data.team.name;
                 // If the teamID doesn't exist in the 'teamScores' object, initialize it
-                if (!teamScores[teamName]) {
-                    teamScores[teamName] = 0;
-                }
+                teamScores[teamName] ??= 0;
 
                 // Add the score to the total for the team
                 teamScores[teamName] += data.score;
@@ -49,7 +47,7 @@ function TeamScore() {
             ]
               return row;
             })
-        const csvfile = col + row.join("\n");
+        const csvfile = col + (row?.join("\n") ?? "");
         const blob = new Blob([csvfile], { type: "text/csv" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -65,7 +63,7 @@ function TeamScore() {
     return (
         <div className="mb-[100vh]">
             <div className='flex flex-row gap-[56vw]'>
-                <Button className='my-3 flex basis-1/2 justify-start' onClick={e => downloadCSV()}>Download CSV</Button>
+                <Button className='my-3 flex basis-1/2 justify-start' onClick={downloadCSV}>Download CSV</Button>
                 <div className={`rounded-3xl basis-1/2 text-center flex items-center px-3 py-1 my-3 text-2xl justify-center ${check.data === "Not submitted" ? "bg-red-800":"bg-green-800"}`}>{`${check.data === "Not submitted" ? "Not Submitted":"Submitted"}`}</div>
             </div>
             <Table className='text-2xl'>

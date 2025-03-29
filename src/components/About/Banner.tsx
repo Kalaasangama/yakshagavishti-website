@@ -1,5 +1,5 @@
-import Reveal from "../Animations/reveal";
-import ScrollLag from "../Animations/scrollLag";
+import Reveal from "~/components/Animations/reveal";
+import ScrollLag from "~/components/Animations/scrollLag";
 import Image from "next/image";
 // import ReactPlayer from "react-player";
 import dynamic from 'next/dynamic'

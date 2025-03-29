@@ -1,0 +1,50 @@
+{
+    "Footer": "Kalaasangama",
+    "Navbar": {
+        "Home": "Home",
+        "About": "About Us",
+        "Sponsors": "Sponsors",
+        "Achievements": "Achievements"
+    },
+    "Timer": {
+        "Days": "Days",
+        "Hours": "Hours",
+        "Minutes": "Mins",
+        "Seconds": "Secs"
+    },
+    "About": {
+        "About": "About NMAMIT",
+        "Team": "Team Yakshasangama",
+        "About1": "Nitte Mahalinga Adyantaya Memorial Institute of Technology (NMAMIT), Nitte, established in 1986 and recognized by the All India Council for Technical Education, New Delhi, has been a constituent college of Nitte University, Mangaluru, since June 2022.",
+        "About2": "Ranked 175 in the National Institutional Ranking Framework (NIRF) 2022 by MHRD, GoI among the engineering colleges in India, the College has been placed under the \"Platinum\" category for having high industry linkages by the AICTE-CII Survey of Industry-Linked Technical Institutes 2020. For details, visit www.nmamit.nitte.edu.in",
+        "Team1": "In just a year since our inception, Team Yakshasangama has emerged as a promising team of young artists across the off centre campus of Nitte DU, securing champion titles in four out of six competitions and numerous individual prizes.",
+        "Team2": "Our passion for Yakshagana fuels our journey, and we are excited to continue this remarkable ascent in the world of this cherished art form.",
+        "Members": "Our Members",
+        "Description": "Meet the people behind the scenes"
+    },
+    "Home": {
+        "Rulebook": "Rule Book",
+        "Prasanga": "Prasanga Padya",
+        "About": "About Yakshagavishti",
+        "AboutContent": "Immerse yourself in the fusion of tradition and innovation as our dedicated team invites select participants to be part of this unique Yakshagana competition. This one-of-a-kind competition seamlessly integrates centuries-old storytelling with a modern approach, all while preserving the essence of this beloved folk art. Join us on this transformative journey where ancient narratives and the rich heritage of Yakshagana meets a contemporary context of technology for better experience and transparency.",
+        "FAQ": "FAQ",
+        "q1": "Is Yakshagavishti open for all teams?&No, unfortunately this is for invited colleges only.",
+        "q2": "When will Yakshagavishti be conducted?&Yakshagavishti will be on Saturday, April 12th, 2025",
+        "q3": "Do we have to physically register again on the day of competition?&No; teams only need to verify their registrations.",
+        "q4_q": "Where and how can I access the rule book and Prasanga Padya list?",
+        "q4_ans": "It can be downloaded directly from the website &here&",
+        "q5": "Can anyone attend Yakshagavishti as an audience member?&Yes. Anyone can be an audience member; you&apos;re most welcome for the event!"
+    },
+    "Sponsors": {
+        "Heading": "SPONSORS",
+        "Description": "Big names backing an extraordinary event.",
+        "Title": "Official Title Partners",
+        "Associate": "Official Associate Partners",
+        "Executive": "Official Executive Partners",
+        "Visit": "Visit Website"
+    },
+    "Achievements": {
+        "Heading": "Achievements",
+        "Description": "Remarkable Feats in the Spotlight"
+    }
+}

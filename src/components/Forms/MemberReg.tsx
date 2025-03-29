@@ -1,18 +1,19 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Button } from "src/components/ui/button";
+import React, { type Dispatch, type SetStateAction, useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Button as RegButton } from "~/components/Button";
 import {
 	DialogContent,
 	DialogDescription,
 	Dialog,
 	DialogTitle,
 	DialogTrigger,
-} from "src/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "../ui/accordion";
+} from "~/components/ui/accordion";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -23,14 +24,13 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import { api } from "~/utils/api";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/router";
-import AccordianForm from "./AccordianForm";
-import z, { set } from "zod";
-import { m } from "framer-motion";
-import ViewBeforeSubmit from "../ViewBeforeSubmit";
+} from "~/components/ui/alert-dialog";
+import { api } from "~/trpc/react";
+import { useToast } from "~/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import AccordianForm from "~/components/Forms/AccordionForm";
+import z from "zod";
+import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -58,7 +58,10 @@ const MemberReg = ({
 }) => {
 	const membersList = api.team.getTeamForEdits.useQuery();
 	const [MembersArray, setMembersArray] = useState<Members[]>(
-		JSON.parse(localStorage.getItem("members")) || []
+		(() => {
+			const storedMembers = localStorage.getItem("members");
+			return storedMembers ? (JSON.parse(storedMembers) as Members[]) : [];
+		})()
 	);
 	const { toast } = useToast();
 	const registerMembers = api.team.register.useMutation({
@@ -76,7 +79,7 @@ const MemberReg = ({
 				title: "Team registered successfully!",
 				description: data.message,
 			});
-			return router.reload();
+			return router.refresh();
 		},
 	});
 	const getIndex = (label: string, prevIndex: number) => {
@@ -93,8 +96,8 @@ const MemberReg = ({
 	if (membersList.isLoading) return <div>Loading...</div>;
 	return (
 		<Dialog defaultOpen={true}>
-			<DialogTrigger asChild>
-				<Button>Create Team</Button>
+			<DialogTrigger>
+				<RegButton>Create Team</RegButton>
 			</DialogTrigger>
 			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
 				<DialogTitle>Character Details</DialogTitle>
@@ -121,7 +124,7 @@ const MemberReg = ({
 												: MembersArray
 										}
 										setMembersArray={setMembersArray}
-										index={getIndex(role.label, index)}
+										index={getIndex(role.label, index) ?? 0}
 										characterId={role.value}
 									/>
 								</AccordionContent>
@@ -148,7 +151,7 @@ const MemberReg = ({
 							disabled={
 								availableRoles.length <=
 								MembersArray.filter(
-									(member) => member !== (undefined || null)
+									(member) => (member !== undefined) || (member !== null)
 								).length
 									? false
 									: true
@@ -159,8 +162,7 @@ const MemberReg = ({
 								disabled={
 									availableRoles.length <=
 									MembersArray.filter(
-										(member) =>
-											member !== (undefined || null)
+										(member) => (member !== undefined) || (member !== null)
 									).length
 										? false
 										: true
@@ -168,8 +170,7 @@ const MemberReg = ({
 								onClick={() => {
 									if (
 										MembersArray.filter(
-											(member) =>
-												member !== (undefined || null)
+											(member) => (member !== undefined) || (member !== null)
 										).length < availableRoles.length
 									) {
 										toast({
@@ -200,7 +201,7 @@ const MemberReg = ({
 								/>
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction
-									disabled={registerMembers.isLoading}
+									disabled={registerMembers.isPending}
 									onClick={(e) => {
 										e.preventDefault();
 										console.log(MembersArray);
@@ -218,7 +219,7 @@ const MemberReg = ({
 										});
 									}}
 								>
-									{registerMembers.isLoading
+									{registerMembers.isPending
 										? "Loading..."
 										: "Continue"}
 								</AlertDialogAction>

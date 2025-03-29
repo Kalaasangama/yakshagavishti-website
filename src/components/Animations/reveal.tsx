@@ -1,5 +1,7 @@
+'use client';
+
 import { motion, useInView, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type JSX } from "react";
 
 const Reveal = ({
 	children,
@@ -8,13 +10,15 @@ const Reveal = ({
 	children: JSX.Element;
 	classes: undefined | string;
 }) => {
-	const ref = useRef(null);
+	const ref = useRef<HTMLDivElement>(null);
 	const isInView = useInView(ref, { once: true });
 	const control = useAnimation();
 
 	useEffect(() => {
-		isInView && control.start("visible").catch((err) => console.log(err));
-	}, [isInView]);
+		if (isInView) {
+			control.start("visible").catch((err) => console.log(err));
+		}
+	}, [isInView, control]);
 
 	return (
 		<div

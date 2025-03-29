@@ -1,8 +1,8 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
-import { Button } from '../ui/button';
+import { Button } from "~/components/ui/button";
 import { useEffect, useState } from 'react';
-import { api } from '~/utils/api';
+import { api } from '~/trpc/react';
 
 const Remarks = (team: { teamId: string, isLoading: boolean, isLoadingCriteria:boolean }) => {
     const [remark, setRemark] = useState("");
@@ -24,7 +24,7 @@ const Remarks = (team: { teamId: string, isLoading: boolean, isLoadingCriteria:b
     }
 
     useEffect(() => {
-        setRemark(getRemark.data?.remark)
+        setRemark(getRemark.data?.remark ?? "")
     },[getRemark.data])
 
     return (
@@ -54,7 +54,7 @@ const Remarks = (team: { teamId: string, isLoading: boolean, isLoadingCriteria:b
                 />
                 <div className="mt-[25px] flex justify-end">
                 <Dialog.Close asChild>
-                    <Button onClick={e => saveRemark()}>
+                    <Button onClick={saveRemark}>
                     Save changes
                     </Button>
                 </Dialog.Close>

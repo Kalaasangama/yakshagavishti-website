@@ -1,15 +1,15 @@
 import { useState } from "react";
-import CollegeReg from "./CollegeReg";
-import LeadRegister from "./LeadRegister";
-import MemberReg from "./MemberReg";
+import CollegeReg from "~/components/Forms/CollegeReg";
+import LeadRegister from "~/components/Forms/LeadRegister";
+import MemberReg from "~/components/Forms/MemberReg";
 import { useSession } from "next-auth/react";
-import EditTeamForm from "./EditTeam";
+import EditTeamForm from "~/components/Forms/EditTeam";
 
 export default function CreateTeam() {
 	const user = useSession()?.data?.user;
 	const [FormToShow, setFormToShow] = useState(1);
 	const [CollegeId, setCollegeId] = useState("");
-	const [LeaderChar, setLeaderChar] = useState(user?.characterId || null);
+	const [LeaderChar, setLeaderChar] = useState(user?.characterId ?? "");
 	if (FormToShow === 1)
 		return (
 			<>

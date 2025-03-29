@@ -1,14 +1,18 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { BiLogoInstagram, BiLogoGmail } from 'react-icons/bi'
+import { useTranslations } from "next-intl";
 
-const Footer = () => {
+export default function Footer () {
+  const t = useTranslations("Navbar");
+  const f = useTranslations();
+
   const links = [
-    { label: "Home", url: "/" },
-    { label: "Sponsors", url: "/sponsors" },
-    { label: "Achievements", url: "/achievements" },
-    { label: "About Us", url: "/about" },
+    { label: t('Home'), url: "/" },
+    { label: t('Sponsors'), url: "/sponsors" },
+    { label: t('Achievements'), url: "/achievements" },
+    { label: t('About'), url: "/about" },
   ];
 
   const contacts = [
@@ -16,12 +20,12 @@ const Footer = () => {
     { label: <BiLogoGmail fill="none" strokeWidth={1.5} />, url: "mailto:kalaasangama.nmamit@nitte.edu.in" },
   ]
 
-  const router = useRouter();
+  const pathname = usePathname();
 
   // Need to find the active page...
-  const activePaths = links.filter((link) => link.url === router.pathname);
+  const activePaths = links.filter((link) => link.url === pathname);
   // Idk to implement, thus doing in alternate hack... Typescript throwing error if directly used links.find()
-  const activePath = activePaths[0] ? activePaths[0] : { label: "", url: "" };
+  const activePath = activePaths[0] ?? { label: "", url: "" };
 
   return (
     <div className="border-t-[1px] border-gray-600 bg-gradient-to-br from-primary-100 to-gray-950">
@@ -37,7 +41,7 @@ const Footer = () => {
             <div className="flex md:flex-row justify-center items-center gap-1 md:gap-5 whitespace-nowrap select-none text-sm sm:text-base">
               {links.map((link, idx) => {
                 return (
-                  <>
+                  <div key={`footer${idx}`}>
                     <Link key={`footer${idx}`} className={ "py-2" +
                       activePath?.label === link.label
                         ? "text-secondary-100"
@@ -46,7 +50,7 @@ const Footer = () => {
                         {link.label}
                     </Link>
                     {idx !== links.length-1 && <span className="mx-3 py-2" key={`footer_${idx}`}>|</span>}  
-                  </>
+                  </div>
                 );
               })}
             </div>
@@ -64,12 +68,10 @@ const Footer = () => {
         <div className="text-base xl:text-lg text-center flex flex-col gap-2">
           <Link href={"/team"} className="transition-all hover:tracking-widest text-gray-300 underline-offset-4">Made with ❤️ by <span className="text-secondary-100 font-medium">Finite Loop Club</span></Link>
           <div className="">
-            © <span className="text-secondary-100 font-medium">Kalaasangama</span> 2023
+            © <span className="text-secondary-100 font-medium">{f("Footer")}</span> 2023
           </div>
         </div>
       </div>
     </div>
   );
 };
-
-export default Footer;

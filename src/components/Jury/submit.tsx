@@ -1,3 +1,5 @@
+"use client";
+
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Button } from "../ui/button";
@@ -9,20 +11,14 @@ import {
 	TableCell,
 	TableHeader,
 } from "~/components/ui/table";
-import { api } from "~/utils/api";
-import { Dispatch, SetStateAction, useState } from "react";
-import { Characters, Criteria, criteria } from "@prisma/client";
-import toast from "react-hot-toast";
+import { api } from "~/trpc/react";
+import { type Dispatch, type SetStateAction, useState } from "react";
+import type { Characters, Criteria } from "@prisma/client";
+import { toast } from "react-hot-toast";
 
-type ScoresState = {
-	[character in Characters]: {
-		[criteria in Criteria]: number;
-	};
-};
+type ScoresState = Record<Characters, Record<Criteria, number>>;
 
-type TeamScoresState = {
-	[criteria in Criteria]: number;
-};
+type TeamScoresState = Record<Criteria, number>;
 
 const Submit = ({
     scores,
@@ -50,8 +46,8 @@ const Submit = ({
     ) => {
 	const scoresUpdate = api.jury.scoresUpdate.useMutation();
 	const totalScoreUpdate = api.jury.totalScoreUpdate.useMutation();
-	const scoreUpdate = api.jury.updateScores.useMutation();
-    const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
+	// const scoreUpdate = api.jury.updateScores.useMutation();
+    // const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
     const [open, setOpen] = useState<boolean>(false)
 	const finalScore = api.jury.finalScore.useMutation();
 	const ctx = api.useContext()
@@ -107,9 +103,9 @@ const Submit = ({
     
       const calculateFinalTotal = (): number => {
         let sum=0;
-        Object.keys(cScores).forEach((key) => {
-          sum+=cScores[key]
-        });
+		criteriaList.forEach((key) => {
+		  sum += cScores[key];
+		});
         return sum
       };
 
@@ -205,9 +201,9 @@ const Submit = ({
 													</TableCell>
 													<TableCell>
 														{
-															cScores[
-																criteriaList[k]
-															]
+															criteriaList[k] !== undefined
+																? cScores[criteriaList[k]]
+																: 0
 														}
 													</TableCell>
 												</TableRow>

@@ -1,9 +1,9 @@
-import { prisma } from "../server/db";
+import { db } from "../server/db";
 import kalasangamaError from "./customError";
-import type { UserInput } from "./CustomTypes";
+import type { UserInput } from "~/utils/CustomTypes";
 
 const getUserAccessToTeam = async (user_id: string) => {
-	const user = await prisma.user.findUnique({
+	const user = await db.user.findUnique({
 		where: { id: user_id },
 		select: {
 			team: {
@@ -21,7 +21,7 @@ const getUserAccessToTeam = async (user_id: string) => {
 	}
 };
 const getCollegeById = async (college_id: string) => {
-	const college = await prisma.college.findUnique({
+	const college = await db.college.findUnique({
 		where: {
 			id: college_id,
 		},
@@ -46,7 +46,7 @@ const setLeader = async (
 	leader_name: string
 ) => {
 	if (character_id)
-		await prisma.user.update({
+		await db.user.update({
 			where: { id: user_id },
 			data: {
 				team: {
@@ -74,11 +74,10 @@ const setLeader = async (
 			},
 		});
 	else
-		await prisma.user.update({
+		await db.user.update({
 			where: { id: user_id },
 			data: {
 				team: {
-					
 					connect: {
 						name: teamName,
 					},
@@ -104,7 +103,7 @@ const createAccount = (
 	teamName: string,
 	college_id: string
 ) => {
-	return prisma.user.create({
+	return db.user.create({
 		data: {
 			name: user?.name,
 			characterPlayed: {
@@ -128,7 +127,7 @@ const createAccount = (
 };
 
 const setTeamCompleteStatus = async (team_id: string, status: boolean) => {
-	await prisma.team.update({
+	await db.team.update({
 		where: { id: team_id },
 		data: { isComplete: status },
 	});

@@ -1,9 +1,13 @@
+'use client';
+
 import React from "react";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 import Image from "next/image";
 import { Button } from "~/components/ui/button";
 
-import Tilt from 'react-parallax-tilt/dist/index.umd';
+import Tilt from 'react-parallax-tilt';
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 // import './ParallaxEffectGlareScale.demozap.scss';
 // import '/react-parallax-tilt/ParallaxEffectGlareScale.demozap.css';
 
@@ -26,6 +30,8 @@ const EventsCard = ({
   rev,
   delay,
 }: Props) => {
+    const t = useTranslations("Sponsors");
+
   return (
     <Tilt
     className="rounded-2xl"
@@ -55,14 +61,14 @@ const EventsCard = ({
             <p className="">
               {SponsorDesc}
             </p>
-            <a className="self-center" target="_blank" rel="noreferrer" href={SponsorWebsiteLink}>
+            <Link className="self-center" target="_blank" rel="noreferrer" href={SponsorWebsiteLink}>
               <Button size="sm" className="hidden md:block">
-                <span className="text-center items-center flex gap-2 p-1">Visit Website <BsBoxArrowUpRight className="text-center align-middle" /></span>
+                <span className="text-center items-center flex gap-2 p-[0.5]"><p className="mt-[9]">{t("Visit")}</p> <BsBoxArrowUpRight className="text-center align-middle" /></span>
               </Button>
               <Button className="md:hidden">
-                <span className="text-center items-center flex gap-2 p-1">Visit Website <BsBoxArrowUpRight className="text-center align-middle" /></span>
+                <span className="text-center items-center flex gap-2 p-[0.5]"><p className="mt-[9]">{t("Visit")}</p> <BsBoxArrowUpRight className="text-center align-middle" /></span>
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
 

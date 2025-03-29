@@ -1,18 +1,21 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { Button } from "src/components/ui/button";
+import { Button as RegButton } from "~/components/Button";
 import {
 	DialogContent,
 	DialogDescription,
 	Dialog,
 	DialogTitle,
 	DialogTrigger,
-} from "src/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
 	Accordion,
 	AccordionContent,
 	AccordionItem,
 	AccordionTrigger,
-} from "../ui/accordion";
+} from "~/components/ui/accordion";
 import {
 	AlertDialog,
 	AlertDialogAction,
@@ -23,13 +26,13 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import { api } from "~/utils/api";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/router";
-import AccordianForm from "./AccordianForm";
+} from "~/components/ui/alert-dialog";
+import { api } from "~/trpc/react";
+import { useToast } from "~/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import AccordianForm from "~/components/Forms/AccordionForm";
 import z from "zod";
-import ViewBeforeSubmit from "../ViewBeforeSubmit";
+import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
 const roles = [
 	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
 	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
@@ -56,7 +59,10 @@ const EditTeamForm = ({
 	//Get the list of members from the API
 	const membersList = api.team.getTeamForEdits.useQuery();
 	const [MembersArray, setMembersArray] = useState<Members[]>(
-		JSON.parse(localStorage.getItem("members")) || []
+		(() => {
+			const storedMembers = localStorage.getItem("members");
+			return storedMembers ? (JSON.parse(storedMembers) as Members[]) : [];
+		})()
 	);
 	const { toast } = useToast();
 
@@ -68,14 +74,14 @@ const EditTeamForm = ({
 				for (const member of membersList.data.members) {
 					if (member?.characterPlayed?.id)
 						tempArr.push({
-							name: member.name,
+							name: member.name ?? "",
 							characterId: member?.characterPlayed?.id,
-							idURL: member.idURL,
+							idURL: member.idURL ?? "",
 						});
 				}
 				setMembersArray(tempArr);
 			}
-	}, [membersList.data]);
+	}, [membersList.data, MembersArray.length]);
 
 	//Register members API
 	const registerMembers = api.team.register.useMutation({
@@ -93,7 +99,7 @@ const EditTeamForm = ({
 				title: "Team registered successfully!",
 				description: data.message,
 			});
-			return router.reload();
+			return router.refresh();
 		},
 	});
 
@@ -112,8 +118,8 @@ const EditTeamForm = ({
 		return <div className="text-2xl">Loading...</div>;
 	return (
 		<Dialog defaultOpen={true}>
-			<DialogTrigger asChild>
-				<Button>Edit Team</Button>
+			<DialogTrigger>
+				<RegButton>Edit Team</RegButton>
 			</DialogTrigger>
 			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
 				<DialogTitle>Character Details</DialogTitle>
@@ -154,7 +160,7 @@ const EditTeamForm = ({
 							disabled={
 								roles.length <=
 								MembersArray.filter(
-									(member) => member !== (undefined || null)
+									(member) => (member !== undefined) || (member !== null)
 								).length
 									? false
 									: true
@@ -165,8 +171,7 @@ const EditTeamForm = ({
 								disabled={
 									roles.length <=
 									MembersArray.filter(
-										(member) =>
-											member !== (undefined || null)
+										(member) => (member !== undefined) || (member !== null)
 									).length
 										? false
 										: true
@@ -174,8 +179,7 @@ const EditTeamForm = ({
 								onClick={() => {
 									if (
 										MembersArray.filter(
-											(member) =>
-												member !== (undefined || null)
+											(member) => (member !== undefined) || (member !== null)
 										).length < roles.length
 									) {
 										toast({
@@ -206,7 +210,7 @@ const EditTeamForm = ({
 									roles={roles}
 								/>
 								<AlertDialogAction
-									disabled={registerMembers.isLoading}
+									disabled={registerMembers.isPending}
 									onClick={(e) => {
 										e.preventDefault();
 										console.log(MembersArray);
@@ -224,7 +228,7 @@ const EditTeamForm = ({
 										});
 									}}
 								>
-									{registerMembers.isLoading
+									{registerMembers.isPending
 										? "Loading..."
 										: "Continue"}
 								</AlertDialogAction>

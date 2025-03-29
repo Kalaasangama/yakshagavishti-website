@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, type JSX } from "react"
 import { motion, useScroll, useTransform } from "framer-motion"
 
 const ScrollLag = ({ children, classes, speed }: {children: JSX.Element, classes: string | undefined, speed: number}) => {

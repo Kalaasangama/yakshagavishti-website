@@ -7,11 +7,11 @@ import kalasangamaError from "~/utils/customError";
 export const adminRouter = createTRPCRouter({
 	getRegisteredTeams: protectedProcedure.query(async ({ ctx }) => {
 		try {
-			const user = await ctx.prisma.user.findUnique({
+			const user = await ctx.db.user.findUnique({
 				where: { id: ctx.session.user.id },
 			});
 			if (user?.role === "ADMIN") {
-				const teams = await ctx.prisma.team.findMany({
+				const teams = await ctx.db.team.findMany({
 					select: {
 						id: true,
 						name: true,
@@ -68,7 +68,7 @@ export const adminRouter = createTRPCRouter({
 				});
 			} else {
 				console.log(error);
-				throw "An error occurred!";
+				throw new Error("An error occurred!");
 			}
 		}
 	}),
@@ -80,11 +80,11 @@ export const adminRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			try {
-				const user = await ctx.prisma.user.findUnique({
+				const user = await ctx.db.user.findUnique({
 					where: { id: ctx.session.user.id },
 				});
 				if (user?.role === "ADMIN") {
-					await ctx.prisma.user.update({
+					await ctx.db.user.update({
 						where: {
 							id: input.userId,
 						},
@@ -107,7 +107,7 @@ export const adminRouter = createTRPCRouter({
 					});
 				} else {
 					console.log(error);
-					throw "An error occurred!";
+					throw new Error("An error occurred!");
 				}
 			}
 		}),
@@ -120,12 +120,12 @@ export const adminRouter = createTRPCRouter({
 		)
 		.mutation(async ({ ctx, input }) => {
 			try {
-				const user = await ctx.prisma.user.findUnique({
+				const user = await ctx.db.user.findUnique({
 					where: { id: ctx.session.user.id },
 				});
 				if (user?.role === "ADMIN") {
 					if (input.action === "Grant") {
-						await ctx.prisma.team.update({
+						await ctx.db.team.update({
 							where: {
 								id: input.team,
 							},
@@ -139,7 +139,7 @@ export const adminRouter = createTRPCRouter({
 							},
 						});
 					} else {
-						await ctx.prisma.team.update({
+						await ctx.db.team.update({
 							where: {
 								id: input.team,
 							},
@@ -168,7 +168,7 @@ export const adminRouter = createTRPCRouter({
 					});
 				} else {
 					console.log(error);
-					throw "An error occurred!";
+					throw new Error("An error occurred!");
 				}
 			}
 		}),
@@ -178,7 +178,7 @@ export const adminRouter = createTRPCRouter({
 				judgeId:z.string()
             })))
             .query(async({ctx,input})=>{
-                const scores = await ctx.prisma.individualScore.findMany({
+                const scores = await ctx.db.individualScore.findMany({
                     where: {
                         teamID: input.teamId,
                         judgeId: input.judgeId
@@ -219,7 +219,7 @@ export const adminRouter = createTRPCRouter({
 				teamId:z.string(),
 			})).
 			query(async({ctx})=>{
-				return await ctx.prisma.judge.findMany({
+				return await ctx.db.judge.findMany({
 					include: {
 						user: true
 					}
@@ -227,7 +227,7 @@ export const adminRouter = createTRPCRouter({
 			}),
 			getResults:protectedAdminProcedure
 			.query(async({ctx})=>{
-				const individualScores = await ctx.prisma.individualScore.findMany({
+				const individualScores = await ctx.db.individualScore.findMany({
 					include: {
 						characterPlayed: true,
 						criteria: true,
@@ -257,7 +257,7 @@ export const adminRouter = createTRPCRouter({
 				character: z.nativeEnum(Characters)
 			}))
 			.query(async ({ctx,input})=>{
-				return await ctx.prisma.user.findUnique({
+				return await ctx.db.user.findUnique({
 					where:{
 						characterId_teamId:{
 							characterId:input.character,
@@ -268,7 +268,7 @@ export const adminRouter = createTRPCRouter({
 			}),
 			getTeamScore:protectedAdminProcedure
 			.query(async({ctx})=>{
-				const teamScores = await ctx.prisma.teamScore.findMany({
+				const teamScores = await ctx.db.teamScore.findMany({
 					include: {
 						criteria: true,
 						team: true
@@ -286,7 +286,7 @@ export const adminRouter = createTRPCRouter({
 			}),
 			getTeams: protectedAdminProcedure
 			.query(async({ctx})=>{
-				const teams = await ctx.prisma.team.findMany({
+				const teams = await ctx.db.team.findMany({
                     include:{
                         teamScore: true,
                         TeamNumber: true
@@ -296,13 +296,13 @@ export const adminRouter = createTRPCRouter({
 			}),
 			checkIfAllSubmitted: protectedAdminProcedure
 			.query(async({ctx})=>{
-				const Submitted = await ctx.prisma.submitted.findMany({
+				const Submitted = await ctx.db.submitted.findMany({
 					where: {
 						submitted: true
 					},
 				});
-				const teams = await ctx.prisma.team.findMany();
-				const judges = await ctx.prisma.judge.findMany();
+				const teams = await ctx.db.team.findMany();
+				const judges = await ctx.db.judge.findMany();
 				if(Submitted.length !== (teams.length * judges.length)){
 					return "Not submitted"
 				}

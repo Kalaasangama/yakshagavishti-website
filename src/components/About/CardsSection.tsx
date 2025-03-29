@@ -1,7 +1,13 @@
 import React from "react";
-import Card from "./Aboutcard";
+import Card from "~/components/About/Aboutcard";
 
-const members = [
+interface Member {
+  name: string;
+  role: string;
+  [key: string]: string;
+}
+
+const members: Member[] = [
   {
     "name": "Spoorthi Bailoor",
     "role": "Folk Head"

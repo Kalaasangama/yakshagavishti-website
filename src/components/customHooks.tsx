@@ -1,4 +1,4 @@
-import { MutableRefObject, useEffect, useState } from "react"
+import { useEffect, useState, type RefObject } from "react"
 
 export const useWindowSize = (): {
   width: number,
@@ -27,7 +27,7 @@ export const useWindowSize = (): {
   return windowSize
 }
 
-export const useContainerDimension = (ref: MutableRefObject<HTMLDivElement | null>) => {
+export const useContainerDimension = (ref: RefObject<HTMLDivElement | null>) => {
   const [dimention, setDimention] = useState<{width: number | undefined, height: number | undefined}>({width: 0, height: 0})
 
   useEffect(() => {
@@ -40,7 +40,9 @@ export const useContainerDimension = (ref: MutableRefObject<HTMLDivElement | nul
       setDimention(getDimention())
     }
 
-    ref.current && setDimention(getDimention())
+    if (ref.current) {
+      setDimention(getDimention());
+    }
 
     window.addEventListener("resize", handleResize)
 

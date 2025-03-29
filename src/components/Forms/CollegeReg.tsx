@@ -1,6 +1,9 @@
+"use client";
+
 import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Button } from "src/components/ui/button";
+import { Button } from "~/components/ui/button";
+import { Button as RegButton } from "~/components/Button";
 import {
 	Form,
 	FormControl,
@@ -8,7 +11,7 @@ import {
 	FormField,
 	FormLabel,
 	FormMessage,
-} from "src/components/ui/form";
+} from "~/components/ui/form";
 import {
 	DialogContent,
 	DialogDescription,
@@ -16,19 +19,19 @@ import {
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "src/components/ui/dialog";
+} from "~/components/ui/dialog";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "src/components/ui/select";
-import { Input } from "src/components/ui/input";
-import { Label } from "src/components/ui/label";
-import { toast } from "../ui/use-toast";
-import { api } from "~/utils/api";
-import { getSession, useSession } from "next-auth/react";
+} from "~/components/ui/select";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { toast } from "~/components/ui/use-toast";
+import { api } from "~/trpc/react";
+import { useSession } from "next-auth/react";
 export default function CollegeReg({
 	setFormToShow,
 	setCollege,
@@ -53,14 +56,14 @@ export default function CollegeReg({
 				return setFormToShow(4);
 			}
 			if (user?.leaderOf) {
-				setFormToShow(3);
+				return setFormToShow(3);
 			} else {
-				setFormToShow(2);
+				return setFormToShow(2);
 			}
 			return toast({
 				variant: "default",
 				title: "College signed in successfully!",
-				description: data.message,
+				description: data?.message,
 			});
 		},
 	});
@@ -88,17 +91,17 @@ export default function CollegeReg({
 	return (
 		<div className="">
 			<Dialog>
-				<DialogTrigger asChild>
-					<Button className="">
+				<DialogTrigger>
+					<RegButton>
 						{user?.leaderOf ? "Edit Team" : "Create Team"}
-					</Button>
+					</RegButton>
 				</DialogTrigger>
 				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
 					<DialogHeader>
 						<DialogTitle>Create Team</DialogTitle>
 						<DialogDescription>
 							Fill in the information below. Click next when
-							you're done.
+							you&apos;re done.
 						</DialogDescription>
 					</DialogHeader>
 					<div className="grid gap-4 py-4">
@@ -107,7 +110,7 @@ export default function CollegeReg({
 								<FormField
 									control={form.control}
 									name="username"
-									render={({ field }) => (
+									render={() => (
 										<FormItem>
 											<FormLabel>
 												Choose your College
@@ -128,7 +131,7 @@ export default function CollegeReg({
 															</SelectTrigger>
 														</FormControl>
 														<SelectContent>
-															<SelectItem value="clonw0pqr0002x9jhoauzw7ov">
+															<SelectItem value="cm8sqp3yi0000sbn69rhkk7v5">
 																Alvas College,
 																Moodabidri
 															</SelectItem>
@@ -176,12 +179,13 @@ export default function CollegeReg({
 										</FormItem>
 									)}
 								/>
-								{verifyPassword.isLoading ? (
+								{verifyPassword.isPending ? (
 									<Button
 										type="submit"
 										size="sm"
 										className="text-white"
-										variant={"button"}
+										variant={"default"}
+
 										disabled
 									>
 										Loading...
@@ -191,7 +195,7 @@ export default function CollegeReg({
 										type="submit"
 										size="sm"
 										className="bg-white text-white hover:bg-gray-200"
-										variant={"button"}
+										variant={"default"}
 										onClick={(e) => {
 											e.preventDefault();
 											Passwordpattern();
