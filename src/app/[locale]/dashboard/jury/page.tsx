@@ -181,12 +181,12 @@ const Jury: NextPage = () => {
   const totalScore = (character: string) => {
     if (scores[character as Characters] != null) {
       const keys = Object.keys(scores[character as Characters]);
-      let sum = 0;
-      keys.forEach((key) => {
-        if ((scores[character] as ScoresState)[key] !== 999)
-          sum += (scores[character] as ScoresState)[key];
-      });
-      return sum;
+      // let sum = 0;
+      // keys.forEach((key) => {
+      //   if ((scores[character] as ScoresState)[key] !== 999)
+      //     sum += (scores[character] as ScoresState)[key];
+      // });
+      // return sum;
     }
     return 0;
   };
@@ -296,10 +296,10 @@ const Jury: NextPage = () => {
                     className="text-xl"
                     key={team.id}
                     onSelect={(e) =>
-                      setTeam(team.id, displayTeam[team?.TeamNumber?.number])
+                      setTeam(team.id, displayTeam[team?.TeamNumber?.number ?? 0] ?? "")
                     }
                   >
-                    {displayTeam[team?.TeamNumber?.number]}
+                    {displayTeam[team?.TeamNumber?.number ?? 0]}
                   </DropdownMenuItem>
                 ))
               ) : (

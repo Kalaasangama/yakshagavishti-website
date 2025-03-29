@@ -1,3 +1,5 @@
+"use client";
+
 import { api } from "~/trpc/react";
 import {
   Table,
@@ -100,26 +102,27 @@ const Jury: NextPage = () => {
       teamId: teamId,
       judgeId: judgeId
     },
-    {
-      onError: (error) => {
-        console.error(error);
-        alert("Error fetching score");
-      },
-      enabled: false,
-      staleTime: Infinity
-    },
+    // {
+    //   onError: (error) => {
+    //     console.error(error);
+    //     alert("Error fetching score");
+    //   },
+    //   enabled: false,
+    //   staleTime: Infinity
+    // },
     )
 
     const judge = api.admin.getJudges.useQuery({
         teamId: " "
     },
-    {
-        onSuccess: () => {
-            setEnable(false);
-        },
-        enabled: enable,
-        staleTime: Infinity
-    });
+    // {
+    //     onSuccess: () => {
+    //         setEnable(false);
+    //     },
+    //     enabled: enable,
+    //     staleTime: Infinity
+    // }
+    );
     
     const setTeam = (newTeamId:string ,teamName:string) => {
       if(newTeamId === teamId)
@@ -150,9 +153,9 @@ const Jury: NextPage = () => {
     },[teamId,judgeId])
 
     useEffect(() => {
-      if(res.data?.length>0){
+      if((res.data ?? []).length > 0){
         console.log("updating")
-          res.data.forEach((item) => {
+          res.data?.forEach((item) => {
             const character = item.characterPlayed.character;
             const criteria = item.criteria.name;
             // Update the scores state with the new value
@@ -164,7 +167,7 @@ const Jury: NextPage = () => {
               },
             }));
           });
-          const team = res.data[0]?.judge.teamScore;
+          const team = res.data?.[0]?.judge.teamScore;
           team?.forEach((team) => {
             setCScores((prevScores) => ({
               ...prevScores,
@@ -186,10 +189,10 @@ const Jury: NextPage = () => {
       const row = characters.map((character) => {
           const row = [
             character,
-            scores[character]?.[criteriaList[0]],
-            scores[character]?.[criteriaList[1]],
-            scores[character]?.[criteriaList[2]],
-            scores[character]?.[criteriaList[3]],
+            criteriaList[0] !== undefined ? scores[character]?.[criteriaList[0]] : 0,
+            criteriaList[1] !== undefined ? scores[character]?.[criteriaList[1]] : 0,
+            criteriaList[2] !== undefined ? scores[character]?.[criteriaList[2]] : 0,
+            criteriaList[3] !== undefined ? scores[character]?.[criteriaList[3]] : 0,
             totalScore(character)
           ]
           return row

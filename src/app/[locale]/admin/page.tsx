@@ -1,3 +1,5 @@
+"use client";
+
 import { useSession } from "next-auth/react";
 import { api } from "~/trpc/react";
 import Image from "next/image";

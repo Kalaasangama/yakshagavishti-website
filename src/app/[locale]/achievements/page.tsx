@@ -50,10 +50,10 @@ const Achievements = () => {
         <video src="https://res.cloudinary.com/dfhg1joox/video/upload/v1699877866/yakshagavishti/achievementsvideo_e7ayx4.mp4" className="h-screen w-full absolute inset-0 object-cover -z-50" autoPlay muted controls={false} loop playsInline></video>
         <div className="bg-gradient-to-t from-black/50 to-black/50 h-screen w-full absolute inset-0 -z-20"></div>
         <div>
-          <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl text-center ">Achievements</div>
+          <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl text-center ">{t("Heading")}</div>
           <br />
           <p className="text-secondary-100 text-3xl font-body text-center">
-            Remarkable Feats in the Spotlight
+            {t("Description")}
           </p>
         </div>
         <span className='animate-pulse fixed bottom-16 landscape:short:bottom-10 right-1/2 translate-x-1/2 -z-10'>

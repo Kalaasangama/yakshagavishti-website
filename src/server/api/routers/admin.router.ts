@@ -172,49 +172,49 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		}),
-		getScores: protectedAdminProcedure
-            .input((z.object({
-                teamId:z.string(),
-				judgeId:z.string()
-            })))
-            .query(async({ctx,input})=>{
-                const scores = await ctx.db.individualScore.findMany({
-                    where: {
-                        teamID: input.teamId,
-                        judgeId: input.judgeId
-                    },
-                    include: {
-                        criteria: true,
-                        characterPlayed: true,
-                        judge: {
-                            include: {
-                                teamScore: {
-                                    where: {
-                                        teamID: input.teamId,
-										judgeId: input.judgeId
-                                    },
-                                    include: {
-                                        criteria: true,
-                                    }
-                                },
-                                Submitted: {
-                                    where: {
-                                        teamID: input.teamId,
-										judgeId: input.judgeId
-                                    }
-                                }
-                            }
-                        },
-                        team: {
-                            include: {
-                                college: true
-                            }
-                        }
-                    }
-                })
-                return scores;
-            }),
-			getJudges:protectedAdminProcedure
+	getScores: protectedAdminProcedure
+		.input((z.object({
+			teamId:z.string(),
+			judgeId:z.string()
+		})))
+		.query(async({ctx,input})=>{
+			const scores = await ctx.db.individualScore.findMany({
+				where: {
+					teamID: input.teamId,
+					judgeId: input.judgeId
+				},
+				include: {
+					criteria: true,
+					characterPlayed: true,
+					judge: {
+						include: {
+							teamScore: {
+								where: {
+									teamID: input.teamId,
+									judgeId: input.judgeId
+								},
+								include: {
+									criteria: true,
+								}
+							},
+							Submitted: {
+								where: {
+									teamID: input.teamId,
+									judgeId: input.judgeId
+								}
+							}
+						}
+					},
+					team: {
+						include: {
+							college: true
+						}
+					}
+				}
+			})
+			return scores;
+		}),
+		getJudges:protectedAdminProcedure
 			.input(z.object({
 				teamId:z.string(),
 			})).
@@ -251,7 +251,7 @@ export const adminRouter = createTRPCRouter({
 				})
 				return individualScores;
 			}),
-			getName:protectedAdminProcedure
+		getName:protectedAdminProcedure
 			.input(z.object({
 				teamId: z.string(),
 				character: z.nativeEnum(Characters)
@@ -266,7 +266,7 @@ export const adminRouter = createTRPCRouter({
 					}
 				})
 			}),
-			getTeamScore:protectedAdminProcedure
+		getTeamScore:protectedAdminProcedure
 			.query(async({ctx})=>{
 				const teamScores = await ctx.db.teamScore.findMany({
 					include: {
@@ -284,7 +284,7 @@ export const adminRouter = createTRPCRouter({
 				})
 				return teamScores;
 			}),
-			getTeams: protectedAdminProcedure
+		getTeams: protectedAdminProcedure
 			.query(async({ctx})=>{
 				const teams = await ctx.db.team.findMany({
                     include:{
@@ -294,7 +294,7 @@ export const adminRouter = createTRPCRouter({
                 });
                 return teams;
 			}),
-			checkIfAllSubmitted: protectedAdminProcedure
+		checkIfAllSubmitted: protectedAdminProcedure
 			.query(async({ctx})=>{
 				const Submitted = await ctx.db.submitted.findMany({
 					where: {

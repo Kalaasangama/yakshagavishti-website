@@ -56,7 +56,7 @@ const schema = z.object({
   })
 
 export const JuryRouter= createTRPCRouter({
-            getTeams: protectedJudgeProcedure
+        getTeams: protectedJudgeProcedure
             .query(async({ctx})=>{
                 const userId = ctx.session.user.id;
                 //check if judge exiists if not add to judge table
@@ -165,7 +165,7 @@ export const JuryRouter= createTRPCRouter({
                 })
                 return scores;
             }),
-            updateScores: protectedJudgeProcedure
+        updateScores: protectedJudgeProcedure
             .input((z.object({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
@@ -222,7 +222,7 @@ export const JuryRouter= createTRPCRouter({
                     }
                 });
             }),
-            updateCriteriaScore: protectedJudgeProcedure
+        updateCriteriaScore: protectedJudgeProcedure
             .input((z.object({
                 teamId: z.string(),
                 criteriaName: z.nativeEnum(Criteria),
@@ -282,7 +282,7 @@ export const JuryRouter= createTRPCRouter({
                     }
                 })
             }),
-            getRemark: protectedJudgeProcedure
+        getRemark: protectedJudgeProcedure
             .input((z.object({
                 teamId: z.string(),
             })))
@@ -313,7 +313,7 @@ export const JuryRouter= createTRPCRouter({
                     }
                 })
             }),
-            scoresUpdate:protectedJudgeProcedure
+        scoresUpdate:protectedJudgeProcedure
             .input(z.object({
                 scores: schema,
                 characters: z.array(z.nativeEnum(Characters)), 
@@ -392,7 +392,7 @@ export const JuryRouter= createTRPCRouter({
                     }
                 })
             }),
-            finalScore: protectedJudgeProcedure
+        finalScore: protectedJudgeProcedure
             .input(z.object({
                 teamId: z.string(),
             }))

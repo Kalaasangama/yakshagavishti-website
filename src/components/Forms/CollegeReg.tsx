@@ -32,6 +32,7 @@ import { Label } from "~/components/ui/label";
 import { toast } from "~/components/ui/use-toast";
 import { api } from "~/trpc/react";
 import { useSession } from "next-auth/react";
+import { ImSpinner9 } from "react-icons/im";
 export default function CollegeReg({
 	setFormToShow,
 	setCollege,
@@ -106,7 +107,7 @@ export default function CollegeReg({
 					</DialogHeader>
 					<div className="grid gap-4 py-4">
 						<Form {...form}>
-							<form className="space-y-8">
+							<form className="space-y-8 flex flex-col">
 								<FormField
 									control={form.control}
 									name="username"
@@ -124,8 +125,9 @@ export default function CollegeReg({
 														defaultValue={
 															selectedCollege
 														}
+														
 													>
-														<FormControl>
+														<FormControl className="text-black">
 															<SelectTrigger>
 																<SelectValue placeholder="Select your college" />
 															</SelectTrigger>
@@ -164,7 +166,7 @@ export default function CollegeReg({
 													<Input
 														id="Team_Password"
 														placeholder="Team Password"
-														className="col-span-3"
+														className="col-span-3 text-black"
 														type="password"
 														onChange={(e) => {
 															setTeamPassword(
@@ -183,18 +185,18 @@ export default function CollegeReg({
 									<Button
 										type="submit"
 										size="sm"
-										className="text-white"
+										className="text-white bg-black w-[20%] self-center"
 										variant={"default"}
 
 										disabled
 									>
-										Loading...
+										<ImSpinner9 className="animate-spin" />
 									</Button>
 								) : (
 									<Button
 										type="submit"
 										size="sm"
-										className="bg-white text-white hover:bg-gray-200"
+										className="bg-white text-black hover:bg-black hover:text-white cursor-pointer w-[20%] self-center"
 										variant={"default"}
 										onClick={(e) => {
 											e.preventDefault();

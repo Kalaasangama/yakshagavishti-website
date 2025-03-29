@@ -33,14 +33,14 @@ import { useRouter } from "next/navigation";
 import AccordianForm from "~/components/Forms/AccordionForm";
 import z from "zod";
 import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
+//TODO: Change the id values to the actual DB values
 const roles = [
-	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
-	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
-	{ label: "TAAMRAAKSHA", value: "cloe27f110003ileorzfmoe05" },
-	{ label: "TAMAALAKETHU", value: "cloe27f110004ileolbv67nnz" },
-	{ label: "SATHYAVATHI", value: "cloe27f110005ileomce87hnz" },
-	{ label: "DAASHARAJA", value: "cloe27f110006ileobsf7jpot" },
-	{ label: "DEVAVRATHA", value: "cloe27f110007ileoc5l1vb44" },
+	{ label: "BHADRASENA", value: "cm8udw5zf0000sbyqmhzt9tp3" },
+	{ label: "RATNAAVATI", value: "cm8udw5zf0001sbyqrnjvaqwi" },
+	{ label: "VATSAAKHYA", value: "cm8udw5zf0003sbyq2j7233pa" },
+	{ label: "VIDYULLOCHANA", value: "cm8udw5zf0002sbyqv2ysgigo" },
+	{ label: "DRUDHAVARMA", value: "cm8udw5zg0004sbyqruxg5u3q" },
+	{ label: "DRUDHAVARMA CHAARAKA", value: "cm8udw5zg0005sbyqkklsoupz" },
 ];
 
 type Members = {

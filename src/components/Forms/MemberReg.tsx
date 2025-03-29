@@ -31,14 +31,15 @@ import { useRouter } from "next/navigation";
 import AccordianForm from "~/components/Forms/AccordionForm";
 import z from "zod";
 import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
+import { ImSpinner9 } from "react-icons/im";
+//TODO: Change the id values to the actual DB values
 const roles = [
-	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
-	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
-	{ label: "TAAMRAAKSHA", value: "cloe27f110003ileorzfmoe05" },
-	{ label: "TAMAALAKETHU", value: "cloe27f110004ileolbv67nnz" },
-	{ label: "SATHYAVATHI", value: "cloe27f110005ileomce87hnz" },
-	{ label: "DAASHARAJA", value: "cloe27f110006ileobsf7jpot" },
-	{ label: "DEVAVRATHA", value: "cloe27f110007ileoc5l1vb44" },
+	{ label: "BHADRASENA", value: "cm8udw5zf0000sbyqmhzt9tp3" },
+	{ label: "RATNAAVATI", value: "cm8udw5zf0001sbyqrnjvaqwi" },
+	{ label: "VATSAAKHYA", value: "cm8udw5zf0003sbyq2j7233pa" },
+	{ label: "VIDYULLOCHANA", value: "cm8udw5zf0002sbyqv2ysgigo" },
+	{ label: "DRUDHAVARMA", value: "cm8udw5zg0004sbyqruxg5u3q" },
+	{ label: "DRUDHAVARMA CHAARAKA", value: "cm8udw5zg0005sbyqkklsoupz" },
 ];
 
 type Members = {
@@ -133,7 +134,7 @@ const MemberReg = ({
 					</Accordion>
 				</div>
 				<div className="m-auto flex gap-2">
-					<Button onClick={() => setFormToShow(2)} size="sm">
+					<Button onClick={() => setFormToShow(2)} size="sm" className="cursor-pointer">
 						Back
 					</Button>
 					<Button
@@ -142,6 +143,7 @@ const MemberReg = ({
 							setMembersArray([]);
 							localStorage.clear();
 						}}
+						className="cursor-pointer"
 						size="sm"
 					>
 						Clear All
@@ -159,6 +161,7 @@ const MemberReg = ({
 						>
 							<Button
 								size="sm"
+								className="cursor-pointer"
 								disabled={
 									availableRoles.length <=
 									MembersArray.filter(
@@ -187,7 +190,7 @@ const MemberReg = ({
 						</AlertDialogTrigger>
 						<AlertDialogContent>
 							<AlertDialogHeader>
-								<AlertDialogTitle>
+								<AlertDialogTitle className="text-black">
 									Are you absolutely sure?
 								</AlertDialogTitle>
 								<AlertDialogDescription>
@@ -199,7 +202,7 @@ const MemberReg = ({
 									data={MembersArray}
 									roles={availableRoles}
 								/>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
+								<AlertDialogCancel className="text-black">Cancel</AlertDialogCancel>
 								<AlertDialogAction
 									disabled={registerMembers.isPending}
 									onClick={(e) => {
@@ -220,7 +223,7 @@ const MemberReg = ({
 									}}
 								>
 									{registerMembers.isPending
-										? "Loading..."
+										? <ImSpinner9 className="animate-spin" />
 										: "Continue"}
 								</AlertDialogAction>
 							</AlertDialogFooter>

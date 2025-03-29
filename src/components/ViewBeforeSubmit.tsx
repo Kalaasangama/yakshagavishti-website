@@ -30,7 +30,7 @@ export default function ViewBeforeSubmit({data, roles}:{data:Members[], roles:{v
 						View Team
 					</Button>
 				</DialogTrigger>
-				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] overflow-y-auto">
+				<DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px] max-h-[90%] overflow-y-scroll">
 					<DialogHeader>
 						<DialogTitle className="text-center text-xl">View Team</DialogTitle>
 						<DialogDescription className="text-center">

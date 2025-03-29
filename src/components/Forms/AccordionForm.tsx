@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import Image from "next/image";
 import { uploadFile } from "~/utils/file";
 import { IoCloseCircle } from "react-icons/io5";
+import { ImSpinner9 } from "react-icons/im";
 
 type Members = {
 	name: string;
@@ -130,7 +131,7 @@ export default function AccordianForm({
 							<Input
 								id="Teammate_Name"
 								placeholder="Teammate Name"
-								className="col-span-3"
+								className="col-span-3 text-black"
 								type="text"
 								defaultValue={MembersArray[index]?.name}
 								onChange={(e) => {
@@ -176,10 +177,11 @@ export default function AccordianForm({
 					)}
 				/>
 				{uploadStatus === "Uploading...." ? (
-					<Button size="sm" disabled>{uploadStatus}</Button>
+					<Button size="sm" disabled><ImSpinner9 className="animate-spin" /></Button>
 				) : (
 					<Button
 						size="sm"
+						className="cursor-pointer bg-black"
 						onClick={(e) => {
 							e.preventDefault();
 							if (FieldValidation()) {

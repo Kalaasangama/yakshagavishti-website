@@ -4,6 +4,7 @@ import React, { type Dispatch, type SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Button as RegButton } from "~/components/Button";
+import { ImSpinner9 } from "react-icons/im";
 import {
 	Form,
 	FormControl,
@@ -39,14 +40,14 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IoCloseCircle } from "react-icons/io5";
 
+//TODO: Change the id values to the actual DB values
 const roles = [
-	{ label: "SHANTHANU", value: "cloe25kiq0000ileox49h4d1j" },
-	{ label: "MANTRI SUNEETHI", value: "cloe265zk0002ileolpspexsb" },
-	{ label: "TAAMRAAKSHA", value: "cloe27f110003ileorzfmoe05" },
-	{ label: "TAMAALAKETHU", value: "cloe27f110004ileolbv67nnz" },
-	{ label: "SATHYAVATHI", value: "cloe27f110005ileomce87hnz" },
-	{ label: "DAASHARAJA", value: "cloe27f110006ileobsf7jpot" },
-	{ label: "DEVAVRATHA", value: "cloe27f110007ileoc5l1vb44" },
+	{ label: "BHADRASENA", value: "cm8udw5zf0000sbyqmhzt9tp3" },
+	{ label: "RATNAAVATI", value: "cm8udw5zf0001sbyqrnjvaqwi" },
+	{ label: "VATSAAKHYA", value: "cm8udw5zf0003sbyq2j7233pa" },
+	{ label: "VIDYULLOCHANA", value: "cm8udw5zf0002sbyqv2ysgigo" },
+	{ label: "DRUDHAVARMA", value: "cm8udw5zg0004sbyqruxg5u3q" },
+	{ label: "DRUDHAVARMA CHAARAKA", value: "cm8udw5zg0005sbyqkklsoupz" },
 ];
 
 const LeadRegister = ({
@@ -174,19 +175,15 @@ const LeadRegister = ({
 						done.
 					</DialogDescription>
 				</DialogHeader>
-				<div className="grid gap-4 py-2">
+				<div className="grid">
 					<Form {...form}>
-						<form className="space-y-8">
+						<form className="space-y-8 flex flex-col">
 							<FormField
 								control={form.control}
 								name="username"
 								render={({ field }) => (
 									<FormItem>
-										<div className="flex flex-col">
-											<div>
-												<div className="grid w-full max-w-sm items-center gap-1.5"></div>
-											</div>
-
+										<div className="flex flex-col space-y-4">
 											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Label htmlFor="phone">
 													Leader Name	
@@ -195,7 +192,7 @@ const LeadRegister = ({
 													type="text"
 													id="phone"
 													placeholder="Enter your Name"
-													className="col-span-3"
+													className="col-span-3 text-black"
 													defaultValue={LeaderName}
 													onChange={(e) => {
 														setLeaderName(
@@ -212,7 +209,7 @@ const LeadRegister = ({
 													type="tel"
 													id="phone"
 													placeholder="Enter your Phone number"
-													className="col-span-3"
+													className="col-span-3 text-black"
 													maxLength={10}
 													minLength={10}
 													defaultValue={LeaderContact}
@@ -295,7 +292,7 @@ const LeadRegister = ({
 														LeaderCharacter ?? undefined
 													}
 												>
-													<FormControl>
+													<FormControl className="text-black">
 														<SelectTrigger>
 															<SelectValue placeholder="Select the Character" />
 														</SelectTrigger>
@@ -333,15 +330,16 @@ const LeadRegister = ({
 								<Button
 									type="submit"
 									size="sm"
+									className="w-[30%] self-center"
 									disabled
 								>
-									{UploadStatus}
+									<ImSpinner9 className="animate-spin" />
 								</Button>
 							) : (
 							<Button
 								type="submit"
 								size="sm"
-								className="bg-white text-white hover:bg-gray-200"
+								className="bg-white text-black hover:bg-black hover:text-white cursor-pointer w-[30%] self-center"
 								onClick={(e) => {
 									e.preventDefault();
 									Passwordpattern();
