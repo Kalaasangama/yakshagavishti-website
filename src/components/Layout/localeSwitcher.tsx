@@ -5,6 +5,7 @@ import { useLocale } from "next-intl";
 import { FaGlobe } from "react-icons/fa";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
 import { Button } from "~/components/ui/button";
+import { useEffect } from "react";
 
 const LocaleSwitcher = () => {
   const router = useRouter();
@@ -13,11 +14,17 @@ const LocaleSwitcher = () => {
 
   const switchLocale = (newLocale: string) => {
     if (newLocale !== currentLocale) {
+      document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
+      
       const segments = pathname.split("/");
-      segments[1] = newLocale; // Replace only the locale part
-      router.push(segments.join("/"));
+      segments[1] = newLocale;
+      router.replace(segments.join("/"));
     }
   };
+  
+  useEffect(() => {
+    router.refresh();
+  }, [pathname, currentLocale, router]);
 
   return (
     <div className="lg:p-4">

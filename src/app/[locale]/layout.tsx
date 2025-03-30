@@ -18,7 +18,7 @@ export const metadata: Metadata = {
       description: 'Presenting Yakshagavishti - 2023, an Inter-College Yakshagana competition by Nitte University and NMAM Institute of Technology, as we celebrate the fusion of technology, cultural traditions, and artistic innovation. Welcome art enthusiasts for a unique experience!',
       url: 'https://www.yakshagavishti.in/',
       siteName: 'Yakshagavishti',
-      images: [{ url: '/logo.png', width: 800, height: 527, alt: 'Yakshagavishti', type: 'image/png', secureUrl: '/logo.png' }]
+      images: [{ url: 'logo.png', width: 800, height: 527, alt: 'Yakshagavishti', type: 'image/png', secureUrl: 'logo.png' }]
   }
 }
 
