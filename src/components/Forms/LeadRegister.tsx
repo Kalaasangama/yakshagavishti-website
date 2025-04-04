@@ -42,12 +42,12 @@ import { IoCloseCircle } from "react-icons/io5";
 
 //TODO: Change the id values to the actual DB values
 const roles = [
-	{ label: "BHADRASENA", value: "cm8udw5zf0000sbyqmhzt9tp3" },
-	{ label: "RATNAAVATI", value: "cm8udw5zf0001sbyqrnjvaqwi" },
-	{ label: "VATSAAKHYA", value: "cm8udw5zf0003sbyq2j7233pa" },
-	{ label: "VIDYULLOCHANA", value: "cm8udw5zf0002sbyqv2ysgigo" },
-	{ label: "DRUDHAVARMA", value: "cm8udw5zg0004sbyqruxg5u3q" },
-	{ label: "DRUDHAVARMA CHAARAKA", value: "cm8udw5zg0005sbyqkklsoupz" },
+	{ label: "BHADRA_SENA", value: "cm8tr0d010000r9nmzp0gasfe" },
+	{ label: "RATNAVATI", value: "cm8tr0g420001r9nmxecf4c4y" },
+	{ label: "VATSYAKA", value: "cm8tr0krs0002r9nm424nl2pn" },
+	{ label: "VIDYULOCHANA", value: "cm8tr0uvc0003r9nm1rn7o539" },
+	{ label: "DHRADAVARMA", value: "cm8tr0uvc0004r9nm3bo3a4rs" },
+	{ label: "DHRADAVARMA CHARAKA", value: "cm8tr0uvc0005r9nm1ilgoxn1" },
 ];
 
 const LeadRegister = ({
@@ -186,7 +186,7 @@ const LeadRegister = ({
 										<div className="flex flex-col space-y-4">
 											<div className="grid w-full max-w-sm items-center gap-1.5">
 												<Label htmlFor="phone">
-													Leader Name	
+													Leader Name
 												</Label>
 												<Input
 													type="text"

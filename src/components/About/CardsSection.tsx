@@ -9,52 +9,109 @@ interface Member {
 
 const members: Member[] = [
   {
-    "name": "Spoorthi Bailoor",
-    "role": "Folk Head"
+    name: "Mr. Anant Murthi",
+    "role": "Faculty Coordinator",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
   },
   {
-    "name": "Sumith S Hegde",
-    "role": "Bhajan Head"
+    name: "Mr. Shyam Sundar",
+    "role": "Faculty Coordinator",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
   },
   {
-    "name": "Shraddha Upadhyaya",
-    "role": "Music Head"
-  },
-  {
-    "name": "Manish R Rao",
-    "role": "Core Member"
-  },
-  {
-    "name": "Pratham P",
-    "role": "Media Head"
-  },
-  {
-    "name": "Shreya S Prabhu",
-    "role": "Core Member"
-  },
-  {
-    "name": "Amrutha R Rao",
-    "role": "Core Member"
-  },
-  {
-    "name": "Keshav Nayak",
-    "role": "Joint Secretary"
-  },
-  {
-    "name": "Shreya S Rao",
-    "role": "Classical Music Head"
-  },
-  {
-    "name": "Harish Vishwanath Bhat",
-    "role": "Bhajan Co-Head"
-  },
-  {
-    "name": "Shreya P V",
-    "role": "Secretary and Treasurer"
+    name: "Shravan Udupa K",
+    "role": "Kalaasangama Founder",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
   },
   {
     "name": "Srikrishna Rao K S",
-    "role": "President"
+    "role": "President",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "B S Kishan",
+    "role": "Vice President",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Shreya P V",
+    "role": "Secretary and Treasurer",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Keshav Nayak",
+    "role": "Joint Secretary",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Amrith Naik",
+    "role": "Folk Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Spoorthi Bailoor",
+    "role": "Folk Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Shreya S Rao",
+    "role": "Music Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Shraddha Upadhyaya",
+    "role": "Music Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Prarthana Rao",
+    "role": "Dance Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Avanthi",
+    "role": "Dance Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Sumith S Hegde",
+    "role": "Bhajan Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Harish Vishwanath Bhat",
+    "role": "Bhajan Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Vivek Naik",
+    "role": "Media Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Pratham P",
+    "role": "Media Head",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Manish R Rao",
+    "role": "Core Member",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Varun U Acharya",
+    "role": "Core Member",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Amrutha R Rao",
+    "role": "Core Member",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+  },
+  {
+    "name": "Shreya S Prabhu",
+    "role": "Core Member",
+    "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
   },
 ]
 

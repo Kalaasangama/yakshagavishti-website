@@ -20,17 +20,31 @@ import React, { useEffect, useState } from "react";
 import { type NextPage } from "next";
 import type { Criteria, Characters } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Score from "~/components/Jury/score";
 import TeamScore from "~/components/Jury/teamScore";
 import { Button } from "~/components/ui/button";
 
 const Jury: NextPage = () => {
-
-  const user = useSession()
-  const criteriaList: Criteria[] = ["CRITERIA_1", "CRITERIA_2", "CRITERIA_3", "CRITERIA_4"];
-  const criteriaDisplayList: string[] = ["Criteria 1(30)", "Criteria 2(30)", "Criteria 3(30)", "Criteria 4(10)"];
-  const criteriaTeamDisplayList: string[] = ["Criteria 1(30)", "Criteria 2(30)", "Criteria 3(30)", "Criteria 4(10)"];
+  const user = useSession();
+  const criteriaList: Criteria[] = [
+    "CRITERIA_1",
+    "CRITERIA_2",
+    "CRITERIA_3",
+    "CRITERIA_4",
+  ];
+  const criteriaDisplayList: string[] = [
+    "Criteria 1(30)",
+    "Criteria 2(30)",
+    "Criteria 3(30)",
+    "Criteria 4(10)",
+  ];
+  const criteriaTeamDisplayList: string[] = [
+    "Criteria 1(30)",
+    "Criteria 2(30)",
+    "Criteria 3(30)",
+    "Criteria 4(10)",
+  ];
 
   type ScoresState = Record<Characters, Record<Criteria, number>>;
 
@@ -40,17 +54,16 @@ const Jury: NextPage = () => {
   const [teamId, setTeamId] = useState<string>("");
   const [judgeName, setJudgeName] = useState<string>("Select a judge");
   const [judgeId, setJudgeId] = useState<string>("");
-  const [scored,setScored] = useState<boolean>(true);
+  const [scored, setScored] = useState<boolean>(true);
   const { data, isLoading } = api.admin.getTeams.useQuery();
 
-  const characters : Characters[] = [
-    "SHANTHANU",
-    "MANTRI_SUNEETHI",
-    "TAMAALAKETHU",
-    "TAAMRAAKSHA",
-    "SATHYAVATHI",
-    "DAASHARAJA",
-    "DEVAVRATHA",
+  const characters: Characters[] = [
+    "BHADRA_SENA",
+    "RATNAVATI",
+    "VATSYAKA",
+    "VIDYULOCHANA",
+    "DHRADAVARMA",
+    "DHRADAVARMA_CHARAKA",
   ];
 
   // Initialize scores with all values set to 0
@@ -76,31 +89,30 @@ const Jury: NextPage = () => {
   const [enable, setEnable] = useState<boolean>(true);
   const [active, setActive] = useState<string>("");
 
-    const totalScore = (character: Characters) => {
-      if (scores[character] != null) {
-        const keys = criteriaList;
-        let sum = 0;
-        keys.forEach((key) => {
-          if(scores[character][key]!==999)
-            sum += scores[character][key];
-        });
-        return sum;
-      }
-      return 0;
-    };
+  const totalScore = (character: Characters) => {
+    if (scores[character] != null) {
+      const keys = criteriaList;
+      let sum = 0;
+      keys.forEach((key) => {
+        if (scores[character][key] !== 999) sum += scores[character][key];
+      });
+      return sum;
+    }
+    return 0;
+  };
 
-    const calculateFinalTotal = (): number => {
-        let sum=0;
-        Object.keys(cScores).forEach((key) => {
-          if(cScores[key as Criteria]!==999)
-            sum+=cScores[key as Criteria]
-        });
-        return sum
-    };
+  const calculateFinalTotal = (): number => {
+    let sum = 0;
+    Object.keys(cScores).forEach((key) => {
+      if (cScores[key as Criteria] !== 999) sum += cScores[key as Criteria];
+    });
+    return sum;
+  };
 
-    const res = api.admin.getScores.useQuery({
+  const res = api.admin.getScores.useQuery(
+    {
       teamId: teamId,
-      judgeId: judgeId
+      judgeId: judgeId,
     },
     // {
     //   onError: (error) => {
@@ -110,10 +122,11 @@ const Jury: NextPage = () => {
     //   enabled: false,
     //   staleTime: Infinity
     // },
-    )
+  );
 
-    const judge = api.admin.getJudges.useQuery({
-        teamId: " "
+  const judge = api.admin.getJudges.useQuery(
+    {
+      teamId: " ",
     },
     // {
     //     onSuccess: () => {
@@ -122,246 +135,328 @@ const Jury: NextPage = () => {
     //     enabled: enable,
     //     staleTime: Infinity
     // }
+  );
+
+  const setTeam = (newTeamId: string, teamName: string) => {
+    if (newTeamId === teamId) return;
+    setScores(initialScores);
+    setCScores(criteriaScores);
+    setRefetch(true);
+    setReady(false);
+    setTeamId(newTeamId);
+    setTeamName(teamName);
+  };
+
+  const setJudge = (newJudgeId: string, judgeName: string) => {
+    if (newJudgeId === judgeId) return;
+    setScores(initialScores);
+    setCScores(criteriaScores);
+    setRefetch(true);
+    setReady(false);
+    setJudgeId(newJudgeId);
+    setJudgeName(judgeName);
+  };
+
+  useEffect(() => {
+    if (refetch) res.refetch().catch((err) => console.log(err));
+    setRefetch(false);
+  }, [teamId, judgeId]);
+
+  useEffect(() => {
+    if (res.data?.length > 0) {
+      console.log("updating");
+      res.data.forEach((item) => {
+        const character = item.characterPlayed.character;
+        const criteria = item.criteria.name;
+        // Update the scores state with the new value
+        setScores((prevScores) => ({
+          ...prevScores,
+          [character]: {
+            ...prevScores[character],
+            [criteria]: item.score,
+          },
+        }));
+      });
+      const team = res.data[0]?.judge.teamScore;
+      team.forEach((team) => {
+        setCScores((prevScores) => ({
+          ...prevScores,
+          [team.criteria?.name]: team.score,
+        }));
+      });
+      setReady(true);
+    }
+    if (
+      res.data?.length === 0 &&
+      judge.data !== undefined &&
+      teamId !== "" &&
+      judgeId !== ""
+    )
+      setReady(true);
+  }, [res.data]);
+
+  const downloadCSV = () => {
+    const array: string[] = criteriaDisplayList;
+    array.unshift("Character");
+    array.push("Total");
+    const col = array.join(",") + "\n";
+
+    const row = characters.map((character) => {
+      const row = [
+        character,
+        scores[character]?.[criteriaList[0]],
+        scores[character]?.[criteriaList[1]],
+        scores[character]?.[criteriaList[2]],
+        scores[character]?.[criteriaList[3]],
+        totalScore(character),
+      ];
+      return row;
+    });
+
+    const csvfile = col + row.join("\n");
+    const blob = new Blob([csvfile], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `${teamName}_${judgeName}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const { data: sessionData } = useSession();
+
+  if (sessionData?.user.role !== "ADMIN")
+    return (
+      <div className="mb-[100vh] mt-20 text-center text-2xl">
+        Your not authorized to view this page
+      </div>
     );
-    
-    const setTeam = (newTeamId:string ,teamName:string) => {
-      if(newTeamId === teamId)
-        return;
-      setScores(initialScores)
-      setCScores(criteriaScores)
-      setRefetch(true);
-      setReady(false);
-      setTeamId(newTeamId);
-      setTeamName(teamName);
-    }
 
-    const setJudge = (newJudgeId:string ,judgeName:string) => {
-        if(newJudgeId === judgeId)
-          return;
-        setScores(initialScores)
-        setCScores(criteriaScores)
-        setRefetch(true);
-        setReady(false);
-        setJudgeId(newJudgeId);
-        setJudgeName(judgeName);
-      }
-
-    useEffect(() => {
-      if(refetch)
-        res.refetch().catch((err) => console.log(err))
-      setRefetch(false);
-    },[teamId,judgeId])
-
-    useEffect(() => {
-      if((res.data ?? []).length > 0){
-        console.log("updating")
-          res.data?.forEach((item) => {
-            const character = item.characterPlayed.character;
-            const criteria = item.criteria.name;
-            // Update the scores state with the new value
-            setScores((prevScores) => ({
-              ...prevScores,
-              [character]: {
-                ...prevScores[character],
-                [criteria]: item.score,
-              },
-            }));
-          });
-          const team = res.data?.[0]?.judge.teamScore;
-          team?.forEach((team) => {
-            setCScores((prevScores) => ({
-              ...prevScores,
-              [team.criteria?.name]: team.score
-            }))
-          })
-          setReady(true);
-      }
-      if(res.data?.length === 0 && judge.data!==undefined && teamId !== '' && judgeId !== '')
-        setReady(true);
-    },[res.data])
-
-    const downloadCSV = () => {
-      const array:string[] = criteriaDisplayList;
-      array.unshift("Character");
-      array.push("Total");
-      const col = array.join(',') + '\n';
-      
-      const row = characters.map((character) => {
-          const row = [
-            character,
-            criteriaList[0] !== undefined ? scores[character]?.[criteriaList[0]] : 0,
-            criteriaList[1] !== undefined ? scores[character]?.[criteriaList[1]] : 0,
-            criteriaList[2] !== undefined ? scores[character]?.[criteriaList[2]] : 0,
-            criteriaList[3] !== undefined ? scores[character]?.[criteriaList[3]] : 0,
-            totalScore(character)
-          ]
-          return row
-        })
-
-      const csvfile = col + row.join("\n");
-      const blob = new Blob([csvfile], { type: "text/csv" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", url);
-      link.setAttribute("download", `${teamName}_${judgeName}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-
-    const { data: sessionData } = useSession();
-
-    if(sessionData?.user.role !== "ADMIN")
-    return  <div className="mb-[100vh] mt-20 text-center text-2xl">
-              Your not authorized to view this page
-            </div>;
-
-    return user.data?.user && !isLoading && !judge.isLoading && judge.data!==undefined && data!==undefined && data.length>0 ? (
-      <div className="container flex flex-col w-full items-center min-h-[130vh] max-h-auto">
-        <h1 className="text-extrabold mt-4 text-3xl pb-2 flex flex-row w-full">
-          <div className="text-left flex text-4xl justify-start basis-1/2">Results</div><br/>
-          <div className="text-right text-2xl flex justify-end basis-1/2">
-            {active==="result" ? ( 
-              <div>
-              <span>Judge - <span className="bg-white rounded-lg p-[2px] text-primary-100">{judgeName}</span></span><br/>
-              <span>Team - <span className="bg-white rounded-lg p-[2px] text-primary-100">{teamName}</span></span>
-              </div>
-            ):(<></>)}
+  return user.data?.user &&
+    !isLoading &&
+    !judge.isLoading &&
+    judge.data !== undefined &&
+    data !== undefined &&
+    data.length > 0 ? (
+    <div className="max-h-auto container flex min-h-[130vh] w-full flex-col items-center">
+      <h1 className="text-extrabold mt-4 flex w-full flex-row pb-2 text-3xl">
+        <div className="flex basis-1/2 justify-start text-left text-4xl">
+          Results
+        </div>
+        <br />
+        <div className="flex basis-1/2 justify-end text-right text-2xl">
+          {active === "result" ? (
+            <div>
+              <span>
+                Judge -{" "}
+                <span className="rounded-lg bg-white p-[2px] text-primary-100">
+                  {judgeName}
+                </span>
+              </span>
+              <br />
+              <span>
+                Team -{" "}
+                <span className="rounded-lg bg-white p-[2px] text-primary-100">
+                  {teamName}
+                </span>
+              </span>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      </h1>
+      <Tabs defaultValue="account" className="w-full">
+        <TabsList className="bg-primary-100 p-2">
+          <TabsTrigger
+            value="results"
+            onClick={(e) => {
+              setActive("result");
+            }}
+            className={`mb-3 text-2xl ${
+              active === "result" ? `rounded-lg bg-white text-primary-100` : ""
+            }`}
+          >
+            Results
+          </TabsTrigger>
+          <TabsTrigger
+            value="scoreBoard"
+            onClick={(e) => {
+              setActive("score");
+            }}
+            className={`mb-3 text-2xl  ${
+              active === "score" ? `rounded-lg bg-white text-primary-100` : ""
+            }`}
+          >
+            Character ScoreBoard
+          </TabsTrigger>
+          <TabsTrigger
+            value="teamScoreBoard"
+            onClick={(e) => {
+              setActive("team");
+            }}
+            className={`mb-3 text-2xl  ${
+              active === "team" ? `rounded-lg bg-white text-primary-100` : ""
+            }`}
+          >
+            Team ScoreBoard
+          </TabsTrigger>
+        </TabsList>
+        <TabsContent value="results" className="w-full">
+          <div className="m-2 flex w-full flex-col items-center text-center md:flex-row">
+            <div className="flex basis-1/2 flex-row justify-start gap-5">
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex flex-row items-center gap-3 rounded-lg border border-white p-2 text-center">
+                  <div className="text-2xl md:text-xl">Select a Team</div>
+                  <ArrowDown></ArrowDown>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {!isLoading ? (
+                    data?.map((team, i) => (
+                      <DropdownMenuItem
+                        className="text-xl"
+                        key={team.id}
+                        onSelect={(e) => setTeam(team.id, team.name)}
+                      >
+                        {team.name}
+                      </DropdownMenuItem>
+                    ))
+                  ) : (
+                    <DropdownMenuItem className="text-xl">
+                      No Judges
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex flex-row items-center gap-3 rounded-lg border border-white p-2 text-center">
+                  <div className="text-2xl md:text-xl">Select a Judge</div>
+                  <ArrowDown></ArrowDown>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  {!isLoading ? (
+                    judge.data?.map((judge, i) => (
+                      <DropdownMenuItem
+                        className="text-xl"
+                        key={judge.userId}
+                        onSelect={(e) =>
+                          setJudge(judge.userId, judge.user.name)
+                        }
+                      >
+                        {judge.user.name}
+                      </DropdownMenuItem>
+                    ))
+                  ) : (
+                    <DropdownMenuItem className="text-xl">
+                      No teams
+                    </DropdownMenuItem>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="flex w-full justify-end">
+              <Button onClick={(e) => downloadCSV()}>Download CSV</Button>
+            </div>
           </div>
-        </h1>
-        <Tabs defaultValue="account" className="w-full">
-          <TabsList className="bg-primary-100 p-2">
-            <TabsTrigger value="results" onClick={e => {setActive("result")}} className={`text-2xl mb-3 ${active==="result" ? `bg-white rounded-lg text-primary-100`: ""}`}>Results</TabsTrigger>
-            <TabsTrigger value="scoreBoard" onClick={e => {setActive("score")}} className={`text-2xl mb-3  ${active==="score" ? `bg-white rounded-lg text-primary-100`: ""}`}>Character ScoreBoard</TabsTrigger>
-            <TabsTrigger value="teamScoreBoard" onClick={e => {setActive("team")}} className={`text-2xl mb-3  ${active==="team" ? `bg-white rounded-lg text-primary-100`: ""}`}>Team ScoreBoard</TabsTrigger>
-          </TabsList>
-          <TabsContent value="results" className="w-full">
-            <div className="flex md:flex-row flex-col w-full m-2 items-center text-center">
-              <div className="flex flex-row gap-5 basis-1/2 justify-start">
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
-                    <div className="md:text-xl text-2xl">Select a Team</div>
-                    <ArrowDown></ArrowDown>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {!isLoading ? (
-                      data?.map((team ,i) => (
-                        <DropdownMenuItem className="text-xl" key={team.id} onSelect={e => setTeam(team.id, team.name)}>
-                          {team.name}
-                        </DropdownMenuItem>
-                      ))
-                    ) : (
-                      <DropdownMenuItem className="text-xl">No Judges</DropdownMenuItem>
-                    )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <DropdownMenu>
-                  <DropdownMenuTrigger className="flex flex-row gap-3 border border-white rounded-lg p-2 text-center items-center">
-                    <div className="md:text-xl text-2xl">Select a Judge</div>
-                    <ArrowDown></ArrowDown>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    {!isLoading ? (
-                      judge.data?.map((judge) => (
-                        <DropdownMenuItem className="text-xl" key={judge.userId} onSelect={e => setJudge(judge.userId, judge.user.name ?? "")}>
-                          {judge.user.name}
-                        </DropdownMenuItem>
-                      ))
-                    ) : (
-                      <DropdownMenuItem className="text-xl">No teams</DropdownMenuItem>
-                    )}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+          {teamName !== "Select a college" &&
+          judgeName !== "Select a judge" &&
+          scored &&
+          ready ? (
+            <div className="flex flex-col justify-center gap-6 md:flex-row">
+              <div className="basis-3/5">
+                <Table>
+                  <TableHeader className="invisible align-middle md:visible">
+                    <TableRow className="text-center text-2xl">
+                      <TableHead className="text-center">Character</TableHead>
+                      {criteriaDisplayList.map((criteria, i) => (
+                        <TableHead key={i} className="text-center">
+                          {criteriaDisplayList[i]}
+                        </TableHead>
+                      ))}
+                      <TableHead>Total</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="text-2xl">
+                    {characters.map((character, i) => (
+                      <TableRow key={i} className="text-center">
+                        <TableCell className="md:m-0">{character}</TableCell>
+                        {criteriaList.map((criteria, j) => (
+                          <TableCell key={j}>
+                            {scores[character]?.[criteria]}
+                          </TableCell>
+                        ))}
+                        <TableCell>{totalScore(character)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
-              <div className="flex justify-end w-full">
-                <Button onClick={downloadCSV}>Download CSV</Button>
+              <div className="basis-1/4">
+                <Table className="flex w-full flex-col items-center text-2xl">
+                  <TableHeader className="flex w-full items-center justify-center border-b-[1px] border-b-white">
+                    <TableRow className="border-none text-2xl">
+                      <TableHead className="text-center">Team Score</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody className="text-2xl">
+                    {criteriaTeamDisplayList.map((criteria, k) => (
+                      <TableRow key={k}>
+                        <TableCell>{criteria}</TableCell>
+                        <TableCell>{cScores[criteriaList[k]]}</TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow>
+                      <TableCell>Total</TableCell>
+                      <TableCell>{calculateFinalTotal()}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
               </div>
             </div>
-              {teamName !=="Select a college" && judgeName!=="Select a judge" && scored && ready ? (
-              <div className="flex flex-col md:flex-row gap-6 justify-center">
-                <div className="basis-3/5">
-                  <Table>
-                    <TableHeader className="invisible md:visible align-middle">
-                      <TableRow className="text-2xl text-center">
-                        <TableHead className="text-center">Character</TableHead>
-                        {criteriaDisplayList.map((criteria, i) => (
-                          <TableHead key={i} className="text-center">{criteriaDisplayList[i]}</TableHead>
-                        ))}
-                        <TableHead>Total</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="text-2xl">
-                      {characters.map((character, i) => (
-                        <TableRow key={i} className="text-center">
-                          <TableCell className="md:m-0">{character}</TableCell>
-                          {criteriaList.map((criteria, j) => (
-                            <TableCell key={j}>
-                              {scores[character]?.[criteria]}
-                            </TableCell>
-                          ))}
-                          <TableCell>{totalScore(character)}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-                <div className="basis-1/4">
-                  <Table className="flex flex-col text-2xl w-full items-center">
-                    <TableHeader className="w-full flex items-center justify-center border-b-[1px] border-b-white">
-                      <TableRow className="text-2xl border-none">
-                        <TableHead className="text-center">Team Score</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="text-2xl">
-                      {criteriaTeamDisplayList.map((criteria, k) => (
-                        <TableRow key={k}>
-                          <TableCell>{criteria}</TableCell>
-                          <TableCell>
-                              {criteriaList[k] !== undefined ? cScores[criteriaList[k]] : 0}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                      <TableRow>
-                        <TableCell>Total</TableCell>
-                        <TableCell>{calculateFinalTotal()}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+          ) : !ready &&
+            teamName === "Select a college" &&
+            judgeName === "Select a judge" ? (
+            <div className="container py-40">
+              <div className="h-full w-full">
+                <div className="mb-[100vw] flex justify-center text-center text-2xl">
+                  Please select a college or judge....
                 </div>
               </div>
-              ):
-              !ready && teamName ==="Select a college" && judgeName==="Select a judge"  ? (
-                    <div className="container py-40">
-                      <div className="w-full h-full">
-                          <div className="flex text-2xl justify-center text-center mb-[100vw]">Please select a college or judge....</div>
-                      </div>
-                  </div>
-                  )
-                  :
-                  !scored ? (
-                    <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-[100vw]">Scores has not been submitted...</div></>
-                  )
-                :
-              (
-              <><div className="text-2xl flex justify-center text-center p-4 m-4 mb-[100vw]">Loading Scores....</div></>
-            )
-          }
-          </TabsContent>
-          <TabsContent value="scoreBoard">
-            <Score/>
-          </TabsContent>
-          <TabsContent value="teamScoreBoard">
-            <TeamScore/>
-          </TabsContent>
-        </Tabs>
+            </div>
+          ) : !scored ? (
+            <>
+              <div className="m-4 mb-[100vw] flex justify-center p-4 text-center text-2xl">
+                Scores has not been submitted...
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="m-4 mb-[100vw] flex justify-center p-4 text-center text-2xl">
+                Loading Scores....
+              </div>
+            </>
+          )}
+        </TabsContent>
+        <TabsContent value="scoreBoard">
+          <Score />
+        </TabsContent>
+        <TabsContent value="teamScoreBoard">
+          <TeamScore />
+        </TabsContent>
+      </Tabs>
+    </div>
+  ) : (
+    <div className="container py-40">
+      <div className="h-full w-full">
+        <div className="mb-[100vh] flex justify-center text-center text-2xl ">
+          {isLoading || judge.isLoading
+            ? "Loading..."
+            : "No teams scored at the moment...."}
+        </div>
       </div>
-    ) : (
-      <div className="container py-40">
-          <div className="w-full h-full">
-              <div className="flex text-2xl justify-center text-center mb-[100vh] ">{(isLoading || judge.isLoading) ?"Loading...":"No teams scored at the moment...."}</div>
-          </div>
-      </div>
-    );
-  };
+    </div>
+  );
+};
 
 export default Jury;

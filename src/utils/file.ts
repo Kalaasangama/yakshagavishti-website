@@ -20,11 +20,12 @@ export async function uploadFile(file: File) {
 
 	const endpoint = `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`;
 
-	const data = (await fetch(endpoint, {
-		method: "POST",
-		body: formData,
-	}).then((res) => res.json())) as {
-		url: string;
-	};
-	return data.url;
+	// const data = (await fetch(endpoint, {
+	// 	method: "POST",
+	// 	body: formData,
+	// }).then((res) => res.json())) as {
+	// 	url: string;
+	// };
+	// return data.url;
+	return "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/title2.png"
 }

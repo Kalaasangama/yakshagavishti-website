@@ -4,28 +4,28 @@ import React, { useEffect, useState } from "react";
 import { Button } from "src/components/ui/button";
 import { Button as RegButton } from "~/components/Button";
 import {
-	DialogContent,
-	DialogDescription,
-	Dialog,
-	DialogTitle,
-	DialogTrigger,
+  DialogContent,
+  DialogDescription,
+  Dialog,
+  DialogTitle,
+  DialogTrigger,
 } from "~/components/ui/dialog";
 import {
-	Accordion,
-	AccordionContent,
-	AccordionItem,
-	AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from "~/components/ui/accordion";
 import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogDescription,
-	AlertDialogContent,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogDescription,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "~/components/ui/alert-dialog";
 import { api } from "~/trpc/react";
 import { useToast } from "~/components/ui/use-toast";
@@ -35,209 +35,196 @@ import z from "zod";
 import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
 //TODO: Change the id values to the actual DB values
 const roles = [
-	{ label: "BHADRASENA", value: "cm8udw5zf0000sbyqmhzt9tp3" },
-	{ label: "RATNAAVATI", value: "cm8udw5zf0001sbyqrnjvaqwi" },
-	{ label: "VATSAAKHYA", value: "cm8udw5zf0003sbyq2j7233pa" },
-	{ label: "VIDYULLOCHANA", value: "cm8udw5zf0002sbyqv2ysgigo" },
-	{ label: "DRUDHAVARMA", value: "cm8udw5zg0004sbyqruxg5u3q" },
-	{ label: "DRUDHAVARMA CHAARAKA", value: "cm8udw5zg0005sbyqkklsoupz" },
+  { label: "BHADRA_SENA", value: "cm8tr0d010000r9nmzp0gasfe" },
+  { label: "RATNAVATI", value: "cm8tr0g420001r9nmxecf4c4y" },
+  { label: "VATSYAKA", value: "cm8tr0krs0002r9nm424nl2pn" },
+  { label: "VIDYULOCHANA", value: "cm8tr0uvc0003r9nm1rn7o539" },
+  { label: "DHRADAVARMA", value: "cm8tr0uvc0004r9nm3bo3a4rs" },
+  { label: "DHRADAVARMA CHARAKA", value: "cm8tr0uvc0005r9nm1ilgoxn1" },
 ];
 
 type Members = {
-	name: string;
-	characterId: string;
-	idURL: string;
+  name: string;
+  characterId: string;
+  idURL: string;
 };
 
 const EditTeamForm = ({
-	LeaderCharacter,
-	CollegeId,
+  LeaderCharacter,
+  CollegeId,
 }: {
-	LeaderCharacter: string;
-	CollegeId: string;
+  LeaderCharacter: string;
+  CollegeId: string;
 }) => {
-	//Get the list of members from the API
-	const membersList = api.team.getTeamForEdits.useQuery();
-	const [MembersArray, setMembersArray] = useState<Members[]>(
-		(() => {
-			const storedMembers = localStorage.getItem("members");
-			return storedMembers ? (JSON.parse(storedMembers) as Members[]) : [];
-		})()
-	);
-	const { toast } = useToast();
+  //Get the list of members from the API
+  const membersList = api.team.getTeamForEdits.useQuery();
+  const [MembersArray, setMembersArray] = useState<Members[]>(
+    (() => {
+      const storedMembers = localStorage.getItem("members");
+      return storedMembers ? (JSON.parse(storedMembers) as Members[]) : [];
+    })(),
+  );
+  const { toast } = useToast();
 
-	//Set the members array if not already loaded from local storage
-	useEffect(() => {
-		if (MembersArray.length === 0)
-			if (membersList.data && MembersArray.length === 0) {
-				const tempArr = Array<Members>();
-				for (const member of membersList.data.members) {
-					if (member?.characterPlayed?.id)
-						tempArr.push({
-							name: member.name ?? "",
-							characterId: member?.characterPlayed?.id,
-							idURL: member.idURL ?? "",
-						});
-				}
-				setMembersArray(tempArr);
-			}
-	}, [membersList.data, MembersArray.length]);
+  //Set the members array if not already loaded from local storage
+  useEffect(() => {
+    if (MembersArray.length === 0)
+      if (membersList.data && MembersArray.length === 0) {
+        const tempArr = Array<Members>();
+        for (const member of membersList.data.members) {
+          if (member?.characterPlayed?.id)
+            tempArr.push({
+              name: member.name ?? "",
+              characterId: member?.characterPlayed?.id,
+              idURL: member.idURL ?? "",
+            });
+        }
+        setMembersArray(tempArr);
+      }
+  }, [membersList.data, MembersArray.length]);
 
-	//Register members API
-	const registerMembers = api.team.register.useMutation({
-		onError(error) {
-			return toast({
-				variant: "default",
-				title: "Error!",
-				description: error.message,
-			});
-		},
-		onSuccess(data) {
-			localStorage.removeItem("members");
-			toast({
-				variant: "default",
-				title: "Team registered successfully!",
-				description: data.message,
-			});
-			return router.refresh();
-		},
-	});
+  //Register members API
+  const registerMembers = api.team.register.useMutation({
+    onError(error) {
+      return toast({
+        variant: "default",
+        title: "Error!",
+        description: error.message,
+      });
+    },
+    onSuccess(data) {
+      localStorage.removeItem("members");
+      toast({
+        variant: "default",
+        title: "Team registered successfully!",
+        description: data.message,
+      });
+      return router.refresh();
+    },
+  });
 
-	//Get the index of the role in the list
-	const getIndex = (label: string, prevIndex: number) => {
-		const index = MembersArray.findIndex(
-			(member) => member?.characterId === label.replace(" ", "_")
-		);
-		if (index === -1) return prevIndex;
-		return index;
-	};
+  //Get the index of the role in the list
+  const getIndex = (label: string, prevIndex: number) => {
+    const index = MembersArray.findIndex(
+      (member) => member?.characterId === label.replace(" ", "_"),
+    );
+    if (index === -1) return prevIndex;
+    return index;
+  };
 
-	//Remove the leader character from the list of available roles
-	const router = useRouter();
-	if (membersList.isLoading)
-		return <div className="text-2xl">Loading...</div>;
-	return (
-		<Dialog defaultOpen={true}>
-			<DialogTrigger>
-				<RegButton>Edit Team</RegButton>
-			</DialogTrigger>
-			<DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
-				<DialogTitle>Character Details</DialogTitle>
-				<DialogDescription>
-					Enter details of the Teammates who will play respective
-					Characters
-				</DialogDescription>
-				<div>
-					<Accordion type="single" collapsible>
-						{roles.map((role, index) => (
-							<AccordionItem key={index} value={`item-${index}`}>
-								<AccordionTrigger>
-									{role.label}
-								</AccordionTrigger>
-								<AccordionContent>
-									<AccordianForm
-										MembersArray={
-											MembersArray.length > 7
-												? MembersArray.filter(
-														(member) =>
-															member.characterId !==
-															null
-												  )
-												: MembersArray
-										}
-										setMembersArray={setMembersArray}
-										index={getIndex(role.value, index)}
-										characterId={role.value}
-									/>
-								</AccordionContent>
-							</AccordionItem>
-						))}
-					</Accordion>
-				</div>
-				<div className="m-auto flex gap-2">
-					<AlertDialog>
-						<AlertDialogTrigger
-							disabled={
-								roles.length <=
-								MembersArray.filter(
-									(member) => (member !== undefined) || (member !== null)
-								).length
-									? false
-									: true
-							}
-						>
-							<Button
-								size="sm"
-								disabled={
-									roles.length <=
-									MembersArray.filter(
-										(member) => (member !== undefined) || (member !== null)
-									).length
-										? false
-										: true
-								}
-								onClick={() => {
-									if (
-										MembersArray.filter(
-											(member) => (member !== undefined) || (member !== null)
-										).length < roles.length
-									) {
-										toast({
-											variant: "destructive",
-											title: "Team Incomplete!",
-											description:
-												"Please fill in details of all characters in your team.",
-										});
-									}
-								}}
-							>
-								Submit
-							</Button>
-						</AlertDialogTrigger>
-						<AlertDialogContent>
-							<AlertDialogHeader>
-								<AlertDialogTitle>
-									Are you absolutely sure?
-								</AlertDialogTitle>
-								<AlertDialogDescription>
-									This action will register your team
-								</AlertDialogDescription>
-							</AlertDialogHeader>
-							<AlertDialogFooter>
-								<AlertDialogCancel>Cancel</AlertDialogCancel>
-								<ViewBeforeSubmit
-									data={MembersArray}
-									roles={roles}
-								/>
-								<AlertDialogAction
-									disabled={registerMembers.isPending}
-									onClick={(e) => {
-										e.preventDefault();
-										console.log(MembersArray);
-										registerMembers.mutate({
-											members: z
-												.array(
-													z.object({
-														name: z.string(),
-														characterId: z.string(),
-														idURL: z.string(),
-													})
-												)
-												.parse(MembersArray),
-											college_id: CollegeId,
-										});
-									}}
-								>
-									{registerMembers.isPending
-										? "Loading..."
-										: "Continue"}
-								</AlertDialogAction>
-							</AlertDialogFooter>
-						</AlertDialogContent>
-					</AlertDialog>
-				</div>
-			</DialogContent>
-		</Dialog>
-	);
+  //Remove the leader character from the list of available roles
+  const router = useRouter();
+  if (membersList.isLoading) return <div className="text-2xl">Loading...</div>;
+  return (
+    <Dialog defaultOpen={true}>
+      <DialogTrigger>
+        <RegButton>Edit Team</RegButton>
+      </DialogTrigger>
+      <DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
+        <DialogTitle>Character Details</DialogTitle>
+        <DialogDescription>
+          Enter details of the Teammates who will play respective Characters
+        </DialogDescription>
+        <div>
+          <Accordion type="single" collapsible>
+            {roles.map((role, index) => (
+              <AccordionItem key={index} value={`item-${index}`}>
+                <AccordionTrigger>{role.label}</AccordionTrigger>
+                <AccordionContent>
+                  <AccordianForm
+                    MembersArray={
+                      MembersArray.length > 7
+                        ? MembersArray.filter(
+                            (member) => member.characterId !== null,
+                          )
+                        : MembersArray
+                    }
+                    setMembersArray={setMembersArray}
+                    index={getIndex(role.value, index)}
+                    characterId={role.value}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+        <div className="m-auto flex gap-2">
+          <AlertDialog>
+            <AlertDialogTrigger
+              disabled={
+                roles.length <=
+                MembersArray.filter(
+                  (member) => member !== undefined || member !== null,
+                ).length
+                  ? false
+                  : true
+              }
+            >
+              <Button
+                size="sm"
+                disabled={
+                  roles.length <=
+                  MembersArray.filter(
+                    (member) => member !== undefined || member !== null,
+                  ).length
+                    ? false
+                    : true
+                }
+                onClick={() => {
+                  if (
+                    MembersArray.filter(
+                      (member) => member !== undefined || member !== null,
+                    ).length < roles.length
+                  ) {
+                    toast({
+                      variant: "destructive",
+                      title: "Team Incomplete!",
+                      description:
+                        "Please fill in details of all characters in your team.",
+                    });
+                  }
+                }}
+              >
+                Submit
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action will register your team
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <ViewBeforeSubmit data={MembersArray} roles={roles} />
+                <AlertDialogAction
+                  disabled={registerMembers.isPending}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    console.log(MembersArray);
+                    registerMembers.mutate({
+                      members: z
+                        .array(
+                          z.object({
+                            name: z.string(),
+                            characterId: z.string(),
+                            idURL: z.string(),
+                          }),
+                        )
+                        .parse(MembersArray),
+                      college_id: CollegeId,
+                    });
+                  }}
+                >
+                  {registerMembers.isPending ? "Loading..." : "Continue"}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };
 export default EditTeamForm;

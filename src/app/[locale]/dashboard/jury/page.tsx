@@ -56,18 +56,17 @@ const Jury: NextPage = () => {
   const [settingCriteria, setSettingCriteria] =
     useState<Criteria>("CRITERIA_1");
   const [settingCharacter, setSettingCharacter] =
-    useState<Characters>("DAASHARAJA");
+    useState<Characters>("BHADRA_SENA");
   const [settingCriteriaScore, setSettingCriteriaScore] =
     useState<Criteria>("CRITERIA_1");
 
   const characters: Characters[] = [
-    "SHANTHANU",
-    "MANTRI_SUNEETHI",
-    "TAMAALAKETHU",
-    "TAAMRAAKSHA",
-    "SATHYAVATHI",
-    "DAASHARAJA",
-    "DEVAVRATHA",
+    "BHADRA_SENA",
+    "RATNAVATI",
+    "VATSYAKA",
+    "VIDYULOCHANA",
+    "DHRADAVARMA",
+    "DHRADAVARMA_CHARAKA",
   ];
   const charactersDisplay: string[] = [
     "ಶಂತನು	ರಾಜವೇಷ",
@@ -263,10 +262,12 @@ const Jury: NextPage = () => {
   }, [res.data]);
 
   const { data: sessionData } = useSession();
-  if(sessionData?.user.role !== "JUDGE")
-    return <div className="mb-[100vh] mt-20 text-center text-2xl">
-      Your not authorized to view this page
-    </div>;
+  if (sessionData?.user.role !== "JUDGE")
+    return (
+      <div className="mb-[100vh] mt-20 text-center text-2xl">
+        Your not authorized to view this page
+      </div>
+    );
 
   return user.data?.user &&
     !isLoading &&
@@ -274,11 +275,11 @@ const Jury: NextPage = () => {
     data.length > 0 &&
     !updating ? (
     <div className="container flex w-full flex-col">
-      <div className="flex flex-row pb-2 mt-10 items-center justify-evenly">
-        <h1 className="text-extrabold basis-1/2 text-4xl flex justify-start">
+      <div className="mt-10 flex flex-row items-center justify-evenly pb-2">
+        <h1 className="text-extrabold flex basis-1/2 justify-start text-4xl">
           Judge Dashboard - {teamName}
         </h1>
-        <h1 className="flex justify-end basis-1/2 text-3xl">
+        <h1 className="flex basis-1/2 justify-end text-3xl">
           {user.data?.user.name}
         </h1>
       </div>
@@ -296,7 +297,10 @@ const Jury: NextPage = () => {
                     className="text-xl"
                     key={team.id}
                     onSelect={(e) =>
-                      setTeam(team.id, displayTeam[team?.TeamNumber?.number ?? 0] ?? "")
+                      setTeam(
+                        team.id,
+                        displayTeam[team?.TeamNumber?.number ?? 0] ?? "",
+                      )
                     }
                   >
                     {displayTeam[team?.TeamNumber?.number ?? 0]}
@@ -434,57 +438,59 @@ const Jury: NextPage = () => {
               ಮಾಡಿಕೊಳ್ಳಬಹುದು!
             </div>
           </div>
-          <div className="flex flex-col md:flex-row gap-6 justify-center">
-                <div className="basis-3/5">
-                  <Table>
-                    <TableHeader className="invisible md:visible align-middle">
-                      <TableRow className="text-2xl text-center">
-                        <TableHead className="text-center">Character</TableHead>
-                        {criteriaDisplayList.map((criteria, i) => (
-                          <TableHead key={i} className="text-center">{criteriaDisplayList[i]}</TableHead>
-                        ))}
-                        <TableHead>Total</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="text-2xl">
-                      {characters.map((character, i) => (
-                        <TableRow key={i} className="text-center">
-                          <TableCell className="md:m-0">{character}</TableCell>
-                          {criteriaList.map((criteria, j) => (
-                            <TableCell key={j}>
-                              {scores[character]?.[criteria]}
-                            </TableCell>
-                          ))}
-                          <TableCell>{totalScore(character)}</TableCell>
-                        </TableRow>
+          <div className="flex flex-col justify-center gap-6 md:flex-row">
+            <div className="basis-3/5">
+              <Table>
+                <TableHeader className="invisible align-middle md:visible">
+                  <TableRow className="text-center text-2xl">
+                    <TableHead className="text-center">Character</TableHead>
+                    {criteriaDisplayList.map((criteria, i) => (
+                      <TableHead key={i} className="text-center">
+                        {criteriaDisplayList[i]}
+                      </TableHead>
+                    ))}
+                    <TableHead>Total</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="text-2xl">
+                  {characters.map((character, i) => (
+                    <TableRow key={i} className="text-center">
+                      <TableCell className="md:m-0">{character}</TableCell>
+                      {criteriaList.map((criteria, j) => (
+                        <TableCell key={j}>
+                          {scores[character]?.[criteria]}
+                        </TableCell>
                       ))}
-                    </TableBody>
-                  </Table>
-                </div>
-                <div className="basis-1/4">
-                  <Table className="flex flex-col text-2xl w-full items-center">
-                    <TableHeader className="w-full flex items-center justify-center border-b-[1px] border-b-white">
-                      <TableRow className="text-2xl border-none">
-                        <TableHead className="text-center">Team Score</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody className="text-2xl">
-                      {criteriaTeamDisplayList.map((criteria, k) => (
-                        <TableRow key={k}>
-                          <TableCell>{criteria}</TableCell>
-                          <TableCell>
-                              {criteriaList[k] ? cScores[criteriaList[k]] : ""}
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                      <TableRow>
-                        <TableCell>Total</TableCell>
-                        <TableCell>{calculateFinalTotal()}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
+                      <TableCell>{totalScore(character)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <div className="basis-1/4">
+              <Table className="flex w-full flex-col items-center text-2xl">
+                <TableHeader className="flex w-full items-center justify-center border-b-[1px] border-b-white">
+                  <TableRow className="border-none text-2xl">
+                    <TableHead className="text-center">Team Score</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className="text-2xl">
+                  {criteriaTeamDisplayList.map((criteria, k) => (
+                    <TableRow key={k}>
+                      <TableCell>{criteria}</TableCell>
+                      <TableCell>
+                        {criteriaList[k] ? cScores[criteriaList[k]] : ""}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  <TableRow>
+                    <TableCell>Total</TableCell>
+                    <TableCell>{calculateFinalTotal()}</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </div>
+          </div>
         </div>
       ) : !ready && teamName === "Select a college" && !scored && !updating ? (
         <>
