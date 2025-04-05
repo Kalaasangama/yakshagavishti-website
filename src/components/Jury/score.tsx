@@ -1,4 +1,4 @@
-import type { Characters, User } from "@prisma/client";
+import type { PlayCharacters, User } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import {
@@ -12,13 +12,13 @@ import {
 import { Button } from "~/components/ui/button";
 
 function Score() {
-  type TotalScores = Record<Characters, Record<string, number>>;
+  type TotalScores = Record<PlayCharacters, Record<string, number>>;
 
-  type Name = Record<Characters, Record<string, string>>;
+  type Name = Record<PlayCharacters, Record<string, string>>;
 
   type Team = Record<string, string>;
 
-  const characters: Characters[] = [
+  const characters: PlayCharacters[] = [
     "BHADRA_SENA",
     "RATNAVATI",
     "VATSYAKA",
@@ -51,12 +51,12 @@ function Score() {
     // Loop through each result
     results.data?.forEach((result) => {
       const team: string = result.team.name;
-      const character: Characters = result.characterPlayed.character;
+      const character: PlayCharacters = result.characterPlayed.character;
       const score: number = result.score;
-      const members: User[] = result.team.members;
+      const members = result.team.TeamMembers;
 
       // Find the member with the matching character and get their name
-      const matchingMember: User | undefined = members.find(
+      const matchingMember = members.find(
         (mem) => mem.characterId === character,
       );
 
@@ -97,7 +97,7 @@ function Score() {
       const sortedTeams = Object.fromEntries(
         Object.entries(teams).sort(([, a], [, b]) => b - a),
       );
-      newTotalScores[character as Characters] = sortedTeams;
+      newTotalScores[character as PlayCharacters] = sortedTeams;
     }
     // Update the state with the new total scores
     setTotalScores(newTotalScores);

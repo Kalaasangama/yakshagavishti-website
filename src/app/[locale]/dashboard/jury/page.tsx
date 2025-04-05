@@ -20,12 +20,12 @@ import { useEffect, useState } from "react";
 import { type NextPage } from "next";
 import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
-import type { Criteria, Characters } from "@prisma/client";
+import type { Criterias, PlayCharacters } from "@prisma/client";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
 
 const Jury: NextPage = () => {
-  const criteriaList: Criteria[] = [
+  const criteriaList: Criterias[] = [
     "CRITERIA_1",
     "CRITERIA_2",
     "CRITERIA_3",
@@ -45,22 +45,22 @@ const Jury: NextPage = () => {
     "ಸಮಯದ ನಿಖರ ಬಳಕೆ (10)",
   ];
 
-  type ScoresState = Record<Characters, Record<Criteria, number>>;
+  type ScoresState = Record<PlayCharacters, Record<Criterias, number>>;
 
-  type TeamScoresState = Record<Criteria, number>;
+  type TeamScoresState = Record<Criterias, number>;
 
   const [teamName, setTeamName] = useState<string>("Select a college");
   const [teamId, setTeamId] = useState<string>("");
   const [scored, setScored] = useState<boolean>(false);
   const [updating, setUpdating] = useState<boolean>(false);
   const [settingCriteria, setSettingCriteria] =
-    useState<Criteria>("CRITERIA_1");
+    useState<Criterias>("CRITERIA_1");
   const [settingCharacter, setSettingCharacter] =
-    useState<Characters>("BHADRA_SENA");
+    useState<PlayCharacters>("BHADRA_SENA");
   const [settingCriteriaScore, setSettingCriteriaScore] =
-    useState<Criteria>("CRITERIA_1");
+    useState<Criterias>("CRITERIA_1");
 
-  const characters: Characters[] = [
+  const characters: PlayCharacters[] = [
     "BHADRA_SENA",
     "RATNAVATI",
     "VATSYAKA",
@@ -90,7 +90,7 @@ const Jury: NextPage = () => {
   const criteriaScores: TeamScoresState = {} as TeamScoresState;
 
   characters.forEach((character) => {
-    initialScores[character] = {} as ScoresState[Characters];
+    initialScores[character] = {} as ScoresState[PlayCharacters];
 
     criteriaList.forEach((criteria) => {
       initialScores[character][criteria] = 999;
@@ -108,8 +108,8 @@ const Jury: NextPage = () => {
   const [error, setError] = useState<boolean>(false);
 
   const handleScoreChange = (
-    character: Characters,
-    criteria: Criteria,
+    character: PlayCharacters,
+    criteria: Criterias,
     value: number,
   ) => {
     setSettingCharacter(character);
@@ -147,7 +147,7 @@ const Jury: NextPage = () => {
     });
   };
 
-  const handleCriteriaScoreChange = (value: number, criteria: Criteria) => {
+  const handleCriteriaScoreChange = (value: number, criteria: Criterias) => {
     setSettingCriteriaScore(criteria);
     if (value > 10 && criteria === "CRITERIA_4") {
       setError(true);
@@ -178,8 +178,8 @@ const Jury: NextPage = () => {
   };
 
   const totalScore = (character: string) => {
-    if (scores[character as Characters] != null) {
-      const keys = Object.keys(scores[character as Characters]);
+    if (scores[character as PlayCharacters] != null) {
+      const keys = Object.keys(scores[character as PlayCharacters]);
       // let sum = 0;
       // keys.forEach((key) => {
       //   if ((scores[character] as ScoresState)[key] !== 999)
@@ -193,7 +193,7 @@ const Jury: NextPage = () => {
   const calculateFinalTotal = (): number => {
     let sum = 0;
     Object.keys(cScores).forEach((key) => {
-      if (cScores[key as Criteria] !== 999) sum += cScores[key as Criteria];
+      if (cScores[key as Criterias] !== 999) sum += cScores[key as Criterias];
     });
     return sum;
   };
@@ -248,7 +248,7 @@ const Jury: NextPage = () => {
           },
         }));
       });
-      const team = res.data?.[0]?.judge.teamScore;
+      const team = res.data?.[0]?.judge.TeamScore;
       team?.forEach((team) => {
         setCScores((prevScores) => ({
           ...prevScores,
@@ -299,11 +299,11 @@ const Jury: NextPage = () => {
                     onSelect={(e) =>
                       setTeam(
                         team.id,
-                        displayTeam[team?.TeamNumber?.number ?? 0] ?? "",
+                        displayTeam[team?.number ?? 0] ?? "",
                       )
                     }
                   >
-                    {displayTeam[team?.TeamNumber?.number ?? 0]}
+                    {displayTeam[team?.number ?? 0]}
                   </DropdownMenuItem>
                 ))
               ) : (

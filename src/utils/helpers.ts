@@ -16,7 +16,7 @@ const getUserAccessToTeam = async (user_id: string) => {
 	});
 	if (user?.LeaderOf?.id) {
 		return "LEADER";
-	} else if (user?.team?.id) {
+	} else if (user?.LeaderOf?.id) {
 		return "MEMBER";
 	} else {
 		return "NEW_USER";
@@ -51,51 +51,22 @@ const setLeader = async (
 		await db.user.update({
 			where: { id: user_id },
 			data: {
-				team: {
+				LeaderOf: {
 					connect: {
 						name: teamName,
 					},
 				},
-				leaderOf: {
-					connect: {
-						name: teamName,
-					},
-				},
-				college: {
-					connect: {
-						id: college_id,
-					},
-				},
-				characterPlayed: {
-					connect: {
-						id: character_id,
-					},
-				},
-				idURL: leaderIdUrl,
-				contact: leader_contact,
 			},
 		});
 	else
 		await db.user.update({
 			where: { id: user_id },
 			data: {
-				team: {
+				LeaderOf: {
 					connect: {
 						name: teamName,
 					},
 				},
-				leaderOf: {
-					connect: {
-						name: teamName,
-					},
-				},
-				college: {
-					connect: {
-						id: college_id,
-					},
-				},
-				idURL: leaderIdUrl,
-				contact: leader_contact,
 			},
 		});
 };
@@ -105,23 +76,18 @@ const createAccount = (
 	teamName: string,
 	college_id: string
 ) => {
-	return db.user.create({
+	return db.teamMembers.create({
 		data: {
-			name: user?.name,
-			characterPlayed: {
+			name: user?.name ?? "",
+			Character: {
 				connect: {
 					id: user?.characterId,
 				},
 			},
-			idURL: user?.idURL,
-			team: {
+			idURL: user?.idURL ?? "",
+			Team: {
 				connect: {
 					name: teamName,
-				},
-			},
-			college: {
-				connect: {
-					id: college_id,
 				},
 			},
 		},

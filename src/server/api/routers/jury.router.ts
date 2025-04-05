@@ -1,51 +1,45 @@
 import { createTRPCRouter, protectedJudgeProcedure } from "../trpc";
 import { z } from "zod";
 import kalasangamaError from "~/utils/customError";
-import { Characters, Criteria } from "@prisma/client";
+import { PlayCharacters, Criterias } from "@prisma/client";
 
 const schema = z.object({
-    "SHANTHANU": z.object({
+    "BHADRA_SENA": z.object({
       CRITERIA_1: z.number(),
       CRITERIA_2: z.number(),
       CRITERIA_3: z.number(),
       CRITERIA_4: z.number(),
     }),
-    "MANTRI_SUNEETHI": z.object({
+    "RATNAVATI": z.object({
       CRITERIA_1: z.number(),
       CRITERIA_2: z.number(),
       CRITERIA_3: z.number(),
       CRITERIA_4: z.number(),
     }),
-    "TAMAALAKETHU": z.object({
+    "VATSYAKA": z.object({
       CRITERIA_1: z.number(),
       CRITERIA_2: z.number(),
       CRITERIA_3: z.number(),
       CRITERIA_4: z.number(),
     }),
-    "TAAMRAAKSHA": z.object({
+    "VIDYULOCHANA": z.object({
       CRITERIA_1: z.number(),
       CRITERIA_2: z.number(),
       CRITERIA_3: z.number(),
       CRITERIA_4: z.number(),
     }),
-    "SATHYAVATHI": z.object({
+    "DHRADAVARMA": z.object({
       CRITERIA_1: z.number(),
       CRITERIA_2: z.number(),
       CRITERIA_3: z.number(),
       CRITERIA_4: z.number(),
     }),
-    "DAASHARAJA": z.object({
+    "DHRADAVARMA_CHARAKA": z.object({
       CRITERIA_1: z.number(),
       CRITERIA_2: z.number(),
       CRITERIA_3: z.number(),
       CRITERIA_4: z.number(),
-    }),
-    "DEVAVRATHA": z.object({
-      CRITERIA_1: z.number(),
-      CRITERIA_2: z.number(),
-      CRITERIA_3: z.number(),
-      CRITERIA_4: z.number(),
-    }),
+    })
   });
 
   const totalSchema = z.object({
@@ -68,7 +62,7 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update here
                     },
                     create:{
-                        user: {
+                        User: {
                             connect:{
                                 id: userId
                             }
@@ -77,8 +71,7 @@ export const JuryRouter= createTRPCRouter({
                 })
                 const teams = await ctx.db.team.findMany({
                     include:{
-                        teamScore: true,
-                        TeamNumber: true
+                        TeamScore: true
                     }
                 });
                 return teams;
@@ -122,7 +115,7 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update here
                     },
                     create:{
-                        user: {
+                        User: {
                             connect:{
                                 id: userId
                             }
@@ -139,7 +132,7 @@ export const JuryRouter= createTRPCRouter({
                         characterPlayed: true,
                         judge: {
                             include: {
-                                teamScore: {
+                                TeamScore: {
                                     where: {
                                         teamID: input.teamId,
                                         judgeId: ctx.session.user.id
@@ -158,7 +151,7 @@ export const JuryRouter= createTRPCRouter({
                         },
                         team: {
                             include: {
-                                college: true
+                                College: true
                             }
                         }
                     }
@@ -168,8 +161,8 @@ export const JuryRouter= createTRPCRouter({
         updateScores: protectedJudgeProcedure
             .input((z.object({
                 teamId: z.string(),
-                criteriaName: z.nativeEnum(Criteria),
-                characterId: z.nativeEnum(Characters),
+                criteriaName: z.nativeEnum(Criterias),
+                characterId: z.nativeEnum(PlayCharacters),
                 score : z.number().max(30),
             })))
             .mutation(async({ctx,input})=>{
@@ -190,7 +183,7 @@ export const JuryRouter= createTRPCRouter({
                     }
                 });
                 //check if chacter exists if not add it
-                const character = await ctx.db.characterOnUser.upsert({
+                const character = await ctx.db.character.upsert({
                     where: {
                         character: input.characterId
                     },
@@ -225,7 +218,7 @@ export const JuryRouter= createTRPCRouter({
         updateCriteriaScore: protectedJudgeProcedure
             .input((z.object({
                 teamId: z.string(),
-                criteriaName: z.nativeEnum(Criteria),
+                criteriaName: z.nativeEnum(Criterias),
                 score : z.number().max(30),
                 final: z.boolean().optional()
             }))).mutation(async({ctx,input})=>{
@@ -297,7 +290,7 @@ export const JuryRouter= createTRPCRouter({
                         //nothing to update here
                     },
                     create:{
-                        user: {
+                        User: {
                             connect:{
                                 id: userId
                             }
@@ -316,14 +309,14 @@ export const JuryRouter= createTRPCRouter({
         scoresUpdate:protectedJudgeProcedure
             .input(z.object({
                 scores: schema,
-                characters: z.array(z.nativeEnum(Characters)), 
-                criteria: z.array(z.nativeEnum(Criteria)),
+                characters: z.array(z.nativeEnum(PlayCharacters)), 
+                criteria: z.array(z.nativeEnum(Criterias)),
                 teamId: z.string() 
             }))
             .mutation(async ({ctx,input}) => {
                 await Promise.all(input.characters.map(async (character) => {
                     await Promise.all(input.criteria.map(async (criteria) => {
-                        const characterinfo = await ctx.db.characterOnUser.findUnique({
+                        const characterinfo = await ctx.db.character.findUnique({
                             where: {
                                 character: character
                             },
@@ -353,7 +346,7 @@ export const JuryRouter= createTRPCRouter({
             .input(z.object({
                 scores: totalSchema, 
                 teamId: z.string(),
-                criteria: z.array(z.nativeEnum(Criteria)),
+                criteria: z.array(z.nativeEnum(Criterias)),
             }))
             .mutation(async({ctx,input}) => {
                 await Promise.all(input.criteria.map(async (criteria) => {

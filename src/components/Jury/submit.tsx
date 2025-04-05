@@ -13,12 +13,12 @@ import {
 } from "~/components/ui/table";
 import { api } from "~/trpc/react";
 import { type Dispatch, type SetStateAction, useState } from "react";
-import type { Characters, Criteria } from "@prisma/client";
+import type { PlayCharacters, Criterias } from "@prisma/client";
 import { toast } from "react-hot-toast";
 
-type ScoresState = Record<Characters, Record<Criteria, number>>;
+type ScoresState = Record<PlayCharacters, Record<Criterias, number>>;
 
-type TeamScoresState = Record<Criteria, number>;
+type TeamScoresState = Record<Criterias, number>;
 
 const Submit = ({
     scores,
@@ -36,8 +36,8 @@ const Submit = ({
     teamId : string,
     teamName : string,
     criteriaDisplayList : string[], 
-    criteriaList : Criteria[],
-    characters : Characters[],
+    criteriaList : Criterias[],
+    characters : PlayCharacters[],
     setScored: Dispatch<SetStateAction<boolean>>,
     cScores: TeamScoresState,
     criteriaTeamDisplayList: string[],
@@ -89,7 +89,7 @@ const Submit = ({
 		setScored(true);
 	};
 
-    const totalScore = (character: Characters) => {
+    const totalScore = (character: PlayCharacters) => {
         if (scores[character] != null) {
           const keys = criteriaList;
           let sum = 0;

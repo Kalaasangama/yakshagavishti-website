@@ -18,7 +18,7 @@ import {
 import { ArrowDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { type NextPage } from "next";
-import type { Criteria, Characters } from "@prisma/client";
+import type { Criterias, PlayCharacters } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Score from "~/components/Jury/score";
@@ -27,7 +27,7 @@ import { Button } from "~/components/ui/button";
 
 const Jury: NextPage = () => {
   const user = useSession();
-  const criteriaList: Criteria[] = [
+  const criteriaList: Criterias[] = [
     "CRITERIA_1",
     "CRITERIA_2",
     "CRITERIA_3",
@@ -46,9 +46,9 @@ const Jury: NextPage = () => {
     "Criteria 4(10)",
   ];
 
-  type ScoresState = Record<Characters, Record<Criteria, number>>;
+  type ScoresState = Record<PlayCharacters, Record<Criterias, number>>;
 
-  type TeamScoresState = Record<Criteria, number>;
+  type TeamScoresState = Record<Criterias, number>;
 
   const [teamName, setTeamName] = useState<string>("Select a college");
   const [teamId, setTeamId] = useState<string>("");
@@ -57,7 +57,7 @@ const Jury: NextPage = () => {
   const [scored, setScored] = useState<boolean>(true);
   const { data, isLoading } = api.admin.getTeams.useQuery();
 
-  const characters: Characters[] = [
+  const characters: PlayCharacters[] = [
     "BHADRA_SENA",
     "RATNAVATI",
     "VATSYAKA",
@@ -71,7 +71,7 @@ const Jury: NextPage = () => {
   const criteriaScores: TeamScoresState = {} as TeamScoresState;
 
   characters.forEach((character) => {
-    initialScores[character] = {} as ScoresState[Characters];
+    initialScores[character] = {} as ScoresState[PlayCharacters];
 
     criteriaList.forEach((criteria) => {
       initialScores[character][criteria] = 0;
@@ -89,7 +89,7 @@ const Jury: NextPage = () => {
   const [enable, setEnable] = useState<boolean>(true);
   const [active, setActive] = useState<string>("");
 
-  const totalScore = (character: Characters) => {
+  const totalScore = (character: PlayCharacters) => {
     if (scores[character] != null) {
       const keys = criteriaList;
       let sum = 0;
@@ -104,7 +104,7 @@ const Jury: NextPage = () => {
   const calculateFinalTotal = (): number => {
     let sum = 0;
     Object.keys(cScores).forEach((key) => {
-      if (cScores[key as Criteria] !== 999) sum += cScores[key as Criteria];
+      if (cScores[key as Criterias] !== 999) sum += cScores[key as Criterias];
     });
     return sum;
   };
@@ -163,9 +163,9 @@ const Jury: NextPage = () => {
   }, [teamId, judgeId]);
 
   useEffect(() => {
-    if (res.data?.length > 0) {
+    if (res.data?.length ?? 0 > 0) {
       console.log("updating");
-      res.data.forEach((item) => {
+      res.data?.forEach((item) => {
         const character = item.characterPlayed.character;
         const criteria = item.criteria.name;
         // Update the scores state with the new value
@@ -177,8 +177,8 @@ const Jury: NextPage = () => {
           },
         }));
       });
-      const team = res.data[0]?.judge.teamScore;
-      team.forEach((team) => {
+      const team = res.data?.[0]?.judge.TeamScore;
+      team?.forEach((team) => {
         setCScores((prevScores) => ({
           ...prevScores,
           [team.criteria?.name]: team.score,
@@ -204,10 +204,10 @@ const Jury: NextPage = () => {
     const row = characters.map((character) => {
       const row = [
         character,
-        scores[character]?.[criteriaList[0]],
-        scores[character]?.[criteriaList[1]],
-        scores[character]?.[criteriaList[2]],
-        scores[character]?.[criteriaList[3]],
+        criteriaList[0] !== undefined ? scores[character]?.[criteriaList[0]] : 0,
+        criteriaList[1] !== undefined ? scores[character]?.[criteriaList[1]] : 0,
+        criteriaList[2] !== undefined ? scores[character]?.[criteriaList[2]] : 0,
+        criteriaList[3] !== undefined ? scores[character]?.[criteriaList[3]] : 0,
         totalScore(character),
       ];
       return row;
@@ -341,10 +341,10 @@ const Jury: NextPage = () => {
                         className="text-xl"
                         key={judge.userId}
                         onSelect={(e) =>
-                          setJudge(judge.userId, judge.user.name)
+                          setJudge(judge.userId, judge.User.name)
                         }
                       >
-                        {judge.user.name}
+                        {judge.User.name}
                       </DropdownMenuItem>
                     ))
                   ) : (
@@ -403,7 +403,7 @@ const Jury: NextPage = () => {
                     {criteriaTeamDisplayList.map((criteria, k) => (
                       <TableRow key={k}>
                         <TableCell>{criteria}</TableCell>
-                        <TableCell>{cScores[criteriaList[k]]}</TableCell>
+                        <TableCell>{criteriaList[k] !== undefined ? cScores[criteriaList[k]] : 0}</TableCell>
                       </TableRow>
                     ))}
                     <TableRow>
