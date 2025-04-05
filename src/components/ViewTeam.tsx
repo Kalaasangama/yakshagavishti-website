@@ -55,13 +55,13 @@ export default function ViewTeam() {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{teamData?.data?.members?.map((member, key) => (
+							{teamData?.data?.TeamMembers?.map((member, key) => (
 								<TableRow key={key}>
 									<TableCell className="font-semibold text-sm">
 										{member?.name}
 									</TableCell>
 									<TableCell className="font-semibold text-sm">
-										{member?.characterPlayed?.character}
+										{member?.Character?.character}
 									</TableCell>
 									<TableCell>
 									<a href={member.idURL ?? ""} target="_blank">
@@ -83,7 +83,11 @@ export default function ViewTeam() {
 							))}
 						</TableBody>
 					</Table>
-					{teamData?.data?.editRequests?.status==="REVOKED" || !teamData.data?.editRequests ? <Button onClick={()=>editRequest.mutate()}>Request Edit</Button>:<p className="text-center">We will review and update you soon for edits</p>}
+					{!teamData?.data?.editRequested ? (
+						<Button className="cursor-pointer" onClick={()=>editRequest.mutate()}>Request Edit</Button>
+						) : (
+						<p className="text-center">We will review and update you soon for edits</p>
+					)}
 				</DialogContent>
 			</Dialog>
 		)

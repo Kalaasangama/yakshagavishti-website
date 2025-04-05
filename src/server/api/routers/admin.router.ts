@@ -1,4 +1,4 @@
-import { Characters } from "@prisma/client";
+import { PlayCharacters, Role } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { createTRPCRouter, protectedAdminProcedure, protectedProcedure } from "~/server/api/trpc";
@@ -10,47 +10,37 @@ export const adminRouter = createTRPCRouter({
 			const user = await ctx.db.user.findUnique({
 				where: { id: ctx.session.user.id },
 			});
-			if (user?.role === "ADMIN") {
+			if (user?.role === Role.ADMIN) {
 				const teams = await ctx.db.team.findMany({
 					select: {
 						id: true,
 						name: true,
-						college: {
+						College: {
 							select: {
 								name: true,
 							},
 						},
 						isComplete: true,
-						leader: {
+						Leader: {
 							select: {
 								name: true,
-								contact: true,
-								characterPlayed: {
-									select: {
-										character: true,
-									},
-								},
 							},
 						},
-						members: {
+						TeamMembers: {
 							select: {
 								id: true,
 								name: true,
 								idURL: true,
+								contact: true,
 								isIdVerified: true,
-								characterPlayed: {
+								Character: {
 									select: {
 										character: true,
 									},
 								},
 							},
 						},
-						editRequests: {
-							select: {
-								id: true,
-								status: true,
-							},
-						},
+						editRequested: true
 					},
 				});
 				return teams;
@@ -84,7 +74,7 @@ export const adminRouter = createTRPCRouter({
 					where: { id: ctx.session.user.id },
 				});
 				if (user?.role === "ADMIN") {
-					await ctx.db.user.update({
+					await ctx.db.teamMembers.update({
 						where: {
 							id: input.userId,
 						},
@@ -113,10 +103,7 @@ export const adminRouter = createTRPCRouter({
 		}),
 	EditAccess: protectedProcedure
 		.input(
-			z.object({
-				team: z.string(),
-				action: z.enum(["Grant", "Revoke"]),
-			})
+			z.object({ team: z.string() })
 		)
 		.mutation(async ({ ctx, input }) => {
 			try {
@@ -124,35 +111,20 @@ export const adminRouter = createTRPCRouter({
 					where: { id: ctx.session.user.id },
 				});
 				if (user?.role === "ADMIN") {
-					if (input.action === "Grant") {
-						await ctx.db.team.update({
-							where: {
-								id: input.team,
-							},
-							data: {
-								isComplete: false,
-								editRequests: {
-									update: {
-										status: "GRANTED",
-									},
-								},
-							},
-						});
-					} else {
-						await ctx.db.team.update({
-							where: {
-								id: input.team,
-							},
-							data: {
-								isComplete: true,
-								editRequests: {
-									update: {
-										status: "REVOKED",
-									},
-								},
-							},
-						});
-					}
+					const team = await ctx.db.team.findUnique({
+						where: { id: input.team, },
+						select: { isComplete: true, },
+					});
+
+					await ctx.db.team.update({
+						where: {
+							id: input.team,
+						},
+						data: {
+							isComplete: !team?.isComplete,
+						},
+					});
+
 					return { message: "success" };
 				} else {
 					throw new kalasangamaError(
@@ -188,7 +160,7 @@ export const adminRouter = createTRPCRouter({
 					characterPlayed: true,
 					judge: {
 						include: {
-							teamScore: {
+							TeamScore: {
 								where: {
 									teamID: input.teamId,
 									judgeId: input.judgeId
@@ -207,7 +179,7 @@ export const adminRouter = createTRPCRouter({
 					},
 					team: {
 						include: {
-							college: true
+							College: true
 						}
 					}
 				}
@@ -221,7 +193,7 @@ export const adminRouter = createTRPCRouter({
 			query(async({ctx})=>{
 				return await ctx.db.judge.findMany({
 					include: {
-						user: true
+						User: true
 					}
 				});
 			}),
@@ -233,7 +205,7 @@ export const adminRouter = createTRPCRouter({
 						criteria: true,
 						team: {
 							include:{
-								members: true
+								TeamMembers: true
 							}
 						}
 					},
@@ -254,12 +226,12 @@ export const adminRouter = createTRPCRouter({
 		getName:protectedAdminProcedure
 			.input(z.object({
 				teamId: z.string(),
-				character: z.nativeEnum(Characters)
+				character: z.nativeEnum(PlayCharacters)
 			}))
 			.query(async ({ctx,input})=>{
-				return await ctx.db.user.findUnique({
+				return await ctx.db.teamMembers.findUnique({
 					where:{
-						characterId_teamId:{
+						teamId_characterId:{
 							characterId:input.character,
 							teamId: input.teamId
 						}
@@ -288,8 +260,7 @@ export const adminRouter = createTRPCRouter({
 			.query(async({ctx})=>{
 				const teams = await ctx.db.team.findMany({
                     include:{
-                        teamScore: true,
-                        TeamNumber: true
+                        TeamScore: true,
                     }
                 });
                 return teams;

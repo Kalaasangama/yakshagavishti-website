@@ -2,14 +2,11 @@ import { useState } from "react";
 import CollegeReg from "~/components/Forms/CollegeReg";
 import LeadRegister from "~/components/Forms/LeadRegister";
 import MemberReg from "~/components/Forms/MemberReg";
-import { useSession } from "next-auth/react";
 import EditTeamForm from "~/components/Forms/EditTeam";
 
 export default function CreateTeam() {
-	const user = useSession()?.data?.user;
 	const [FormToShow, setFormToShow] = useState(1);
 	const [CollegeId, setCollegeId] = useState("");
-	const [LeaderChar, setLeaderChar] = useState(user?.characterId ?? "");
 	if (FormToShow === 1)
 		return (
 			<>
@@ -25,7 +22,6 @@ export default function CreateTeam() {
 				<LeadRegister
 					setFormToShow={setFormToShow}
 					college_id={CollegeId}
-					setLeaderChar={setLeaderChar}
 				/>
 			</>
 		);
@@ -33,10 +29,7 @@ export default function CreateTeam() {
 	if (FormToShow === 4)
 		return (
 			<>
-				<EditTeamForm
-					LeaderCharacter={LeaderChar}
-					CollegeId={CollegeId}
-				/>
+				<EditTeamForm />
 			</>
 		);
 	else
@@ -44,8 +37,6 @@ export default function CreateTeam() {
 			<>
 				<MemberReg
 					setFormToShow={setFormToShow}
-					LeaderCharacter={LeaderChar}
-					CollegeId={CollegeId}
 				/>
 			</>
 		);

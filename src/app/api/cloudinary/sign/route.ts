@@ -21,7 +21,7 @@ function getSignature() {
 }
 
 // Handle API request
-export async function GET() {
+export async function POST() {
   const { timestamp, signature } = getSignature();
   return NextResponse.json({ timestamp, signature });
 }

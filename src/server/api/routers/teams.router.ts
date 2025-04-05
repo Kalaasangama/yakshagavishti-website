@@ -2,122 +2,74 @@ import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 import { z } from "zod";
 import kalasangamaError from "~/utils/customError";
-import {
-	createAccount,
-	getCollegeById,
-	setLeader,
-	setTeamCompleteStatus,
-} from "~/utils/helpers";
+import { getCollegeById } from "~/utils/helpers";
 
 export const TeamRouter = createTRPCRouter({
-	register: protectedProcedure
-		.input(
-			z.object({
-				college_id: z.string().nullish(),
-				leader_character: z.string().nullish(),
-				leader_idUrl: z.string().nullish(),
-				leader_contact: z.string().nullish(),
-				leader_name: z.string().nullish(),
-				members: z.array(
-					z.object({
-						name: z.string(),
-						characterId: z.string(),
-						idURL: z.string(),
-					})
-				),
-			})
-		)
-		.mutation(async ({ ctx, input }) => {
+	getColleges: protectedProcedure
+		.query(async ({ ctx }) => {
 			try {
-				//Create or return team
-				const college = await getCollegeById(input.college_id ?? "");
-				//Set team leader
-				if (college.Team?.isComplete)
-					throw new kalasangamaError(
-						"Create Team Error",
-						"Team is already complete"
-					);
-				
-				if (input.members.length === 0) {
-					await setLeader(
-						ctx.session.user.id,
-						college.Team?.name ?? "",
-						college.id,
-						input.leader_character ?? "",
-						input.leader_idUrl ?? "",
-						input.leader_contact ?? "",
-						input.leader_name ?? ""
-					);
-					return { message: "Leader Details Updated" };
-				}
-				//Add members to team
-
-				if (college.Team && college.Team.members.length > 0) {
-					await ctx.db.user.deleteMany({
-						where: {
-							id: {
-								in: college.Team.members
-									.map((member) => member.id)
-									.filter((id) => id !== ctx.session.user.id),
-							},
-						},
-					});
-				}
-				await Promise.all(
-					input.members.map((user) =>
-						ctx.db.user.create({
-							data: {
-								name: user?.name,
-								characterPlayed: {
-									connect: {
-										id: user?.characterId,
-									},
-								},
-								idURL: user?.idURL,
-								team: {
-									connect: {
-										id: college.Team?.id,
-									},
-								},
-								college: {
-									connect: {
-										id: college.id,
-									},
-								},
-							},
-						})
-					)
-				);
-				if (ctx.session.user.characterId) {
-					const leaderChar = input.members.find(
-						(member) =>
-							member.characterId === ctx.session.user.characterId
-					);
-					if (leaderChar?.name === ctx.session?.user?.name)
-						await ctx.db.user.update({
-							where: { id: ctx.session.user.id },
-							data: {
-								characterPlayed: {
-									disconnect: {},
-								},
-							},
-						});
-				}
-
-				//Set team complete status to true to prevent edits
-				await setTeamCompleteStatus(college.Team?.id ?? "", true);
-				return { message: "Team created successfully" };
+				const colleges = await ctx.db.college.findMany({
+					select: {
+						id: true,
+						name: true
+					}
+				});
+				return colleges;
 			} catch (error) {
-				if (error instanceof kalasangamaError) {
-					throw new TRPCError({
-						message: error.message,
-						code: "CONFLICT",
-					});
-				} else {
-					console.log(error);
-					throw new Error("An error occurred!");
-				}
+				console.log(error);
+				throw new Error("An error occurred!");
 			}
+		}),
+	getCharacters: protectedProcedure
+		.input(z.object({ edit: z.boolean().optional() }))
+		.query(async ({ ctx, input }) => {
+			try {
+				const userId = ctx.session.user.id;
+
+				if (input.edit) {
+					const allCharacters = await ctx.db.character.findMany({
+					  select: {
+						id: true,
+						character: true,
+					  },
+					});
+					return allCharacters;
+				}
+			
+				// Step 1: Get the team the user is part of (either as leader or team member)
+				const team = await ctx.db.team.findFirst({
+					where: {
+						leaderId: userId
+					},
+					include: {
+						TeamMembers: {
+							select: { characterId: true },
+						},
+					},
+				});
+			
+				const takenCharacterIds = team?.TeamMembers
+				  .map((m) => m.characterId)
+				  .filter((id): id is string => !!id) ?? [];
+			
+				// Step 2: Get all characters not taken
+				const characters = await ctx.db.character.findMany({
+					where: {
+						id: {
+							notIn: takenCharacterIds,
+						},
+					},
+					select: {
+						id: true,
+						character: true
+					}
+				});
+			
+				return characters;
+			  } catch (error) {
+				console.error(error);
+				throw new Error("An error occurred while fetching characters.");
+			  }
 		}),
 	checkPassword: protectedProcedure
 		.input(
@@ -156,21 +108,155 @@ export const TeamRouter = createTRPCRouter({
 				}
 			}
 		}),
+	register: protectedProcedure
+		.input(
+			z.object({
+				college_id: z.string().nullish(),
+				leader_character: z.string().nullish(),
+				leader_idUrl: z.string().nullish(),
+				leader_contact: z.string().nullish(),
+				leader_name: z.string().nullish(),
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			try {
+				const team = await ctx.db.team.update({
+					where: { college_id: input.college_id ?? undefined },
+					data: {
+						Leader: { connect: { id: ctx.session.user.id } }
+					}
+				})
+				
+				if (team?.isComplete) {
+					throw new kalasangamaError(
+						"Create Team Error",
+						"Team is already complete"
+					);
+				}
+				
+				await ctx.db.teamMembers.create({
+					data: {
+						teamId: team?.id ?? "",
+						characterId: input.leader_character ?? "",
+						idURL: input.leader_idUrl ?? "",
+						name: input.leader_name ?? "",
+						contact: input.leader_contact ?? "",
+					},
+				})
+				
+				return { message: "Team created successfully" };
+			} catch (error) {
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "CONFLICT",
+					});
+				} else {
+					console.log(error);
+					throw new Error("An error occurred!");
+				}
+			}
+		}),
+	updateTeam: protectedProcedure
+		.input(
+			z.object({
+				edit: z.boolean().optional(),
+				members: z.array(
+					z.object({
+						name: z.string(),
+						characterId: z.string(),
+						idURL: z.string(),
+					})
+				)
+			})
+		)
+		.mutation(async ({ ctx, input }) => {
+			try {
+				if (!ctx.session.user.LeaderOf)
+					throw new kalasangamaError(
+						"Add Members Error",
+						"Only leaders can add members"
+					);
+
+				if (input.edit) {
+					await Promise.all(
+						input.members.map(async (member) => {
+							await ctx.db.teamMembers.update({
+								where: {
+									teamId_characterId: {
+										teamId: ctx.session.user.LeaderOf?.id ?? "",
+										characterId: member.characterId,
+									}
+								},
+								data: {
+									name: member.name,
+									idURL: member.idURL,
+									isIdVerified: false,
+								},
+							})
+						})
+					);
+
+					await ctx.db.team.update({
+						where: { id: ctx.session.user.LeaderOf.id },
+						data: {
+							isComplete: true,
+							editRequested: false
+						},
+					})
+
+					return { message: "success" };
+				}
+
+				const college = await getCollegeById(ctx.session.user.LeaderOf.college_id);
+				await Promise.all(
+					input.members.map(async (member) => {
+						await ctx.db.teamMembers.create({
+							data: {
+								name: member.name,
+								characterId: member.characterId,
+								idURL: member.idURL,
+								teamId: college.Team?.id ?? "",
+							},
+						});
+					})
+				);
+
+				await ctx.db.team.update({
+					where: { id: ctx.session.user.LeaderOf.id },
+					data: {
+						isComplete: true,
+						status: "REVOKED"
+					},
+				})
+
+				return { message: "success" };
+			} catch (error) {
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "CONFLICT",
+					});
+				} else {
+					console.log(error);
+					throw new Error("An error occurred!");
+				}
+			}
+		}),
 	getTeam: protectedProcedure.query(async ({ ctx }) => {
 		try {
-			if (ctx.session.user.leaderOf) {
+			if (ctx.session.user.LeaderOf) {
 				const teamInfo = await ctx.db.user.findUnique({
 					where: { id: ctx.session.user.id },
 					include: {
-						team: {
+						LeaderOf: {
 							include: {
-								members: { include: { characterPlayed: true } },
-								editRequests: true,
+								TeamMembers: { include: { Character: true } },
 							},
 						},
 					},
 				});
-				return teamInfo?.team;
+				return teamInfo?.LeaderOf;
 			}
 			throw new kalasangamaError(
 				"Team Details Error",
@@ -190,16 +276,16 @@ export const TeamRouter = createTRPCRouter({
 	}),
 	getTeamForEdits: protectedProcedure.query(async ({ ctx }) => {
 		try {
-			if (ctx.session.user.leaderOf) {
+			if (ctx.session.user.LeaderOf) {
 				const teamInfo = await ctx.db.user.findUnique({
 					where: { id: ctx.session.user.id },
 					include: {
-						team: {
+						LeaderOf: {
 							select: {
-								members: {
+								TeamMembers: {
 									select: {
 										name: true,
-										characterPlayed: {
+										Character: {
 											select: { id: true },
 										},
 										idURL: true,
@@ -209,7 +295,7 @@ export const TeamRouter = createTRPCRouter({
 						},
 					},
 				});
-				return teamInfo?.team;
+				return teamInfo?.LeaderOf;
 			}
 			throw new kalasangamaError(
 				"Team Details Error",
@@ -228,81 +314,14 @@ export const TeamRouter = createTRPCRouter({
 		}
 	}),
 	requestEditAccess: protectedProcedure.mutation(async ({ ctx }) => {
-		const teamId = ctx.session.user.team?.id;
+		const teamId = ctx.session.user.LeaderOf?.id;
 		await ctx.db.team.update({
 			where: { id: teamId },
 			data: {
-				editRequests: {
-					create: {},
-				},
+				editRequested: true,
 			},
 		});
 	}),
-	updateTeam: protectedProcedure
-		.input(
-			z.object({
-				college_id: z.string(),
-				members: z.array(
-					z.object({
-						name: z.string(),
-						characterId: z.string(),
-						idURL: z.string(),
-					})
-				),
-			})
-		)
-		.mutation(async ({ ctx, input }) => {
-			try {
-				//Check if user is a leader
-				if (!ctx.session.user.leaderOf)
-					throw new kalasangamaError(
-						"Update Team Error",
-						"Only leaders can modify teams"
-					);
-
-				//Get the user's team if user is a leader
-				const team = await ctx.db.team.findUnique({
-					where: { id: ctx.session.user.team?.id },
-					include: { leader: true },
-				});
-
-				//Check if team has edit access
-				if (team?.isComplete)
-					throw new kalasangamaError(
-						"Update Team Error",
-						"Please request permission to edit your team"
-					);
-
-				const college = await getCollegeById(input.college_id);
-				//Update the users
-				await Promise.all(
-					input.members.map(async (member) => {
-						await ctx.db.user.delete({
-							where: { id: member.characterId, leaderOf: null },
-						});
-					})
-				);
-				//Create an array of prisma promises for transaction
-				const addUsersTransaction = input.members.map((user) => {
-					return createAccount(user, college.Team?.name ?? "", college.id);
-				});
-				//Create user accounts in transaction
-				await ctx.db.$transaction(addUsersTransaction);
-				//Set the team complete status to prevent further edits
-				await setTeamCompleteStatus(college.Team?.id ?? "", true);
-				return { message: "success" };
-			} catch (error) {
-				if (error instanceof kalasangamaError) {
-					throw new TRPCError({
-						message: error.message,
-						code: "CONFLICT",
-					});
-				} else {
-					console.log(error);
-					throw new Error("An error occurred!");
-				}
-			}
-		}),
 });
 
 export default TeamRouter;

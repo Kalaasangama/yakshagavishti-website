@@ -11,9 +11,14 @@ import {
     TableCell,
     TableHeader,
 } from "~/components/ui/table";
+import { Switch } from "~/components/ui/switch";
 import { Button } from "~/components/ui/button";
+import { ImSpinner9 } from "react-icons/im";
+import { useState } from "react";
 
 export default function Admin() {
+    const [verifyingId, setVerifyingId] = useState<string>("")
+
     const { data: sessionData } = useSession();
     const { data, refetch } = api.admin.getRegisteredTeams.useQuery();
     const verifyIdMutation = api.admin.verifyId.useMutation();
@@ -21,25 +26,31 @@ export default function Admin() {
 
     function verifyId(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
         const userId = (e.target as HTMLElement)?.dataset?.userid;
-        if (userId)
+        if (userId) {
+            setVerifyingId(userId);
             verifyIdMutation.mutate(
                 { userId: userId },
                 {
                     onSuccess: () => {
+                        setVerifyingId("");
                         refetch().catch((err) => console.log(err));
                     },
                     onError: (error) => {
+                        setVerifyingId("");
                         console.error(error);
                         alert("Error reducing score");
                     },
                 }
             );
-        else console.error("User ID is null or undefined");
+        } else console.error("User ID is null or undefined");
     }
-    function setEditAccess(team: string, action: "Grant" | "Revoke") {
+    function setEditAccess(team: string) {
         editTeamAccessMutation.mutate(
-            { team, action },
+            { team },
             {
+                onSuccess: () => {
+                    refetch().catch((err) => console.log(err));
+                },
                 onError: (error) => {
                     console.error(error);
                     alert(error.message);
@@ -56,11 +67,11 @@ export default function Admin() {
         
         const row = data?.map((element)=>{
             if(element.isComplete === true){
-            const college = (element.college?.name ?? "").replaceAll(","," ");
+            const college = (element.College?.name ?? "").replaceAll(","," ");
             
-            const leader = (element.leader?.name ?? "").replaceAll(","," ");
-            const leaderContact = (element?.leader?.contact + "\n" || "").replaceAll(","," ");
-            const members = (element?.members.map((member)=>"," + "," +  member.name + "," + member?.characterPlayed?.character ? member?.characterPlayed?.character:"" + "\n").join(",") || "")
+            const leader = (element.Leader?.name ?? "").replaceAll(","," ");
+            const leaderContact = (element?.TeamMembers.find(member => member.contact !== null)?.contact + "\n" || "").replaceAll(","," ");
+            const members = (element?.TeamMembers.map((member)=>"," + "," +  member.name + "," + member?.Character?.character ? member?.Character?.character:"" + "\n").join(",") || "")
             const row = [college,leader,leaderContact,members].join(",")
             console.log(row);
             return row;
@@ -85,62 +96,54 @@ export default function Admin() {
                     <div className="flex justify-center mt-20">
                         
     
-                        <Button onClick={downloadcsvFile}>
+                        <Button onClick={downloadcsvFile} className="bg-white text-black hover:bg-slate-300 cursor-pointer">
                             Download
                         </Button>
                     </div>
 
-                    <h1 className="text-extrabold mt-10 text-2xl">
+                    <h1 className="text-extrabold mt-10 text-3xl">
                         Registered Teams
                     </h1>
                     {data?.map((element, key) => (
-                        <div key={key} className="my-10 rounded border px-20">
-
-                            <h1>Team: {element.name} </h1>
-                            {element.editRequests &&
-                                (element?.editRequests?.status === "PENDING" || element?.editRequests?.status === "REVOKED" ? (
-                                    <Button
-                                        onClick={() =>
-                                            setEditAccess(element.id, "Grant")
-                                        }
-                                    >
-                                        Grant Edit Access
-                                    </Button>
-                                ) : (
-                                    <Button
-                                        onClick={() =>
-                                            setEditAccess(element.id, "Revoke")
-                                        }
-                                    >
-                                        Revoke Edit Access
-                                    </Button>
-                                ))}
-
-                            <h2>Members</h2>
-                            <Table className="my-10 border">
+                        <div key={key} className="my-10 px-20">
+                            <div className="flex w-full justify-between items-center">
+                                <h1 className="text-2xl">Team: {element.name} </h1>
+                                {element.editRequested && <div className="flex items-center gap-2">
+                                    <label htmlFor={`edit-access-${element.id}`} className="text-xl">
+                                        Edit Access
+                                    </label>
+                                    <Switch
+                                        checked={element.editRequested && !element.isComplete} // you'll need this boolean value from backend
+                                        onCheckedChange={() => setEditAccess(element.id)}
+                                        id={`edit-access-${element.id}`}
+                                        className="data-[state=checked]:bg-blue-900 bg-gray-200 peer h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors"
+                                    />
+                                </div>}
+                            </div>
+                            <Table className="my-5 border">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Name</TableHead>
                                         <TableHead>Character</TableHead>
-                                        <TableHead>ID</TableHead>
+                                        <TableHead className="text-center">ID</TableHead>
                                         <TableHead className="text-right">
                                             Status
                                         </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {element.members.map((member, index) => {
+                                    {element.TeamMembers.map((member, index) => {
                                         return (
                                             <TableRow key={index}>
                                                 <TableCell className="font-medium">
                                                     {member.name}
                                                 </TableCell>
                                                 <TableCell className="font-medium">
-                                                    {member?.characterPlayed?.character}
+                                                    {member?.Character?.character}
                                                 </TableCell>
                                                 <TableCell>
                                                     {member.idURL && (
-                                                        <div className="w-60"><Image
+                                                        <div className="w-60 self-center flex justify-self-center justify-center"><Image
                                                             src={member.idURL}
                                                             alt="ID"
                                                             height={1000}
@@ -159,7 +162,7 @@ export default function Admin() {
                                                                 verifyId(e)
                                                             }
                                                         >
-                                                            Verify ID
+                                                            {(verifyingId === member.id && verifyIdMutation.isPending) ? <ImSpinner9 className="animate-spin" /> : "Verify ID"}
                                                         </button>
                                                     ) : (
                                                         "Verified"

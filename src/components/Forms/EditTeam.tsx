@@ -33,15 +33,6 @@ import { useRouter } from "next/navigation";
 import AccordianForm from "~/components/Forms/AccordionForm";
 import z from "zod";
 import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
-//TODO: Change the id values to the actual DB values
-const roles = [
-  { label: "BHADRA_SENA", value: "cm8tr0d010000r9nmzp0gasfe" },
-  { label: "RATNAVATI", value: "cm8tr0g420001r9nmxecf4c4y" },
-  { label: "VATSYAKA", value: "cm8tr0krs0002r9nm424nl2pn" },
-  { label: "VIDYULOCHANA", value: "cm8tr0uvc0003r9nm1rn7o539" },
-  { label: "DHRADAVARMA", value: "cm8tr0uvc0004r9nm3bo3a4rs" },
-  { label: "DHRADAVARMA CHARAKA", value: "cm8tr0uvc0005r9nm1ilgoxn1" },
-];
 
 type Members = {
   name: string;
@@ -49,15 +40,11 @@ type Members = {
   idURL: string;
 };
 
-const EditTeamForm = ({
-  LeaderCharacter,
-  CollegeId,
-}: {
-  LeaderCharacter: string;
-  CollegeId: string;
-}) => {
+const EditTeamForm = () => {
   //Get the list of members from the API
+  console.log("Edit Team Form");
   const membersList = api.team.getTeamForEdits.useQuery();
+  const roles = api.team.getCharacters.useQuery({ edit: true });
   const [MembersArray, setMembersArray] = useState<Members[]>(
     (() => {
       const storedMembers = localStorage.getItem("members");
@@ -71,11 +58,11 @@ const EditTeamForm = ({
     if (MembersArray.length === 0)
       if (membersList.data && MembersArray.length === 0) {
         const tempArr = Array<Members>();
-        for (const member of membersList.data.members) {
-          if (member?.characterPlayed?.id)
+        for (const member of membersList.data.TeamMembers) {
+          if (member?.Character?.id)
             tempArr.push({
               name: member.name ?? "",
-              characterId: member?.characterPlayed?.id,
+              characterId: member?.Character?.id,
               idURL: member.idURL ?? "",
             });
         }
@@ -84,7 +71,7 @@ const EditTeamForm = ({
   }, [membersList.data, MembersArray.length]);
 
   //Register members API
-  const registerMembers = api.team.register.useMutation({
+  const registerMembers = api.team.updateTeam.useMutation({
     onError(error) {
       return toast({
         variant: "default",
@@ -127,9 +114,9 @@ const EditTeamForm = ({
         </DialogDescription>
         <div>
           <Accordion type="single" collapsible>
-            {roles.map((role, index) => (
+            {roles.data?.map((role, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{role.label}</AccordionTrigger>
+                <AccordionTrigger>{role.character}</AccordionTrigger>
                 <AccordionContent>
                   <AccordianForm
                     MembersArray={
@@ -140,8 +127,8 @@ const EditTeamForm = ({
                         : MembersArray
                     }
                     setMembersArray={setMembersArray}
-                    index={getIndex(role.value, index)}
-                    characterId={role.value}
+                    index={getIndex(role.id, index)}
+                    characterId={role.id}
                   />
                 </AccordionContent>
               </AccordionItem>
@@ -152,7 +139,7 @@ const EditTeamForm = ({
           <AlertDialog>
             <AlertDialogTrigger
               disabled={
-                roles.length <=
+                (roles.data?.length ?? 0) <=
                 MembersArray.filter(
                   (member) => member !== undefined || member !== null,
                 ).length
@@ -163,7 +150,7 @@ const EditTeamForm = ({
               <Button
                 size="sm"
                 disabled={
-                  roles.length <=
+                  (roles.data?.length ?? 0) <=
                   MembersArray.filter(
                     (member) => member !== undefined || member !== null,
                   ).length
@@ -174,7 +161,7 @@ const EditTeamForm = ({
                   if (
                     MembersArray.filter(
                       (member) => member !== undefined || member !== null,
-                    ).length < roles.length
+                    ).length < (roles.data?.length ?? 0)
                   ) {
                     toast({
                       variant: "destructive",
@@ -190,14 +177,17 @@ const EditTeamForm = ({
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogTitle className="text-black">
+                  Are you absolutely sure?
+                </AlertDialogTitle>
                 <AlertDialogDescription>
                   This action will register your team
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <ViewBeforeSubmit data={MembersArray} roles={roles} />
+                <AlertDialogCancel className="text-black">
+                  Cancel
+                </AlertDialogCancel>                <ViewBeforeSubmit data={MembersArray} roles={roles.data?.map(character => ({ label: character.character, value: character.id })) ?? []}  />
                 <AlertDialogAction
                   disabled={registerMembers.isPending}
                   onClick={(e) => {
@@ -213,7 +203,7 @@ const EditTeamForm = ({
                           }),
                         )
                         .parse(MembersArray),
-                      college_id: CollegeId,
+                      edit: true,
                     });
                   }}
                 >

@@ -32,47 +32,23 @@ model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
   userId       String
-  expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
 
   @@index([userId])
 }
 
 model User {
   id              String           @id @default(cuid())
-  name            String?
-  email           String?          @unique
+  name            String
+  email           String           @unique
   emailVerified   Boolean?         @default(false)
   image           String?
-  contact         String?
-  collegeId       String?
-  idURL           String?
-  college         College?         @relation(fields: [collegeId], references: [id])
   role            Role             @default(PARTICIPANT)
-  teamId          String?
-  team            Team?            @relation(fields: [teamId], references: [id])
-  characterPlayed CharacterOnUser? @relation(fields: [characterId], references: [character])
-  characterId     Characters?
-  leaderOf        Team?            @relation(fields: [leaderId], references: [id], name: "TeamLead")
-  leaderId        String?          @unique
-  isIdVerified    Boolean          @default(false)
+  LeaderOf        Team?            @relation(name: "TeamLead")
   accounts        Account[]
   sessions        Session[]
   Judge           Judge?
-
-  @@unique([characterId, teamId])
-  @@index([collegeId])
-  @@index([teamId])
-  @@index([characterId])
-}
-
-model TeamMembers {
-  id     String @id @default(cuid())
-  email  String
-  teamId String
-  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
-
-  @@index([teamId])
 }
 
 model College {
@@ -81,74 +57,81 @@ model College {
   details   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Users     User[]
   Team      Team?
   password  String?
+}
+
+model TeamMembers {
+  id              String @id @default(cuid())
+  name            String
+  idURL           String
+  contact         String? @default("")
+  teamId          String
+  Team            Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  characterId     String?
+  Character       Character? @relation(fields: [characterId], references: [id])
+  isIdVerified    Boolean @default(false)
+
+  @@index([teamId])
+  @@index([characterId])
+  @@unique([teamId, characterId])
 }
 
 model Team {
   id              String            @id @default(cuid())
   name            String            @unique
+  number          Int               @unique
   isComplete      Boolean           @default(false)
   attended        Boolean           @default(false)
-  college         College?          @relation(fields: [college_id], references: [id])
+  status          editStatus        @default(PENDING)
   college_id      String?           @unique
-  members         User[]
-  leader          User?             @relation(name: "TeamLead")
+  College         College?          @relation(fields: [college_id], references: [id])
+  leaderId        String?           @unique
+  Leader          User?             @relation(fields: [leaderId], references: [id], name: "TeamLead")
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   remark          String            @default("")
   isScored        Boolean           @default(false)
-  teamScore       teamScore[]
+  editRequested   Boolean           @default(false)
+  TeamScore       TeamScore[]
   TeamMembers     TeamMembers[]
-  editRequests    EditRequests?
-  IndividualScore individualScore[]
+  IndividualScore IndividualScore[]
   Submitted       Submitted[]
-  TeamNumber      TeamNumber?
 
   @@index([college_id])
 }
 
-model TeamNumber {
-  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
-  teamId String
-  number Int
-
-  @@unique([teamId])
-  @@index([teamId])
+model Character {
+  id              String            @id @default(cuid())
+  character       PlayCharacters    @unique
+  PlayedBy        TeamMembers[]
+  IndividualScore IndividualScore[]
 }
 
-model CharacterOnUser {
+model Criteria {
   id              String            @id @default(cuid())
-  character       Characters        @unique
-  playedBy        User[]
-  IndividualScore individualScore[]
-}
-
-model criteria {
-  id              String            @id @default(cuid())
-  name            Criteria          @unique
+  name            Criterias         @unique
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
-  teamScore       teamScore[]
-  IndividualScore individualScore[]
+  TeamScore       TeamScore[]
+  IndividualScore IndividualScore[]
 }
 
 model Judge {
-  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId          String
-  IndividualScore individualScore[]
-  teamScore       teamScore[]
+  User            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  IndividualScore IndividualScore[]
+  TeamScore       TeamScore[]
   Submitted       Submitted[]
 
   @@unique([userId])
 }
 
 model Submitted {
-  Judge     Judge   @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
   judgeId   String
-  team      Team    @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  Judge     Judge   @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
   teamID    String
+  Team      Team    @relation(fields: [teamID], references: [id], onDelete: Cascade)
   submitted Boolean @default(false)
 
   @@unique([judgeId, teamID])
@@ -156,13 +139,13 @@ model Submitted {
   @@index([teamID])
 }
 
-model teamScore {
-  criteria   criteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
+model TeamScore {
+  criteria   Criteria @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
   criteriaId String
-  Judge      Judge    @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
   judgeId    String
-  team       Team     @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  Judge      Judge    @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
   teamID     String
+  team       Team     @relation(fields: [teamID], references: [id], onDelete: Cascade)
   score      Int
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -173,14 +156,14 @@ model teamScore {
   @@index([judgeId])
 }
 
-model individualScore {
+model IndividualScore {
   id              String          @id @default(cuid())
-  criteria        criteria        @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
-  team            Team            @relation(fields: [teamID], references: [id], onDelete: Cascade)
+  criteria        Criteria        @relation(fields: [criteriaId], references: [id], onDelete: Cascade)
   teamID          String
+  team            Team            @relation(fields: [teamID], references: [id], onDelete: Cascade)
   criteriaId      String
-  characterPlayed CharacterOnUser @relation(fields: [characterId], references: [id])
   characterId     String
+  characterPlayed Character @relation(fields: [characterId], references: [id])
   score           Int
   judgeId         String
   judge           Judge           @relation(fields: [judgeId], references: [userId], onDelete: Cascade)
@@ -193,6 +176,7 @@ model individualScore {
 }
 
 model VerificationToken {
+  id         String   @id @default(cuid()) // Add this
   identifier String
   token      String   @unique
   expires    DateTime
@@ -200,16 +184,7 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-model EditRequests {
-  id        Int        @id @default(autoincrement())
-  teamId    String?    @unique
-  Team      Team?      @relation(fields: [teamId], references: [id])
-  status    editStatus @default(PENDING)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-enum Characters {
+enum PlayCharacters {
   BHADRA_SENA
   RATNAVATI
   VATSYAKA
@@ -231,7 +206,7 @@ enum editStatus {
   REVOKED
 }
 
-enum Criteria {
+enum Criterias {
   CRITERIA_1
   CRITERIA_2
   CRITERIA_3

@@ -5,98 +5,12 @@ import Expandable from "~/components/expandable";
 import { GiPaperArrow } from "react-icons/gi";
 import { BiChevronsDown } from "react-icons/bi";
 import { useTranslations } from "next-intl";
-
-const achievements: { title: string; team?: string; individual: string[] }[] = [
-  {
-    title: "SDM College Yakshothsava 2023 (March 11, 2023)",
-    team: "First prize in the overall team category.",
-    individual: [
-      "Varun Acharya - First place, individual category",
-      "Saritha Rao - Consolation prize, individual category",
-    ],
-  },
-  {
-    title: "Yakshayaana at Govinda Dasa College (April 8, 2023)",
-    team: undefined,
-    individual: ["Pranav Moodithaya - First place, individual Hasya category"],
-  },
-  {
-    title: "AJ Institute of Management - Yakshakalothsava (April 20, 2023)",
-    team: undefined,
-    individual: ["Anwesh R Shetty - First place in the Raja Vesha category"],
-  },
-  {
-    title: "Patla Sambhrama 2023 (May 27, 2023)",
-    team: "First-place in the overall team category among 22 participating teams.",
-    individual: [
-      "Varun Acharya - Second place, Pundu Vesha",
-      "Anwesh R Shetty - First place, Raja Vesha",
-      "Pranav Moodithaya - First place, Hasya",
-      "T M Shravan - First place, Poshaka Patra",
-    ],
-  },
-  {
-    title: "Bhramari Yaksha Jhenkara 2023 (May 30, 2023)",
-    team: "First place in the overall category.",
-    individual: [
-      "Pranav Moodithaya - First place in the individual Hasya category",
-      "Anwesh R Shetty - Overall individual third place",
-      "Varun Acharya - Overall individual first place",
-    ],
-  },
-  {
-    title: "Yaksha Pranava (October 8, 2023)",
-    team: "First runner-up position among the nine participating teams.",
-    individual: [
-      "Anwesh R Shetty - Best Kireeta Vesha (Role: Nibandhana)",
-      "Varun Acharya - Best Pundu Vesha (Role: Satyavratha)",
-      "Rajath Bola - Overall Second Samagra Vayaktika (Best Individual Artist, Role:Choodamani)",
-    ],
-  },
-  {
-    title: "SDM College Yakshothsava 2024 (Feb 23-25, 2024)",
-    team: "First prize in the overall team category.",
-    individual: [
-      "Anwesh R Shetty - Overall First Samagra Vayaktika",
-      "Varun U Acharya - Overall Third Samagra Vayaktika",
-      "TM Shravan Acharya - Best character in team",
-    ],
-  },
-  {
-    title: "AJ Institute of Management - Yakshakalothsava (March 6, 2024)",
-    team: "First prize in the overall team category.",
-    individual: [],
-  },
-  {
-    title: "Bhramari Yaksha Jhenkara 2024 (April 4, 2024)",
-    team: "First prize in the overall team category.",
-    individual: [
-      "Adv. Prashanth Aithal - Overall Second Samagra Vayaktika, Best character in team",
-      "Anwesh R Shetty - First Kireeta-vesha category",
-      "Rajath Bola - First Hasya-vesha category",
-      "Srikrishna Rao K S - First Bannada-vesha category",
-    ],
-  },
-  {
-    title: "SDM College Yakshothsava 2025 (March 22-23, 2025)",
-    team: "First prize in the overall team category.",
-    individual: [
-      "Jithesh K Nayak - Overall First Samagra Vayaktika",
-      "Srivathsa Skanda Bhat - First Hasya-vesha",
-      "Varun U Acharya - First Kireeta-vesha",
-      "Sudiptha Manai - First Stree-vesha",
-    ],
-  },
-  {
-    title: "AJ Institute of Management - Yakshakalothsava 2025",
-    team: "First prize in the overall team category.",
-    individual: ["Jithesh K Nayak - 1st pundu vesha category"],
-  },
-];
+import { getAchievements } from "~/utils/translations";
 
 const Achievements = () => {
   const t = useTranslations("Achievements");
   const [contentId, setContentId] = useState(-1);
+  const [{ heading, description, achievements}, _] = useState(getAchievements(t))
 
   return (
     <main className="no-scrollbar relative top-0 h-screen snap-y snap-mandatory overflow-scroll">
@@ -114,11 +28,11 @@ const Achievements = () => {
         <div className="absolute inset-0 -z-20 h-screen w-full bg-gradient-to-t from-black/50 to-black/50"></div>
         <div>
           <div className="text-center font-rhomdon text-5xl font-bold sm:text-7xl md:text-8xl 2xl:text-9xl ">
-            {t("Heading")}
+            {heading}
           </div>
           <br />
           <p className="font-body text-center text-3xl text-secondary-100">
-            {t("Description")}
+            {description}
           </p>
         </div>
         <span className="fixed bottom-16 right-1/2 -z-10 translate-x-1/2 animate-pulse landscape:short:bottom-10">

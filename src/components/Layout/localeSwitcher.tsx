@@ -33,7 +33,7 @@ const LocaleSwitcher = () => {
           <Button variant="outline" className="w-fit py-4 bg-gradient-to-br from-secondary-200 to-secondary-100 cursor-pointer align-middle hover:from-secondary-100 hover:to-secondary-200 hover:text-[#080b1e] rounded-full lg:text-lg border-0">
             {/* <BsGlobeCentralSouthAsia className="mr-2" /> */}
             <FaGlobe className="lg:mr-2" />
-            {currentLocale === "kn" ? "Kannada" : "English"}
+            {currentLocale === "kn" ? "ಕನ್ನಡ" : "English"}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="font-rhomdon bg-gradient-to-br from-secondary-200 to-secondary-100 w-fit border-0 text-[#080b1e]">
@@ -41,7 +41,7 @@ const LocaleSwitcher = () => {
             English
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => switchLocale("kn")}>
-            Kannada
+            ಕನ್ನಡ
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

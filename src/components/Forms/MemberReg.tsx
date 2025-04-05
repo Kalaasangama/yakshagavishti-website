@@ -32,15 +32,6 @@ import AccordianForm from "~/components/Forms/AccordionForm";
 import z from "zod";
 import ViewBeforeSubmit from "~/components/ViewBeforeSubmit";
 import { ImSpinner9 } from "react-icons/im";
-//TODO: Change the id values to the actual DB values
-const roles = [
-  { label: "BHADRA_SENA", value: "cm8tr0d010000r9nmzp0gasfe" },
-  { label: "RATNAVATI", value: "cm8tr0g420001r9nmxecf4c4y" },
-  { label: "VATSYAKA", value: "cm8tr0krs0002r9nm424nl2pn" },
-  { label: "VIDYULOCHANA", value: "cm8tr0uvc0003r9nm1rn7o539" },
-  { label: "DHRADAVARMA", value: "cm8tr0uvc0004r9nm3bo3a4rs" },
-  { label: "DHRADAVARMA CHARAKA", value: "cm8tr0uvc0005r9nm1ilgoxn1" },
-];
 
 type Members = {
   name: string;
@@ -49,14 +40,11 @@ type Members = {
 };
 
 const MemberReg = ({
-  LeaderCharacter,
-  CollegeId,
   setFormToShow,
 }: {
-  LeaderCharacter: string;
-  CollegeId: string;
   setFormToShow: Dispatch<SetStateAction<number>>;
 }) => {
+  const characters = api.team.getCharacters.useQuery({});
   const membersList = api.team.getTeamForEdits.useQuery();
   const [MembersArray, setMembersArray] = useState<Members[]>(
     (() => {
@@ -65,7 +53,7 @@ const MemberReg = ({
     })(),
   );
   const { toast } = useToast();
-  const registerMembers = api.team.register.useMutation({
+  const registerMembers = api.team.updateTeam.useMutation({
     onError(error) {
       return toast({
         variant: "default",
@@ -84,21 +72,19 @@ const MemberReg = ({
     },
   });
   const getIndex = (label: string, prevIndex: number) => {
-    const index = membersList?.data?.members.findIndex(
-      (member) => member?.characterPlayed?.id === label.replace(" ", "_"),
+    const index = membersList?.data?.TeamMembers.findIndex(
+      (member) => member?.Character?.id === label.replace(" ", "_"),
     );
     if (index === -1) return prevIndex;
     return index;
   };
-  const availableRoles = roles.filter(
-    (roles) => roles.value !== LeaderCharacter,
-  );
   const router = useRouter();
   if (membersList.isLoading) return <div>Loading...</div>;
+
   return (
     <Dialog defaultOpen={true}>
       <DialogTrigger>
-        <RegButton>Create Team</RegButton>
+        <RegButton>Edit Team</RegButton>
       </DialogTrigger>
       <DialogContent className="overflow-y-scroll bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white">
         <DialogTitle>Character Details</DialogTitle>
@@ -107,9 +93,9 @@ const MemberReg = ({
         </DialogDescription>
         <div>
           <Accordion type="single" collapsible>
-            {availableRoles.map((role, index) => (
+            {characters.data ? characters.data.map((role, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger>{role.label}</AccordionTrigger>
+                <AccordionTrigger>{role.character}</AccordionTrigger>
                 <AccordionContent>
                   <AccordianForm
                     MembersArray={
@@ -120,17 +106,19 @@ const MemberReg = ({
                         : MembersArray
                     }
                     setMembersArray={setMembersArray}
-                    index={getIndex(role.label, index) ?? 0}
-                    characterId={role.value}
+                    index={getIndex(role.character, index) ?? 0}
+                    characterId={role.id}
                   />
                 </AccordionContent>
               </AccordionItem>
-            ))}
+            )) : (
+              <div className="text-2xl">Loading...</div>
+            )}
           </Accordion>
         </div>
         <div className="m-auto flex gap-2">
           <Button
-            onClick={() => setFormToShow(2)}
+            onClick={() => setFormToShow(1)}
             size="sm"
             className="cursor-pointer"
           >
@@ -150,30 +138,30 @@ const MemberReg = ({
           <AlertDialog>
             <AlertDialogTrigger
               disabled={
-                availableRoles.length <=
+                characters.data ? characters.data.length <=
                 MembersArray.filter(
                   (member) => member !== undefined || member !== null,
                 ).length
                   ? false
                   : true
-              }
+              : false}
             >
               <Button
                 size="sm"
-                className="cursor-pointer"
+                className="cursor-pointer disabled:cursor-default"
                 disabled={
-                  availableRoles.length <=
+                  characters.data ? characters.data.length <=
                   MembersArray.filter(
                     (member) => member !== undefined || member !== null,
                   ).length
                     ? false
                     : true
-                }
+                : false}
                 onClick={() => {
                   if (
                     MembersArray.filter(
                       (member) => member !== undefined || member !== null,
-                    ).length < availableRoles.length
+                    ).length < (characters.data?.length ?? 0)
                   ) {
                     toast({
                       variant: "destructive",
@@ -197,7 +185,7 @@ const MemberReg = ({
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <ViewBeforeSubmit data={MembersArray} roles={availableRoles} />
+                <ViewBeforeSubmit data={MembersArray} roles={characters.data?.map(character => ({ label: character.character, value: character.id })) ?? []} />
                 <AlertDialogCancel className="text-black">
                   Cancel
                 </AlertDialogCancel>
@@ -216,7 +204,6 @@ const MemberReg = ({
                           }),
                         )
                         .parse(MembersArray),
-                      college_id: CollegeId,
                     });
                   }}
                 >

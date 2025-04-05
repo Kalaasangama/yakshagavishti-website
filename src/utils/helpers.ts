@@ -6,13 +6,15 @@ const getUserAccessToTeam = async (user_id: string) => {
 	const user = await db.user.findUnique({
 		where: { id: user_id },
 		select: {
-			team: {
-				select: { id: true, name: true },
+			LeaderOf: {
+				select: {
+					id: true,
+					name: true,
+				}
 			},
-			leaderOf: { select: { id: true } },
 		},
 	});
-	if (user?.leaderOf?.id) {
+	if (user?.LeaderOf?.id) {
 		return "LEADER";
 	} else if (user?.team?.id) {
 		return "MEMBER";
@@ -26,7 +28,7 @@ const getCollegeById = async (college_id: string) => {
 			id: college_id,
 		},
 		include: { Team: {
-			include: { members: true},
+			include: { TeamMembers: true},
 		} },
 	});
 

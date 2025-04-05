@@ -5,7 +5,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { z } from "zod";
 import { env } from "~/env";
 import { db } from "~/server/db";
-import { editStatus, Role } from "@prisma/client";
+import { Role } from "@prisma/client";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -17,20 +17,13 @@ declare module "next-auth" {
   interface Session {
 		user: {
 			id: string;
-			team:
-				| {
-						id: string;
-						name: string;
-						isComplete: boolean;
-				  }
-				| null
-				| undefined;
-			leaderOf: string | undefined;
-			idURL: string;
-			contact: string;
-			teamEditStatus: editStatus;
-			characterId: string;
 			role: Role;
+			LeaderOf: {
+				id: string;
+				college_id: string;
+				isComplete: boolean;
+				editRequested: boolean;
+			} | undefined;
 		} & DefaultSession["user"];
 	}
 
@@ -68,31 +61,26 @@ export const authConfig = {
 				const data = await db.user.findUnique({
 					where: { id: user.id },
 					select: {
-						team: {
+						role: true,
+						LeaderOf: {
 							select: {
 								id: true,
-								name: true,
+								college_id: true,
 								isComplete: true,
-								editRequests: { select: { status: true } },
-							},
+								editRequested: true,
+							}
 						},
-						role: true,
-						characterPlayed: {
-							select: { id: true },
-						},
-						leaderOf: { select: { id: true } },
-						idURL: true,
-						contact: true,
 					},
 				});
-				session.user.team = data?.team;
-				session.user.leaderOf = data?.leaderOf?.id;
 				session.user.id = z.string().parse(user.id);
 				session.user.role = data?.role ?? Role.PARTICIPANT;
-				session.user.idURL = data?.idURL ?? "";
-				session.user.contact = data?.contact ?? "";
-				session.user.teamEditStatus = data?.team?.editRequests?.status ?? editStatus.PENDING;
-				session.user.characterId = data?.characterPlayed?.id ?? "";
+				session.user.LeaderOf = data?.LeaderOf
+					? z.object({
+						id: z.string(),
+						college_id: z.string(),
+						isComplete: z.boolean(),
+						editRequested: z.boolean(),
+					}).parse(data.LeaderOf) : undefined;
 			}
 			return session;
 		},

@@ -45,6 +45,205 @@
     },
     "Achievements": {
         "Heading": "Achievements",
-        "Description": "Remarkable Feats in the Spotlight"
+        "Description": "Remarkable Feats in the Spotlight",
+        "Events": {
+            "0": {
+                "Title": "SDM College Yakshothsava 2023 (March 11, 2023)",
+                "Team": "First prize in the overall team category.",
+                "Individual": {
+                    "0": "Varun Acharya - First place, individual category",
+                    "1": "Saritha Rao - Consolation prize, individual category",
+                    "2": "",
+                    "3": ""
+                }
+            },
+            "1": {
+                "Title": "Yakshayaana at Govinda Dasa College (April 8, 2023)",
+                "Team": "",
+                "Individual": {"0": "Pranav Moodithaya - First place, individual Hasya category", "1": "", "2": "", "3": ""}
+            },
+            "2": {
+                "Title": "AJ Institute of Management - Yakshakalothsava (April 20, 2023)",
+                "Team": "",
+                "Individual": {"0": "Anwesh R Shetty - First place in the Raja Vesha category", "1": "", "2": "", "3": ""}
+            },
+            "3": {
+                "Title": "Patla Sambhrama 2023 (May 27, 2023)",
+                "Team": "First-place in the overall team category among 22 participating teams.",
+                "Individual": {
+                    "0": "Varun Acharya - Second place, Pundu Vesha",
+                    "1": "Anwesh R Shetty - First place, Raja Vesha",
+                    "2": "Pranav Moodithaya - First place, Hasya",
+                    "3": "T M Shravan - First place, Poshaka Patra"
+                }
+            },
+            "4": {
+                "Title": "Bhramari Yaksha Jhenkara 2023 (May 30, 2023)",
+                "Team": "First place in the overall category.",
+                "Individual": {
+                    "0": "Pranav Moodithaya - First place in the individual Hasya category",
+                    "1": "Anwesh R Shetty - Overall individual third place",
+                    "2": "Varun Acharya - Overall individual first place",
+                    "3": ""
+                }
+            },
+            "5": {
+                "Title": "Yaksha Pranava (October 8, 2023)",
+                "Team": "First runner-up position among the nine participating teams.",
+                "Individual": {
+                    "0": "Anwesh R Shetty - Best Kireeta Vesha (Role: Nibandhana)",
+                    "1": "Varun Acharya - Best Pundu Vesha (Role: Satyavratha)",
+                    "2": "Rajath Bola - Overall Second Samagra Vayaktika (Best Individual Artist, Role:Choodamani)",
+                    "3": ""
+                }
+            },
+            "6": {
+                "Title": "SDM College Yakshothsava 2024 (Feb 23-25, 2024)",
+                "Team": "First prize in the overall team category.",
+                "Individual": {
+                    "0": "Anwesh R Shetty - Overall First Samagra Vayaktika",
+                    "1": "Varun U Acharya - Overall Third Samagra Vayaktika",
+                    "2": "TM Shravan Acharya - Best character in team",
+                    "3": ""
+                }
+            },
+            "7": {
+                "Title": "AJ Institute of Management - Yakshakalothsava (March 6, 2024)",
+                "Team": "First prize in the overall team category.",
+                "Individual": { "0": "", "1": "", "2": "", "3": "" }
+            },
+            "8": {
+                "Title": "Bhramari Yaksha Jhenkara 2024 (April 4, 2024)",
+                "Team": "First prize in the overall team category.",
+                "Individual": {
+                    "0": "Adv. Prashanth Aithal - Overall Second Samagra Vayaktika, Best character in team",
+                    "1": "Anwesh R Shetty - First Kireeta-vesha category",
+                    "2": "Rajath Bola - First Hasya-vesha category",
+                    "3": "Srikrishna Rao K S - First Bannada-vesha category"
+                }
+            },
+            "9": {
+                "Title": "SDM College Yakshothsava 2025 (March 22-23, 2025)",
+                "Team": "First prize in the overall team category.",
+                "Individual": {
+                    "0": "Jithesh K Nayak - Overall First Samagra Vayaktika",
+                    "1": "Srivathsa Skanda Bhat - First Hasya-vesha",
+                    "2": "Varun U Acharya - First Kireeta-vesha",
+                    "3": "Sudiptha Manai - First Stree-vesha"
+                }
+            },
+            "10": {
+                "Title": "AJ Institute of Management - Yakshakalothsava 2025",
+                "Team": "First prize in the overall team category.",
+                "Individual": {"0": "Jithesh K Nayak - 1st pundu vesha category", "1": "", "2": "", "3": ""}
+            }
+        }
+    },
+    "Members": {
+        "0": {
+          "name": "Mr. Anant Murthi",
+          "role": "Faculty Coordinator",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "1": {
+          "name": "Mr. Shyam Sundar",
+          "role": "Faculty Coordinator",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "2": {
+          "name": "Shravan Udupa K",
+          "role": "Kalaasangama Founder",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "3": {
+          "name": "Srikrishna Rao K S",
+          "role": "President",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "4": {
+          "name": "B S Kishan",
+          "role": "Vice President",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "5": {
+          "name": "Shreya P V",
+          "role": "Secretary and Treasurer",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "6": {
+          "name": "Keshav Nayak",
+          "role": "Joint Secretary",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "7": {
+          "name": "Amrith Naik",
+          "role": "Folk Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "8": {
+          "name": "Spoorthi Bailoor",
+          "role": "Folk Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "9": {
+          "name": "Shreya S Rao",
+          "role": "Music Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "10": {
+          "name": "Shraddha Upadhyaya",
+          "role": "Music Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "11": {
+          "name": "Prarthana Rao",
+          "role": "Dance Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "12": {
+          "name": "Avanthi",
+          "role": "Dance Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "13": {
+          "name": "Sumith S Hegde",
+          "role": "Bhajan Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "14": {
+          "name": "Harish Vishwanath Bhat",
+          "role": "Bhajan Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "15": {
+          "name": "Vivek Naik",
+          "role": "Media Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "16": {
+          "name": "Pratham P",
+          "role": "Media Head",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "17": {
+          "name": "Manish R Rao",
+          "role": "Core Member",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "18": {
+          "name": "Varun U Acharya",
+          "role": "Core Member",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "19": {
+          "name": "Amrutha R Rao",
+          "role": "Core Member",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        },
+        "20": {
+          "name": "Shreya S Prabhu",
+          "role": "Core Member",
+          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
+        }
     }
 }

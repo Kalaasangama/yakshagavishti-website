@@ -40,37 +40,24 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { IoCloseCircle } from "react-icons/io5";
 
-//TODO: Change the id values to the actual DB values
-const roles = [
-	{ label: "BHADRA_SENA", value: "cm8tr0d010000r9nmzp0gasfe" },
-	{ label: "RATNAVATI", value: "cm8tr0g420001r9nmxecf4c4y" },
-	{ label: "VATSYAKA", value: "cm8tr0krs0002r9nm424nl2pn" },
-	{ label: "VIDYULOCHANA", value: "cm8tr0uvc0003r9nm1rn7o539" },
-	{ label: "DHRADAVARMA", value: "cm8tr0uvc0004r9nm3bo3a4rs" },
-	{ label: "DHRADAVARMA CHARAKA", value: "cm8tr0uvc0005r9nm1ilgoxn1" },
-];
-
 const LeadRegister = ({
 	setFormToShow,
 	college_id,
-	setLeaderChar,
 }: {
 	college_id: string;
 	setFormToShow: Dispatch<SetStateAction<number>>;
-	setLeaderChar: Dispatch<SetStateAction<string>>;
 }) => {
 	const user = useSession();
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
-	const [isCheckboxChecked, setIsCheckboxChecked] = useState(user.data?.user.characterId ? true : false);
+	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
 	const [selectedRole, setSelectedRole] = useState<string>("");
-	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(user.data?.user.characterId ?? null);
-	const [LeaderContact, setLeaderContact] = useState<string>(
-		user.data?.user.contact ?? ""
-	);
-	const [LeaderName, setLeaderName] = useState<string>(
-		user.data?.user.name ?? ""
-	);
+	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
+	const [LeaderContact, setLeaderContact] = useState<string>("");
+	const [LeaderName, setLeaderName] = useState<string>(user.data?.user.name ?? "");
+	const [LeaderIdUrl, setLeaderIdUrl] = useState<string>("");
+
 	const [UploadStatus, setUploadStatus] = useState("");
+	const characters = api.team.getCharacters.useQuery({});
 	const SetLeaderDetails = api.team.register.useMutation({
 		onError(error) {
 			return toast({
@@ -89,7 +76,6 @@ const LeadRegister = ({
 	const form = useForm();
 	const handleRoleChange = (value: string) => {
 		setLeaderCharacter(value);
-		setLeaderChar(value);
 	};
 	if (SetLeaderDetails.isSuccess) {
 		setTimeout(() => { setFormToShow(3); }, 1000);
@@ -97,13 +83,13 @@ const LeadRegister = ({
 	const handleUpload = async () => {
 		setUploadStatus("Uploading....");
 		try {
-			if (user.data?.user.idURL) {
-				return user.data.user.idURL;
-			}
 			if (files[0] instanceof File) {
 				const result = await uploadFile(files[0]);
-				setUploadStatus("Upload Succesful");
-				return result;
+				if (result) {
+					setLeaderIdUrl(result); // <--- set the uploaded file URL
+					setUploadStatus("Upload Successful");
+					return result;
+				}
 			}
 		} catch (error) {
 			console.log(error);
@@ -131,15 +117,15 @@ const LeadRegister = ({
 				return false;
 			}
 		}
-		if (!user.data?.user.idURL)
-			if (files.length === 0) {
-				toast({
-					variant: "destructive",
-					title: "No ID uploaded!",
-					description: "Please upload your ID.",
-				});
-				return false;
-			}
+		
+		if (files.length === 0) {
+			toast({
+				variant: "destructive",
+				title: "No ID uploaded!",
+				description: "Please upload your ID.",
+			});
+			return false;
+		}
 
 		if (files.length > 1) {
 			toast({
@@ -151,16 +137,18 @@ const LeadRegister = ({
 		}
 		handleUpload()
 			.then((idUrl) => {
+				if (!idUrl) return;
+
 				SetLeaderDetails.mutate({
 					college_id,
 					leader_character: LeaderCharacter,
 					leader_name: LeaderName,
 					leader_contact: LeaderContact,
 					leader_idUrl: idUrl,
-					members: [],
 				});
 			})
 			.catch((err) => console.log(err));
+
 	};
 	return (
 		<Dialog defaultOpen={true}>
@@ -181,7 +169,7 @@ const LeadRegister = ({
 							<FormField
 								control={form.control}
 								name="username"
-								render={({ field }) => (
+								render={() => (
 									<FormItem>
 										<div className="flex flex-col space-y-4">
 											<div className="grid w-full max-w-sm items-center gap-1.5">
@@ -223,7 +211,7 @@ const LeadRegister = ({
 										</div>
 
 										<div className="grid grid-cols-3">
-											{!user.data?.user.idURL ? (
+											{!LeaderIdUrl ? (
 												<div className="col-span-3">
 													<Dropzone
 														files={files}
@@ -234,7 +222,7 @@ const LeadRegister = ({
 												<div className="relative w-fit">
 													<Image
 														src={
-															user.data.user.idURL
+															LeaderIdUrl
 														}
 														alt=""
 														height={100}
@@ -242,10 +230,7 @@ const LeadRegister = ({
 													/>
 													<IoCloseCircle
 														className="absolute right-3 top-1 cursor-pointer text-xl text-red-600 md:text-2xl"
-														onClick={() => {
-															user.data.user.idURL =
-																"";
-														}}
+														onClick={() => setLeaderIdUrl("")}
 													/>
 												</div>
 											)}
@@ -298,23 +283,33 @@ const LeadRegister = ({
 														</SelectTrigger>
 													</FormControl>
 													<SelectContent>
-														{roles.map(
-															(item, key) => {
-																return (
-																	<SelectItem
-																		key={
-																			key
-																		}
-																		value={
-																			item.value
-																		}
-																	>
-																		{
-																			item.label
-																		}
-																	</SelectItem>
-																);
-															}
+														{characters.data ? (
+															characters.data.map(
+																(item) => {
+																	return (
+																		<SelectItem
+																			key={
+																				item.id
+																			}
+																			value={
+																				item.id
+																			}
+																		>
+																			{
+																				item.character
+																			}
+																		</SelectItem>
+																	);
+																}
+															)
+														) : (
+															<SelectItem
+																value="no-characters"
+																disabled
+															>
+																No characters
+																available
+															</SelectItem>
 														)}
 													</SelectContent>
 												</Select>

@@ -16,6 +16,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 import CreateTeam from "~/components/Forms/MainForm";
 import ViewTeam from "~/components/ViewTeam";
+import { Role } from "@prisma/client";
 
 const reelImags = [
   {
@@ -127,7 +128,7 @@ export default function Home() {
             <Reveal classes="">
               <div className="flex flex-col items-center gap-1 text-center landscape:short:gap-1">
                 {/* <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Yakshagavishti</div> */}
-                {isRegistrationActive && !sessionData ? (
+                {(isRegistrationActive && !sessionData) ? (
                   <div
                     className=""
                     onClick={
@@ -138,35 +139,13 @@ export default function Home() {
                   >
                     <Button>Register</Button>
                   </div>
-                ) : !sessionData?.user?.team?.isComplete ? (
-                  <CreateTeam />
-                ) : (
-                  <ViewTeam />
-                )}
+                ) : sessionData?.user.role === Role.PARTICIPANT && 
+                  (!sessionData?.user?.LeaderOf?.isComplete ? (
+                    <CreateTeam />
+                  ) : (
+                    <ViewTeam />
+                ))}
               </div>
-            </Reveal>
-            <Reveal classes="flex justify-center">
-              <ScrollLag
-                classes="w-fit mb-48 xl:mb-32 landscape:short:mb-10"
-                speed={75}
-              >
-                {isRegistrationActive && !sessionData ? (
-                  <div
-                    className=""
-                    onClick={
-                      sessionData
-                        ? () => void signOut()
-                        : () => void signIn("google")
-                    }
-                  >
-                    <Button>Register</Button>
-                  </div>
-                ) : !sessionData?.user?.team?.isComplete ? (
-                  <CreateTeam />
-                ) : (
-                  <ViewTeam />
-                )}
-              </ScrollLag>
             </Reveal>
           </div>
         </section>

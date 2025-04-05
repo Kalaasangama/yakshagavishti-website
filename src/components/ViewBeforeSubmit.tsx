@@ -16,13 +16,14 @@ import {
 	DialogTrigger,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
+import type { PlayCharacters } from "@prisma/client";
 
 type Members = {
 	name: string;
 	characterId: string;
 	idURL: string;
 };
-export default function ViewBeforeSubmit({data, roles}:{data:Members[], roles:{value:string, label:string}[]}) {
+export default function ViewBeforeSubmit({data, roles}:{data:Members[], roles:{value:string, label:PlayCharacters}[]}) {
 	return (
 			<Dialog>
 				<DialogTrigger asChild>

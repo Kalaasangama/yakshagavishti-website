@@ -1,6 +1,6 @@
 "use client";
 
-import React, { type Dispatch, type SetStateAction, useState } from "react";
+import React, { type Dispatch, type SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "~/components/ui/button";
 import { Button as RegButton } from "~/components/Button";
@@ -33,6 +33,7 @@ import { toast } from "~/components/ui/use-toast";
 import { api } from "~/trpc/react";
 import { useSession } from "next-auth/react";
 import { ImSpinner9 } from "react-icons/im";
+import { editStatus } from "@prisma/client";
 export default function CollegeReg({
   setFormToShow,
   setCollege,
@@ -43,6 +44,7 @@ export default function CollegeReg({
   const [selectedCollege, setSelectedCollege] = useState<string>("");
   const [teamPassword, setTeamPassword] = useState("");
   const user = useSession()?.data?.user;
+  const getColleges = api.team.getColleges.useQuery();
   const verifyPassword = api.team.checkPassword.useMutation({
     onError(error) {
       return toast({
@@ -52,26 +54,30 @@ export default function CollegeReg({
       });
     },
     onSuccess(data) {
-      setCollege(selectedCollege);
-      if (user?.teamEditStatus === "GRANTED") {
-        return setFormToShow(4);
-      }
-      if (user?.leaderOf) {
-        return setFormToShow(3);
-      } else {
-        return setFormToShow(2);
-      }
-      return toast({
+      toast({
         variant: "default",
         title: "College signed in successfully!",
         description: data?.message,
       });
+      setCollege(selectedCollege);
+      if (user?.LeaderOf?.editRequested && !user.LeaderOf.isComplete) {
+        return setFormToShow(4);
+      } else if (user?.LeaderOf) {
+        return setFormToShow(3);
+      } else {
+        return setFormToShow(2);
+      }
     },
   });
   const form = useForm();
   const handleCollegeChange = (value: string) => {
     setSelectedCollege(value);
   };
+
+  useEffect(() => {
+    setCollege(user?.LeaderOf?.college_id ?? "");
+    setSelectedCollege(user?.LeaderOf?.college_id ?? "");
+  }, [setCollege, user?.LeaderOf?.college_id])
 
   const Passwordpattern = () => {
     if (selectedCollege) {
@@ -93,7 +99,7 @@ export default function CollegeReg({
     <div className="">
       <Dialog>
         <DialogTrigger>
-          <RegButton>{user?.leaderOf ? "Edit Team" : "Create Team"}</RegButton>
+          <RegButton>{user?.LeaderOf ? "Edit Team" : "Create Team"}</RegButton>
         </DialogTrigger>
         <DialogContent className="bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-gray-950/50 via-slate-900 to-black text-white sm:max-w-[425px]">
           <DialogHeader>
@@ -116,6 +122,7 @@ export default function CollegeReg({
                           <Select
                             onValueChange={handleCollegeChange}
                             defaultValue={selectedCollege}
+                            disabled={!!user?.LeaderOf?.college_id}
                           >
                             <FormControl className="text-black">
                               <SelectTrigger>
@@ -123,22 +130,24 @@ export default function CollegeReg({
                               </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                              <SelectItem value="clonw0pqr0002x9jhoauzw7ov">
-                                Shri Madhwa Vadiraja Institute of Technology and
-                                Management, Bantakal
-                              </SelectItem>
-                              <SelectItem value="clonw0pqq0000x9jhfb6la6qb">
-                                St. Aloysius College, Mangalore
-                              </SelectItem>
-                              <SelectItem value="clonw0pqs0003x9jh2nnf2v5v">
-                                Govinda Dasa Degree College, Suratkal
-                              </SelectItem>
-                              <SelectItem value="clo4ms7s30002vjjs7r9r9on1">
-                                SDM Law College, Mangalore
-                              </SelectItem>
-                              <SelectItem value="clonw0pqr0001x9jhhushh0ig">
-                                SDPT First Grade College, Kateelu
-                              </SelectItem>
+                              {getColleges.isPending ? (
+                                <SelectItem value="loading" disabled>
+                                  <ImSpinner9 className="animate-spin" />
+                                </SelectItem>
+                              ) : (
+                                getColleges.data ? getColleges.data.map((college) => (
+                                  <SelectItem
+                                    key={college.id}
+                                    value={college.id}
+                                  >
+                                    {college.name}
+                                  </SelectItem>
+                                )) : (
+                                  <SelectItem value="no-colleges" disabled>
+                                    No colleges available
+                                  </SelectItem>
+                                )
+                              )}
                             </SelectContent>
                           </Select>
                         </div>
@@ -160,7 +169,7 @@ export default function CollegeReg({
                     </FormItem>
                   )}
                 />
-                {verifyPassword.isLoading ? (
+                {verifyPassword.isPending ? (
                   <Button
                     type="submit"
                     size="sm"
