@@ -140,110 +140,111 @@
         }
     },
     "Members": {
-        "0": {
-          "name": "ಶ್ರೀ ಅನಂತ್ ಮೂರ್ತಿ",
-          "role": "ಅಧ್ಯಾಪಕ ಸಂಯೋಜಕರು",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "1": {
-          "name": "ಶ್ರೀ ಶ್ಯಾಮ್ ಸುಂದರ್",
-          "role": "ಅಧ್ಯಾಪಕ ಸಂಯೋಜಕರು",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "2": {
-          "name": "ಶ್ರವಣ್ ಉಡುಪ ಕೆ",
-          "role": "ಕಲಾಸಂಗಮ ಸ್ಥಾಪಕರು",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "3": {
-          "name": "ಶ್ರೀಕೃಷ್ಣ ರಾವ್ ಕೆ ಎಸ್",
-          "role": "ಅಧ್ಯಕ್ಷರು",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "4": {
-          "name": "ಬಿ ಎಸ್ ಕಿಶನ್",
-          "role": "ಉಪಾಧ್ಯಕ್ಷರು",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "5": {
-          "name": "ಶ್ರೇಯಾ ಪಿ ವಿ",
-          "role": "ಕಾರ್ಯದರ್ಶಿ ಮತ್ತು ಖಜಾಂಚಿ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "6": {
-          "name": "ಕೇಶವ ನಾಯಕ್",
-          "role": "ಜಂಟಿ ಕಾರ್ಯದರ್ಶಿ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "7": {
-          "name": "ಅಮೃತ್ ನಾಯಕ್",
-          "role": "ಜಾನಪದ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "8": {
-          "name": "ಸ್ಪೂರ್ತಿ ಬೈಲೂರ್",
-          "role": "ಜಾನಪದ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "9": {
-          "name": "ಶ್ರೇಯಾ ಎಸ್ ರಾವ್",
-          "role": "ಸಂಗೀತ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "10": {
-          "name": "ಶ್ರದ್ಧಾ ಉಪಾಧ್ಯಾಯ",
-          "role": "ಸಂಗೀತ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "11": {
-          "name": "ಪ್ರಾರ್ಥನಾ ರಾವ್",
-          "role": "ನೃತ್ಯ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "12": {
-          "name": "ಅವಂತಿ",
-          "role": "ನೃತ್ಯ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "13": {
-          "name": "ಸುಮಿತ್ ಎಸ್ ಹೆಗ್ಡೆ",
-          "role": "ಭಜನಾ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "14": {
-          "name": "ಹರೀಶ್ ವಿಶ್ವನಾಥ್ ಭಟ್",
-          "role": "ಭಜನಾ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "15": {
-          "name": "ವಿವೇಕ್ ನಾಯಕ್",
-          "role": "ಮಾಧ್ಯಮ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "16": {
-          "name": "ಪ್ರಥಮ್ ಪಿ",
-          "role": "ಮಾಧ್ಯಮ ಮುಖ್ಯಸ್ಥ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "17": {
-          "name": "ಮನೀಶ್ ಆರ್ ರಾವ್",
-          "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "18": {
-          "name": "ವರುಣ್ ಯು ಆಚಾರ್ಯ",
-          "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "19": {
-          "name": "ಅಮೃತಾ ಆರ್ ರಾವ್",
-          "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        },
-        "20": {
-          "name": "ಶ್ರೇಯಾ ಎಸ್ ಪ್ರಭು",
-          "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
-          "url": "https://res.cloudinary.com/dfhg1joox/.jpg"
-        }
-    }
+  "0": {
+    "name": "ಶ್ರೀ ಅನಂತ್ ಮೂರ್ತಿ",
+    "role": "ಅಧ್ಯಾಪಕ ಸಂಯೋಜಕರು",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224804/Mr._Anant_Murthi_toz2kd.jpg"
+  },
+  "1": {
+    "name": "ಶ್ರೀ ಶ್ಯಾಮ್ ಸುಂದರ್",
+    "role": "ಅಧ್ಯಾಪಕ ಸಂಯೋಜಕರು",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224804/Mr._Shyam_Sundar_h7bfww.jpg"
+  },
+  "2": {
+    "name": "ಶ್ರವಣ್ ಉಡುಪ ಕೆ",
+    "role": "ಕಲಾಸಂಗಮ ಸ್ಥಾಪಕರು",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224809/Shravan_Udupa_K_elqjwb.jpg"
+  },
+  "3": {
+    "name": "ಶ್ರೀಕೃಷ್ಣ ರಾವ್ ಕೆ ಎಸ್",
+    "role": "ಅಧ್ಯಕ್ಷರು",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224800/K_S_Srikrishna_Rao_x96loz.jpg"
+  },
+  "4": {
+    "name": "ಬಿ ಎಸ್ ಕಿಶನ್",
+    "role": "ಉಪಾಧ್ಯಕ್ಷರು",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224799/Kishan_gmej8w.jpg"
+  },
+  "5": {
+    "name": "ಶ್ರೇಯಾ ಪಿ ವಿ",
+    "role": "ಕಾರ್ಯದರ್ಶಿ ಮತ್ತು ಖಜಾಂಚಿ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224814/Shreya_P_V_ckqxh7.jpg"
+  },
+  "6": {
+    "name": "ಕೇಶವ ನಾಯಕ್",
+    "role": "ಜಂಟಿ ಕಾರ್ಯದರ್ಶಿ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743226095/Keshav_Nayak_wqdr19.jpg"
+  },
+  "7": {
+    "name": "ಅಮೃತ್ ನಾಯಕ್",
+    "role": "ಜಾನಪದ ಮುಖ್ಯಸ್ಥ",
+    "url": ""
+  },
+  "8": {
+    "name": "ಸ್ಪೂರ್ತಿ ಬೈಲೂರ್",
+    "role": "ಜಾನಪದ ಮುಖ್ಯಸ್ಥ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224813/Spoorthi_Bailoor_exljcp.jpg"
+  },
+  "9": {
+    "name": "ಶ್ರೇಯಾ ಎಸ್ ರಾವ್",
+    "role": "ಸಂಗೀತ ಮುಖ್ಯಸ್ಥ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224812/Shreya_S_Rao_ft5yk2.jpg"
+  },
+  "10": {
+    "name": "ಶ್ರದ್ಧಾ ಉಪಾಧ್ಯಾಯ",
+    "role": "ಸಂಗೀತ ಮುಖ್ಯಸ್ಥ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224806/Shraddha_Upadhyaya_kgsehl.jpg"
+  },
+  "11": {
+    "name": "ಪ್ರಾರ್ಥನಾ ರಾವ್",
+    "role": "ನೃತ್ಯ ಮುಖ್ಯಸ್ಥ",
+    "url": ""
+  },
+  "12": {
+    "name": "ಅವಂತಿ",
+    "role": "ನೃತ್ಯ ಮುಖ್ಯಸ್ಥ",
+    "url": ""
+  },
+  "13": {
+    "name": "ಸುಮಿತ್ ಎಸ್ ಹೆಗ್ಡೆ",
+    "role": "ಭಜನಾ ಮುಖ್ಯಸ್ಥ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224816/Sumith_S_Hegde_e4uhch.jpg"
+  },
+  "14": {
+    "name": "ಹರೀಶ್ ವಿಶ್ವನಾಥ್ ಭಟ್",
+    "role": "ಭಜನಾ ಮುಖ್ಯಸ್ಥ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224801/Harish_Vishwanath_bhat_zbz3mh.jpg"
+  },
+  "15": {
+    "name": "ವಿವೇಕ್ ನಾಯಕ್",
+    "role": "ಮಾಧ್ಯಮ ಮುಖ್ಯಸ್ಥ",
+    "url": ""
+  },
+  "16": {
+    "name": "ಪ್ರಥಮ್ ಪಿ",
+    "role": "ಮಾಧ್ಯಮ ಮುಖ್ಯಸ್ಥ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224808/Pratham_P_f8wirw.jpg"
+  },
+  "17": {
+    "name": "ಮನೀಶ್ ಆರ್ ರಾವ್",
+    "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224805/Manish_R_Rao_nru1zy.jpg"
+  },
+  "18": {
+    "name": "ವರುಣ್ ಯು ಆಚಾರ್ಯ",
+    "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224816/Varun_xukboi.jpg"
+  },
+  "19": {
+    "name": "ಅಮೃತಾ ಆರ್ ರಾವ್",
+    "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224799/Amrutha_R_Rao_dokev0.jpg"
+  },
+  "20": {
+    "name": "ಶ್ರೇಯಾ ಎಸ್ ಪ್ರಭು",
+    "role": "ಪ್ರಮುಖ ಸದಸ್ಯ",
+    "url": "https://res.cloudinary.com/dvueqtopm/image/upload/v1743224811/Shreya_S_Prabhu_ibdzes.jpg"
+  }
+}
+
 }
