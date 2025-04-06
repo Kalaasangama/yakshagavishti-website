@@ -7,8 +7,9 @@ interface CardProps {
   role: string;
   linkedinURL: string;
   githubURL: string;
-  instagramURL: string;
-  description: string;
+  instagramURL?: string;
+  description?: string;
+  url:string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -17,13 +18,14 @@ const Card: React.FC<CardProps> = ({
   linkedinURL,
   githubURL,
   description,
+  url,
 }) => {
   return (
     <div className="w-full max-w-sm rounded-md bg-black/20 bg-opacity-30 p-5 text-center transition-transform hover:scale-105">
       <div className="h-72">
         <Image
           alt={name}
-          src={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/team/${name.replaceAll(' ','_')}.jpg`}
+          src={url}
           width="250"
           height="250"
           decoding="async"
