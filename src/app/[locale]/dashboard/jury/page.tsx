@@ -23,7 +23,7 @@ import Submit from "~/components/Jury/submit";
 import { Role, type Criterias, type PlayCharacters } from "@prisma/client";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
-import { notFound } from "next/navigation";
+import NotFound from "~/app/[locale]/not-found";
 
 const Jury: NextPage = () => {
   const criteriaList: Criterias[] = [
@@ -71,10 +71,12 @@ const Jury: NextPage = () => {
     "ದೃಢವರ್ಮ ಚಾರಕ"
   ];
 
+  const { data: sessionData } = useSession();
+  const isJudge = !sessionData?.user || sessionData?.user?.role !== Role.JUDGE;
+  
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
-  const { data, isLoading } = api.jury.getTeams.useQuery();
-  const user = useSession();
+  const { data, isLoading } = api.jury.getTeams.useQuery(undefined, { enabled: !isJudge });
 
   // Initialize scores with all values set to 0
   const initialScores: ScoresState = {} as ScoresState;
@@ -249,13 +251,10 @@ const Jury: NextPage = () => {
     }
     if (res.data?.length === 0 && teamId !== "") setReady(true);
   }, [res.data, teamId]);
-
-  const { data: sessionData } = useSession();
   
-  if (!sessionData?.user || sessionData?.user.role !== "ADMIN")
-      return notFound();
+  if (isJudge) return <NotFound />;
 
-  return user.data?.user &&
+  return sessionData?.user &&
     !isLoading &&
     data !== undefined &&
     data.length > 0 &&
@@ -266,7 +265,7 @@ const Jury: NextPage = () => {
           Judge Dashboard - {teamName}
         </h1>
         <h1 className="flex basis-1/2 justify-end text-3xl">
-          {user.data?.user.name}
+          {sessionData?.user.name}
         </h1>
       </div>
       <div className="m-2 flex w-full flex-col text-center md:flex-row">

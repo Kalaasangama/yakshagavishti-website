@@ -18,16 +18,19 @@ import {
 import { ArrowDown } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { type NextPage } from "next";
-import type { Criterias, PlayCharacters } from "@prisma/client";
+import { Role, type Criterias, type PlayCharacters } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Score from "~/components/Jury/score";
 import TeamScore from "~/components/Jury/teamScore";
 import { Button } from "~/components/ui/button";
-import { notFound } from "next/navigation";
+import NotFound from "~/app/[locale]/not-found";
 
 const Jury: NextPage = () => {
-  const user = useSession();
+  const { data: sessionData } = useSession();
+
+  const isAdmin = !sessionData?.user || sessionData?.user?.role !== Role.ADMIN;
+
   const criteriaList: Criterias[] = [
     "CRITERIA_1",
     "CRITERIA_2",
@@ -56,7 +59,7 @@ const Jury: NextPage = () => {
   const [judgeName, setJudgeName] = useState<string>("Select a judge");
   const [judgeId, setJudgeId] = useState<string>("");
   const [scored, setScored] = useState<boolean>(true);
-  const { data, isLoading } = api.admin.getTeams.useQuery();
+  const { data, isLoading } = api.admin.getTeams.useQuery(undefined, { enabled: !isAdmin });
 
   const characters: PlayCharacters[] = [
     "BHADRA_SENA",
@@ -127,7 +130,7 @@ const Jury: NextPage = () => {
     }
   }, [res.error]);
 
-  const judge = api.admin.getJudges.useQuery();
+  const judge = api.admin.getJudges.useQuery(undefined, { enabled: !isAdmin });
 
   const setTeam = (newTeamId: string, teamName: string) => {
     if (newTeamId === teamId) return;
@@ -216,12 +219,9 @@ const Jury: NextPage = () => {
     document.body.removeChild(link);
   };
 
-  const { data: sessionData } = useSession();
+  if (isAdmin) return <NotFound />;
 
-  if (!sessionData?.user || sessionData?.user.role !== "ADMIN")
-    return notFound();
-
-  return user.data?.user &&
+  return sessionData?.user &&
     !isLoading &&
     !judge.isLoading &&
     judge.data !== undefined &&

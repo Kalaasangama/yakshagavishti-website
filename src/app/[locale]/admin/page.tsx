@@ -16,13 +16,14 @@ import { Button } from "~/components/ui/button";
 import { ImSpinner9 } from "react-icons/im";
 import { useState } from "react";
 import { Role } from "@prisma/client";
-import { notFound } from "next/navigation";
+import NotFound from "~/app/[locale]/not-found";
 
 export default function Admin() {
     const [verifyingId, setVerifyingId] = useState<string>("")
 
     const { data: sessionData } = useSession();
-    const { data, refetch } = api.admin.getRegisteredTeams.useQuery();
+    const isAdmin = !sessionData?.user || sessionData?.user?.role !== Role.ADMIN;
+    const { data, refetch } = api.admin.getRegisteredTeams.useQuery(undefined, { enabled: !isAdmin });
     const verifyIdMutation = api.admin.verifyId.useMutation();
     const editTeamAccessMutation = api.admin.EditAccess.useMutation();
 
@@ -61,8 +62,7 @@ export default function Admin() {
         );
     }
 
-    if (!sessionData?.user || sessionData?.user.role !== "ADMIN")
-          return notFound();
+    if (isAdmin) return <NotFound />;
 
     if (sessionData?.user) {
         

@@ -4,13 +4,11 @@ import Card from "~/components/Team/Corecard";
 const AllCards: React.FC = () => {
   const cardProps = [
     {
-      name: "Satwik R Prabhu",
+      name: "Omkar Prabhu",
       role: "Web Developer",
-      linkedinURL: "https://www.linkedin.com/in/satwikprabhu/",
-      githubURL: "https://github.com/satwikrprabhu",
-      instagramURL: "https://youtu.be/PYNeVjzT0P4?si=WIsCrm4tqyZhUoax",
-      description: "Lorem ipsum dolor sit amet consectetur adipisicing.",
-      url:"https://res.cloudinary.com/dvueqtopm/image/upload/v1743224895/Satwik_R_Prabhu_s1rok3.jpg",
+      linkedinURL: "https://www.linkedin.com/in/prabhuomkar9/",
+      githubURL: "https://github.com/Prabhuomkar9",
+      url:"https://res.cloudinary.com/dvueqtopm/image/upload/v1743224895/.jpg",
     },
     {
       name:"Samarth H Shetty",

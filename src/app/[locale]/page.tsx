@@ -88,18 +88,26 @@ export default function Home() {
             priority
           />
           <div className="mx-4 flex max-w-7xl flex-col items-center gap-14 sm:mx-8 lg:mx-32 landscape:short:gap-8">
-            <motion.img
+            <motion.div
               style={{ y: yPos, x: "-50%" }}
               ref={ref}
-              src={
-                "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/title2.png"
-              }
-              height={800}
-              width={800}
-              className="object-contaiin pointer-events-none absolute left-1/2 top-1/2 h-auto w-full max-w-xl -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff]"
-              alt="Background"
-            />
-
+              className="pointer-events-none absolute left-1/2 top-[68%] h-[800px] w-full max-w-xl -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff]"
+            >
+              <div className="relative h-full w-full">
+                <Image
+                  src="/background.png"
+                  alt="Background Image"
+                  className="object-contain"
+                  fill
+                  priority
+                />
+                
+                <div className="absolute inset-0 top-1/4 flex flex-col items-center justify-center text-[#873838] text-[22px] scale-x-125 font-extralight opacity-85 font-rhomdon">
+                  <p>April 12<sup>th</sup></p>
+                  <p>Quadrangle Stage</p>
+                </div>
+              </div>
+            </motion.div>
             <Image
               src={
                 "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_mobile_background.png"
