@@ -6,7 +6,6 @@ import Navbar from "~/components/Layout/navbar";
 import Footer from "~/components/Layout/footer";
 import { type Session } from "next-auth";
 import { TRPCReactProvider } from "~/trpc/react";
-import LocaleSwitcher from "~/components/Layout/localeSwitcher";
 
 export default function SessionProviderWrapper({
     children,
@@ -21,7 +20,6 @@ export default function SessionProviderWrapper({
         <SessionProvider session={session}>
           <TRPCReactProvider>
             {pathname !== "/_error" && pathname !== "/dashboard/jury" && pathname !== "/dashboard/results" && <Navbar />}
-            {/* <LocaleSwitcher /> */}
             {children}
             {pathname !== "/dashboard/jury" && pathname !== "/dashboard/results" && <Footer/>}
           </TRPCReactProvider>

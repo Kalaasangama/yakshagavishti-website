@@ -10,7 +10,7 @@ import { getAchievements } from "~/utils/translations";
 const Achievements = () => {
   const t = useTranslations("Achievements");
   const [contentId, setContentId] = useState(-1);
-  const [{ heading, description, achievements}, _] = useState(getAchievements(t))
+  const { heading, description, achievements} = getAchievements(t);
 
   return (
     <main className="no-scrollbar relative top-0 h-screen snap-y snap-mandatory overflow-scroll">
@@ -47,7 +47,7 @@ const Achievements = () => {
                 const row = [
                   {
                     contentId: idx,
-                    img: `https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/achievements/${idx + 1}.jpg`,
+                    img: ach.image,
                   },
                 ];
 
@@ -55,12 +55,9 @@ const Achievements = () => {
                 if (nextAchievement) {
                   row.push({
                     contentId: idx + 1,
-                    img: `https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/achievements/${idx + 2}.jpg`,
+                    img: nextAchievement.image,
                   });
                 }
-
-                // const secNextAchievement = t.achievements[idx + 2]
-                // secNextAchievement && row.push({...secNextAchievement, img: `/${idx+3}.jpg`})
 
                 return (
                   <div

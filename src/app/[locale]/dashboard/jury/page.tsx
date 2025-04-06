@@ -20,9 +20,10 @@ import { useEffect, useState } from "react";
 import { type NextPage } from "next";
 import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
-import type { Criterias, PlayCharacters } from "@prisma/client";
+import { Role, type Criterias, type PlayCharacters } from "@prisma/client";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
+import { notFound } from "next/navigation";
 
 const Jury: NextPage = () => {
   const criteriaList: Criterias[] = [
@@ -36,13 +37,6 @@ const Jury: NextPage = () => {
     "ಮಾತುಗಾರಿಕೆ (30)",
     "ವೇಷದ ರೂಪ (30)",
     "ರಂಗತಂತ್ರ (10)",
-  ];
-
-  const criteriaTeamDisplayList: string[] = [
-    "ನೃತ್ಯ - ಅಭಿನಯ (30)",
-    "ಮಾತುಗಾರಿಕೆ (30)",
-    "ರಂಗತಂತ್ರ (30)",
-    "ಸಮಯದ ನಿಖರ ಬಳಕೆ (10)",
   ];
 
   type ScoresState = Record<PlayCharacters, Record<Criterias, number>>;
@@ -69,16 +63,13 @@ const Jury: NextPage = () => {
     "DHRADAVARMA_CHARAKA",
   ];
   const charactersDisplay: string[] = [
-    "ಶಂತನು	ರಾಜವೇಷ",
-    "ಮಂತ್ರಿ ಸುನೀತಿ",
-    "ತಮಾಲಕೇತು",
-    "ತಾಮ್ರಾಕ್ಷ",
-    "ಸತ್ಯವತಿ",
-    "ದಾಶರಾಜ",
-    "ದೇವವ್ರತ",
+    "ಭದರಸೇನ",
+    "ರತ್ನಾವತಿ",
+    "ವತ್ಸಾಖ್ಯ ",
+    "ವಿದ್ಯುಲ್ಲೋಚನ",
+    "ದೃಢವರ್ಮ",
+    "ದೃಢವರ್ಮ ಚಾರಕ"
   ];
-
-  const displayTeam: string[] = ["ಅವನಿ", "ಅನಿಲ", "ಅಗ್ನಿ", "ಅಂಬರ", "ಅರ್ನಹ"];
 
   const scoreUpdate = api.jury.updateScores.useMutation();
   const criteriaTotal = api.jury.updateCriteriaScore.useMutation();
@@ -180,12 +171,12 @@ const Jury: NextPage = () => {
   const totalScore = (character: string) => {
     if (scores[character as PlayCharacters] != null) {
       const keys = Object.keys(scores[character as PlayCharacters]);
-      // let sum = 0;
-      // keys.forEach((key) => {
-      //   if ((scores[character] as ScoresState)[key] !== 999)
-      //     sum += (scores[character] as ScoresState)[key];
-      // });
-      // return sum;
+      let sum = 0;
+      keys.forEach((key) => {
+        if ((scores[character as PlayCharacters])[key as Criterias] !== 999)
+          sum += (scores[character as PlayCharacters])[key as Criterias];
+      });
+      return sum;
     }
     return 0;
   };
@@ -199,9 +190,7 @@ const Jury: NextPage = () => {
   };
 
   const res = api.jury.getScores.useQuery(
-    {
-      teamId: teamId,
-    },
+    { teamId: teamId },
     {
       enabled: false,
       staleTime: Infinity,
@@ -229,7 +218,7 @@ const Jury: NextPage = () => {
   useEffect(() => {
     if (refetch) res.refetch().catch((err) => console.log(err));
     setRefetch(false);
-  }, [teamId]);
+  }, [teamId, refetch, res]);
 
   useEffect(() => {
     if (res.data?.length ?? 0 > 0) {
@@ -259,22 +248,19 @@ const Jury: NextPage = () => {
       setUpdating(false);
     }
     if (res.data?.length === 0 && teamId !== "") setReady(true);
-  }, [res.data]);
+  }, [res.data, teamId]);
 
   const { data: sessionData } = useSession();
-  if (sessionData?.user.role !== "JUDGE")
-    return (
-      <div className="mb-[100vh] mt-20 text-center text-2xl">
-        Your not authorized to view this page
-      </div>
-    );
+  
+  if (!sessionData?.user || sessionData?.user.role !== "ADMIN")
+      return notFound();
 
   return user.data?.user &&
     !isLoading &&
     data !== undefined &&
     data.length > 0 &&
     !updating ? (
-    <div className="container flex w-full flex-col">
+    <div className="container flex w-full flex-col mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem] mb-10">
       <div className="mt-10 flex flex-row items-center justify-evenly pb-2">
         <h1 className="text-extrabold flex basis-1/2 justify-start text-4xl">
           Judge Dashboard - {teamName}
@@ -286,24 +272,21 @@ const Jury: NextPage = () => {
       <div className="m-2 flex w-full flex-col text-center md:flex-row">
         <div className="flex basis-1/2 justify-start">
           <DropdownMenu>
-            <DropdownMenuTrigger className="flex flex-row items-center gap-3 rounded-lg border border-white p-2 text-center">
+            <DropdownMenuTrigger className="flex flex-row items-center gap-3 rounded-lg bg-white text-black p-2 text-center">
               <div className="text-2xl md:text-xl">Select a team</div>
               <ArrowDown></ArrowDown>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {!isLoading ? (
-                data?.map((team, i) => (
+                data?.map((team) => (
                   <DropdownMenuItem
                     className="text-xl"
                     key={team.id}
-                    onSelect={(e) =>
-                      setTeam(
-                        team.id,
-                        displayTeam[team?.number ?? 0] ?? "",
-                      )
+                    onSelect={() =>
+                      setTeam(team.id, team.name)
                     }
                   >
-                    {displayTeam[team?.number ?? 0]}
+                    {team.name}
                   </DropdownMenuItem>
                 ))
               ) : (
@@ -322,7 +305,7 @@ const Jury: NextPage = () => {
       </div>
       {teamName !== "Select a college" && !scored && ready && !isLoading ? (
         <div className="flex flex-col gap-6 md:flex-row">
-          <div className="basis-3/5">
+          <div className="basis-3/4 border rounded-lg">
             <Table>
               <TableHeader className="invisible align-middle md:visible">
                 <TableRow className="text-center text-xl">
@@ -373,7 +356,7 @@ const Jury: NextPage = () => {
               </TableBody>
             </Table>
           </div>
-          <div className="basis-1/4">
+          <div className="basis-1/4 border rounded-lg">
             <Table className="flex w-full flex-col items-center text-xl">
               <TableHeader className="flex w-full items-center justify-center border-b-[1px] border-b-white">
                 <TableRow className="border-none text-2xl">
@@ -381,7 +364,7 @@ const Jury: NextPage = () => {
                 </TableRow>
               </TableHeader>
               <TableBody className="text-xl">
-                {criteriaTeamDisplayList.map((criteria, k) => (
+                {criteriaDisplayList.map((criteria, k) => (
                   <TableRow key={k}>
                     <TableCell>{criteria}</TableCell>
                     <TableCell>
@@ -412,7 +395,7 @@ const Jury: NextPage = () => {
                 ))}
                 <TableRow>
                   <TableCell>ಒಟ್ಟು</TableCell>
-                  <TableCell>{calculateFinalTotal()}</TableCell>
+                  <TableCell className="text-center">{calculateFinalTotal()}</TableCell>
                 </TableRow>
                 <Submit
                   scores={scores}
@@ -423,7 +406,6 @@ const Jury: NextPage = () => {
                   characters={characters}
                   setScored={setScored}
                   cScores={cScores}
-                  criteriaTeamDisplayList={criteriaTeamDisplayList}
                   charactersDisplay={charactersDisplay}
                 />
               </TableBody>
@@ -431,19 +413,19 @@ const Jury: NextPage = () => {
           </div>
         </div>
       ) : scored ? (
-        <div className="container h-full py-2">
+        <div className="container h-full">
           <div className="h-full w-full">
-            <div className="mb-20 flex justify-center text-center text-2xl ">
+            <div className="my-10 flex justify-center text-center text-2xl ">
               ತೀರ್ಪಿಗಾಗಿ ಧನ್ಯವಾದಗಳು. ಇನ್ನೊಂದು ತಂಡವನ್ನು ನೀವು ಈಗ ಆಯ್ಕೆ
               ಮಾಡಿಕೊಳ್ಳಬಹುದು!
             </div>
           </div>
-          <div className="flex flex-col justify-center gap-6 md:flex-row">
-            <div className="basis-3/5">
+          <div className="flex flex-col gap-6 md:flex-row">
+            <div className="basis-3/4">
               <Table>
                 <TableHeader className="invisible align-middle md:visible">
-                  <TableRow className="text-center text-2xl">
-                    <TableHead className="text-center">Character</TableHead>
+                  <TableRow className="text-center text-xl">
+                    <TableHead className="text-center">ಪಾತ್ರಗಳು</TableHead>
                     {criteriaDisplayList.map((criteria, i) => (
                       <TableHead key={i} className="text-center">
                         {criteriaDisplayList[i]}
@@ -452,7 +434,7 @@ const Jury: NextPage = () => {
                     <TableHead>Total</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody className="text-2xl">
+                <TableBody className="text-xl">
                   {characters.map((character, i) => (
                     <TableRow key={i} className="text-center">
                       <TableCell className="md:m-0">{character}</TableCell>
@@ -468,14 +450,14 @@ const Jury: NextPage = () => {
               </Table>
             </div>
             <div className="basis-1/4">
-              <Table className="flex w-full flex-col items-center text-2xl">
+              <Table className="flex w-full flex-col items-center text-xl">
                 <TableHeader className="flex w-full items-center justify-center border-b-[1px] border-b-white">
-                  <TableRow className="border-none text-2xl">
+                  <TableRow className="border-none text-xl">
                     <TableHead className="text-center">Team Score</TableHead>
                   </TableRow>
                 </TableHeader>
-                <TableBody className="text-2xl">
-                  {criteriaTeamDisplayList.map((criteria, k) => (
+                <TableBody className="text-xl">
+                  {criteriaDisplayList.map((criteria, k) => (
                     <TableRow key={k}>
                       <TableCell>{criteria}</TableCell>
                       <TableCell>

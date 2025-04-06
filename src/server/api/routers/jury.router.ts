@@ -70,13 +70,17 @@ export const JuryRouter= createTRPCRouter({
                     }
                 })
                 const teams = await ctx.db.team.findMany({
+                    where: {
+                        attended: true,
+                        isComplete: true,
+                    },
                     include:{
                         TeamScore: true
                     }
                 });
                 return teams;
             }),
-            addRemark: protectedJudgeProcedure
+        addRemark: protectedJudgeProcedure
             .input((z.object({
                 teamId:z.string(),
                 remark:z.string(),
@@ -100,7 +104,7 @@ export const JuryRouter= createTRPCRouter({
                 })
                 return teams;
             }),
-            getScores: protectedJudgeProcedure
+        getScores: protectedJudgeProcedure
             .input((z.object({
                 teamId:z.string(),
             })))

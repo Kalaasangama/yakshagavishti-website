@@ -50,7 +50,6 @@ const LeadRegister = ({
 	const user = useSession();
 	const [files, setFiles] = useState<(File & { preview: string })[]>([]);
 	const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
-	const [selectedRole, setSelectedRole] = useState<string>("");
 	const [LeaderCharacter, setLeaderCharacter] = useState<string | null>(null);
 	const [LeaderContact, setLeaderContact] = useState<string>("");
 	const [LeaderName, setLeaderName] = useState<string>(user.data?.user.name ?? "");
@@ -246,9 +245,6 @@ const LeadRegister = ({
 														console.log(
 															"Checkbox clicked"
 														);
-														if (isCheckboxChecked) {
-															setSelectedRole("");
-														}
 														setIsCheckboxChecked(
 															!isCheckboxChecked
 														);

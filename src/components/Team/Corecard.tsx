@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { AiFillLinkedin, AiFillGithub, AiFillInstagram } from 'react-icons/ai'
+import { AiFillLinkedin, AiFillGithub } from 'react-icons/ai'
 
 interface CardProps {
   name: string;
@@ -17,7 +17,6 @@ const Card: React.FC<CardProps> = ({
   role,
   linkedinURL,
   githubURL,
-  description,
   url,
 }) => {
   return (

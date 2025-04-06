@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import { useTranslations } from "next-intl";
 import React from "react";
 import Card from "~/components/About/Aboutcard";

@@ -1,4 +1,4 @@
-import type { PlayCharacters, User } from "@prisma/client";
+import type { PlayCharacters } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { api } from "~/trpc/react";
 import {
@@ -102,7 +102,7 @@ function Score() {
     // Update the state with the new total scores
     setTotalScores(newTotalScores);
     setTeams(uniqueTeams);
-  }, [results.data]);
+  }, [results.data, names]);
 
   // const getName = (teamId: string, character: Characters) => {
   //   if(teamId !== '')
@@ -158,7 +158,7 @@ function Score() {
       <div className="flex flex-row gap-[56vw]">
         <Button
           className="my-3 flex basis-1/2 justify-start"
-          onClick={(e) => downloadCSV()}
+          onClick={downloadCSV}
         >
           Download CSV
         </Button>

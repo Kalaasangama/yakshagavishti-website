@@ -24,6 +24,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Score from "~/components/Jury/score";
 import TeamScore from "~/components/Jury/teamScore";
 import { Button } from "~/components/ui/button";
+import { notFound } from "next/navigation";
 
 const Jury: NextPage = () => {
   const user = useSession();
@@ -86,7 +87,6 @@ const Jury: NextPage = () => {
   const [cScores, setCScores] = useState<TeamScoresState>(criteriaScores);
   const [ready, setReady] = useState<boolean>(false);
   const [refetch, setRefetch] = useState<boolean>(false);
-  const [enable, setEnable] = useState<boolean>(true);
   const [active, setActive] = useState<string>("");
 
   const totalScore = (character: PlayCharacters) => {
@@ -114,28 +114,20 @@ const Jury: NextPage = () => {
       teamId: teamId,
       judgeId: judgeId,
     },
-    // {
-    //   onError: (error) => {
-    //     console.error(error);
-    //     alert("Error fetching score");
-    //   },
-    //   enabled: false,
-    //   staleTime: Infinity
-    // },
+    {
+      enabled: false,
+      staleTime: Infinity,
+    }
   );
 
-  const judge = api.admin.getJudges.useQuery(
-    {
-      teamId: " ",
-    },
-    // {
-    //     onSuccess: () => {
-    //         setEnable(false);
-    //     },
-    //     enabled: enable,
-    //     staleTime: Infinity
-    // }
-  );
+  useEffect(() => {
+    if (res.error) {
+      console.error(res.error);
+      alert("Error fetching score");
+    }
+  }, [res.error]);
+
+  const judge = api.admin.getJudges.useQuery();
 
   const setTeam = (newTeamId: string, teamName: string) => {
     if (newTeamId === teamId) return;
@@ -160,7 +152,7 @@ const Jury: NextPage = () => {
   useEffect(() => {
     if (refetch) res.refetch().catch((err) => console.log(err));
     setRefetch(false);
-  }, [teamId, judgeId]);
+  }, [teamId, judgeId, refetch, res]);
 
   useEffect(() => {
     if (res.data?.length ?? 0 > 0) {
@@ -193,7 +185,7 @@ const Jury: NextPage = () => {
       judgeId !== ""
     )
       setReady(true);
-  }, [res.data]);
+  }, [res.data, judge.data, teamId, judgeId]);
 
   const downloadCSV = () => {
     const array: string[] = criteriaDisplayList;
@@ -226,12 +218,8 @@ const Jury: NextPage = () => {
 
   const { data: sessionData } = useSession();
 
-  if (sessionData?.user.role !== "ADMIN")
-    return (
-      <div className="mb-[100vh] mt-20 text-center text-2xl">
-        Your not authorized to view this page
-      </div>
-    );
+  if (!sessionData?.user || sessionData?.user.role !== "ADMIN")
+    return notFound();
 
   return user.data?.user &&
     !isLoading &&
@@ -239,7 +227,7 @@ const Jury: NextPage = () => {
     judge.data !== undefined &&
     data !== undefined &&
     data.length > 0 ? (
-    <div className="max-h-auto container flex min-h-[130vh] w-full flex-col items-center">
+    <div className="max-h-auto container flex min-h-[130vh] mt-[4.75rem] sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem] w-full flex-col items-center">
       <h1 className="text-extrabold mt-4 flex w-full flex-row pb-2 text-3xl">
         <div className="flex basis-1/2 justify-start text-left text-4xl">
           Results
@@ -271,9 +259,7 @@ const Jury: NextPage = () => {
         <TabsList className="bg-primary-100 p-2">
           <TabsTrigger
             value="results"
-            onClick={(e) => {
-              setActive("result");
-            }}
+            onClick={() => setActive("result")}
             className={`mb-3 text-2xl ${
               active === "result" ? `rounded-lg bg-white text-primary-100` : ""
             }`}
@@ -282,9 +268,7 @@ const Jury: NextPage = () => {
           </TabsTrigger>
           <TabsTrigger
             value="scoreBoard"
-            onClick={(e) => {
-              setActive("score");
-            }}
+            onClick={() => setActive("score")}
             className={`mb-3 text-2xl  ${
               active === "score" ? `rounded-lg bg-white text-primary-100` : ""
             }`}
@@ -293,9 +277,7 @@ const Jury: NextPage = () => {
           </TabsTrigger>
           <TabsTrigger
             value="teamScoreBoard"
-            onClick={(e) => {
-              setActive("team");
-            }}
+            onClick={() => setActive("team")}
             className={`mb-3 text-2xl  ${
               active === "team" ? `rounded-lg bg-white text-primary-100` : ""
             }`}
@@ -313,11 +295,11 @@ const Jury: NextPage = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {!isLoading ? (
-                    data?.map((team, i) => (
+                    data?.map((team) => (
                       <DropdownMenuItem
                         className="text-xl"
                         key={team.id}
-                        onSelect={(e) => setTeam(team.id, team.name)}
+                        onSelect={() => setTeam(team.id, team.name)}
                       >
                         {team.name}
                       </DropdownMenuItem>
@@ -336,13 +318,11 @@ const Jury: NextPage = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                   {!isLoading ? (
-                    judge.data?.map((judge, i) => (
+                    judge.data?.map((judge) => (
                       <DropdownMenuItem
                         className="text-xl"
                         key={judge.userId}
-                        onSelect={(e) =>
-                          setJudge(judge.userId, judge.User.name)
-                        }
+                        onSelect={() => setJudge(judge.userId, judge.User.name)}
                       >
                         {judge.User.name}
                       </DropdownMenuItem>
@@ -356,7 +336,7 @@ const Jury: NextPage = () => {
               </DropdownMenu>
             </div>
             <div className="flex w-full justify-end">
-              <Button onClick={(e) => downloadCSV()}>Download CSV</Button>
+              <Button onClick={downloadCSV}>Download CSV</Button>
             </div>
           </div>
           {teamName !== "Select a college" &&

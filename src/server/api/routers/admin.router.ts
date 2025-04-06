@@ -1,68 +1,69 @@
 import { PlayCharacters, Role } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createTRPCRouter, protectedAdminProcedure, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedAdminProcedure } from "~/server/api/trpc";
 import kalasangamaError from "~/utils/customError";
 
 export const adminRouter = createTRPCRouter({
-	getRegisteredTeams: protectedProcedure.query(async ({ ctx }) => {
-		try {
-			const user = await ctx.db.user.findUnique({
-				where: { id: ctx.session.user.id },
-			});
-			if (user?.role === Role.ADMIN) {
-				const teams = await ctx.db.team.findMany({
-					select: {
-						id: true,
-						name: true,
-						College: {
-							select: {
-								name: true,
+	getRegisteredTeams: protectedAdminProcedure
+		.query(async ({ ctx }) => {
+			try {
+				const user = await ctx.db.user.findUnique({
+					where: { id: ctx.session.user.id },
+				});
+				if (user?.role === Role.ADMIN) {
+					const teams = await ctx.db.team.findMany({
+						select: {
+							id: true,
+							name: true,
+							College: {
+								select: {
+									name: true,
+								},
 							},
-						},
-						isComplete: true,
-						Leader: {
-							select: {
-								name: true,
+							isComplete: true,
+							Leader: {
+								select: {
+									name: true,
+								},
 							},
-						},
-						TeamMembers: {
-							select: {
-								id: true,
-								name: true,
-								idURL: true,
-								contact: true,
-								isIdVerified: true,
-								Character: {
-									select: {
-										character: true,
+							TeamMembers: {
+								select: {
+									id: true,
+									name: true,
+									idURL: true,
+									contact: true,
+									isIdVerified: true,
+									Character: {
+										select: {
+											character: true,
+										},
 									},
 								},
 							},
+							editRequested: true
 						},
-						editRequested: true
-					},
-				});
-				return teams;
-			} else {
-				throw new kalasangamaError(
-					"Permission error",
-					"You do not have permissions to view this resource"
-				);
+					});
+					return teams;
+				} else {
+					throw new kalasangamaError(
+						"Permission error",
+						"You do not have permissions to view this resource"
+					);
+				}
+			} catch (error) {
+				if (error instanceof kalasangamaError) {
+					throw new TRPCError({
+						message: error.message,
+						code: "BAD_REQUEST",
+					});
+				} else {
+					console.log(error);
+					throw new Error("An error occurred!");
+				}
 			}
-		} catch (error) {
-			if (error instanceof kalasangamaError) {
-				throw new TRPCError({
-					message: error.message,
-					code: "BAD_REQUEST",
-				});
-			} else {
-				console.log(error);
-				throw new Error("An error occurred!");
-			}
-		}
-	}),
-	verifyId: protectedProcedure
+		}),
+	verifyId: protectedAdminProcedure
 		.input(
 			z.object({
 				userId: z.string(),
@@ -101,7 +102,7 @@ export const adminRouter = createTRPCRouter({
 				}
 			}
 		}),
-	EditAccess: protectedProcedure
+	EditAccess: protectedAdminProcedure
 		.input(
 			z.object({ team: z.string() })
 		)
@@ -186,97 +187,94 @@ export const adminRouter = createTRPCRouter({
 			})
 			return scores;
 		}),
-		getJudges:protectedAdminProcedure
-			.input(z.object({
-				teamId:z.string(),
-			})).
-			query(async({ctx})=>{
-				return await ctx.db.judge.findMany({
-					include: {
-						User: true
-					}
-				});
-			}),
-			getResults:protectedAdminProcedure
-			.query(async({ctx})=>{
-				const individualScores = await ctx.db.individualScore.findMany({
-					include: {
-						characterPlayed: true,
-						criteria: true,
-						team: {
-							include:{
-								TeamMembers: true
-							}
-						}
-					},
-					orderBy: [
-						{
-							characterId: "asc"
-						},
-						{
-							teamID: "asc"
-						},
-						{
-							criteriaId: "asc"
-						}
-					]
-				})
-				return individualScores;
-			}),
-		getName:protectedAdminProcedure
-			.input(z.object({
-				teamId: z.string(),
-				character: z.nativeEnum(PlayCharacters)
-			}))
-			.query(async ({ctx,input})=>{
-				return await ctx.db.teamMembers.findUnique({
-					where:{
-						teamId_characterId:{
-							characterId:input.character,
-							teamId: input.teamId
-						}
-					}
-				})
-			}),
-		getTeamScore:protectedAdminProcedure
-			.query(async({ctx})=>{
-				const teamScores = await ctx.db.teamScore.findMany({
-					include: {
-						criteria: true,
-						team: true
-					},
-					orderBy: [
-						{
-							teamID: "asc"
-						},
-						{
-							criteriaId: "asc"
-						}
-					]
-				})
-				return teamScores;
-			}),
-		getTeams: protectedAdminProcedure
-			.query(async({ctx})=>{
-				const teams = await ctx.db.team.findMany({
-                    include:{
-                        TeamScore: true,
-                    }
-                });
-                return teams;
-			}),
-		checkIfAllSubmitted: protectedAdminProcedure
-			.query(async({ctx})=>{
-				const Submitted = await ctx.db.submitted.findMany({
-					where: {
-						submitted: true
-					},
-				});
-				const teams = await ctx.db.team.findMany();
-				const judges = await ctx.db.judge.findMany();
-				if(Submitted.length !== (teams.length * judges.length)){
-					return "Not submitted"
+	getJudges:protectedAdminProcedure
+		.query(async ({ ctx })=>{
+			return await ctx.db.judge.findMany({
+				include: {
+					User: true
 				}
-				return "done";
+			});
+		}),
+	getResults:protectedAdminProcedure
+		.query(async({ctx})=>{
+			const individualScores = await ctx.db.individualScore.findMany({
+				include: {
+					characterPlayed: true,
+					criteria: true,
+					team: {
+						include:{
+							TeamMembers: true
+						}
+					}
+				},
+				orderBy: [
+					{
+						characterId: "asc"
+					},
+					{
+						teamID: "asc"
+					},
+					{
+						criteriaId: "asc"
+					}
+				]
 			})
+			return individualScores;
+		}),
+	getName:protectedAdminProcedure
+		.input(z.object({
+			teamId: z.string(),
+			character: z.nativeEnum(PlayCharacters)
+		}))
+		.query(async ({ctx,input})=>{
+			return await ctx.db.teamMembers.findUnique({
+				where:{
+					teamId_characterId:{
+						characterId:input.character,
+						teamId: input.teamId
+					}
+				}
+			})
+		}),
+	getTeamScore:protectedAdminProcedure
+		.query(async({ctx})=>{
+			const teamScores = await ctx.db.teamScore.findMany({
+				include: {
+					criteria: true,
+					team: true
+				},
+				orderBy: [
+					{
+						teamID: "asc"
+					},
+					{
+						criteriaId: "asc"
+					}
+				]
+			})
+			return teamScores;
+		}),
+	getTeams: protectedAdminProcedure
+		.query(async({ctx})=>{
+			const teams = await ctx.db.team.findMany({
+				include:{
+					TeamScore: true,
+				}
+			});
+			return teams;
+		}),
+	checkIfAllSubmitted: protectedAdminProcedure
+		.query(async({ctx})=>{
+			const Submitted = await ctx.db.submitted.findMany({
+				where: {
+					submitted: true
+				},
+			});
+			const teams = await ctx.db.team.findMany();
+			const judges = await ctx.db.judge.findMany();
+			if(Submitted.length !== (teams.length * judges.length)){
+				return "Not submitted"
+			}
+			return "done";
+		})
 });

@@ -33,7 +33,6 @@ import { toast } from "~/components/ui/use-toast";
 import { api } from "~/trpc/react";
 import { useSession } from "next-auth/react";
 import { ImSpinner9 } from "react-icons/im";
-import { editStatus } from "@prisma/client";
 export default function CollegeReg({
   setFormToShow,
   setCollege,

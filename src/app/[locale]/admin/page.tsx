@@ -15,6 +15,8 @@ import { Switch } from "~/components/ui/switch";
 import { Button } from "~/components/ui/button";
 import { ImSpinner9 } from "react-icons/im";
 import { useState } from "react";
+import { Role } from "@prisma/client";
+import { notFound } from "next/navigation";
 
 export default function Admin() {
     const [verifyingId, setVerifyingId] = useState<string>("")
@@ -59,36 +61,39 @@ export default function Admin() {
         );
     }
 
+    if (!sessionData?.user || sessionData?.user.role !== "ADMIN")
+          return notFound();
+
     if (sessionData?.user) {
         
         const downloadcsvFile = () => {
         // const col = ["College Name","Team Leader","Leader Contact","Team Members","Charcter Played"]
-        const col = ["College Name","Team Leader","Leader Contact","Team Member","Character"].join(',') + '\n';
-        
-        const row = data?.map((element)=>{
-            if(element.isComplete === true){
-            const college = (element.College?.name ?? "").replaceAll(","," ");
+            const col = ["College Name","Team Leader","Leader Contact","Team Member","Character"].join(',') + '\n';
             
-            const leader = (element.Leader?.name ?? "").replaceAll(","," ");
-            const leaderContact = (element?.TeamMembers.find(member => member.contact !== null)?.contact + "\n" || "").replaceAll(","," ");
-            const members = (element?.TeamMembers.map((member)=>"," + "," +  member.name + "," + member?.Character?.character ? member?.Character?.character:"" + "\n").join(",") || "")
-            const row = [college,leader,leaderContact,members].join(",")
-            console.log(row);
-            return row;
-            }
-        })
+            const row = data?.map((element)=>{
+                if(element.isComplete === true){
+                const college = (element.College?.name ?? "").replaceAll(","," ");
+                
+                const leader = (element.Leader?.name ?? "").replaceAll(","," ");
+                const leaderContact = (element?.TeamMembers.find(member => member.contact !== null)?.contact + "\n" || "").replaceAll(","," ");
+                const members = (element?.TeamMembers.map((member)=>"," + "," +  member.name + "," + member?.Character?.character ? member?.Character?.character:"" + "\n").join(",") || "")
+                const row = [college,leader,leaderContact,members].join(",")
+                console.log(row);
+                return row;
+                }
+            })
 
-        const csvfile = col + (row?.join("\n") ?? "");
-        const blob = new Blob([csvfile], { type: "text/csv" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", "data.csv");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    
-    }
+            const csvfile = col + (row?.join("\n") ?? "");
+            const blob = new Blob([csvfile], { type: "text/csv" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "data.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        
+        }
 
         return (
             <>

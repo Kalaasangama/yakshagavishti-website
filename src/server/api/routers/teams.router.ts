@@ -226,7 +226,6 @@ export const TeamRouter = createTRPCRouter({
 					where: { id: ctx.session.user.LeaderOf.id },
 					data: {
 						isComplete: true,
-						status: "REVOKED"
 					},
 				})
 

@@ -29,7 +29,6 @@ const Submit = ({
     characters,
     setScored,
     cScores,
-    criteriaTeamDisplayList,
 	charactersDisplay
  } : {
     scores : ScoresState,
@@ -40,7 +39,6 @@ const Submit = ({
     characters : PlayCharacters[],
     setScored: Dispatch<SetStateAction<boolean>>,
     cScores: TeamScoresState,
-    criteriaTeamDisplayList: string[],
 	charactersDisplay:string[]
  }
     ) => {
@@ -53,24 +51,6 @@ const Submit = ({
 	const ctx = api.useContext()
 
 	const saveScores = () => {
-		// characters.forEach((character) => {
-		// 	criteriaList.forEach((criteria) => {
-		// 		scoreUpdate.mutate({
-		// 			teamId: teamId,
-		// 			criteriaName: criteria,
-		// 			characterId: character,
-		// 			score: scores[character][criteria],
-		// 		});
-		// 	});
-		// });
-		// criteriaList.forEach((criteria) => {
-		// 	criteriaTotal.mutate({
-		// 		criteriaName: criteria,
-		// 		score: cScores[criteria],
-		// 		teamId: teamId,
-		// 		final: true,
-		// 	});
-		// });
 		finalScore.mutate({
 			teamId: teamId
 		})
@@ -131,53 +111,53 @@ const Submit = ({
 
 	return (
 		<Dialog.Root>
-			<Dialog.Trigger asChild>
+		<Dialog.Trigger asChild className="flex">
 				<Button
-					onClick={(e) => checkIfAllFieldsIsScored()}
-					className="mt-4"
+					onClick={checkIfAllFieldsIsScored}
+					className="mt-4 bg-white text-black hover:bg-gray-400 cursor-pointer"
 				>
 					Submit
 				</Button>
 			</Dialog.Trigger>
 			{open ? (
 				<Dialog.Portal>
-					<Dialog.Overlay className=" data-[state=open]:animate-overlayShow inset-0 z-50" />
+					<Dialog.Overlay className="data-[state=open]:animate-overlayShow fixed inset-0 backdrop-blur-sm" />
 					<Dialog.Content className="data-[state=open]:animate-contentShow fixed left-[50%] top-[50%] z-50 h-auto max-h-[90dvh] w-[80dvw] translate-x-[-50%] translate-y-[-50%] scroll-m-1 rounded-lg bg-primary-100 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none md:max-h-[90dvh] md:w-[80dvw] md:max-w-full">
 						<Dialog.Title className="m-0 mb-3 w-full border-0 border-b-2 border-white text-2xl font-medium text-white">
 							Scores of {teamName}
 						</Dialog.Title>
-						<div className="flex flex-col gap-3 md:flex-row">
-							<div className="basis-3/4">
+						<div className="flex flex-col gap-3 md:flex-row justify-around">
+							<div className="basis-3/5">
 								<Table className="text-white">
 									<TableHeader className="invisible md:visible">
 										<TableRow className="text-l">
-											<TableHead>Character</TableHead>
+											<TableHead>ಪಾತ್ರ</TableHead>
 											{criteriaDisplayList.map(
 												(criteria, i) => (
-													<TableHead key={i}>
+													<TableHead key={i} className="text-center">
 														{criteria}
 													</TableHead>
 												)
 											)}
-											<TableHead>Total</TableHead>
+											<TableHead className="text-center">Total</TableHead>
 										</TableRow>
 									</TableHeader>
-									<TableBody className="text-l">
+									<TableBody className="">
 										{characters.map((character, i) => (
 											<TableRow key={i} className="">
-												<TableCell className="md:m-0">
+												<TableCell className="md:m-0 ">
 													{charactersDisplay[i]}
 												</TableCell>
 												{criteriaList.map(
 													(criteria, j) => (
-														<TableCell key={j}>
+														<TableCell key={j} className="text-center">
 															{scores[
 																character
 															]?.[criteria] || 0}
 														</TableCell>
 													)
 												)}
-												<TableCell>
+												<TableCell className="text-center">
 													{totalScore(character)}
 												</TableCell>
 											</TableRow>
@@ -185,21 +165,21 @@ const Submit = ({
 									</TableBody>
 								</Table>
 							</div>
-							<div className="basis-1/4">
-								<Table className="text-l flex flex-col text-white">
-									<TableHeader>
-										<TableRow className="text-l">
-											<TableHead>Team Score</TableHead>
+							<div className="basis-1/5">
+								<Table className="flex w-full flex-col items-center">
+									<TableHeader className="flex w-full items-center justify-center border-b-white">
+										<TableRow>
+											<TableHead className="text-center">Team Score</TableHead>
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{criteriaTeamDisplayList.map(
+										{criteriaDisplayList.map(
 											(criteria, k) => (
 												<TableRow key={k}>
 													<TableCell>
 														{criteria}
 													</TableCell>
-													<TableCell>
+													<TableCell className="text-center">
 														{
 															criteriaList[k] !== undefined
 																? cScores[criteriaList[k]]
@@ -210,20 +190,20 @@ const Submit = ({
 											)
 										)}
 										<TableRow>
-											<TableCell>Total</TableCell>
+											<TableCell className="w-4/5">Total</TableCell>
 											<TableCell>
 												{calculateFinalTotal()}
 											</TableCell>
 										</TableRow>
 									</TableBody>
 								</Table>
-								<div className="mt-[25px] flex flex-col justify-end">
+								<div className="mt-[25px] flex flex-col justify-center">
 									<Dialog.Close asChild>
-										<Button onClick={(e) => saveScores()}>
+										<Button onClick={saveScores} className="bg-white text-black hover:bg-gray-400 cursor-pointer">
 											Confirm changes
 										</Button>
 									</Dialog.Close>
-									<div className="text-sm text-white">
+									<div className="text-sm text-white mt-2">
 										Note: Once submitted, scores can not be
 										changed without authorization
 									</div>

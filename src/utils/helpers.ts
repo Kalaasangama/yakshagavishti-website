@@ -41,11 +41,7 @@ const getCollegeById = async (college_id: string) => {
 const setLeader = async (
 	user_id: string,
 	teamName: string,
-	college_id: string,
 	character_id: string | null,
-	leaderIdUrl: string | null,
-	leader_contact: string,
-	leader_name: string
 ) => {
 	if (character_id)
 		await db.user.update({
@@ -74,7 +70,6 @@ const setLeader = async (
 const createAccount = (
 	user: UserInput,
 	teamName: string,
-	college_id: string
 ) => {
 	return db.teamMembers.create({
 		data: {

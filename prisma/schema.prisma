@@ -1,5 +1,5 @@
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
@@ -14,12 +14,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -83,7 +83,6 @@ model Team {
   number          Int               @unique
   isComplete      Boolean           @default(false)
   attended        Boolean           @default(false)
-  status          editStatus        @default(PENDING)
   college_id      String?           @unique
   College         College?          @relation(fields: [college_id], references: [id])
   leaderId        String?           @unique
@@ -196,14 +195,7 @@ enum PlayCharacters {
 enum Role {
   PARTICIPANT
   ADMIN
-  ORGANIZER
   JUDGE
-}
-
-enum editStatus {
-  PENDING
-  GRANTED
-  REVOKED
 }
 
 enum Criterias {

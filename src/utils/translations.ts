@@ -4,6 +4,7 @@ export const getAchievements = (t: (key: string) => string) => {
     for (let i=0; i<11; i++) {
         const title = t(`Events.${i}.Title`);
         const team = t(`Events.${i}.Team`);
+        const image = t(`Events.${i}.Image`);
 
         const individual: string[] = [];
         for (let j = 0; j < 4; j++) {
@@ -11,7 +12,7 @@ export const getAchievements = (t: (key: string) => string) => {
             if (indiv) individual.push(indiv)
         }
 
-        achievements.push({ title, team, individual });
+        achievements.push({ title, team, image, individual });
     }
 
     return {
