@@ -1,61 +1,12 @@
 import { PlayCharacters, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
-
-// const colleges = [
-//   {
-//     "name": "SDM Law College, Mangalore",
-//     "details": null,
-//     "password": "hello",
-//     "Team": {
-//       "name": "ಅವನಿ",
-//       "number": 1
-//     }
-//   },
-//   {
-//     "name": "St. Aloysius College, Mangalore",
-//     "details": null,
-//     "password": "hello",
-//     "Team": {
-//       "name": "ಅವನಿ",
-//       "number": 1
-//     }
-//   },
-//   {
-//     "name": "SDPT First Grade College, Kateelu",
-//     "details": null,
-//     "password": "hello",
-//     "Team": {
-//       "name": "ಅವನಿ",
-//       "number": 1
-//     }
-//   },
-//   {
-//     "name": "Shri Madhwa Vadiraja Institute of Technology and Management, Bantakal",
-//     "details": null,
-//     "password": "hello",
-//     "Team": {
-//       "name": "ಅವನಿ",
-//       "number": 1
-//     }
-//   },
-//   {
-//     "name": "Govinda Dasa Degree College, Suratkal",
-//     "details": null,
-//     "password": "hello",
-//     "Team": {
-//       "name": "ಅವನಿ",
-//       "number": 1
-//     }
-//   }
-// ]
-
 const colleges = [
-  { name: "SDM Law College, Mangalore", teamName: "ಅವನಿ" },
-  { name: "St. Aloysius College, Mangalore", teamName: "ಅನಿಲ" },
-  { name: "SDPT First Grade College, Kateelu", teamName: "ಅಗ್ನಿ" },
-  { name: "Shri Madhwa Vadiraja Institute of Technology and Management, Bantakal", teamName: "ಅಂಬರ" },
-  { name: "Govinda Dasa Degree College, Suratkal", teamName: "ಅರ್ನಹ" }
+  { name: "SDM Law College, Mangalore", teamName: "Team 1" },
+  { name: "St. Aloysius College, Mangalore", teamName: "Team 2" },
+  { name: "SDPT First Grade College, Kateelu", teamName: "Team 3" },
+  { name: "Shri Madhwa Vadiraja Institute of Technology and Management, Bantakal", teamName: "Team 4" },
+  { name: "Govinda Dasa Degree College, Suratkal", teamName: "Team 5" }
 ]
 
 async function main() {
@@ -69,7 +20,7 @@ async function main() {
         Team: {
           create: {
             name: teamName,
-            number: index+1,
+            number: index + 1,
           },
         },
       },

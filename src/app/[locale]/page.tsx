@@ -83,7 +83,7 @@ export default function Home() {
               "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/Gavishti_background.png"
             }
             alt="Banner"
-            className=" -z-30 hidden select-none object-cover object-center opacity-75 sm:block"
+            className="-z-30 hidden select-none object-cover object-center opacity-75 sm:block"
             fill
             priority
           />
@@ -101,10 +101,12 @@ export default function Home() {
                   fill
                   priority
                 />
-                
-                <div className="absolute inset-0 top-1/4 flex flex-col items-center justify-center text-[#873838] text-[22px] scale-x-125 font-extralight opacity-85 font-rhomdon">
-                  <p>April 12<sup>th</sup></p>
-                  <p>Quadrangle Stage</p>
+
+                <div className="opacity-85 absolute inset-0 top-1/4 flex scale-x-125 flex-col items-center justify-center font-rhomdon text-[22px] font-extralight text-[#873838]">
+                  <p>
+                    April 12<sup>th</sup>
+                  </p>
+                  <p>Ranga Mantapa</p>
                 </div>
               </div>
             </motion.div>
@@ -136,7 +138,7 @@ export default function Home() {
             <Reveal classes="">
               <div className="flex flex-col items-center gap-1 text-center landscape:short:gap-1">
                 {/* <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Yakshagavishti</div> */}
-                {(isRegistrationActive && !sessionData) ? (
+                {isRegistrationActive && !sessionData ? (
                   <div
                     className=""
                     onClick={
@@ -147,12 +149,14 @@ export default function Home() {
                   >
                     <Button>Register</Button>
                   </div>
-                ) : sessionData?.user.role === Role.PARTICIPANT && 
+                ) : (
+                  sessionData?.user.role === Role.PARTICIPANT &&
                   (!sessionData?.user?.LeaderOf?.isComplete ? (
                     <CreateTeam />
                   ) : (
                     <ViewTeam />
-                ))}
+                  ))
+                )}
               </div>
             </Reveal>
           </div>
@@ -212,7 +216,7 @@ export default function Home() {
           {/* Competition Contents section */}
 
           <div
-            className="mx-4 flex h-full flex-col items-center gap-5 sm:mx-8 sm:gap-16 lg:mx-32 "
+            className="mx-4 flex h-full flex-col items-center gap-5 sm:mx-8 sm:gap-16 lg:mx-32"
             id="about"
           >
             <div className="flex flex-col items-center gap-0 md:flex-row md:gap-10">
@@ -240,7 +244,7 @@ export default function Home() {
                       }
                       alt="Yakshagana"
                       fill
-                      className=" select-none rounded-xl object-contain object-center transition  duration-300 ease-linear hover:grayscale-0"
+                      className="select-none rounded-xl object-contain object-center transition duration-300 ease-linear hover:grayscale-0"
                     />
                     {/* <div className="h-[200%] w-[200%] rotate-45 -translate-x-full -translate-y-full group-hover:-translate-x-[25%] group-hover:-translate-y-[25%] transition duration-300 ease-linear bg-secondary-transparent-0.5 relative z-10"></div> */}
                   </div>
@@ -311,7 +315,7 @@ export default function Home() {
 
         {/* FAQ */}
 
-        <section className="relative mx-4 flex flex-col gap-3 sm:mx-8 sm:mt-48 md:mt-12 lg:mx-32 xl:mt-20 2xl:mt-0 ">
+        <section className="relative mx-4 flex flex-col gap-3 sm:mx-8 sm:mt-48 md:mt-12 lg:mx-32 xl:mt-20 2xl:mt-0">
           <ScrollLag
             speed={125}
             classes="absolute -z-10 h-48 w-48 lg:h-60 lg:w-60 bottom-[300%] right-full hidden lg:block -translate-y-full opacity-50"
@@ -323,7 +327,7 @@ export default function Home() {
                 }
                 fill
                 alt=""
-                className="select-none object-contain  opacity-70 bg-blend-luminosity"
+                className="select-none object-contain opacity-70 bg-blend-luminosity"
               />
             </div>
           </ScrollLag>
