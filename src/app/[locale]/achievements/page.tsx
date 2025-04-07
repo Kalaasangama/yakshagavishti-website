@@ -6,6 +6,8 @@ import { GiPaperArrow } from "react-icons/gi";
 import { BiChevronsDown } from "react-icons/bi";
 import { useTranslations } from "next-intl";
 import { getAchievements } from "~/utils/translations";
+import Reveal from "~/components/Animations/reveal";
+import Image from "next/image";
 
 const Achievements = () => {
   const t = useTranslations("Achievements");
@@ -13,7 +15,7 @@ const Achievements = () => {
   const { heading, description, achievements} = getAchievements(t);
 
   return (
-    <main className="no-scrollbar relative top-0 h-screen snap-y snap-mandatory overflow-scroll">
+    <main className="no-scrollbar relative top-0 h-screen snap-y snap-mandatory overflow-scroll bg-gradient-to-t from-black/50 to-black/50">
       <div className="flex h-screen snap-start items-center justify-center overflow-x-hidden">
         {/* <video src="https://player.vimeo.com/video/883950133?title=0&byline=0&portrait=0&playsinline=0&muted=1&autoplay=1&autopause=0&controls=0&loop=1&app_id=122963" className="h-screen w-full aspect-video absolute inset-0"></video> */}
         <video
@@ -25,7 +27,7 @@ const Achievements = () => {
           loop
           playsInline
         ></video>
-        <div className="absolute inset-0 -z-20 h-screen w-full bg-gradient-to-t from-black/50 to-black/50"></div>
+        <div className="absolute inset-0 -z-20 h-screen w-full"></div>
         <div>
           <div className="text-center font-rhomdon text-5xl font-bold sm:text-7xl md:text-8xl 2xl:text-9xl ">
             {heading}
@@ -38,6 +40,37 @@ const Achievements = () => {
         <span className="fixed bottom-16 right-1/2 -z-10 translate-x-1/2 animate-pulse landscape:short:bottom-10">
           <BiChevronsDown className="animate-arrow-down text-3xl"></BiChevronsDown>
         </span>
+      </div>
+      <div className="mx-4 sm:mx-12 lg:mx-40 my-14 flex flex-col md:flex-row gap-10 justify-items-center place-items-center max-w-7xl">
+        <Reveal classes="w-full md:w-1/3 flex justify-center items-center">
+          <Image
+            src="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/kalaasangamalogo.png"
+            alt="image"
+            loading="lazy"
+            className="object-contain h-full md:w-full object-center w-48 max-w-[16rem]"
+            height={500}
+            width={500}
+          />
+        </Reveal>
+        <div className="w-full md:w-2/3 flex flex-col text-center md:text-left gap-7 md:gap-5">
+          <Reveal classes="">
+              <h2 className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl">
+              {t("Team").split(" ")[0]} <span className="text-secondary-100">{t("Team").split(" ")[1]}</span>
+              </h2>
+          </Reveal>
+          <div className="flex flex-col gap-3">
+            <Reveal classes="">
+              <p className="text-base md:text-lg xl:text-xl">
+                {t("Team1")}
+              </p>
+            </Reveal>
+            <Reveal classes="">
+              <p className="text-base md:text-lg xl:text-xl">
+                {t("Team2")}
+              </p>
+            </Reveal>
+          </div>
+        </div>
       </div>
       <section className="relative snap-start">
         <div className="no-scrollbar flex h-screen w-screen snap-y snap-mandatory flex-col items-center overflow-scroll bg-gradient-to-br from-primary-100 to-[#100D27] px-4 sm:px-8 lg:px-32">

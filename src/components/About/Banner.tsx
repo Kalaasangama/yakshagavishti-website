@@ -16,7 +16,7 @@ const Banner: React.FC<BannerProps> = ({ photo, text, video, credits }) => {
 
   return (
     <div className="relative h-80 w-full overflow-hidden shrink-0">
-      { photo && <div className="absolute inset-0">
+      { photo && <div className="absolute inset-0 min-w-[90%] left-1/2 -translate-x-1/2">
         <Image
           src={photo}
           alt="Banner"
