@@ -91,7 +91,7 @@ export default function Home() {
             <motion.div
               style={{ y: yPos, x: "-50%" }}
               ref={ref}
-              className="pointer-events-none absolute left-1/2 top-[68%] h-[800px] w-full max-w-xl -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff]"
+              className="pointer-events-none absolute left-1/2 top-[72%] h-[800px] w-full max-w-xl -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_0_10px_#fff]"
             >
               <div className="relative h-full w-full">
                 <Image
@@ -135,7 +135,7 @@ export default function Home() {
 
             {/* Contents - Hero Section */}
 
-            <Reveal classes="">
+            <Reveal classes="bottom-24">
               <div className="flex flex-col items-center gap-1 text-center landscape:short:gap-1">
                 {/* <div className="font-rhomdon font-bold text-5xl sm:text-7xl md:text-8xl 2xl:text-9xl landscape:short:text-7xl leading-snug sm:leading-snug md:leading-normal 2xl:leading-relaxed">Yakshagavishti</div> */}
                 {isRegistrationActive && !sessionData ? (

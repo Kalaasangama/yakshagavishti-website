@@ -68,7 +68,7 @@ export default function Footer () {
         <div className="text-base xl:text-lg text-center flex flex-col gap-2">
           <Link href={"/team"} className="transition-all hover:tracking-widest text-gray-300 underline-offset-4">Made with ❤️ by <span className="text-secondary-100 font-medium">Finite Loop Club</span></Link>
           <div className="">
-            © <span className="text-secondary-100 font-medium">{f("Footer")}</span> 2023
+            © <span className="text-secondary-100 font-medium">{f("Footer")}</span> 2025
           </div>
         </div>
       </div>
