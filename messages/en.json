@@ -4,7 +4,8 @@
     "Home": "Home",
     "About": "About Us",
     "Sponsors": "Sponsors",
-    "Achievements": "Achievements"
+    "Achievements": "Achievements",
+    "1st-edition": "1st-edition"
   },
   "Timer": {
     "Days": "Days",
@@ -169,6 +170,9 @@
         }
       }
     }
+  },
+  "1st-edition":{
+    "Description": "The Yakshagana competition, titled 'Bheeshma Prathijne,' was organized by a technical college for the first time, featuring innovative measures such as online registration and paperless jury evaluations to ensure fairness. To maintain impartial judging, complete anonymity was enforced throughout the evaluation process. Five teams participated in the event: Alvas College (Moodubidire), SDM Law College (Mangalore), Dr. P. Dayananda Pai – P. Satisha Pai Government First Grade College (Mangalore), Govinda Dasa Degree College (Surathkal), and S.D.P.T. First Grade College (Kateel). This marked a significant milestone as the first full-fledged Yakshagana competition of its kind"
   },
   "Members": {
     "0": {

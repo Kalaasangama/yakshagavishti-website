@@ -28,6 +28,7 @@ const Navbar = () => {
     { id: "Sponsors", label: t('Sponsors'), url: "/sponsors" },
     { id: "Achievements", label: t('Achievements'), url: "/achievements" },
     { id: "About", label: t('About'), url: "/about" },
+    { id: "1st-edition", label: t('1st-edition'), url: "/1st-edition"}
   ];
   
   const pathname = usePathname();
