@@ -12,7 +12,7 @@ import Image from "next/image";
 const Achievements = () => {
   const t = useTranslations("Achievements");
   const [contentId, setContentId] = useState(-1);
-  const { heading, description, achievements} = getAchievements(t);
+  const { heading, description, achievements } = getAchievements(t);
 
   return (
     <main className="no-scrollbar relative top-0 h-screen snap-y snap-mandatory overflow-scroll bg-gradient-to-t from-black/50 to-black/50">
@@ -29,7 +29,7 @@ const Achievements = () => {
         ></video>
         <div className="absolute inset-0 -z-20 h-screen w-full"></div>
         <div>
-          <div className="text-center font-rhomdon text-5xl font-bold sm:text-7xl md:text-8xl 2xl:text-9xl ">
+          <div className="text-center font-rhomdon text-5xl font-bold sm:text-7xl md:text-8xl 2xl:text-9xl">
             {heading}
           </div>
           <br />
@@ -41,40 +41,46 @@ const Achievements = () => {
           <BiChevronsDown className="animate-arrow-down text-3xl"></BiChevronsDown>
         </span>
       </div>
-      <div className="mx-4 sm:mx-12 lg:mx-40 my-14 flex flex-col md:flex-row gap-10 justify-items-center place-items-center max-w-7xl">
-        <Reveal classes="w-full md:w-1/3 flex justify-center items-center">
-          <Image
-            src="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/kalaasangamalogo.png"
-            alt="image"
-            loading="lazy"
-            className="object-contain h-full md:w-full object-center w-48 max-w-[16rem]"
-            height={500}
-            width={500}
-          />
-        </Reveal>
-        <div className="w-full md:w-2/3 flex flex-col text-center md:text-left gap-7 md:gap-5">
-          <Reveal classes="">
-              <h2 className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl">
-              {t("Team").split(" ")[0]} <span className="text-secondary-100">{t("Team").split(" ")[1]}</span>
-              </h2>
-          </Reveal>
-          <div className="flex flex-col gap-3">
-            <Reveal classes="">
-              <p className="text-base md:text-lg xl:text-xl">
-                {t("Team1")}
-              </p>
-            </Reveal>
-            <Reveal classes="">
-              <p className="text-base md:text-lg xl:text-xl">
-                {t("Team2")}
-              </p>
-            </Reveal>
-          </div>
-        </div>
-      </div>
+
       <section className="relative snap-start">
         <div className="no-scrollbar flex h-screen w-screen snap-y snap-mandatory flex-col items-center overflow-scroll bg-gradient-to-br from-primary-100 to-[#100D27] px-4 sm:px-8 lg:px-32">
-          <div className="w-full ">
+          <div className="w-full">
+            <div className="group/page relative flex h-screen w-full snap-start flex-col items-center justify-start gap-10 sm:justify-center">
+              <div className="mx-4 my-14 flex max-w-7xl flex-col place-items-center justify-items-center gap-10 sm:mx-12 md:flex-row lg:mx-40">
+                <Reveal classes="w-full md:w-1/3 flex justify-center items-center">
+                  <Image
+                    src="https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/home/kalaasangamalogo.png"
+                    alt="image"
+                    loading="lazy"
+                    className="h-full w-48 max-w-[16rem] object-contain object-center md:w-full"
+                    height={500}
+                    width={500}
+                  />
+                </Reveal>
+                <div className="flex w-full flex-col gap-7 text-center md:w-2/3 md:gap-5 md:text-left">
+                  <Reveal classes="">
+                    <h2 className="font-rhomdon text-3xl sm:text-4xl md:text-5xl 2xl:text-6xl">
+                      {t("Team").split(" ")[0]}{" "}
+                      <span className="text-secondary-100">
+                        {t("Team").split(" ")[1]}
+                      </span>
+                    </h2>
+                  </Reveal>
+                  <div className="flex flex-col gap-3">
+                    <Reveal classes="">
+                      <p className="text-base md:text-lg xl:text-xl">
+                        {t("Team1")}
+                      </p>
+                    </Reveal>
+                    <Reveal classes="">
+                      <p className="text-base md:text-lg xl:text-xl">
+                        {t("Team2")}
+                      </p>
+                    </Reveal>
+                  </div>
+                </div>
+              </div>
+            </div>
             {achievements.map((ach, idx) => {
               if (idx % 2 === 0) {
                 const row = [
@@ -105,7 +111,7 @@ const Achievements = () => {
                         direction={idx % 4 == 0 ? "" : "-"}
                       />
                     </div>
-                    <div className="absolute bottom-24 hidden  h-48 flex-col items-center justify-center gap-4 group-hover/page:flex sm:bottom-10 sm:h-fit md:bottom-3 md:h-48 md:gap-3 landscape:short:bottom-0 landscape:short:h-fit">
+                    <div className="absolute bottom-24 hidden h-48 flex-col items-center justify-center gap-4 group-hover/page:flex sm:bottom-10 sm:h-fit md:bottom-3 md:h-48 md:gap-3 landscape:short:bottom-0 landscape:short:h-fit">
                       <div
                         data-id={`${idx}`}
                         className="flex justify-center text-center text-lg text-secondary-100 sm:text-xl md:text-2xl"

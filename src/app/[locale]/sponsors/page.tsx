@@ -11,22 +11,31 @@ const Sponsor = () => {
       subtitle: t("Associate"),
       description: `Established in 1991 and registered in 2013, the WENAMITAA, NMAMIT Alumni Association signifies the enduring bond between alumni and their alma mater. With vibrant chapters like Me-NMAMIT and Be-NMAMIT, the association fosters connections through annual gatherings. Highlight events, including the annual Alumni Meet and biennial Global Meet, provide opportunities for alumni to relive academic memories and celebrate achievements globally. The association, beyond celebrations, sponsors academic excellence and funds student projects, exemplified by the recent inauguration of a conference hall in the Atal Block. Actively involving alumni in academic endeavors, NMAMIT seeks their input for curriculum development and invites them as esteemed judges during fests, underscoring a commitment to excellence.`,
       image:
-        "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890925/yakshagavishti/assets/sponsors/WENAMITAA.png",
+        "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890929/yakshagavishti/assets/sponsors/WENAMITAA.png",
       url: "https://alumni.nitte.edu.in/page/wenamitaa-607",
     },
     {
       name: "Quadx Drones",
       subtitle: t("Executive"),
       description: `QuadX Drones, established in 2019, is India's premier online store offering end-to-end drone-related services. Our mission is to provide top-quality DJI equipment and services to the Indian market, delivering an unparalleled level of professionalism and after-sales support. As a result, QuadX Drones has become the most trusted drone provider in India, with a customer base that includes the country's top digital production houses, television channels, and influencers.`,
-      image: "",
+      image:
+        "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890929/yakshagavishti/assets/sponsors/Quadx_Drones.png",
       url: "https://www.quadxdrones.com/",
     },
     {
       name: "Muliya Jewels",
       subtitle: t("Executive"),
       description: `Muliya Jewels was established in 1944, by Mr. Keshava Bhatta, at Court Road Puttur, which is 54 Kilometers away from Mangalore. We have more than 75 years of expertise and trust in the field of jewllery. We are happy to realize your desire to have dream jewels from array of overwhelming collection at Muliya.`,
-      image: "/1.png",
+      image:
+        "https://res.cloudinary.com/dfhg1joox/image/upload/v1699890929/yakshagavishti/assets/sponsors/Muliya_Jewels.png",
       url: "https://muliya.in/",
+    },
+    {
+      name: "Dr. T. Sham Bhatt",
+      subtitle: t("Associate"),
+      description: ``,
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSlCACI8589CTw86W5WCflW1-SSt0XiLM_T-Rey8mczoYM_9oeV9NscUjAWTyMz2YhjaA&usqp=CAU",
     },
   ];
 
@@ -47,7 +56,7 @@ const Sponsor = () => {
               delay={i * 1000}
               key={i}
               rev={i % 2 === 0 ? false : true}
-              ImageSrc={`https://res.cloudinary.com/dfhg1joox/image/upload/v1699890929/yakshagavishti/assets/sponsors/${sponorDetail.name.replaceAll(" ", "_")}.png`}
+              ImageSrc={sponorDetail.image}
               SponsorTitle={sponorDetail.name}
               SponsorDesc={sponorDetail.description}
               SponsorWebsiteLink={sponorDetail.url}
