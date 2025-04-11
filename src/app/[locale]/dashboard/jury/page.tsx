@@ -22,8 +22,9 @@ import Remarks from "~/components/Jury/remarks";
 import Submit from "~/components/Jury/submit";
 import { Role, type Criterias, type PlayCharacters } from "@prisma/client";
 import toast from "react-hot-toast";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import NotFound from "~/app/[locale]/not-found";
+import { Button } from "~/components/ui/button";
 
 const Jury: NextPage = () => {
   const criteriaList: Criterias[] = [
@@ -262,7 +263,12 @@ const Jury: NextPage = () => {
     data.length > 0 &&
     !updating ? (
     <div className="container mb-10 mt-[4.75rem] flex w-full flex-col sm:mt-[5.75rem] md:mt-24 lg:mt-[6.25rem]">
-      <h1 className="text-center text-5xl">ಸ್ವಾಗತ {sessionData.user.name}</h1>
+      <div className="flex flex-row items-center justify-center gap-4">
+        <h1 className="text-center text-5xl">ಸ್ವಾಗತ {sessionData.user.name}</h1>
+        <Button variant="destructive" onClick={() => signOut()}>
+          Sign out
+        </Button>
+      </div>
       <div className="mt-10 flex flex-row items-center justify-evenly pb-2">
         <h1 className="text-extrabold flex basis-1/2 justify-start text-4xl">
           Judge Dashboard - <span className="text-5xl">{teamName}</span>
@@ -276,7 +282,7 @@ const Jury: NextPage = () => {
           <DropdownMenu>
             <DropdownMenuTrigger className="flex flex-row items-center gap-3 rounded-lg bg-white p-2 text-center text-black">
               <div className="text-2xl md:text-xl">Select a team</div>
-              <ArrowDown></ArrowDown>
+              <ArrowDown />
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {!isLoading ? (
@@ -492,7 +498,16 @@ const Jury: NextPage = () => {
     </div>
   ) : (
     <div className="container py-40">
-      <div className="h-full w-full">
+      <div className="h-full w-full space-y-36">
+        <div className="flex flex-row items-center justify-center gap-4">
+          <h1 className="text-center text-5xl">
+            ಸ್ವಾಗತ {sessionData.user.name}
+          </h1>
+          <Button variant="destructive" onClick={() => signOut()}>
+            Sign out
+          </Button>
+        </div>
+
         <div className="mb-[100vh] flex justify-center text-center text-2xl">
           {isLoading ? "Loading..." : "No teams to judge at the moment...."}
         </div>
